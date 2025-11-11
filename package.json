@@ -11,19 +11,21 @@
   "dependencies": {
     "@googlemaps/markerclusterer": "^2.5.1",
     "@vis.gl/react-google-maps": "latest",
+    "leaflet": "^1.9.4",
+    "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "next": "16.0.1"
+    "react-leaflet": "latest"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4",
     "@types/google.maps": "^3.58.1",
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
-    "eslint-config-next": "16.0.1"
+    "eslint-config-next": "16.0.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
