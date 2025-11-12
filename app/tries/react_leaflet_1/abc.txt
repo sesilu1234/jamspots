@@ -18,21 +18,6 @@
 
 
 
-por defecto te manda a geololocalizacion, sino capital de pais ip-x-forward, y sino pues a madrid (o sidney, o berlin, o washington dc)
-
-
-tienes api_places para moverte a algun sitio rapido. (radius no tienes porque eso da igual, ya lo mueves con el zoom)
-
-
-envias todos los marcadores de primeras , TODOS, y clusterizados, pero se cachean cada 5 min (tecnicamente seria cachear a cada create o edit de jam).envia coordinates , e id de jam
-
-
-cuando clickas una jam, ahi ya si que hace request para conseguir descripcion e imagen
-
-
-
-
-
 
 
 
