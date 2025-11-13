@@ -1,6 +1,6 @@
-"use client";
-import { useState, useRef, useEffect } from "react";
-import { useMapContext } from "./MapContext";
+'use client';
+import { useState, useRef, useEffect } from 'react';
+import { useMapContext } from './MapContext';
 
 type Place = {
   display_name: string;
@@ -9,7 +9,7 @@ type Place = {
 };
 
 export default function PlaceSearch() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState<Place[]>([]);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -22,23 +22,20 @@ export default function PlaceSearch() {
     abortRef.current = controller;
 
     try {
-      const res = await fetch(
-        `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=5`,
-        { signal: controller.signal }
-      );
+      const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=5`, {
+        signal: controller.signal,
+      });
       const data = await res.json();
 
       const places = data.features.map((f: any) => ({
-        display_name:
-          f.properties.name +
-          (f.properties.city ? `, ${f.properties.city}` : ""),
+        display_name: f.properties.name + (f.properties.city ? `, ${f.properties.city}` : ''),
         lat: f.geometry.coordinates[1],
         lon: f.geometry.coordinates[0],
       }));
 
       setResults(places);
     } catch (err) {
-      if ((err as any).name === "AbortError") return;
+      if ((err as any).name === 'AbortError') return;
       console.error(err);
     }
   };
@@ -62,20 +59,16 @@ export default function PlaceSearch() {
     setQuery(place.display_name);
     setResults([]);
     if (map) {
-    map.flyTo([parseFloat(place.lat), parseFloat(place.lon)], 13, {
-      duration: 1.5,
-    });
-  }
+      map.flyTo([parseFloat(place.lat), parseFloat(place.lon)], 13, {
+        duration: 1.5,
+      });
+    }
   };
 
   const clearSearch = () => {
-    setQuery("");
+    setQuery('');
     setResults([]);
   };
-
-
-
-
 
   return (
     <div className="relative w-full max-w-md">

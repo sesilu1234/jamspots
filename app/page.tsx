@@ -1,4 +1,4 @@
-import Primary from "./tries/components/primary";
+import Primary from './tries/components/primary';
 
 export default function Home() {
   return (

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 import {
   APIProvider,
   Map,
@@ -9,11 +9,11 @@ import {
   MapControl,
   useMapsLibrary,
   ControlPosition,
-} from "@vis.gl/react-google-maps";
-import { useMapContext } from "./mapContext";
-import type { LocationData } from "./mapContext"; // adjust path as needed
+} from '@vis.gl/react-google-maps';
+import { useMapContext } from './mapContext';
+import type { LocationData } from './mapContext'; // adjust path as needed
 
-const API_KEY = "AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE";
+const API_KEY = 'AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE';
 
 // type Poi = { key: string; location: google.maps.LatLngLiteral };
 
@@ -51,8 +51,8 @@ export default function MapRender() {
                 }
 
                 const data: LocationData = {
-                  name: place.name || "",
-                  address: place.formatted_address || "",
+                  name: place.name || '',
+                  address: place.formatted_address || '',
                   coordinates: {
                     lat: place.geometry!.location!.lat(),
                     lng: place.geometry!.location!.lng(),
@@ -97,10 +97,10 @@ function MarkerLocation({ position }: { position: google.maps.LatLngLiteral }) {
         const lng = event.latLng?.lng();
 
         if (lat && lng) {
-          console.log("New position:", { lat, lng });
+          console.log('New position:', { lat, lng });
           setLocation({
-            name: "",
-            address: "",
+            name: '',
+            address: '',
             coordinates: {
               lat,
               lng,
@@ -114,17 +114,17 @@ function MarkerLocation({ position }: { position: google.maps.LatLngLiteral }) {
 
 function PlaceAutocomplete({ onPlaceSelect }: PlaceAutocompleteProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const places = useMapsLibrary("places");
+  const places = useMapsLibrary('places');
 
   useEffect(() => {
     if (!places || !inputRef.current) return;
 
     const autocomplete = new places.Autocomplete(inputRef.current, {
-      fields: ["geometry", "name", "formatted_address"],
+      fields: ['geometry', 'name', 'formatted_address'],
     });
 
-    autocomplete.addListener("place_changed", () => {
-      console.log("eii");
+    autocomplete.addListener('place_changed', () => {
+      console.log('eii');
       console.log(autocomplete.getPlace());
 
       onPlaceSelect(autocomplete.getPlace() || null);

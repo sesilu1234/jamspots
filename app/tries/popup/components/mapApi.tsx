@@ -1,20 +1,15 @@
 // Diff.tsx
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import {
-  APIProvider,
-  Map,
-  useMap,
-  AdvancedMarker,
-} from "@vis.gl/react-google-maps";
-import { MarkerClusterer } from "@googlemaps/markerclusterer";
-import { useMapContext } from "./mapContext";
+import { useEffect, useRef, useState } from 'react';
+import { APIProvider, Map, useMap, AdvancedMarker } from '@vis.gl/react-google-maps';
+import { MarkerClusterer } from '@googlemaps/markerclusterer';
+import { useMapContext } from './mapContext';
 
 type Poi = { key: string; location: google.maps.LatLngLiteral };
 
 const initialLocations: Poi[] = [
-  { key: "operaHouse", location: { lat: -33.8567844, lng: 151.213108 } },
+  { key: 'operaHouse', location: { lat: -33.8567844, lng: 151.213108 } },
 ];
 
 export default function MapRender() {
@@ -26,10 +21,7 @@ export default function MapRender() {
 
   return (
     <APIProvider apiKey="AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE">
-      <Map
-        defaultZoom={13}
-        defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
-      >
+      <Map defaultZoom={13} defaultCenter={{ lat: -33.860664, lng: 151.208138 }}>
         <MapProviderInside />
         <PoiMarkers pois={location} />
       </Map>
@@ -56,7 +48,7 @@ function PoiMarkers({ pois }: { pois: Poi[] }) {
 
   useEffect(() => {
     if (!map) {
-      console.log("Map not ready yet");
+      console.log('Map not ready yet');
       return;
     }
 

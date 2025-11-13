@@ -1,5 +1,5 @@
-import { useMapContext } from "./mapContext";
-import { useState, useRef, useEffect } from "react";
+import { useMapContext } from './mapContext';
+import { useState, useRef, useEffect } from 'react';
 
 export default function Button({ className }: { className?: string }) {
   const { map, locationData, setLocation } = useMapContext();

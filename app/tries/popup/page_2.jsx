@@ -1,9 +1,9 @@
-"use client";
-import { useState, useEffect, useRef } from "react";
+'use client';
+import { useState, useEffect, useRef } from 'react';
 
 export default function Popup() {
-  const [name, setName] = useState("");
-  const [adress, setLocationAdress] = useState("");
+  const [name, setName] = useState('');
+  const [adress, setLocationAdress] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [countdown, setCountdown] = useState(3);
   const inputRef = useRef(null);
@@ -35,7 +35,7 @@ export default function Popup() {
   const handleSubmit = () => {
     if (!name.trim()) return;
 
-    const channel = new BroadcastChannel("name_channel");
+    const channel = new BroadcastChannel('name_channel');
     channel.postMessage({ name: name, adress: adress });
     channel.close();
 
@@ -52,7 +52,7 @@ export default function Popup() {
             placeholder="Enter name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
           />
           <button className="border px-4 py-2" onClick={handleSubmit}>
             Accept

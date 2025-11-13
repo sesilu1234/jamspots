@@ -1,5 +1,5 @@
-import { useMapContext } from "./mapContext";
-import { useState, useRef, useEffect } from "react";
+import { useMapContext } from './mapContext';
+import { useState, useRef, useEffect } from 'react';
 
 export default function Button({ className }: { className?: string }) {
   const { map, locationData, setLocation } = useMapContext();
@@ -7,9 +7,9 @@ export default function Button({ className }: { className?: string }) {
   const [countdown, setCountdown] = useState(3);
 
   const handleSubmit = () => {
-    const channel = new BroadcastChannel("location_broadcast");
+    const channel = new BroadcastChannel('location_broadcast');
     channel.postMessage(locationData);
-    console.log("here is :");
+    console.log('here is :');
     console.log(locationData);
     channel.close();
 

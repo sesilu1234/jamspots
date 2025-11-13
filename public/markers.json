@@ -1,25 +1,25 @@
 [
   { "id": 1, "name": "Madrid Marker 1", "lat": 40.4168, "lng": -3.7038 },
-  { "id": 2, "name": "Madrid Marker 2", "lat": 40.4180, "lng": -3.7100 },
-  { "id": 3, "name": "Madrid Marker 3", "lat": 40.4125, "lng": -3.6980 },
-  { "id": 4, "name": "Madrid Marker 4", "lat": 40.4200, "lng": -3.7070 },
-  { "id": 5, "name": "Madrid Marker 5", "lat": 40.4140, "lng": -3.6950 },
+  { "id": 2, "name": "Madrid Marker 2", "lat": 40.418, "lng": -3.71 },
+  { "id": 3, "name": "Madrid Marker 3", "lat": 40.4125, "lng": -3.698 },
+  { "id": 4, "name": "Madrid Marker 4", "lat": 40.42, "lng": -3.707 },
+  { "id": 5, "name": "Madrid Marker 5", "lat": 40.414, "lng": -3.695 },
 
   { "id": 6, "name": "Sydney Marker 1", "lat": -33.8688, "lng": 151.2093 },
-  { "id": 7, "name": "Sydney Marker 2", "lat": -33.8700, "lng": 151.2150 },
-  { "id": 8, "name": "Sydney Marker 3", "lat": -33.8650, "lng": 151.2100 },
-  { "id": 9, "name": "Sydney Marker 4", "lat": -33.8675, "lng": 151.2050 },
-  { "id": 10, "name": "Sydney Marker 5", "lat": -33.8690, "lng": 151.2200 },
+  { "id": 7, "name": "Sydney Marker 2", "lat": -33.87, "lng": 151.215 },
+  { "id": 8, "name": "Sydney Marker 3", "lat": -33.865, "lng": 151.21 },
+  { "id": 9, "name": "Sydney Marker 4", "lat": -33.8675, "lng": 151.205 },
+  { "id": 10, "name": "Sydney Marker 5", "lat": -33.869, "lng": 151.22 },
 
-  { "id": 11, "name": "Dallas Marker 1", "lat": 32.7767, "lng": -96.7970 },
-  { "id": 12, "name": "Dallas Marker 2", "lat": 32.7800, "lng": -96.8000 },
-  { "id": 13, "name": "Dallas Marker 3", "lat": 32.7700, "lng": -96.7900 },
-  { "id": 14, "name": "Dallas Marker 4", "lat": 32.7755, "lng": -96.7850 },
-  { "id": 15, "name": "Dallas Marker 5", "lat": 32.7780, "lng": -96.7980 },
+  { "id": 11, "name": "Dallas Marker 1", "lat": 32.7767, "lng": -96.797 },
+  { "id": 12, "name": "Dallas Marker 2", "lat": 32.78, "lng": -96.8 },
+  { "id": 13, "name": "Dallas Marker 3", "lat": 32.77, "lng": -96.79 },
+  { "id": 14, "name": "Dallas Marker 4", "lat": 32.7755, "lng": -96.785 },
+  { "id": 15, "name": "Dallas Marker 5", "lat": 32.778, "lng": -96.798 },
 
-  { "id": 16, "name": "Madrid Marker 6", "lat": 40.4170, "lng": -3.7000 },
-  { "id": 17, "name": "Sydney Marker 6", "lat": -33.8710, "lng": 151.2120 },
-  { "id": 18, "name": "Dallas Marker 6", "lat": 32.7795, "lng": -96.7930 },
-  { "id": 19, "name": "Madrid Marker 7", "lat": 40.4150, "lng": -3.7050 },
-  { "id": 20, "name": "Sydney Marker 7", "lat": -33.8665, "lng": 151.2180 }
+  { "id": 16, "name": "Madrid Marker 6", "lat": 40.417, "lng": -3.7 },
+  { "id": 17, "name": "Sydney Marker 6", "lat": -33.871, "lng": 151.212 },
+  { "id": 18, "name": "Dallas Marker 6", "lat": 32.7795, "lng": -96.793 },
+  { "id": 19, "name": "Madrid Marker 7", "lat": 40.415, "lng": -3.705 },
+  { "id": 20, "name": "Sydney Marker 7", "lat": -33.8665, "lng": 151.218 }
 ]

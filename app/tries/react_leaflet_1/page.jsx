@@ -1,12 +1,12 @@
 // page.tsx
-"use client";
-import React from "react";
-import { MapProvider } from "./MapContext";
+'use client';
+import React from 'react';
+import { MapProvider } from './MapContext';
 
-import PlacesSearch from "./places_api_search";
-import dynamic from "next/dynamic";
+import PlacesSearch from './places_api_search';
+import dynamic from 'next/dynamic';
 
-const MapRender = dynamic(() => import("./MapPlain"), { ssr: false });
+const MapRender = dynamic(() => import('./MapPlain'), { ssr: false });
 
 export default function Home() {
   return (

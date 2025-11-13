@@ -1,4 +1,4 @@
-import { useMapContext } from "./mapContext";
+import { useMapContext } from './mapContext';
 
 export default function Button({ className }: { className?: string }) {
   const { map, locations, setLocations } = useMapContext();

@@ -1,9 +1,9 @@
 // page.tsx
-"use client";
-import React from "react";
-import { MapProvider } from "./components/mapContext";
-import MapRender from "./components/mapApi";
-import Button from "./components/button";
+'use client';
+import React from 'react';
+import { MapProvider } from './components/mapContext';
+import MapRender from './components/mapApi';
+import Button from './components/button';
 
 export default function Home() {
   return (

@@ -1,28 +1,27 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 export default function Primary() {
   const [dataLocation, setdataLocation] = useState({
-    name: "",
-    address: "",
+    name: '',
+    address: '',
     coordinates: {
-      lat: "",
-      lng: "",
+      lat: '',
+      lng: '',
     },
   });
 
-  const hasCoords =
-    dataLocation?.coordinates?.lat && dataLocation?.coordinates?.lng;
+  const hasCoords = dataLocation?.coordinates?.lat && dataLocation?.coordinates?.lng;
   const center = hasCoords
     ? `${dataLocation.coordinates.lat},${dataLocation.coordinates.lng}`
-    : "0,0";
+    : '0,0';
   const zoom = hasCoords ? 15 : 2;
-  const marker = hasCoords ? `&markers=color:red%7C${center}` : "";
+  const marker = hasCoords ? `&markers=color:red%7C${center}` : '';
 
   useEffect(() => {
-    const channel = new BroadcastChannel("location_broadcast");
+    const channel = new BroadcastChannel('location_broadcast');
     channel.onmessage = (event) => {
       console.log(event.data);
       setdataLocation(event.data);
@@ -31,11 +30,7 @@ export default function Primary() {
   }, []);
 
   const openPopup = () => {
-    window.open(
-      "/google_createJam",
-      "google_createJam",
-      "width=400,height=300"
-    );
+    window.open('/google_createJam', 'google_createJam', 'width=400,height=300');
   };
 
   return (
@@ -43,19 +38,15 @@ export default function Primary() {
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-4">
           <div className="border p-2 w-full">
-            {dataLocation.name
-              ? `Jam de ${dataLocation.name}`
-              : "No jam name yet"}
+            {dataLocation.name ? `Jam de ${dataLocation.name}` : 'No jam name yet'}
           </div>
 
-          <div className="border p-2 w-full">
-            {dataLocation.name || "No location name yet"}
-          </div>
+          <div className="border p-2 w-full">{dataLocation.name || 'No location name yet'}</div>
         </div>
 
         <div className="flex flex-col gap-4">
           <div className="border p-2 w-full">
-            {dataLocation.address || "No address selected yet"}
+            {dataLocation.address || 'No address selected yet'}
           </div>
           <div className="flex justify-center  p-2 w-full">
             <Image

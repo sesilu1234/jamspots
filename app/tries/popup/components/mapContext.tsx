@@ -1,6 +1,6 @@
 // MapContext.tsx
-"use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+'use client';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 type Location = {
   lat: number;
@@ -20,7 +20,7 @@ const MapContext = createContext<MapContextType | null>(null);
 
 export const useMapContext = () => {
   const ctx = useContext(MapContext);
-  if (!ctx) throw new Error("useMapContext must be used within MapProvider");
+  if (!ctx) throw new Error('useMapContext must be used within MapProvider');
   return ctx;
 };
 

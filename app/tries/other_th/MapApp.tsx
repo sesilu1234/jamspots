@@ -1,6 +1,6 @@
 // app/components/MapApp.tsx
-"use client";
-import React, { useState, useEffect, useRef } from "react";
+'use client';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   APIProvider,
   ControlPosition,
@@ -10,9 +10,9 @@ import {
   useMap,
   useMapsLibrary,
   useAdvancedMarkerRef,
-} from "@vis.gl/react-google-maps";
+} from '@vis.gl/react-google-maps';
 
-const API_KEY = "AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE";
+const API_KEY = 'AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE';
 
 interface MapHandlerProps {
   place: google.maps.places.PlaceResult | null;
@@ -20,15 +20,11 @@ interface MapHandlerProps {
 }
 
 export default function MapApp() {
-  const [selectedPlace, setSelectedPlace] =
-    useState<google.maps.places.PlaceResult | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
   const [markerRef, marker] = useAdvancedMarkerRef();
 
   return (
-    <APIProvider
-      apiKey={API_KEY}
-      solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
-    >
+    <APIProvider apiKey={API_KEY} solutionChannel="GMP_devsite_samples_v3_rgmautocomplete">
       <Map
         defaultZoom={8}
         defaultCenter={{ lat: 43.54992, lng: -116 }}
@@ -36,10 +32,7 @@ export default function MapApp() {
         disableDefaultUI
       >
         {selectedPlace?.geometry?.location && (
-          <AdvancedMarker
-            ref={markerRef}
-            position={selectedPlace.geometry.location}
-          />
+          <AdvancedMarker ref={markerRef} position={selectedPlace.geometry.location} />
         )}
       </Map>
 
@@ -74,24 +67,19 @@ interface PlaceAutocompleteProps {
 }
 
 const PlaceAutocomplete = ({ onPlaceSelect }: PlaceAutocompleteProps) => {
-  const [autocomplete, setAutocomplete] =
-    useState<google.maps.places.Autocomplete | null>(null);
-  const [suggestions, setSuggestions] = useState<
-    google.maps.places.AutocompletePrediction[]
-  >([]);
+  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
+  const [suggestions, setSuggestions] = useState<google.maps.places.AutocompletePrediction[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const places = useMapsLibrary("places");
+  const places = useMapsLibrary('places');
 
   useEffect(() => {
     if (!places || !inputRef.current) return;
 
     const auto = new places.Autocomplete(inputRef.current, {
-      fields: ["geometry", "name", "formatted_address"],
+      fields: ['geometry', 'name', 'formatted_address'],
     });
 
-    auto.addListener("place_changed", () =>
-      onPlaceSelect(auto.getPlace() || null)
-    );
+    auto.addListener('place_changed', () => onPlaceSelect(auto.getPlace() || null));
 
     setAutocomplete(auto);
 
