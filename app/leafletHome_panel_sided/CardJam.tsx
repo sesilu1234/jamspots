@@ -15,26 +15,21 @@ import { Label } from '@/components/ui/label';
 
 import Image from 'next/image';
 
-export default function JamCard({ jamName, spotName, address, time, tags, src }) {
+export default function JamCard({ jamName, spotName, address, time, tags, src, classname }) {
   return (
-    <Card className="flex flex-col md:flex-row w-full max-w-md md:max-w-lg shadow-md rounded-xl overflow-hidden">
+    <Card
+      className={`flex flex-col p-3 md:flex-row w-full max-w-md md:max-w-lg shadow-md w-110  ${classname}`}
+    >
       {/* Image left (desktop) / top (mobile) */}
-      <div className="relative w-full md:w-36 md:h-auto flex-shrink-0">
-        {src && (
-          <Image
-            src={src}
-            alt={`${jamName} at ${spotName}`}
-            fill
-            className="object-cover w-full h-full"
-          />
-        )}
+      <div className="relative w-full  md:w-36 h-36">
+        {src && <Image src={src} alt={`${jamName} at ${spotName}`} fill className="object-cover" />}
       </div>
 
       {/* Right panel */}
-      <CardContent className="flex flex-col justify-between p-4 gap-2">
+      <CardContent className="flex flex-col justify-between text-xs ">
         <div className="font-bold text-lg">{jamName}</div>
         <div className="text-sm text-gray-700">{spotName}</div>
-        <div className="text-sm text-gray-500">{address}</div>
+        <div className="text-xs text-gray-500">{address}</div>
         <div className="text-sm text-gray-500">{time}</div>
         {tags && (
           <div className="flex flex-wrap gap-1 mt-2">

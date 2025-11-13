@@ -32,7 +32,7 @@ function SetMap() {
 
 export default function MapComponent() {
   return (
-    <MapContainer center={[40.4168, -3.7038]} zoom={5} style={{ height: '100%', width: '20%' }}>
+    <MapContainer center={[40.4168, -3.7038]} zoom={5} style={{ height: '100%', width: '100%' }}>
       <SetMap />
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
