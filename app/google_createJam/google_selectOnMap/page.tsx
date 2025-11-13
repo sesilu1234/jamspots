@@ -9,10 +9,11 @@ export default function Home() {
   return (
     <MapProvider>
       <div className="flex flex-col items-center justify-center w-full h-screen">
-        <Button className="my-15" />
+        {/* Map centered horizontally */}
         <div className="w-[1100px] h-90 max-w-8/10  mt-4">
           <MapRender />
         </div>
+        <Button className="my-15" />
       </div>
     </MapProvider>
   );

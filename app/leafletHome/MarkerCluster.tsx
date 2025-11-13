@@ -108,7 +108,7 @@ export default function MapMarkersCluster() {
           <button
             onClick={() => {
               setSelectedMarker(null);
-              setShowSkeleton(true);
+              setShowSkeleton(false);
             }}
             className="text-gray-500 hover:text-gray-800 text-sm font-bold"
           >

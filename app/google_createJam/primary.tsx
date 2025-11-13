@@ -30,7 +30,7 @@ export default function Primary() {
   }, []);
 
   const openPopup = () => {
-    window.open('/google_createJam', 'google_createJam', 'width=400,height=300');
+    window.open('/google_createJam/google_selectOnMap', 'google_createJam', 'width=400,height=300');
   };
 
   return (
