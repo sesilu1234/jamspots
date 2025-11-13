@@ -61,33 +61,32 @@ export default function MapMarkersCluster() {
     };
   }, [map, markersData]);
 
- async function fetchMarker() {
-  try {
-    setShowSkeleton(true); // force skeleton visible immediately
+  async function fetchMarker() {
+    try {
+      setShowSkeleton(true); // force skeleton visible immediately
 
-    const res = await fetch("/markersDetails.json");
-    const data: MarkerDetail[] = await res.json();
+      const res = await fetch('/markersDetails.json');
+      const data: MarkerDetail[] = await res.json();
 
-    const markerDetail = data.find((m) => m.id === cardId.current);
-    if (markerDetail) {
-      // preload image
-      const img = new window.Image();
-      img.src = markerDetail.image;
+      const markerDetail = data.find((m) => m.id === cardId.current);
+      if (markerDetail) {
+        // preload image
+        const img = new window.Image();
+        img.src = markerDetail.image;
 
-      img.onload = async () => {
-        // ensure skeleton shows for at least 400ms
-        await new Promise((r) => setTimeout(r, 400));
+        img.onload = async () => {
+          // ensure skeleton shows for at least 400ms
+          await new Promise((r) => setTimeout(r, 400));
 
-        setSelectedMarker(markerDetail);
-        setShowSkeleton(false);
-      };
+          setSelectedMarker(markerDetail);
+          setShowSkeleton(false);
+        };
+      }
+    } catch (err) {
+      console.error('Failed to fetch marker details:', err);
+      setShowSkeleton(false);
     }
-  } catch (err) {
-    console.error("Failed to fetch marker details:", err);
-    setShowSkeleton(false);
   }
-}
-
 
   const onClickMarker = async (id: number) => {
     console.log('00876sds');

@@ -17,20 +17,26 @@ export default function PlaceSearch() {
   const { map } = useMapContext();
 
   const fetchPlaces = async (q: string) => {
+    if (!q) {
+      setResults([]);
+      return;
+    }
+
     if (abortRef.current) abortRef.current.abort();
     const controller = new AbortController();
     abortRef.current = controller;
 
     try {
-      const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=5`, {
-        signal: controller.signal,
-      });
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=5`,
+        { signal: controller.signal }
+      );
       const data = await res.json();
 
-      const places = data.features.map((f: any) => ({
-        display_name: f.properties.name + (f.properties.city ? `, ${f.properties.city}` : ''),
-        lat: f.geometry.coordinates[1],
-        lon: f.geometry.coordinates[0],
+      const places: Place[] = data.map((f: any) => ({
+        display_name: f.display_name,
+        lat: parseFloat(f.lat),
+        lon: parseFloat(f.lon),
       }));
 
       setResults(places);
@@ -71,7 +77,7 @@ export default function PlaceSearch() {
   };
 
   return (
-    <div className="relative w-full max-w-md">
+    <div className="relative w-48 max-w-md">
       <div className="relative">
         <input
           type="text"

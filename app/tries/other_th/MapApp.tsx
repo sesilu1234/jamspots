@@ -1,69 +1,22 @@
 // app/components/MapApp.tsx
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  APIProvider,
-  ControlPosition,
-  MapControl,
-  AdvancedMarker,
-  Map,
-  useMap,
-  useMapsLibrary,
-  useAdvancedMarkerRef,
-} from '@vis.gl/react-google-maps';
+import { useState, useEffect, useRef } from 'react';
+import { APIProvider, useMapsLibrary } from '@vis.gl/react-google-maps';
 
 const API_KEY = 'AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE';
 
-interface MapHandlerProps {
-  place: google.maps.places.PlaceResult | null;
-  marker: google.maps.marker.AdvancedMarkerElement | null;
+interface PlaceAutocompleteProps {
+  onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
 }
 
 export default function MapApp() {
   const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-  const [markerRef, marker] = useAdvancedMarkerRef();
 
   return (
-    <APIProvider apiKey={API_KEY} solutionChannel="GMP_devsite_samples_v3_rgmautocomplete">
-      <Map
-        defaultZoom={8}
-        defaultCenter={{ lat: 43.54992, lng: -116 }}
-        gestureHandling="greedy"
-        disableDefaultUI
-      >
-        {selectedPlace?.geometry?.location && (
-          <AdvancedMarker ref={markerRef} position={selectedPlace.geometry.location} />
-        )}
-      </Map>
-
-      <MapControl position={ControlPosition.TOP}>
-        <div className="w-72 m-6">
-          <PlaceAutocomplete onPlaceSelect={setSelectedPlace} />
-        </div>
-      </MapControl>
-
-      <MapHandler place={selectedPlace} marker={marker} />
+    <APIProvider apiKey={API_KEY}>
+      <PlaceAutocomplete onPlaceSelect={setSelectedPlace} />
     </APIProvider>
   );
-}
-
-const MapHandler = ({ place, marker }: MapHandlerProps) => {
-  const map = useMap();
-
-  useEffect(() => {
-    if (!map || !place || !marker) return;
-
-    if (place.geometry?.viewport) map.fitBounds(place.geometry.viewport);
-    else if (place.geometry?.location) map.panTo(place.geometry.location);
-
-    marker.position = place.geometry?.location;
-  }, [map, place, marker]);
-
-  return null;
-};
-
-interface PlaceAutocompleteProps {
-  onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
 }
 
 const PlaceAutocomplete = ({ onPlaceSelect }: PlaceAutocompleteProps) => {
@@ -84,7 +37,7 @@ const PlaceAutocomplete = ({ onPlaceSelect }: PlaceAutocompleteProps) => {
     setAutocomplete(auto);
 
     return () => google.maps.event.clearInstanceListeners(auto);
-  }, [places, onPlaceSelect]);
+  }, [places]);
 
   return (
     <div className="relative">
