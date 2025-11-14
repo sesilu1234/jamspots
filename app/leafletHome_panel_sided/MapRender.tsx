@@ -10,7 +10,8 @@ import JamCardShadcn from './CardJam';
 
 // Fix default marker icons in TypeScript
 const DefaultIcon = L.icon({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconRetinaUrl:
+    'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
   iconSize: [25, 41],
@@ -33,7 +34,11 @@ function SetMap() {
 
 export default function MapComponent() {
   return (
-    <MapContainer center={[40.4168, -3.7038]} zoom={5} style={{ height: '100%', width: '100%' }}>
+    <MapContainer
+      center={[40.4168, -3.7038]}
+      zoom={5}
+      style={{ height: '100%', width: '100%' }}
+    >
       <SetMap />
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

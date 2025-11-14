@@ -124,3 +124,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Para Chrome, Edge, Safari */
+.card-container::-webkit-scrollbar {
+  width: 6px;               /* grosor */
+}
+
+.card-container::-webkit-scrollbar-track {
+  background: transparent;   /* fondo del track */
+}
+
+.card-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.3); /* color del thumb */
+  border-radius: 3px;                 /* esquinas redondeadas */
+}
+
+/* Para Firefox */
+.card-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.3) transparent;
+}

@@ -25,7 +25,9 @@ export default function MapMarkersCluster() {
 
   const [markersData, setMarkersData] = useState<Marker[]>([]);
   // const [markersDetails, setMarkersDetails] = useState<Record<number, MarkerDetail>>({});
-  const [selectedMarker, setSelectedMarker] = useState<MarkerDetail | null>(null);
+  const [selectedMarker, setSelectedMarker] = useState<MarkerDetail | null>(
+    null,
+  );
 
   const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
 
@@ -117,7 +119,12 @@ export default function MapMarkersCluster() {
         </div>
 
         <div className="relative w-full h-30 overflow-hidden rounded-lg">
-          <Image src={selectedMarker.image} alt={'Image'} fill className="object-cover" />
+          <Image
+            src={selectedMarker.image}
+            alt={'Image'}
+            fill
+            className="object-cover"
+          />
         </div>
 
         <p className="text-xs text-gray-700 leading-snug line-clamp-3 h-4">

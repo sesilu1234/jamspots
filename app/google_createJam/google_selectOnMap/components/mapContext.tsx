@@ -1,6 +1,13 @@
 // MapContext.tsx
 'use client';
-import React, { createContext, useContext, useState, ReactNode, use, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  use,
+  useEffect,
+} from 'react';
 
 export type LocationData = {
   name: string;

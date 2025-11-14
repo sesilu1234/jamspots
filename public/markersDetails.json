@@ -1,25 +1,93 @@
 [
-  { "id": 1, "description": "Central Madrid landmark", "image": "/images/madrid1.jpg" },
-  { "id": 2, "description": "Famous square in Madrid", "image": "/images/madrid2.jpg" },
-  { "id": 3, "description": "Nice park in Madrid", "image": "/images/madrid3.jpg" },
-  { "id": 4, "description": "Historic street in Madrid", "image": "/images/madrid4.jpg" },
+  {
+    "id": 1,
+    "description": "Central Madrid landmark",
+    "image": "/images/madrid1.jpg"
+  },
+  {
+    "id": 2,
+    "description": "Famous square in Madrid",
+    "image": "/images/madrid2.jpg"
+  },
+  {
+    "id": 3,
+    "description": "Nice park in Madrid",
+    "image": "/images/madrid3.jpg"
+  },
+  {
+    "id": 4,
+    "description": "Historic street in Madrid",
+    "image": "/images/madrid4.jpg"
+  },
   { "id": 5, "description": "Museum area", "image": "/images/madrid5.jpg" },
 
-  { "id": 6, "description": "Sydney Opera House", "image": "/images/sydney1.jpg" },
-  { "id": 7, "description": "Harbour bridge view", "image": "/images/sydney2.jpg" },
-  { "id": 8, "description": "Botanical garden", "image": "/images/sydney3.jpg" },
+  {
+    "id": 6,
+    "description": "Sydney Opera House",
+    "image": "/images/sydney1.jpg"
+  },
+  {
+    "id": 7,
+    "description": "Harbour bridge view",
+    "image": "/images/sydney2.jpg"
+  },
+  {
+    "id": 8,
+    "description": "Botanical garden",
+    "image": "/images/sydney3.jpg"
+  },
   { "id": 9, "description": "Famous beach", "image": "/images/sydney4.jpg" },
-  { "id": 10, "description": "Downtown Sydney", "image": "/images/sydney5.jpg" },
+  {
+    "id": 10,
+    "description": "Downtown Sydney",
+    "image": "/images/sydney5.jpg"
+  },
 
-  { "id": 11, "description": "Dallas downtown area", "image": "/images/dallas1.jpg" },
-  { "id": 12, "description": "Famous street in Dallas", "image": "/images/dallas2.jpg" },
+  {
+    "id": 11,
+    "description": "Dallas downtown area",
+    "image": "/images/dallas1.jpg"
+  },
+  {
+    "id": 12,
+    "description": "Famous street in Dallas",
+    "image": "/images/dallas2.jpg"
+  },
   { "id": 13, "description": "Park in Dallas", "image": "/images/dallas3.jpg" },
-  { "id": 14, "description": "Historic building", "image": "/images/dallas4.jpg" },
-  { "id": 15, "description": "Museum district", "image": "/images/dallas5.jpg" },
+  {
+    "id": 14,
+    "description": "Historic building",
+    "image": "/images/dallas4.jpg"
+  },
+  {
+    "id": 15,
+    "description": "Museum district",
+    "image": "/images/dallas5.jpg"
+  },
 
-  { "id": 16, "description": "Madrid side area", "image": "/images/madrid6.jpg" },
-  { "id": 17, "description": "Sydney landmark", "image": "/images/sydney6.jpg" },
-  { "id": 18, "description": "Dallas landmark", "image": "/images/dallas6.jpg" },
-  { "id": 19, "description": "Another Madrid spot", "image": "/images/madrid7.jpg" },
-  { "id": 20, "description": "Sydney harbor view", "image": "/images/sydney7.jpg" }
+  {
+    "id": 16,
+    "description": "Madrid side area",
+    "image": "/images/madrid6.jpg"
+  },
+  {
+    "id": 17,
+    "description": "Sydney landmark",
+    "image": "/images/sydney6.jpg"
+  },
+  {
+    "id": 18,
+    "description": "Dallas landmark",
+    "image": "/images/dallas6.jpg"
+  },
+  {
+    "id": 19,
+    "description": "Another Madrid spot",
+    "image": "/images/madrid7.jpg"
+  },
+  {
+    "id": 20,
+    "description": "Sydney harbor view",
+    "image": "/images/sydney7.jpg"
+  }
 ]

@@ -15,12 +15,27 @@ import { Label } from '@/components/ui/label';
 
 import Image from 'next/image';
 
-export default function JamCard({ jamName, spotName, address, time, tags, src, classname }) {
+export default function JamCard({
+  jamName,
+  spotName,
+  address,
+  time,
+  tags,
+  src,
+  classname,
+}) {
   return (
     <Card className={`flex flex-col p-2    w-64  shadow-md   ${classname}`}>
       {/* Image left (desktop) / top (mobile) */}
       <div className="relative   h-48">
-        {src && <Image src={src} alt={`${jamName} at ${spotName}`} fill className="object-cover" />}
+        {src && (
+          <Image
+            src={src}
+            alt={`${jamName} at ${spotName}`}
+            fill
+            className="object-cover"
+          />
+        )}
       </div>
 
       {/* Right panel */}
@@ -59,7 +74,12 @@ export function CardDemo_1() {
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="m@example.com" required />
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+              />
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">

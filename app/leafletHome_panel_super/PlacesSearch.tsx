@@ -29,7 +29,7 @@ export default function PlaceSearch() {
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=5`,
-        { signal: controller.signal }
+        { signal: controller.signal },
       );
       const data = await res.json();
 

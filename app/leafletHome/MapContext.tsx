@@ -1,5 +1,11 @@
 'use client';
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 import { Map as LeafletMap } from 'leaflet';
 
 export type LocationSearch = {
@@ -10,7 +16,9 @@ type MapContextType = {
   map: LeafletMap | null;
   setMap: React.Dispatch<React.SetStateAction<LeafletMap | null>>;
   locationSearch: LocationSearch | null;
-  setLocationSearch: React.Dispatch<React.SetStateAction<LocationSearch | null>>;
+  setLocationSearch: React.Dispatch<
+    React.SetStateAction<LocationSearch | null>
+  >;
 };
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -25,7 +33,9 @@ type MapProviderProps = { children: ReactNode };
 
 export const MapProvider = ({ children }: MapProviderProps) => {
   const [map, setMap] = useState<LeafletMap | null>(null);
-  const [locationSearch, setLocationSearch] = useState<LocationSearch | null>(null);
+  const [locationSearch, setLocationSearch] = useState<LocationSearch | null>(
+    null,
+  );
 
   const setPosition = (lat: number, lng: number) => {
     setLocationSearch({ coordinates: { lat, lng } });
@@ -39,7 +49,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           const { latitude, longitude } = pos.coords;
           setPosition(latitude, longitude);
         },
-        () => setPosition(-33.8688, 151.2093) // fallback → Sydney
+        () => setPosition(-33.8688, 151.2093), // fallback → Sydney
       );
     } else {
       setPosition(-33.8688, 151.2093);
@@ -47,7 +57,9 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   }, [map]);
 
   return (
-    <MapContext.Provider value={{ map, setMap, locationSearch, setLocationSearch }}>
+    <MapContext.Provider
+      value={{ map, setMap, locationSearch, setLocationSearch }}
+    >
       {children}
     </MapContext.Provider>
   );

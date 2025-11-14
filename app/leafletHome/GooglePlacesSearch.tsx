@@ -10,7 +10,8 @@ interface PlaceAutocompleteProps {
 }
 
 export default function GooglePlacesSearch() {
-  const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+  const [selectedPlace, setSelectedPlace] =
+    useState<google.maps.places.PlaceResult | null>(null);
 
   return (
     <APIProvider apiKey={API_KEY}>

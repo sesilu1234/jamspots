@@ -13,7 +13,8 @@ export default function Primary() {
     },
   });
 
-  const hasCoords = dataLocation?.coordinates?.lat && dataLocation?.coordinates?.lng;
+  const hasCoords =
+    dataLocation?.coordinates?.lat && dataLocation?.coordinates?.lng;
   const center = hasCoords
     ? `${dataLocation.coordinates.lat},${dataLocation.coordinates.lng}`
     : '0,0';
@@ -30,7 +31,11 @@ export default function Primary() {
   }, []);
 
   const openPopup = () => {
-    window.open('/google_createJam/google_selectOnMap', 'google_createJam', 'width=400,height=300');
+    window.open(
+      '/google_createJam/google_selectOnMap',
+      'google_createJam',
+      'width=400,height=300',
+    );
   };
 
   return (
@@ -38,10 +43,14 @@ export default function Primary() {
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-4">
           <div className="border p-2 w-full">
-            {dataLocation.name ? `Jam de ${dataLocation.name}` : 'No jam name yet'}
+            {dataLocation.name
+              ? `Jam de ${dataLocation.name}`
+              : 'No jam name yet'}
           </div>
 
-          <div className="border p-2 w-full">{dataLocation.name || 'No location name yet'}</div>
+          <div className="border p-2 w-full">
+            {dataLocation.name || 'No location name yet'}
+          </div>
         </div>
 
         <div className="flex flex-col gap-4">
