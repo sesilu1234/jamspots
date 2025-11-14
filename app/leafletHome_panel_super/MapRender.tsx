@@ -6,6 +6,7 @@ import L from 'leaflet';
 import { useEffect } from 'react';
 import { useMapContext } from './MapContext';
 import MapMarkersCluster from './MarkerCluster';
+import JamCardShadcn from './CardJam';
 
 // Fix default marker icons in TypeScript
 const DefaultIcon = L.icon({
@@ -43,6 +44,7 @@ export default function MapComponent() {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"
       />
+
       {/* {locationSearch.map((loc, i) => (
         <Marker key={i} position={[loc.lat, loc.lng]}>
           <Popup>{loc.name}</Popup>

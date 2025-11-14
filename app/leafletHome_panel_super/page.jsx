@@ -5,21 +5,21 @@ import { MapProvider } from './MapContext';
 
 import dynamic from 'next/dynamic';
 import GooglePlacesSearch from './GooglePlacesSearch';
+import JamCarousel from './jamsCarousel';
 
 const MapRender = dynamic(() => import('./MapRender'), { ssr: false });
 
 export default function Home() {
   return (
     <MapProvider>
-      <div className="flex flex-col w-full h-screen gap-6">
-        <div className="w-[900px] max-w-[80%] mx-auto ">
-          <div className="w-48">
-            <GooglePlacesSearch />
-          </div>
+      <div className="flex flex-col w-[1300px] max-w-[90%] mx-auto p-6 ">
+        <div className="w-48 my-4">
+          <GooglePlacesSearch />
         </div>
 
-        <div className="w-[900px] max-w-[80%] h-[360px] mx-auto rounded-xl overflow-visible bg-gray-100 shadow-2xl">
+        <div className="relative w-full   mx-auto mt-12 h-148">
           <MapRender />
+          <JamCarousel />
         </div>
       </div>
     </MapProvider>
