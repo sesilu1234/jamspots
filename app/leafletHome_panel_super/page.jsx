@@ -94,11 +94,10 @@ export default function Home() {
             </h3>
 
             <p className="text-sm text-gray-600 leading-relaxed">
-              Una jam es un encuentro abierto donde músicos se suben al
-              escenario a tocar juntos, improvisando y compartiendo música en el
-              momento. No hace falta conocerse antes: cada noche suena
-              diferente, y cualquiera puede participar o simplemente disfrutar
-              escuchando.
+              Una jam es un encuentro donde músicos se suben al escenario a
+              tocar juntos, improvisando y compartiendo música en el momento. No
+              hace falta conocerse antes: cada noche suena diferente, y
+              cualquiera puede participar o simplemente disfrutar escuchando.
             </p>
           </div>
 
@@ -136,7 +135,24 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-screen bg-black/90  h-172  "></div>
+      <footer className="w-screen bg-black/90 text-white py-12 mt-12">
+        <div className="max-w-[90%] w-[1300px] mx-auto p-6">
+          {/* Navigation Links */}
+          <div className=" flex flex-row items-center justify-center   gap-48 mb-12 mt-12 ">
+            <h3 className="hover:text-gray-300 cursor-pointer">CONTACT</h3>
+            <h3 className="hover:text-gray-300 cursor-pointer">HELP</h3>
+            <h3 className="hover:text-gray-300 cursor-pointer">ABOUT</h3>
+          </div>
+
+          {/* Branding / Tagline */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-24">
+            <img src="jamspots_icon.png" alt="Jamspots icon" className="h-16" />
+            <p className="text-sm text-gray-400 font-semibold text-center sm:text-left">
+              Find the next spot to share your sound.
+            </p>
+          </div>
+        </div>
+      </footer>
     </>
   );
 }
