@@ -299,6 +299,16 @@ export default async function JamPage({ params }: JamPageProps) {
           </div>
         </div>
 
+        <div className="w-[1300px] max-w-[75%] mx-auto pb-24  ">
+          <div className="flex flex-col gap-8  bg-[rgb(170_170_170/0.7)]  p-6  rounded-lg">
+          
+          
+          <h3>Questions</h3>
+          <p className='opacity-70'>Ask any question you d like to the jam s host</p>          
+          
+          </div>
+          </div>
+
         <footer className=" flex-grow  w-screen bg-black/90 text-white py-12 mt-12">
           <div className="flex-1 max-w-[90%] w-[1300px] mx-auto p-6">
             {/* Navigation Links */}
