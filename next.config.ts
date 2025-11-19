@@ -10,6 +10,17 @@ const nextConfig = {
         pathname: '/maps/api/staticmap**', // optional, can leave as '*' too
       },
     ],
-  },
+  }, async rewrites() {
+  return [
+    {
+      source: '/',
+      destination: '/leafletHome_panel_super',
+    },
+  ]
+}
+
 };
+
+
+
 export default nextConfig;
