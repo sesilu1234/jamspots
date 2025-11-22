@@ -5,10 +5,11 @@ import GeneralInfo from './edit_areas/GeneralInfo';
 import UploadPhotos from './edit_areas/UploadPhotos';
 import PlaceChars from './edit_areas/PlaceChars';
 import Social from './edit_areas/Social';
+import PlaceDescription from './edit_areas/PlaceDescription';
 
 export default function EditArea() {
   return (
     // <GeneralInfo />;
-    <Social />
+    <PlaceDescription />
   );
 }
