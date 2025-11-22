@@ -39,7 +39,7 @@ export default function Primary() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 mx-auto">
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-4">
           <div className="border p-2 w-full">
@@ -54,7 +54,7 @@ export default function Primary() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="border p-2 w-full">
+          <div className="border p-2 w-full " onClick={openPopup}>
             {dataLocation.address || 'No address selected yet'}
           </div>
           <div className="flex justify-center  p-2 w-full">
@@ -64,17 +64,10 @@ export default function Primary() {
               width={400}
               height={200}
               className="object-cover rounded"
+              onClick={openPopup}
             />
           </div>
         </div>
-      </div>
-      <div className="flex justify-center mt-16">
-        <button
-          className="border px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-          onClick={openPopup}
-        >
-          Add Location
-        </button>
       </div>
     </div>
   );
