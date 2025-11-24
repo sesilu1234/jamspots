@@ -25,6 +25,7 @@ function updateDataRef () {
    siteWebRefsssd: siteWebRefsssd.current?.value || ''
     };
 
+    console.log(dataRef);
 
 }
 
@@ -44,8 +45,8 @@ useEffect(
 
   return () => { 
   
-    
-   console.log(siteWebRefsssd.current?.value || '11223344');
+    childSaveOnUnmount.current = () => {};
+  
     }
 }
 
@@ -81,6 +82,7 @@ useEffect(
             }
             name="INSTAGRAM"
             ref = {instagramRef}
+            value={dataRef.current.instagram}
           />
           <LinksInput
             svg={
@@ -98,6 +100,7 @@ useEffect(
             }
             name="FACEBOOK"
             ref = {facebookRef}
+            value={dataRef.current.facebook}
           />
           <LinksInput
             svg={
@@ -115,24 +118,10 @@ useEffect(
             }
             name="SITE WEB"
             ref = {siteWebRef}
+            value={dataRef.current.siteWeb}
           />
           ;
         </div>
-    <input type="text" className='bg-gray-400' ref= {siteWebRefsssd}/>
-    <div className='w-12 h-12 bg-green-500 mt-12'
-    onClick={()=>{
-      
-      
-      console.log(siteWebRefsssd.current?.value || 'llloo');
-
-
-
-    }}
-    >
-
-
-
-    </div>
       </div>
     </div>
   );
@@ -144,10 +133,11 @@ import { cn } from '@/lib/utils';
 type LinksInputProps = {
   svg: React.ReactNode;
   name: string;
+  value:string
 };
 
 const LinksInput = forwardRef<HTMLInputElement, LinksInputProps>(function LinksInput(
-  { svg, name },
+  { svg, name, value },
   ref
 ) {
   return (
@@ -165,6 +155,7 @@ const LinksInput = forwardRef<HTMLInputElement, LinksInputProps>(function LinksI
           'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive'
         )}
         ref={ref}
+        defaultValue={value}
       />
     </div>
   );

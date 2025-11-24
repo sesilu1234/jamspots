@@ -14,7 +14,19 @@ import {
   SocialType,
 } from './edit_areas/types/types';
 
-export default function EditArea() {
+
+
+
+type EditAreaProps = {
+  childSaveOnUnmount: React.RefObject<() => void>;
+};
+
+
+export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
+
+
+
+  
   const searchParams = useSearchParams();
   const currentSection = searchParams.get('section') || 'informaciongeneral';
 
@@ -26,7 +38,7 @@ export default function EditArea() {
     dates: {
       period: null,
       period_value: null,
-      time: { from: '21:30', to: '00:30' },
+      time: { from: '21:30', to: null },
       list_of_dates: [],
     },
   });
@@ -41,11 +53,14 @@ export default function EditArea() {
     description: '',
   });
   const social = useRef<SocialType>({
-    facebook: '',
     instagram: '',
+    facebook: '',
     siteWeb: '',
     siteWebRefsssd:''
   });
+
+
+
 
 
   // Save all data (example)
@@ -60,21 +75,6 @@ export default function EditArea() {
     console.log('Saving all data:', allData);
     // send to backend...
   };
-
-
-  const childSaveOnUnmount = useRef<() => void>(() => {return});
-
-
-useEffect(() => {
-
-
-childSaveOnUnmount.current?.()
-
-console.log('aa');
-
-
-
-}, [currentSection]);
 
 
 

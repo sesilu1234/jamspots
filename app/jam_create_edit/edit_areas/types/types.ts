@@ -6,7 +6,7 @@ export type GeneralInfoType = {
   dates: {
     period: string | null;
     period_value: string | null;
-    time: { from: string; to: string };
+    time: { from: string; to: string | null };
     list_of_dates: string[];
   };
 };
