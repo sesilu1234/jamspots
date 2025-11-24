@@ -30,30 +30,40 @@ export type SocialType = {
   facebook: string;
   instagram: string;
   siteWeb: string;
+  siteWebRefsssd: string;
 };
 
 // Props for child components
 export interface GeneralInfoProps {
-  data: GeneralInfoType;
-  ondataChange: (data: GeneralInfoType) => void;
+  dataRef: React.RefObject<GeneralInfoType>;
+  childSaveOnUnmount: React.RefObject<() => void>;
+ 
 }
 
 export interface UploadPhotosProps {
-  data: PhotosType;
-  ondataChange: (data: PhotosType) => void;
+  dataRef: React.RefObject<PhotosType>
+    childSaveOnUnmount: React.RefObject<() => void>;
+
 }
 
 export interface PlaceCharsProps {
-  data: FeaturesType;
-  ondataChange: (data: FeaturesType) => void;
+
+  dataRef: React.RefObject<FeaturesType>;
+    childSaveOnUnmount: React.RefObject<() => void>;
+ 
 }
 
 export interface PlaceDescriptionProps {
-  data: DescriptionType;
-  ondataChange: (data: DescriptionType) => void;
+
+  dataRef: React.RefObject<DescriptionType>;
+    childSaveOnUnmount: React.RefObject<() => void>;
+ 
 }
 
 export interface SocialProps {
-  data: SocialType;
-  ondataChange: (data: SocialType) => void;
+
+  dataRef: React.RefObject<SocialType>;
+    childSaveOnUnmount: React.RefObject<() => void>;
+
 }
+

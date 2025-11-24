@@ -11,8 +11,7 @@ const DraftEditor = dynamic(() => import('./textSlate'), {
 });
 
 export default function PlaceDescription({
-  data,
-  ondataChange,
+  dataRef, childSaveOnUnmount
 }: PlaceDescriptionProps) {
   const [text, setText] = useState('');
 

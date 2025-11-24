@@ -1,9 +1,60 @@
-import { useState } from 'react';
+import { useState, useRef, forwardRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { House, Facebook, InstagramIcon } from 'lucide-react';
 import { SocialProps } from './types/types';
 
-export default function Social({ data, ondataChange }: SocialProps) {
+export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
+
+
+
+
+const instagramRef = useRef<HTMLInputElement>(null);
+const facebookRef = useRef<HTMLInputElement>(null);
+const siteWebRef = useRef<HTMLInputElement>(null);
+
+const siteWebRefsssd = useRef<HTMLInputElement>(null);
+
+
+function updateDataRef () {
+
+
+   dataRef.current = {
+  instagram: instagramRef.current?.value || 'fffdfsfd',
+       facebook: facebookRef.current?.value || '',
+  siteWeb: siteWebRef.current?.value || '',
+   siteWebRefsssd: siteWebRefsssd.current?.value || ''
+    };
+
+
+}
+
+
+
+
+
+childSaveOnUnmount.current = updateDataRef;
+
+
+
+useEffect(   
+
+  () => {
+  
+
+
+  return () => { 
+  
+    
+   console.log(siteWebRefsssd.current?.value || '11223344');
+    }
+}
+
+
+
+,[])
+
+
+
   return (
     <div className="p-6 flex flex-col gap-3">
       <div className="flex justify-center m-3 ml-auto p-2 bg-black text-white w-32 rounded-lg cursor-pointer">
@@ -29,6 +80,7 @@ export default function Social({ data, ondataChange }: SocialProps) {
               </svg>
             }
             name="INSTAGRAM"
+            ref = {instagramRef}
           />
           <LinksInput
             svg={
@@ -45,6 +97,7 @@ export default function Social({ data, ondataChange }: SocialProps) {
               </svg>
             }
             name="FACEBOOK"
+            ref = {facebookRef}
           />
           <LinksInput
             svg={
@@ -61,29 +114,62 @@ export default function Social({ data, ondataChange }: SocialProps) {
               </svg>
             }
             name="SITE WEB"
+            ref = {siteWebRef}
           />
           ;
         </div>
+    <input type="text" className='bg-gray-400' ref= {siteWebRefsssd}/>
+    <div className='w-12 h-12 bg-green-500 mt-12'
+    onClick={()=>{
+      
+      
+      console.log(siteWebRefsssd.current?.value || 'llloo');
+
+
+
+    }}
+    >
+
+
+
+    </div>
       </div>
     </div>
   );
 }
+
+
+import { cn } from '@/lib/utils';
 
 type LinksInputProps = {
   svg: React.ReactNode;
   name: string;
 };
 
-function LinksInput({ svg, name }: LinksInputProps) {
+const LinksInput = forwardRef<HTMLInputElement, LinksInputProps>(function LinksInput(
+  { svg, name },
+  ref
+) {
   return (
     <div className="flex items-center gap-12">
-      <div className="w-12">{svg} </div>
+      <div className="w-12">{svg}</div>
 
-      <div className="p-2 bg-gray-400 rounded-md w-28 text-center text-xs">
-        {name}
-      </div>
+      <div className="p-2 bg-gray-400 rounded-md w-28 text-center text-xs">{name}</div>
 
-      <Input type="search" placeholder="Search for styles" className="w-72" />
+      <input
+        type="text"
+        placeholder="Search for styles"
+        className={cn(
+          'w-72 file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-8 min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+          'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+          'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive'
+        )}
+        ref={ref}
+      />
     </div>
   );
-}
+});
+
+LinksInput.displayName = 'LinksInput';
+
+export { LinksInput };

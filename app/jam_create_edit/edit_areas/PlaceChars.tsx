@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState,useRef,useEffect} from 'react';
+
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PlaceCharsProps } from './types/types';
@@ -34,9 +35,13 @@ const all_styles = [
   'Open Mic',
 ];
 
-export default function PlaceChars({ data, ondataChange }: PlaceCharsProps) {
+export default function PlaceChars({ dataRef, childSaveOnUnmount }: PlaceCharsProps) {
   const [search, setSearch] = useState('');
-  const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
+
+  const [selectedStyles, setSelectedStyles] = useState<string[]>(dataRef.current.styles);
+  const [song_list, setSongList] = useState<boolean>(dataRef.current.song_list);
+  const [instruments_lend, setIntrumentsLend] = useState<boolean>(dataRef.current.intruments_lend);
+  const [drums, setDrums] = useState<boolean>(dataRef.current.drums);
 
   const filteredStyles = all_styles.filter((style) =>
     style.toLowerCase().includes(search.toLowerCase()),
@@ -49,6 +54,28 @@ export default function PlaceChars({ data, ondataChange }: PlaceCharsProps) {
       setSelectedStyles([...selectedStyles, style]);
     }
   };
+
+
+
+function updateDataRef () {
+
+ dataRef.current = {
+      styles: selectedStyles,
+      song_list,
+      intruments_lend: instruments_lend,
+      drums,
+    };
+
+return 
+}
+
+
+childSaveOnUnmount.current = updateDataRef;
+
+
+
+
+
 
   return (
     <div className="p-6 flex flex-col gap-3">
@@ -101,32 +128,59 @@ export default function PlaceChars({ data, ondataChange }: PlaceCharsProps) {
           <div className="flex  items-center gap-6">
             {' '}
             <span className="w-48 font-semibold ">Hay lista de canciones?</span>
-            <Button variant="outline" className="w-12">
-              Sí
-            </Button>
-            <Button variant="outline" className="w-12">
-              No
-            </Button>
+            <Button
+  variant={null}
+  className={`w-12 ${song_list ? 'bg-blue-500 text-white ' : 'bg-background hover:bg-primary/30'}`}
+   onClick={() => setSongList(true)}
+>
+  Sí
+</Button>
+
+<Button
+  variant={null}
+  className={`w-12 ${!song_list ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
+  onClick={() => setSongList(false)}
+>
+  No
+</Button>
           </div>
           <div className="flex items-center gap-6">
             {' '}
             <span className="w-48 font-semibold ">Se prestan intrumentos?</span>
-            <Button variant="outline" className="w-12">
-              Sí
-            </Button>
-            <Button variant="outline" className="w-12">
-              No
-            </Button>
+            <Button
+  variant={null}
+  className={`w-12 ${instruments_lend ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
+   onClick={() => setIntrumentsLend(true)}
+>
+  Sí
+</Button>
+
+<Button
+  variant={null}
+  className={`w-12 ${!instruments_lend ? 'bg-blue-500 text-white' : ' bg-background hover:bg-primary/30'}`}
+   onClick={() => setIntrumentsLend(false)}
+>
+  No
+</Button>
           </div>
           <div className="flex  items-center gap-6">
             {' '}
             <span className="w-48 font-semibold ">Hay bateria?</span>
-            <Button variant="outline" className="w-12">
-              Sí
-            </Button>
-            <Button variant="outline" className="w-12">
-              No
-            </Button>
+            <Button
+  variant={null}
+  className={`w-12 ${drums ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
+   onClick={() => setDrums(true)}
+>
+  Sí
+</Button>
+
+<Button
+  variant={null}
+  className={`w-12 ${!drums ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
+   onClick={() => setDrums(false)}
+>
+  No
+</Button>
           </div>
         </div>
       </div>

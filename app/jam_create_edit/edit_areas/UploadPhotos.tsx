@@ -6,8 +6,7 @@ import TrashButton from './icons/TrashButton';
 import { UploadPhotosProps } from './types/types';
 
 export default function PhotoUploader({
-  data,
-  ondataChange,
+  dataRef, childSaveOnUnmount
 }: UploadPhotosProps) {
   const [photos, setPhotos] = useState<string[]>([]);
 

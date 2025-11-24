@@ -19,7 +19,7 @@ import * as React from 'react';
 
 import { Calendar } from '@/components/ui/calendar';
 
-export default function EditArea({ data, ondataChange }: GeneralInfoProps) {
+export default function EditArea({ dataRef, childSaveOnUnmount }: GeneralInfoProps) {
   return (
     <div className="p-15">
       <div className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 rounded-lg">
