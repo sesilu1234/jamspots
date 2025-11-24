@@ -1,6 +1,5 @@
 'use client';
-import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import GeneralInfo from './edit_areas/GeneralInfo';
 import UploadPhotos from './edit_areas/UploadPhotos';
 import PlaceChars from './edit_areas/PlaceChars';
@@ -8,8 +7,16 @@ import Social from './edit_areas/Social';
 import PlaceDescription from './edit_areas/PlaceDescription';
 
 export default function EditArea() {
+  const searchParams = useSearchParams();
+  const currentSection = searchParams.get('section') || 'informaciongeneral';
+
   return (
-    // <GeneralInfo />;
-    <PlaceDescription />
+    <div>
+      {currentSection === 'informaciongeneral' && <GeneralInfo />}
+      {currentSection === 'fotos' && <UploadPhotos />}
+      {currentSection === 'caracteristicas' && <PlaceChars />}
+      {currentSection === 'redessociales' && <Social />}
+      {currentSection === 'descripcion' && <PlaceDescription />}
+    </div>
   );
 }

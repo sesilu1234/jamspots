@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { House, Facebook, InstagramIcon } from 'lucide-react';
+import { SocialProps } from './types/types';
 
-export default function Social() {
+export default function Social({ data, ondataChange }: SocialProps) {
   return (
     <div className="p-6 flex flex-col gap-3">
       <div className="flex justify-center m-3 ml-auto p-2 bg-black text-white w-32 rounded-lg cursor-pointer">

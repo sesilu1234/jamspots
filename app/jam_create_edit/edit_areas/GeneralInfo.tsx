@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Primary from '../../google_createJam/primary';
-
+import { GeneralInfoProps } from './types/types';
 import {
   Select,
   SelectContent,
@@ -19,7 +19,7 @@ import * as React from 'react';
 
 import { Calendar } from '@/components/ui/calendar';
 
-export default function EditArea() {
+export default function EditArea({ data, ondataChange }: GeneralInfoProps) {
   return (
     <div className="p-15">
       <div className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 rounded-lg">

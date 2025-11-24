@@ -3,8 +3,12 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import TrashButton from './icons/TrashButton';
+import { UploadPhotosProps } from './types/types';
 
-export default function PhotoUploader() {
+export default function PhotoUploader({
+  data,
+  ondataChange,
+}: UploadPhotosProps) {
   const [photos, setPhotos] = useState<string[]>([]);
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {

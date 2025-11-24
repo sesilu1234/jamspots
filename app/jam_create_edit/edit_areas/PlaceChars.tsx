@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-
+import { PlaceCharsProps } from './types/types';
 const all_styles = [
   // Musical styles
   'Blues',
@@ -34,7 +34,7 @@ const all_styles = [
   'Open Mic',
 ];
 
-export default function PlaceChars() {
+export default function PlaceChars({ data, ondataChange }: PlaceCharsProps) {
   const [search, setSearch] = useState('');
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
 
