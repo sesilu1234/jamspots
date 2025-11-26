@@ -1,7 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Editor, EditorState, RichUtils, Modifier } from 'draft-js';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  Editor,
+  EditorState,
+  RichUtils,
+  Modifier,
+  convertToRaw,
+  convertFromRaw,
+} from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import { toast } from 'sonner';
 import { Toaster } from '@/components/ui/sonner';
@@ -10,12 +17,41 @@ const MAX_CHARS = 1400;
 
 const EMOJIS = ['🔥', '❤️', '😂', '👍', '💎', '📅', '📍'];
 
-const DraftEditor = () => {
+const DraftEditor = (dataRef, childSaveOnUnmount) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const [boldSelected, setBoldSelected] = useState(false);
 
   const [italicSelected, setItalicSelected] = useState(false);
+
+  function updateDataRef() {
+    dataRef.current = convertToRaw(editorState.getCurrentContent());
+
+    console.log(dataRef);
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
+    childSaveOnUnmount.current = updateDataRef;
+
+    return () => {
+      childSaveOnUnmount.current = () => {};
+    };
+  }, []);
+
+  const savedRawRef = useRef<any>(null);
+
+  const toContent = () => {
+    savedRawRef.current = convertToRaw(editorState.getCurrentContent());
+    console.log('Saved raw:', savedRawRef.current);
+  };
+
+  const toPrintContent = () => {
+    if (!savedRawRef.current) return;
+    setEditorState(
+      EditorState.createWithContent(convertFromRaw(savedRawRef.current)),
+    );
+  };
 
   const handleChange = (state: EditorState) => {
     const contentLength = state.getCurrentContent().getPlainText('').length;

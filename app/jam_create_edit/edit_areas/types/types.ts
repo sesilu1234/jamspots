@@ -23,7 +23,7 @@ export type FeaturesType = {
 };
 
 export type DescriptionType = {
-  description: string;
+  description: any;
 };
 
 export type SocialType = {
@@ -37,33 +37,24 @@ export type SocialType = {
 export interface GeneralInfoProps {
   dataRef: React.RefObject<GeneralInfoType>;
   childSaveOnUnmount: React.RefObject<() => void>;
- 
 }
 
 export interface UploadPhotosProps {
-  dataRef: React.RefObject<PhotosType>
-    childSaveOnUnmount: React.RefObject<() => void>;
-
+  dataRef: React.RefObject<PhotosType>;
+  childSaveOnUnmount: React.RefObject<() => void>;
 }
 
 export interface PlaceCharsProps {
-
   dataRef: React.RefObject<FeaturesType>;
-    childSaveOnUnmount: React.RefObject<() => void>;
- 
+  childSaveOnUnmount: React.RefObject<() => void>;
 }
 
 export interface PlaceDescriptionProps {
-
   dataRef: React.RefObject<DescriptionType>;
-    childSaveOnUnmount: React.RefObject<() => void>;
- 
+  childSaveOnUnmount: React.RefObject<() => void>;
 }
 
 export interface SocialProps {
-
   dataRef: React.RefObject<SocialType>;
-    childSaveOnUnmount: React.RefObject<() => void>;
-
+  childSaveOnUnmount: React.RefObject<() => void>;
 }
-

@@ -4,57 +4,31 @@ import { House, Facebook, InstagramIcon } from 'lucide-react';
 import { SocialProps } from './types/types';
 
 export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
+  const instagramRef = useRef<HTMLInputElement>(null);
+  const facebookRef = useRef<HTMLInputElement>(null);
+  const siteWebRef = useRef<HTMLInputElement>(null);
 
+  const siteWebRefsssd = useRef<HTMLInputElement>(null);
 
-
-
-const instagramRef = useRef<HTMLInputElement>(null);
-const facebookRef = useRef<HTMLInputElement>(null);
-const siteWebRef = useRef<HTMLInputElement>(null);
-
-const siteWebRefsssd = useRef<HTMLInputElement>(null);
-
-
-function updateDataRef () {
-
-
-   dataRef.current = {
-  instagram: instagramRef.current?.value || 'fffdfsfd',
-       facebook: facebookRef.current?.value || '',
-  siteWeb: siteWebRef.current?.value || '',
-   siteWebRefsssd: siteWebRefsssd.current?.value || ''
+  function updateDataRef() {
+    dataRef.current = {
+      instagram: instagramRef.current?.value || 'fffdfsfd',
+      facebook: facebookRef.current?.value || '',
+      siteWeb: siteWebRef.current?.value || '',
+      siteWebRefsssd: siteWebRefsssd.current?.value || '',
     };
 
     console.log(dataRef);
+  }
 
-}
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
+    childSaveOnUnmount.current = updateDataRef;
 
-
-
-
-
-childSaveOnUnmount.current = updateDataRef;
-
-
-
-useEffect(   
-
-  () => {
-  
-
-
-  return () => { 
-  
-    childSaveOnUnmount.current = () => {};
-  
-    }
-}
-
-
-
-,[])
-
-
+    return () => {
+      childSaveOnUnmount.current = () => {};
+    };
+  }, []);
 
   return (
     <div className="p-6 flex flex-col gap-3">
@@ -81,7 +55,7 @@ useEffect(
               </svg>
             }
             name="INSTAGRAM"
-            ref = {instagramRef}
+            ref={instagramRef}
             value={dataRef.current.instagram}
           />
           <LinksInput
@@ -99,7 +73,7 @@ useEffect(
               </svg>
             }
             name="FACEBOOK"
-            ref = {facebookRef}
+            ref={facebookRef}
             value={dataRef.current.facebook}
           />
           <LinksInput
@@ -117,7 +91,7 @@ useEffect(
               </svg>
             }
             name="SITE WEB"
-            ref = {siteWebRef}
+            ref={siteWebRef}
             value={dataRef.current.siteWeb}
           />
           ;
@@ -127,39 +101,39 @@ useEffect(
   );
 }
 
-
 import { cn } from '@/lib/utils';
 
 type LinksInputProps = {
   svg: React.ReactNode;
   name: string;
-  value:string
+  value: string;
 };
 
-const LinksInput = forwardRef<HTMLInputElement, LinksInputProps>(function LinksInput(
-  { svg, name, value },
-  ref
-) {
-  return (
-    <div className="flex items-center gap-12">
-      <div className="w-12">{svg}</div>
+const LinksInput = forwardRef<HTMLInputElement, LinksInputProps>(
+  function LinksInput({ svg, name, value }, ref) {
+    return (
+      <div className="flex items-center gap-12">
+        <div className="w-12">{svg}</div>
 
-      <div className="p-2 bg-gray-400 rounded-md w-28 text-center text-xs">{name}</div>
+        <div className="p-2 bg-gray-400 rounded-md w-28 text-center text-xs">
+          {name}
+        </div>
 
-      <input
-        type="text"
-        placeholder="Search for styles"
-        className={cn(
-          'w-72 file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-8 min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-          'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
-          'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive'
-        )}
-        ref={ref}
-        defaultValue={value}
-      />
-    </div>
-  );
-});
+        <input
+          type="text"
+          placeholder="Search for styles"
+          className={cn(
+            'w-72 file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-8 min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+            'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+            'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+          )}
+          ref={ref}
+          defaultValue={value}
+        />
+      </div>
+    );
+  },
+);
 
 LinksInput.displayName = 'LinksInput';
 

@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Toaster } from '@/components/ui/sonner';
 import { PlaceDescriptionProps } from './types/types';
@@ -11,7 +11,8 @@ const DraftEditor = dynamic(() => import('./textSlate'), {
 });
 
 export default function PlaceDescription({
-  dataRef, childSaveOnUnmount
+  dataRef,
+  childSaveOnUnmount,
 }: PlaceDescriptionProps) {
   const [text, setText] = useState('');
 
@@ -22,7 +23,10 @@ export default function PlaceDescription({
       </div>
       <Toaster />
       <div className="ml-48 mt-12">
-        <DraftEditor />
+        <DraftEditor
+          dataRef={dataRef}
+          childSaveOnUnmount={childSaveOnUnmount}
+        />
       </div>
     </div>
   );

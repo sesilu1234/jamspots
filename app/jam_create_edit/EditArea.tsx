@@ -1,5 +1,5 @@
 'use client';
-import { useState,useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import GeneralInfo from './edit_areas/GeneralInfo';
 import UploadPhotos from './edit_areas/UploadPhotos';
@@ -14,19 +14,11 @@ import {
   SocialType,
 } from './edit_areas/types/types';
 
-
-
-
 type EditAreaProps = {
   childSaveOnUnmount: React.RefObject<() => void>;
 };
 
-
 export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
-
-
-
-  
   const searchParams = useSearchParams();
   const currentSection = searchParams.get('section') || 'informaciongeneral';
 
@@ -56,12 +48,8 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     instagram: '',
     facebook: '',
     siteWeb: '',
-    siteWebRefsssd:''
+    siteWebRefsssd: '',
   });
-
-
-
-
 
   // Save all data (example)
   const handleSave = () => {
@@ -76,21 +64,31 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     // send to backend...
   };
 
-
-
   return (
     <div>
       {currentSection === 'informaciongeneral' && (
-        <GeneralInfo dataRef={generalInfo} childSaveOnUnmount={childSaveOnUnmount}/>
+        <GeneralInfo
+          dataRef={generalInfo}
+          childSaveOnUnmount={childSaveOnUnmount}
+        />
       )}
       {currentSection === 'fotos' && (
-        <UploadPhotos dataRef={photos} childSaveOnUnmount={childSaveOnUnmount} />
+        <UploadPhotos
+          dataRef={photos}
+          childSaveOnUnmount={childSaveOnUnmount}
+        />
       )}
       {currentSection === 'caracteristicas' && (
-        <PlaceChars dataRef={features} childSaveOnUnmount={childSaveOnUnmount} />
+        <PlaceChars
+          dataRef={features}
+          childSaveOnUnmount={childSaveOnUnmount}
+        />
       )}
       {currentSection === 'descripcion' && (
-        <PlaceDescription dataRef={description} childSaveOnUnmount={childSaveOnUnmount} />
+        <PlaceDescription
+          dataRef={description}
+          childSaveOnUnmount={childSaveOnUnmount}
+        />
       )}
       {currentSection === 'redessociales' && (
         <Social dataRef={social} childSaveOnUnmount={childSaveOnUnmount} />

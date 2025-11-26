@@ -1,4 +1,4 @@
-import { useState,useRef,useEffect} from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -35,12 +35,19 @@ const all_styles = [
   'Open Mic',
 ];
 
-export default function PlaceChars({ dataRef, childSaveOnUnmount }: PlaceCharsProps) {
+export default function PlaceChars({
+  dataRef,
+  childSaveOnUnmount,
+}: PlaceCharsProps) {
   const [search, setSearch] = useState('');
 
-  const [selectedStyles, setSelectedStyles] = useState<string[]>(dataRef.current.styles);
+  const [selectedStyles, setSelectedStyles] = useState<string[]>(
+    dataRef.current.styles,
+  );
   const [song_list, setSongList] = useState<boolean>(dataRef.current.song_list);
-  const [instruments_lend, setIntrumentsLend] = useState<boolean>(dataRef.current.intruments_lend);
+  const [instruments_lend, setIntrumentsLend] = useState<boolean>(
+    dataRef.current.intruments_lend,
+  );
   const [drums, setDrums] = useState<boolean>(dataRef.current.drums);
 
   const filteredStyles = all_styles.filter((style) =>
@@ -55,27 +62,25 @@ export default function PlaceChars({ dataRef, childSaveOnUnmount }: PlaceCharsPr
     }
   };
 
-
-
-function updateDataRef () {
-
- dataRef.current = {
+  function updateDataRef() {
+    dataRef.current = {
       styles: selectedStyles,
       song_list,
       intruments_lend: instruments_lend,
       drums,
     };
 
-return 
-}
+    return;
+  }
 
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
+    childSaveOnUnmount.current = updateDataRef;
 
-childSaveOnUnmount.current = updateDataRef;
-
-
-
-
-
+    return () => {
+      childSaveOnUnmount.current = () => {};
+    };
+  }, []);
 
   return (
     <div className="p-6 flex flex-col gap-3">
@@ -129,58 +134,55 @@ childSaveOnUnmount.current = updateDataRef;
             {' '}
             <span className="w-48 font-semibold ">Hay lista de canciones?</span>
             <Button
-  variant={null}
-  className={`w-12 ${song_list ? 'bg-blue-500 text-white ' : 'bg-background hover:bg-primary/30'}`}
-   onClick={() => setSongList(true)}
->
-  Sí
-</Button>
-
-<Button
-  variant={null}
-  className={`w-12 ${!song_list ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
-  onClick={() => setSongList(false)}
->
-  No
-</Button>
+              variant={null}
+              className={`w-12 ${song_list ? 'bg-blue-500 text-white ' : 'bg-background hover:bg-primary/30'}`}
+              onClick={() => setSongList(true)}
+            >
+              Sí
+            </Button>
+            <Button
+              variant={null}
+              className={`w-12 ${!song_list ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
+              onClick={() => setSongList(false)}
+            >
+              No
+            </Button>
           </div>
           <div className="flex items-center gap-6">
             {' '}
             <span className="w-48 font-semibold ">Se prestan intrumentos?</span>
             <Button
-  variant={null}
-  className={`w-12 ${instruments_lend ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
-   onClick={() => setIntrumentsLend(true)}
->
-  Sí
-</Button>
-
-<Button
-  variant={null}
-  className={`w-12 ${!instruments_lend ? 'bg-blue-500 text-white' : ' bg-background hover:bg-primary/30'}`}
-   onClick={() => setIntrumentsLend(false)}
->
-  No
-</Button>
+              variant={null}
+              className={`w-12 ${instruments_lend ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
+              onClick={() => setIntrumentsLend(true)}
+            >
+              Sí
+            </Button>
+            <Button
+              variant={null}
+              className={`w-12 ${!instruments_lend ? 'bg-blue-500 text-white' : ' bg-background hover:bg-primary/30'}`}
+              onClick={() => setIntrumentsLend(false)}
+            >
+              No
+            </Button>
           </div>
           <div className="flex  items-center gap-6">
             {' '}
             <span className="w-48 font-semibold ">Hay bateria?</span>
             <Button
-  variant={null}
-  className={`w-12 ${drums ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
-   onClick={() => setDrums(true)}
->
-  Sí
-</Button>
-
-<Button
-  variant={null}
-  className={`w-12 ${!drums ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
-   onClick={() => setDrums(false)}
->
-  No
-</Button>
+              variant={null}
+              className={`w-12 ${drums ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
+              onClick={() => setDrums(true)}
+            >
+              Sí
+            </Button>
+            <Button
+              variant={null}
+              className={`w-12 ${!drums ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
+              onClick={() => setDrums(false)}
+            >
+              No
+            </Button>
           </div>
         </div>
       </div>
