@@ -1,6 +1,6 @@
 // page.tsx
 'use client';
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { MapProvider } from './MapContext';
 
 import dynamic from 'next/dynamic';
@@ -12,6 +12,19 @@ import { Menu } from 'lucide-react';
 const MapRender = dynamic(() => import('./MapRender'), { ssr: false });
 
 export default function Home() {
+  const [showSignIn, setShowSignIn] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (!menuRef.current?.contains(e.target)) {
+        setShowSignIn(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <>
       <MapProvider>
@@ -27,24 +40,38 @@ export default function Home() {
               + Añadir sitio
             </button>
 
-            <div
-              className="px-2 py-1 rounded-sm bg-gray-900/30 shadow-md 
-                hover:shadow-lg hover:bg-gray-700/70 transition-all duration-200 cursor-pointer"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-4"
+            <div className="relative  " ref={menuRef}>
+              <div
+                className="shadow-md 
+                hover:shadow-lg hover:bg-gray-700/70 transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm bg-gray-900/30"
+                onClick={() => setShowSignIn((prev) => !prev)}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  />
+                </svg>
+              </div>
+              {showSignIn && (
+                <div className="absolute top-10 w-32 bg-gray-900/30 flex flex-col items-center gap-2 rounded-md">
+                  <span className="pt-3 hover:underline cursor-pointer font-semibold">
+                    Sign In
+                  </span>
+                  <div className="h-[1.5px] bg-gray-700/50 w-3/5 mt-1"></div>
+                  <span className="pb-3 hover:underline cursor-pointer font-[400]">
+                    + Añadir sitio
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
