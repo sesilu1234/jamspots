@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import TrashButton from './icons/TrashButton';
 import { UploadPhotosProps } from './types/types';
@@ -8,7 +8,19 @@ import { UploadPhotosProps } from './types/types';
 export default function PhotoUploader({
   dataRef, childSaveOnUnmount
 }: UploadPhotosProps) {
-  const [photos, setPhotos] = useState<string[]>([]);
+  const [photos, setPhotos] = useState<string[]>(dataRef.current.images);
+
+const photoStateRef = useRef(photos);
+photoStateRef.current = photos; // update every render
+
+  childSaveOnUnmount.current = () => {
+
+       
+        dataRef.current.images = photoStateRef.current
+
+    }
+
+
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -16,6 +28,8 @@ export default function PhotoUploader({
 
     const url = URL.createObjectURL(file);
     setPhotos((prev) => [...prev, url]);
+
+    
   }
 
   function removePhoto(index: number) {

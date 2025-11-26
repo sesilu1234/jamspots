@@ -27,6 +27,7 @@ function Calendar({
 
   return (
     <DayPicker
+      
       showOutsideDays={showOutsideDays}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
@@ -127,6 +128,7 @@ function Calendar({
         hidden: cn("invisible", defaultClassNames.hidden),
         ...classNames,
       }}
+      weekStartsOn={1}
       components={{
         Root: ({ className, rootRef, ...props }) => {
           return (

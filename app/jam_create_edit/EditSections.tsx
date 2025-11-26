@@ -40,7 +40,7 @@ export default function EditSections({ childSaveOnUnmount }: EditAreaProps){
   };
 
   return (
-    <div className="flex flex-col gap-8 mx-8 my-24 w-3/5">
+    <div className="flex flex-col gap-8 mx-8  w-3/5">
       {sections.map(({ id, label, Icon }) => (
         <div
           key={id}

@@ -12,32 +12,50 @@ import {
 import 'draft-js/dist/Draft.css';
 import { toast } from 'sonner';
 import { Toaster } from '@/components/ui/sonner';
+import { PlaceDescriptionProps } from './types/types';
+import { RefObject } from 'react';
 
 const MAX_CHARS = 1400;
 
 const EMOJIS = ['🔥', '❤️', '😂', '👍', '💎', '📅', '📍'];
 
-const DraftEditor = (dataRef, childSaveOnUnmount) => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+interface DraftEditorProps {
+  dataRef: RefObject<any>;
+  childSaveOnUnmount: RefObject<() => void>;
+}
+
+const DraftEditor = ({ dataRef, childSaveOnUnmount }: DraftEditorProps) => {
+
+
+
+const [editorState, setEditorState] = useState(
+  dataRef.current?.description
+    ? EditorState.createWithContent(convertFromRaw(dataRef.current.description))
+    : EditorState.createEmpty()
+);
+
+ 
 
   const [boldSelected, setBoldSelected] = useState(false);
 
   const [italicSelected, setItalicSelected] = useState(false);
 
-  function updateDataRef() {
-    dataRef.current = convertToRaw(editorState.getCurrentContent());
+const editorStateRef = useRef(editorState);
+editorStateRef.current = editorState; // update every render
 
-    console.log(dataRef);
-  }
+function updateDataRef() {
+  dataRef.current.description = convertToRaw(editorStateRef.current.getCurrentContent());
+  console.log(dataRef);
+}
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/immutability
-    childSaveOnUnmount.current = updateDataRef;
+useEffect(() => {
+  childSaveOnUnmount.current = updateDataRef;
 
-    return () => {
-      childSaveOnUnmount.current = () => {};
-    };
-  }, []);
+  return () => {
+    childSaveOnUnmount.current = () => {};
+  };
+}, []);
+
 
   const savedRawRef = useRef<any>(null);
 

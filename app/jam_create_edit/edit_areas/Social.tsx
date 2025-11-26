@@ -18,7 +18,7 @@ export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
       siteWebRefsssd: siteWebRefsssd.current?.value || '',
     };
 
-    console.log(dataRef);
+  
   }
 
   useEffect(() => {
