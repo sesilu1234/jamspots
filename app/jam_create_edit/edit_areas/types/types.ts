@@ -5,7 +5,6 @@ export type GeneralInfoType = {
   location_adress: string;
   dates: {
     period: string | null;
-    period_value: string | null;
     time: { from: string; to: string | null };
     list_of_dates: string[];
   };

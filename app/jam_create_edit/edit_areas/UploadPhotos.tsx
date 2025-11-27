@@ -6,21 +6,17 @@ import TrashButton from './icons/TrashButton';
 import { UploadPhotosProps } from './types/types';
 
 export default function PhotoUploader({
-  dataRef, childSaveOnUnmount
+  dataRef,
+  childSaveOnUnmount,
 }: UploadPhotosProps) {
   const [photos, setPhotos] = useState<string[]>(dataRef.current.images);
 
-const photoStateRef = useRef(photos);
-photoStateRef.current = photos; // update every render
+  const photoStateRef = useRef(photos);
+  photoStateRef.current = photos; // update every render
 
   childSaveOnUnmount.current = () => {
-
-       
-        dataRef.current.images = photoStateRef.current
-
-    }
-
-
+    dataRef.current.images = photoStateRef.current;
+  };
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -28,8 +24,6 @@ photoStateRef.current = photos; // update every render
 
     const url = URL.createObjectURL(file);
     setPhotos((prev) => [...prev, url]);
-
-    
   }
 
   function removePhoto(index: number) {
@@ -38,10 +32,6 @@ photoStateRef.current = photos; // update every render
 
   return (
     <div className="p-15 flex flex-col gap-3">
-      <div className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 rounded-lg">
-        Save and Exit
-      </div>
-
       <div className="flex gap-3 flex-wrap">
         {photos.map((url, index) => (
           <div

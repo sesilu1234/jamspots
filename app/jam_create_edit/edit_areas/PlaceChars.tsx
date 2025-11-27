@@ -50,19 +50,17 @@ export default function PlaceChars({
   );
   const [drums, setDrums] = useState<boolean>(dataRef.current.drums);
 
-
-
   const stylesRef = useRef(selectedStyles);
-stylesRef.current = selectedStyles;
+  stylesRef.current = selectedStyles;
 
-const songRef = useRef(song_list);
-songRef.current = song_list;
+  const songRef = useRef(song_list);
+  songRef.current = song_list;
 
-const instrumentsRef = useRef(instruments_lend);
-instrumentsRef.current = instruments_lend;
+  const instrumentsRef = useRef(instruments_lend);
+  instrumentsRef.current = instruments_lend;
 
-const drumsRef = useRef(drums);
-drumsRef.current = drums;
+  const drumsRef = useRef(drums);
+  drumsRef.current = drums;
 
   const filteredStyles = all_styles.filter((style) =>
     style.toLowerCase().includes(search.toLowerCase()),
@@ -76,30 +74,23 @@ drumsRef.current = drums;
     }
   };
 
-
-
- useEffect(() => {
-  childSaveOnUnmount.current = () => {
-    dataRef.current = {
-      styles: stylesRef.current,
-      song_list: songRef.current,
-      intruments_lend: instrumentsRef.current,
-      drums: drumsRef.current,
+  useEffect(() => {
+    childSaveOnUnmount.current = () => {
+      dataRef.current = {
+        styles: stylesRef.current,
+        song_list: songRef.current,
+        intruments_lend: instrumentsRef.current,
+        drums: drumsRef.current,
+      };
     };
-  };
 
-  return () => {
-    childSaveOnUnmount.current = () => {};
-  };
-}, []);
-
+    return () => {
+      childSaveOnUnmount.current = () => {};
+    };
+  }, []);
 
   return (
     <div className="p-6 flex flex-col gap-3">
-      <div className="flex justify-center m-3 ml-auto p-2 bg-black text-white w-32 rounded-lg cursor-pointer">
-        Save and Exit
-      </div>
-
       <div className="max-w-[70%] ml-[10%]">
         <div className="flex justify-between">
           <span>Estilos</span>

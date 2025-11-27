@@ -17,8 +17,6 @@ export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
       siteWeb: siteWebRef.current?.value || '',
       siteWebRefsssd: siteWebRefsssd.current?.value || '',
     };
-
-  
   }
 
   useEffect(() => {
@@ -32,9 +30,6 @@ export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
 
   return (
     <div className="p-6 flex flex-col gap-3">
-      <div className="flex justify-center m-3 ml-auto p-2 bg-black text-white w-32 rounded-lg cursor-pointer">
-        Save and Exit
-      </div>
       <div className="mt-12">
         <div className="mb-12 ml-24 font-bold">
           <span>Add links</span>

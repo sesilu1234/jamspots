@@ -29,7 +29,6 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     location_adress: '',
     dates: {
       period: null,
-      period_value: null,
       time: { from: '21:30', to: null },
       list_of_dates: [],
     },
@@ -64,8 +63,80 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     // send to backend...
   };
 
+ 
+  
+
+
+{
+	
+jam_title:generalInfo.current.jam_title
+
+	
+location_title:generalInfo.current.location_title
+
+location_adress:generalInfo.current.location_adress
+
+		
+periodicity:generalInfo.current.dates.period
+
+		
+dates:generalInfo.current.dates.list_of_dates
+
+		
+images:photos.current
+
+	
+styles:features.current.styles
+
+	
+lista_canciones:features.current.song_list
+
+		
+instruments_lend:features.current.intruments_lend
+
+		
+drums:features.current.intruments_lend
+
+		
+description:description.current.description
+
+		
+social_links: social.current
+
+		
+host_id:
+
+		
+created_at:
+
+	
+location_coords:
+
+
+}
+
+
+
+  const handleCreate = async () => {
+    const res = await fetch('/api/create-session', {
+      method: 'POST',
+      body: JSON.stringify({ title: 'Blues Jam' }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await res.json();
+    console.log(data);
+  };
+
   return (
     <div>
+      <div
+        className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
+  hover:text-black hover:bg-slate-200 hover:border hover:border-black"
+        onClick={() => handleCreate()}
+      >
+        Save and Exit
+      </div>
+
       {currentSection === 'informaciongeneral' && (
         <GeneralInfo
           dataRef={generalInfo}
