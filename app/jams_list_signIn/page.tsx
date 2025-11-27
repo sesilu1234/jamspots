@@ -1,7 +1,16 @@
+
+
+
+import { authOptions } from "../api/auth/[...nextauth]/route"; // adjust relative path
+import { getServerSession } from "next-auth/next";
+
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 
 import Image from 'next/image';
  import Link from 'next/link';
+ import { redirect } from "next/navigation";
+
+
 
 type JamProps = {
   jam_name: string;
@@ -36,7 +45,9 @@ const list_of_jams = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+      const session = await getServerSession(authOptions);
+if (!session) redirect("/signIn_page");
   return (
     <div className="min-h-screen bg-gray-300">
       <div className="w-[1300px] max-w-[90%] mx-auto pt-12 pb-128">
@@ -49,13 +60,15 @@ export default function Home() {
           </div>
 
           <div className="w-16 h-16 ">
-            <Avatar className="">
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                className="rounded-full"
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+             <Avatar>
+      <AvatarImage
+        src={session.user?.image || "https://github.com/shadcn.png"}
+        className="rounded-full"
+      />
+      <AvatarFallback>
+        {session.user?.name ? session.user.name[0] : "U"}
+      </AvatarFallback>
+    </Avatar>
           </div>
         </div>
         <div className="flex flex-col gap-8 mt-16 ml-48">

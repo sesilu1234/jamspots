@@ -1,4 +1,7 @@
+
+'use client';
 import { divIcon } from 'leaflet';
+import { signIn } from "next-auth/react";
 
 export default function Home() {
   return (
@@ -38,7 +41,8 @@ export default function Home() {
             <div className="font-bold">SIGN IN</div>
           </div>
 
-          <div className="flex items-center font-bold px-8 py-4 mt-24 bg-white w-84 gap-8 mx-auto justify-center rounded-xl">
+          <div className="flex items-center font-bold px-8 py-4 mt-24 bg-white w-84 gap-8 mx-auto justify-center rounded-xl cursor-pointer"
+          onClick={() => signIn("google", { callbackUrl: "/" })}>
             <svg
               width="35"
               height="35"

@@ -8,6 +8,9 @@ import GooglePlacesSearch from './GooglePlacesSearch';
 import JamCarousel from './jamsCarousel';
 import { Input } from '@/components/ui/input';
 import { Menu } from 'lucide-react';
+import Link from "next/link";
+import SignInIcons from './SingInIcons'
+
 
 const MapRender = dynamic(() => import('./MapRender'), { ssr: false });
 
@@ -27,53 +30,13 @@ export default function Home() {
 
   return (
     <>
+
+
+
       <MapProvider>
         <div className="relative flex flex-col w-[1300px] max-w-[90%] mx-auto p-6 ">
-          <div className="absolute top-16 right-6 flex items-center gap-2">
-            <button
-              className="px-4 py-2 rounded-sm bg-[rgba(90,90,90,0.75)] text-white text-sm 
-             transition-all duration-200 
-             hover:bg-gray-900 
-             hover:shadow-[0_10px_30px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.3)] 
-             hover:-translate-y-1 cursor-pointer"
-            >
-              + Añadir sitio
-            </button>
 
-            <div className="relative  " ref={menuRef}>
-              <div
-                className="shadow-md 
-                hover:shadow-lg hover:bg-gray-700/70 transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm bg-gray-900/30"
-                onClick={() => setShowSignIn((prev) => !prev)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-                </svg>
-              </div>
-              {showSignIn && (
-                <div className="absolute top-10 w-32 bg-gray-900/30 flex flex-col items-center gap-2 rounded-md">
-                  <span className="pt-3 hover:underline cursor-pointer font-semibold">
-                    Sign In
-                  </span>
-                  <div className="h-[1.5px] bg-gray-700/50 w-3/5 mt-1"></div>
-                  <span className="pb-3 hover:underline cursor-pointer font-[400]">
-                    + Añadir sitio
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
+          <SignInIcons/>
 
           <div className="inline-block">
             <div className="ml-3 flex gap-2 items-end">
@@ -163,23 +126,29 @@ export default function Home() {
       </div>
 
       <footer className="w-screen bg-black/90 text-white py-12 mt-12">
-        <div className="max-w-[90%] w-[1300px] mx-auto p-6">
-          {/* Navigation Links */}
-          <div className=" flex flex-row items-center justify-center   gap-48 mb-12 mt-12 ">
-            <h3 className="hover:text-gray-300 cursor-pointer">CONTACT</h3>
-            <h3 className="hover:text-gray-300 cursor-pointer">HELP</h3>
-            <h3 className="hover:text-gray-300 cursor-pointer">ABOUT</h3>
-          </div>
-
-          {/* Branding / Tagline */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-24">
-            <img src="jamspots_icon.png" alt="Jamspots icon" className="h-16" />
-            <p className="text-sm text-gray-400 font-semibold text-center sm:text-left">
-              Find the next spot to share your sound.
-            </p>
-          </div>
+      <div className="max-w-[90%] w-[1300px] mx-auto p-6">
+        {/* Navigation Links */}
+        <div className="flex flex-row items-center justify-center gap-16 mb-12">
+          <Link href="/contact" className="hover:text-gray-300 cursor-pointer">
+            CONTACT
+          </Link>
+          <Link href="/help" className="hover:text-gray-300 cursor-pointer">
+            HELP
+          </Link>
+          <Link href="/about" className="hover:text-gray-300 cursor-pointer">
+            ABOUT
+          </Link>
         </div>
-      </footer>
+
+        {/* Branding / Tagline */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+          <img src="/jamspots_icon.png" alt="Jamspots icon" className="h-16" />
+          <p className="text-sm text-gray-400 font-semibold text-center sm:text-left">
+            Find the next spot to share your sound.
+          </p>
+        </div>
+      </div>
+    </footer>
     </>
   );
 }
