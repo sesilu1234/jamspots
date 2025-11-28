@@ -25,37 +25,35 @@ interface DraftEditorProps {
 }
 
 const DraftEditor = ({ dataRef, childSaveOnUnmount }: DraftEditorProps) => {
-
-
-
-const [editorState, setEditorState] = useState(
-  dataRef.current?.description
-    ? EditorState.createWithContent(convertFromRaw(dataRef.current.description))
-    : EditorState.createEmpty()
-);
-
- 
+  const [editorState, setEditorState] = useState(
+    dataRef.current?.description
+      ? EditorState.createWithContent(
+          convertFromRaw(dataRef.current.description),
+        )
+      : EditorState.createEmpty(),
+  );
 
   const [boldSelected, setBoldSelected] = useState(false);
 
   const [italicSelected, setItalicSelected] = useState(false);
 
-const editorStateRef = useRef(editorState);
-editorStateRef.current = editorState; // update every render
+  const editorStateRef = useRef(editorState);
+  editorStateRef.current = editorState; // update every render
 
-function updateDataRef() {
-  dataRef.current.description = convertToRaw(editorStateRef.current.getCurrentContent());
-  console.log(dataRef);
-}
+  function updateDataRef() {
+    dataRef.current.description = convertToRaw(
+      editorStateRef.current.getCurrentContent(),
+    );
+    console.log(dataRef);
+  }
 
-useEffect(() => {
-  childSaveOnUnmount.current = updateDataRef;
+  useEffect(() => {
+    childSaveOnUnmount.current = updateDataRef;
 
-  return () => {
-    childSaveOnUnmount.current = () => {};
-  };
-}, []);
-
+    return () => {
+      childSaveOnUnmount.current = () => {};
+    };
+  }, []);
 
   const savedRawRef = useRef<any>(null);
 

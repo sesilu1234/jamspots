@@ -8,14 +8,11 @@ export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
   const facebookRef = useRef<HTMLInputElement>(null);
   const siteWebRef = useRef<HTMLInputElement>(null);
 
-  const siteWebRefsssd = useRef<HTMLInputElement>(null);
-
   function updateDataRef() {
     dataRef.current = {
       instagram: instagramRef.current?.value || 'fffdfsfd',
       facebook: facebookRef.current?.value || '',
       siteWeb: siteWebRef.current?.value || '',
-      siteWebRefsssd: siteWebRefsssd.current?.value || '',
     };
   }
 

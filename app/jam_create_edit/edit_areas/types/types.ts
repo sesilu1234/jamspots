@@ -1,15 +1,19 @@
 // Types for each section
+
+import { RawDraftContentState } from 'draft-js';
+
 export type GeneralInfoType = {
   jam_title: string;
   location_title: string;
   location_adress: string;
   coordinates: {
-      lat: string | null,
-      lng: string | null,
-    };
+    lat: string | null;
+    lng: string | null;
+  };
   dates: {
     period: 'manual' | 'weekly' | undefined;
-    time: { from: string; to: string | null };
+    day_of_week: string | undefined;
+    time: { from: string; to: string | undefined };
     list_of_dates: Date[];
   };
 };
@@ -26,14 +30,13 @@ export type FeaturesType = {
 };
 
 export type DescriptionType = {
-  description: any;
+  description: RawDraftContentState | '';
 };
 
 export type SocialType = {
   facebook: string;
   instagram: string;
   siteWeb: string;
-  siteWebRefsssd: string;
 };
 
 // Props for child components

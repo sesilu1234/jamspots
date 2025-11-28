@@ -24,15 +24,18 @@ export default function EditArea({
   dataRef,
   childSaveOnUnmount,
 }: GeneralInfoProps) {
-  const [period, setPeriod] = useState<'manual' | 'weekly' | undefined>();
-  const [weekDay, setWeekDay] = useState<string | undefined>();
-  const [dates, setDates] = React.useState<Date[]>([
-    new Date(2025, 11, 12),
-    new Date(2025, 10, 24),
-  ]);
+  const [period, setPeriod] = useState<'manual' | 'weekly' | undefined>(
+    dataRef.current.dates.period,
+  );
+  const [weekDay, setWeekDay] = useState<string | undefined>(
+    dataRef.current.dates.day_of_week,
+  );
+  const [dates, setDates] = React.useState<Date[]>(
+    dataRef.current.dates.list_of_dates,
+  );
 
-  const [fromTime, setFromTime] = useState('21:30');
-  const [toTime, setToTime] = useState('00:30');
+  const [fromTime, setFromTime] = useState(dataRef.current.dates.time.from);
+  const [toTime, setToTime] = useState(dataRef.current.dates.time.to);
 
   const daysOfWeek = [
     'Monday',
@@ -44,48 +47,42 @@ export default function EditArea({
     'Sunday',
   ];
 
+  const jamTitleRef = useRef(dataRef.current.jam_title);
+  const locationTitleRef = useRef(dataRef.current.location_title);
+  const locationAdressRef = useRef(dataRef.current.location_adress);
+  const coordinatesRef = useRef(dataRef.current.coordinates);
+  const datesRef = useRef(dataRef.current.dates);
 
+  datesRef.current = {
+    period: period,
+    day_of_week: weekDay,
+    time: { from: fromTime, to: toTime },
+    list_of_dates: dates,
+  };
 
-
-
-const jamTitleRef = useRef(dataRef.current.jam_title);
-const locationTitleRef = useRef(dataRef.current.location_title);
-const locationAdressRef = useRef(dataRef.current.location_adress);
-const coordinatesRef = useRef(dataRef.current.coordinates);
-const datesRef = useRef(dataRef.current.dates);
-
-
-datesRef.current = {
-      period: period,
-      time: { from: fromTime, to: toTime },
-      list_of_dates: dates,
-    }
-
-
-// {
-//     jam_title: '',
-//     location_title: '',
-//     location_adress: '',
-//     coordinates: {
-//       lat: '',
-//       lng: '',
-//     },
-//     dates: {
-//       period: null,
-//       time: { from: '21:30', to: null },
-//       list_of_dates: [],
-//     },
-//   }
-
+  // {
+  //     jam_title: '',
+  //     location_title: '',
+  //     location_adress: '',
+  //     coordinates: {
+  //       lat: '',
+  //       lng: '',
+  //     },
+  //     dates: {
+  //       period: null,
+  //       time: { from: '21:30', to: null },
+  //       list_of_dates: [],
+  //     },
+  //   }
 
   function updateDataRef() {
     dataRef.current = {
-    jam_title: jamTitleRef.current,
-    location_title: locationTitleRef.current,
-    location_adress: locationAdressRef.current,
-    coordinates: coordinatesRef.current,
-    dates: datesRef.current,
-  };
+      jam_title: jamTitleRef.current,
+      location_title: locationTitleRef.current,
+      location_adress: locationAdressRef.current,
+      coordinates: coordinatesRef.current,
+      dates: datesRef.current,
+    };
   }
 
   useEffect(() => {
@@ -97,20 +94,15 @@ datesRef.current = {
     };
   }, []);
 
-
-
-
-
   return (
     <div className="p-15">
       <div className="mx-auto w-3/4">
-      <Primary
-  jamTitleRef={jamTitleRef}
-  locationTitleRef={locationTitleRef}
-  locationAdressRef={locationAdressRef}
-  coordinatesRef={coordinatesRef}
-/>
-
+        <Primary
+          jamTitleRef={jamTitleRef}
+          locationTitleRef={locationTitleRef}
+          locationAdressRef={locationAdressRef}
+          coordinatesRef={coordinatesRef}
+        />
       </div>
 
       <div className="mx-auto w-3/4 p-4 ">
@@ -118,6 +110,7 @@ datesRef.current = {
         <div className="flex gap-8 items-end">
           <div className="flex gap-4">
             <Select
+              defaultValue={period}
               onValueChange={(value) => setPeriod(value as 'manual' | 'weekly')}
             >
               <SelectTrigger className="w-[180px]">
@@ -136,7 +129,7 @@ datesRef.current = {
 
             {/* Second select */}
             {period === 'weekly' ? (
-              <Select onValueChange={setWeekDay}>
+              <Select defaultValue={weekDay} onValueChange={setWeekDay}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select day of week" />
                 </SelectTrigger>
@@ -219,7 +212,6 @@ datesRef.current = {
             {dates.length > 3 && <span className="px-2 py-1">...</span>}
           </div>
         </div>
-       
       </div>
     </div>
   );
