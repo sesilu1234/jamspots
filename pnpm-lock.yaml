@@ -114,6 +114,9 @@ importers:
       '@types/leaflet':
         specifier: ^1.9.21
         version: 1.9.21
+      '@types/multiparty':
+        specifier: ^4.2.1
+        version: 4.2.1
       '@types/node':
         specifier: ^20
         version: 20.19.24
@@ -1180,6 +1183,9 @@ packages:
 
   '@types/mdurl@2.0.0':
     resolution: {integrity: sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==}
+
+  '@types/multiparty@4.2.1':
+    resolution: {integrity: sha512-Wi6aK3FgvHLvCDxD7ngG4w8MsCK9h64EB53Gvc8t7FVX81tleiz8vFS3ebBohGxqHRzNGHaNwhfdxTGOGAXm6A==}
 
   '@types/node@20.19.24':
     resolution: {integrity: sha512-FE5u0ezmi6y9OZEzlJfg37mqqf6ZDSF2V/NLjUyGrR9uTZ7Sb9F7bLNZ03S4XVUNRWGA7Ck4c1kK+YnuWjl+DA==}
@@ -4046,6 +4052,10 @@ snapshots:
       '@types/mdurl': 2.0.0
 
   '@types/mdurl@2.0.0': {}
+
+  '@types/multiparty@4.2.1':
+    dependencies:
+      '@types/node': 20.19.24
 
   '@types/node@20.19.24':
     dependencies:
