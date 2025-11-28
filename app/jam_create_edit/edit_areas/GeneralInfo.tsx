@@ -219,10 +219,7 @@ datesRef.current = {
             {dates.length > 3 && <span className="px-2 py-1">...</span>}
           </div>
         </div>
-        <div className='w-24 h-12 bg-green-500'
-        onClick={() => {console.log(datesRef,jamTitleRef,coordinatesRef)}}
-        
-        ></div>
+       
       </div>
     </div>
   );

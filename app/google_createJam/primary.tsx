@@ -27,7 +27,7 @@ export default function Primary({
 
 
    
-      jamTitleRef.current = dataLocation.jam_name
+  jamTitleRef.current = dataLocation.jam_name
   locationTitleRef.current = dataLocation.location_name
   locationAdressRef.current = dataLocation.address
   coordinatesRef.current = dataLocation.coordinates
