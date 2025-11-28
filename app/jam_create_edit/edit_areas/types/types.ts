@@ -3,10 +3,14 @@ export type GeneralInfoType = {
   jam_title: string;
   location_title: string;
   location_adress: string;
+  coordinates: {
+      lat: string | null,
+      lng: string | null,
+    };
   dates: {
-    period: string | null;
+    period: 'manual' | 'weekly' | undefined;
     time: { from: string; to: string | null };
-    list_of_dates: string[];
+    list_of_dates: Date[];
   };
 };
 

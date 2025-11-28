@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -31,8 +31,8 @@ export default function EditArea({
     new Date(2025, 10, 24),
   ]);
 
-  const [fromTime, setFromTime] = useState('10:30');
-  const [toTime, setToTime] = useState('10:30');
+  const [fromTime, setFromTime] = useState('21:30');
+  const [toTime, setToTime] = useState('00:30');
 
   const daysOfWeek = [
     'Monday',
@@ -44,10 +44,73 @@ export default function EditArea({
     'Sunday',
   ];
 
+
+
+
+
+const jamTitleRef = useRef(dataRef.current.jam_title);
+const locationTitleRef = useRef(dataRef.current.location_title);
+const locationAdressRef = useRef(dataRef.current.location_adress);
+const coordinatesRef = useRef(dataRef.current.coordinates);
+const datesRef = useRef(dataRef.current.dates);
+
+
+datesRef.current = {
+      period: period,
+      time: { from: fromTime, to: toTime },
+      list_of_dates: dates,
+    }
+
+
+// {
+//     jam_title: '',
+//     location_title: '',
+//     location_adress: '',
+//     coordinates: {
+//       lat: '',
+//       lng: '',
+//     },
+//     dates: {
+//       period: null,
+//       time: { from: '21:30', to: null },
+//       list_of_dates: [],
+//     },
+//   }
+
+
+  function updateDataRef() {
+    dataRef.current = {
+    jam_title: jamTitleRef.current,
+    location_title: locationTitleRef.current,
+    location_adress: locationAdressRef.current,
+    coordinates: coordinatesRef.current,
+    dates: datesRef.current,
+  };
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
+    childSaveOnUnmount.current = updateDataRef;
+
+    return () => {
+      childSaveOnUnmount.current = () => {};
+    };
+  }, []);
+
+
+
+
+
   return (
     <div className="p-15">
       <div className="mx-auto w-3/4">
-        <Primary />
+      <Primary
+  jamTitleRef={jamTitleRef}
+  locationTitleRef={locationTitleRef}
+  locationAdressRef={locationAdressRef}
+  coordinatesRef={coordinatesRef}
+/>
+
       </div>
 
       <div className="mx-auto w-3/4 p-4 ">
@@ -156,13 +219,17 @@ export default function EditArea({
             {dates.length > 3 && <span className="px-2 py-1">...</span>}
           </div>
         </div>
+        <div className='w-24 h-12 bg-green-500'
+        onClick={() => {console.log(datesRef,jamTitleRef,coordinatesRef)}}
+        
+        ></div>
       </div>
     </div>
   );
 }
 
 interface Calendar03Props {
-  period?: 'manual' | 'weekly';
+  period?: 'manual' | 'weekly' | null;
   weekDay?: string;
   dates?: Date[];
   datesSetter?: (dates: Date[]) => void;

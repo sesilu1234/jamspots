@@ -27,8 +27,12 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     jam_title: '',
     location_title: '',
     location_adress: '',
+    coordinates: {
+      lat: '',
+      lng: '',
+    },
     dates: {
-      period: null,
+      period: undefined,
       time: { from: '21:30', to: null },
       list_of_dates: [],
     },
@@ -67,53 +71,53 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
   
 
 
-{
+// const a = {
 	
-jam_title:generalInfo.current.jam_title
-
-	
-location_title:generalInfo.current.location_title
-
-location_adress:generalInfo.current.location_adress
-
-		
-periodicity:generalInfo.current.dates.period
-
-		
-dates:generalInfo.current.dates.list_of_dates
-
-		
-images:photos.current
+// jam_title:generalInfo.current.jam_title
 
 	
-styles:features.current.styles
+// location_title:generalInfo.current.location_title,
+
+// location_adress:generalInfo.current.location_adress,
+
+		
+// periodicity:generalInfo.current.dates.period,
+
+		
+// dates:generalInfo.current.dates.list_of_dates,
+
+		
+// images:photos.current,
 
 	
-lista_canciones:features.current.song_list
-
-		
-instruments_lend:features.current.intruments_lend
-
-		
-drums:features.current.intruments_lend
-
-		
-description:description.current.description
-
-		
-social_links: social.current
-
-		
-host_id:
-
-		
-created_at:
+// styles:features.current.styles,
 
 	
-location_coords:
+// lista_canciones:features.current.song_list,
+
+		
+// instruments_lend:features.current.intruments_lend,
+
+		
+// drums:features.current.intruments_lend,
+
+		
+// description:description.current.description,
+
+		
+// social_links: social.current,
+
+		
+// host_id:,
+
+		
+// created_at:,
+
+	
+// location_coords:,
 
 
-}
+// }
 
 
 
