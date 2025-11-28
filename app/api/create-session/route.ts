@@ -1,12 +1,21 @@
+
 import { supabase } from '@/lib/supabaseClient';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { NextResponse } from 'next/server';
 
+
 export async function POST(req: Request) {
+
+
+
+
+
+
   const body = await req.json();
   console.log('POST hit!', body);
   
+
 
   // get server session
   const session = await getServerSession(authOptions); // App Router uses new form

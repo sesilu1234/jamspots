@@ -87,7 +87,7 @@ const images_files: File[] = [];
 
     const photos_urls = await uploadPhotos(images_files);
 
-
+    
 
     const jamData = {
 	

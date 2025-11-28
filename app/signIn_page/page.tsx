@@ -2,6 +2,7 @@
 'use client';
 import { divIcon } from 'leaflet';
 import { signIn } from "next-auth/react";
+ import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
 
           <div className="h-[1.5px] bg-gray-700/50 w-168 mt-4 mx-auto"></div>
           <div className="flex w-168 justify-between mx-auto mt-4">
+            <Link href="/">
             <div className="flex gap-4 items-center font-bold">
               <svg
                 width="16"
@@ -38,6 +40,7 @@ export default function Home() {
               </svg>
               Back to Home Page
             </div>
+            </Link>
             <div className="font-bold">SIGN IN</div>
           </div>
 
