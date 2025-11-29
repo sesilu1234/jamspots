@@ -18,20 +18,19 @@ import {
 import * as React from 'react';
 
 import { Calendar } from '@/components/ui/calendar';
-import { Weekday } from 'react-day-picker';
 
 export default function EditArea({
   dataRef,
   childSaveOnUnmount,
 }: GeneralInfoProps) {
-  const [period, setPeriod] = useState<'manual' | 'weekly' | undefined>(
+  const [period, setPeriod] = useState<'manual' | 'weekly'>(
     dataRef.current.dates.period,
   );
-  const [weekDay, setWeekDay] = useState<string | undefined>(
+  const [weekDay, setWeekDay] = useState<string | null>(
     dataRef.current.dates.day_of_week,
   );
   const [dates, setDates] = React.useState<Date[]>(
-    dataRef.current.dates.list_of_dates,
+    dataRef.current.dates.list_of_dates.map((d: string) => new Date(d)),
   );
 
   const [fromTime, setFromTime] = useState(dataRef.current.dates.time.from);
@@ -49,7 +48,7 @@ export default function EditArea({
 
   const jamTitleRef = useRef(dataRef.current.jam_title);
   const locationTitleRef = useRef(dataRef.current.location_title);
-  const locationAdressRef = useRef(dataRef.current.location_adress);
+  const locationAddressRef = useRef(dataRef.current.location_address);
   const coordinatesRef = useRef(dataRef.current.coordinates);
   const datesRef = useRef(dataRef.current.dates);
 
@@ -57,29 +56,23 @@ export default function EditArea({
     period: period,
     day_of_week: weekDay,
     time: { from: fromTime, to: toTime },
-    list_of_dates: dates,
+    list_of_dates: dates.map((d) => {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0'); // month +1 because 0-based
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`; // "YYYY-MM-DD" local
+    }),
   };
 
-  // {
-  //     jam_title: '',
-  //     location_title: '',
-  //     location_adress: '',
-  //     coordinates: {
-  //       lat: '',
-  //       lng: '',
-  //     },
-  //     dates: {
-  //       period: null,
-  //       time: { from: '21:30', to: null },
-  //       list_of_dates: [],
-  //     },
-  //   }
-
   function updateDataRef() {
+    if (datesRef.current.period == 'weekly') {
+      datesRef.current.list_of_dates = [];
+    }
+
     dataRef.current = {
       jam_title: jamTitleRef.current,
       location_title: locationTitleRef.current,
-      location_adress: locationAdressRef.current,
+      location_address: locationAddressRef.current,
       coordinates: coordinatesRef.current,
       dates: datesRef.current,
     };
@@ -100,7 +93,7 @@ export default function EditArea({
         <Primary
           jamTitleRef={jamTitleRef}
           locationTitleRef={locationTitleRef}
-          locationAdressRef={locationAdressRef}
+          locationAddressRef={locationAddressRef}
           coordinatesRef={coordinatesRef}
         />
       </div>
@@ -129,7 +122,16 @@ export default function EditArea({
 
             {/* Second select */}
             {period === 'weekly' ? (
-              <Select defaultValue={weekDay} onValueChange={setWeekDay}>
+              <Select
+                defaultValue={
+                  period === 'weekly'
+                    ? weekDay
+                      ? weekDay
+                      : undefined
+                    : undefined
+                }
+                onValueChange={setWeekDay}
+              >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select day of week" />
                 </SelectTrigger>
@@ -175,7 +177,7 @@ export default function EditArea({
                 type="time"
                 id="time-to"
                 step="60" // optional
-                value={toTime}
+                value={toTime ? toTime : undefined}
                 onChange={(e) => setToTime(e.target.value)}
                 className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
               />
@@ -218,8 +220,8 @@ export default function EditArea({
 }
 
 interface Calendar03Props {
-  period?: 'manual' | 'weekly' | null;
-  weekDay?: string;
+  period?: 'manual' | 'weekly';
+  weekDay?: string | null;
   dates?: Date[];
   datesSetter?: (dates: Date[]) => void;
 }

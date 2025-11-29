@@ -5,16 +5,16 @@ import { RawDraftContentState } from 'draft-js';
 export type GeneralInfoType = {
   jam_title: string;
   location_title: string;
-  location_adress: string;
+  location_address: string;
   coordinates: {
-    lat: string | null;
-    lng: string | null;
+    lat: string;
+    lng: string;
   };
   dates: {
-    period: 'manual' | 'weekly' | undefined;
-    day_of_week: string | undefined;
-    time: { from: string; to: string | undefined };
-    list_of_dates: Date[];
+    period: 'manual' | 'weekly';
+    day_of_week: string | null;
+    time: { from: string; to: string | null };
+    list_of_dates: string[];
   };
 };
 
@@ -30,7 +30,7 @@ export type FeaturesType = {
 };
 
 export type DescriptionType = {
-  description: RawDraftContentState | '';
+  description: RawDraftContentState | null;
 };
 
 export type SocialType = {

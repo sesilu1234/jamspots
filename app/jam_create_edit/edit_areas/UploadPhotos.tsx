@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import TrashButton from './icons/TrashButton';
 import { UploadPhotosProps } from './types/types';
@@ -14,9 +14,16 @@ export default function PhotoUploader({
   const photoStateRef = useRef(photos);
   photoStateRef.current = photos; // update every render
 
-  childSaveOnUnmount.current = () => {
-    dataRef.current.images = photoStateRef.current;
-  };
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
+    childSaveOnUnmount.current = () => {
+      dataRef.current.images = photoStateRef.current;
+    };
+
+    return () => {
+      childSaveOnUnmount.current = () => {};
+    };
+  }, []);
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];

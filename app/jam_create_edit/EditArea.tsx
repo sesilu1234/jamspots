@@ -14,6 +14,8 @@ import {
   SocialType,
 } from './edit_areas/types/types';
 
+import { jamSchema } from './zodCheck';
+
 type EditAreaProps = {
   childSaveOnUnmount: React.RefObject<() => void>;
 };
@@ -26,15 +28,15 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
   const generalInfo = useRef<GeneralInfoType>({
     jam_title: '',
     location_title: '',
-    location_adress: '',
+    location_address: '',
     coordinates: {
       lat: '',
       lng: '',
     },
     dates: {
-      period: 'weekly',
-      day_of_week: 'Saturday',
-      time: { from: '21:30', to: undefined },
+      period: 'manual',
+      day_of_week: null,
+      time: { from: '21:30', to: null },
       list_of_dates: [],
     },
   });
@@ -42,11 +44,11 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
   const features = useRef<FeaturesType>({
     styles: [],
     song_list: false,
-    intruments_lend: false,
-    drums: false,
+    intruments_lend: true,
+    drums: true,
   });
   const description = useRef<DescriptionType>({
-    description: '',
+    description: null,
   });
   const social = useRef<SocialType>({
     instagram: '',
@@ -81,13 +83,15 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     }
 
     const photos_urls = await uploadPhotos(images_files);
-
+    console.log(generalInfo);
     const jamData = {
       jam_title: generalInfo.current.jam_title,
       location_title: generalInfo.current.location_title,
-      location_adress: generalInfo.current.location_adress,
+      location_address: generalInfo.current.location_address,
       periodicity: generalInfo.current.dates.period,
+      dayOfWeek: generalInfo.current.dates.day_of_week,
       dates: generalInfo.current.dates.list_of_dates,
+      time_start: generalInfo.current.dates.time.from,
       images: photos_urls,
       styles: features.current.styles,
       lista_canciones: features.current.song_list,
@@ -98,7 +102,8 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       social_links: social.current,
       location_coords: generalInfo.current.coordinates,
     };
-
+    const parsed_jamData = jamSchema.safeParse(jamData);
+    console.log(parsed_jamData);
     console.log('Saving all data:', jamData);
 
     const res = await fetch('/api/create-session', {
@@ -107,7 +112,6 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       headers: { 'Content-Type': 'application/json' },
     });
     const data = await res.json();
-    console.log(data);
   };
 
   return (

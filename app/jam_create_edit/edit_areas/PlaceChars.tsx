@@ -74,15 +74,33 @@ export default function PlaceChars({
     }
   };
 
-  useEffect(() => {
-    childSaveOnUnmount.current = () => {
-      dataRef.current = {
-        styles: stylesRef.current,
-        song_list: songRef.current,
-        intruments_lend: instrumentsRef.current,
-        drums: drumsRef.current,
-      };
+  // useEffect(() => {
+  //   childSaveOnUnmount.current = () => {
+  //     dataRef.current = {
+  //       styles: stylesRef.current,
+  //       song_list: songRef.current,
+  //       intruments_lend: instrumentsRef.current,
+  //       drums: drumsRef.current,
+  //     };
+  //   };
+
+  //   return () => {
+  //     childSaveOnUnmount.current = () => {};
+  //   };
+  // }, []);
+
+  function updateDataRef() {
+    dataRef.current = {
+      styles: stylesRef.current,
+      song_list: songRef.current,
+      intruments_lend: instrumentsRef.current,
+      drums: drumsRef.current,
     };
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
+    childSaveOnUnmount.current = updateDataRef;
 
     return () => {
       childSaveOnUnmount.current = () => {};

@@ -10,7 +10,7 @@ export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
 
   function updateDataRef() {
     dataRef.current = {
-      instagram: instagramRef.current?.value || 'fffdfsfd',
+      instagram: instagramRef.current?.value || '',
       facebook: facebookRef.current?.value || '',
       siteWeb: siteWebRef.current?.value || '',
     };
