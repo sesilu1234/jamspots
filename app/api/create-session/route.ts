@@ -3,18 +3,39 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { NextResponse } from 'next/server';
 import { jamSchema } from './zoddeCheck';
+import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
+
+function generateSlug(title: string, id: string) {
+  // clean title: lowercase, remove special chars, replace spaces with hyphens
+  const cleanTitle = title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+
+  // take first 8 chars of UUID
+  const uuidSuffix = id.replace(/-/g, '').slice(0, 8);
+
+  return `${cleanTitle}-${uuidSuffix}`;
+}
 
 export async function POST(req: Request) {
   const body = await req.json();
+
   console.log('POST hit!', body);
+  const id = uuidv4();
+  const slug = generateSlug(body.jam_title, id);
 
   const parsed_jamData = jamSchema.safeParse(body);
 
   if (!parsed_jamData.success) {
+    const errorTree = z.treeifyError(parsed_jamData.error);
+    console.log('Zod validation failed:', JSON.stringify(errorTree, null, 2)); // logs full details
     return NextResponse.json(
       {
         error: "Data couldn't pass Zod",
-        details: parsed_jamData.error.format(),
+        details: errorTree,
       },
       { status: 400 },
     );
@@ -66,6 +87,7 @@ export async function POST(req: Request) {
 
   const { data, error } = await supabaseAdmin.from('sessions').insert([
     {
+      id: id,
       jam_title: jam_title, // maps jam_title → jamTitle
       location_title: location_title,
       periodicity: periodicity,
@@ -83,8 +105,10 @@ export async function POST(req: Request) {
       location_coords: pointValue,
 
       location_address: location_address,
+      slug: slug,
     },
   ]);
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
