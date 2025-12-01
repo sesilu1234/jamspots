@@ -30,7 +30,7 @@ export default function JamSessionList() {
         const res = await fetch('/api/get-user-jams');
         if (!res.ok) throw new Error('Failed to fetch jams');
         const data: Jam[] = await res.json();
-        console.log(data);
+
         setJams(data);
       } catch {
         console.log('Error while fetching');
@@ -62,7 +62,11 @@ export default function JamSessionList() {
       ))}
 
       <div className="mt-4 mx-auto w-[1070px]">
-        <div className="flex justify-center items-center h-32 bg-gray-500 rounded-lg w-[300px]">
+        <Link
+          href={`/jams_list_signIn/create`}
+          prefetch={false}
+          className="flex justify-center items-center h-32 bg-gray-500 rounded-lg w-[300px]"
+        >
           <div className="flex items-center justify-between font-semibold text-white gap-2">
             <div className="bg-black w-10 h-10 rounded-full flex items-center justify-center text-lg">
               <svg
@@ -77,14 +81,13 @@ export default function JamSessionList() {
             </div>
             <span>Add a new jam</span>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );
 }
 
 function Jam({ id, jam_title, jam_adress, jam_image_src }: JamProps) {
-  console.log({ jam_title, jam_adress, jam_image_src });
   return (
     <div className="flex items-center gap-8 py-4 mx-auto w-[1070px]">
       <div className=" w-[300px] h-32 relative">
