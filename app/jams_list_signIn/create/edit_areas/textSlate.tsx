@@ -16,21 +16,25 @@ import { DescriptionType } from './types/types';
 import { RefObject } from 'react';
 import { RawDraftContentState } from 'draft-js';
 
+import { useAtom } from 'jotai';
+import { formAtom } from '../store/jotai';
+import { useFormStore } from '../store/formStore'; // path a tu store
+
 const MAX_CHARS = 1400;
 
 const EMOJIS = ['🔥', '❤️', '😂', '👍', '💎', '📅', '📍'];
 
 interface DraftEditorProps {
-  dataRef: RefObject<DescriptionType>;
+  data: DescriptionType;
   childSaveOnUnmount: RefObject<() => void>;
 }
 
-const DraftEditor = ({ dataRef, childSaveOnUnmount }: DraftEditorProps) => {
+const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
+  const setForm = useFormStore((state) => state.setForm);
+
   const [editorState, setEditorState] = useState(
-    dataRef.current?.description
-      ? EditorState.createWithContent(
-          convertFromRaw(dataRef.current.description),
-        )
+    data.description
+      ? EditorState.createWithContent(convertFromRaw(data.description))
       : EditorState.createEmpty(),
   );
 
@@ -42,9 +46,12 @@ const DraftEditor = ({ dataRef, childSaveOnUnmount }: DraftEditorProps) => {
   editorStateRef.current = editorState; // update every render
 
   function updateDataRef() {
-    dataRef.current.description = convertToRaw(
-      editorStateRef.current.getCurrentContent(),
-    );
+    setForm((prev) => ({
+      ...prev,
+      description: {
+        description: convertToRaw(editorStateRef.current.getCurrentContent()),
+      },
+    }));
   }
 
   useEffect(() => {

@@ -3,6 +3,12 @@ import { useState, useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PlaceCharsProps } from './types/types';
+
+import { useAtom } from 'jotai';
+import { formAtom } from '../store/jotai';
+
+import { useFormStore } from '../store/formStore'; // path a tu store
+
 const all_styles = [
   // Musical styles
   'Blues',
@@ -36,19 +42,19 @@ const all_styles = [
 ];
 
 export default function PlaceChars({
-  dataRef,
+  data,
   childSaveOnUnmount,
 }: PlaceCharsProps) {
+  const setForm = useFormStore((state) => state.setForm);
+
   const [search, setSearch] = useState('');
 
-  const [selectedStyles, setSelectedStyles] = useState<string[]>(
-    dataRef.current.styles,
-  );
-  const [song_list, setSongList] = useState<boolean>(dataRef.current.song_list);
+  const [selectedStyles, setSelectedStyles] = useState<string[]>(data.styles);
+  const [song_list, setSongList] = useState<boolean>(data.song_list);
   const [instruments_lend, setIntrumentsLend] = useState<boolean>(
-    dataRef.current.intruments_lend,
+    data.intruments_lend,
   );
-  const [drums, setDrums] = useState<boolean>(dataRef.current.drums);
+  const [drums, setDrums] = useState<boolean>(data.drums);
 
   const stylesRef = useRef(selectedStyles);
   stylesRef.current = selectedStyles;
@@ -74,28 +80,16 @@ export default function PlaceChars({
     }
   };
 
-  // useEffect(() => {
-  //   childSaveOnUnmount.current = () => {
-  //     dataRef.current = {
-  //       styles: stylesRef.current,
-  //       song_list: songRef.current,
-  //       intruments_lend: instrumentsRef.current,
-  //       drums: drumsRef.current,
-  //     };
-  //   };
-
-  //   return () => {
-  //     childSaveOnUnmount.current = () => {};
-  //   };
-  // }, []);
-
   function updateDataRef() {
-    dataRef.current = {
-      styles: stylesRef.current,
-      song_list: songRef.current,
-      intruments_lend: instrumentsRef.current,
-      drums: drumsRef.current,
-    };
+    setForm((prev) => ({
+      ...prev,
+      features: {
+        styles: stylesRef.current,
+        song_list: songRef.current,
+        intruments_lend: instrumentsRef.current,
+        drums: drumsRef.current,
+      },
+    }));
   }
 
   useEffect(() => {

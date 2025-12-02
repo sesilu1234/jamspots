@@ -8,6 +8,8 @@ import FeaturesIcon from './icons/FeaturesIcon';
 import DescriptionIcon from './icons/DescriptionIcon';
 import SocialIcon from './icons/SocialIcon';
 
+import { useParams } from 'next/navigation';
+
 const sections = [
   { id: 'informaciongeneral', label: 'Información general', Icon: InfoIcon },
   { id: 'fotos', label: 'Fotos', Icon: PhotosIcon },
@@ -29,12 +31,14 @@ export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
   const searchParams = useSearchParams();
   const initialSection = searchParams.get('section') || 'informaciongeneral';
 
+  const { id: slugId } = useParams();
+
   // local state for instant highlight
   const [currentSection, setCurrentSection] = useState(initialSection);
 
   const goToSection = (id: string) => {
     setCurrentSection(id); // instant highlight
-    router.push(`/jam_create_edit?section=${id}`); // update URL
+    router.push(`/jams_list_signIn/create?section=${id}`); // update URL
   };
 
   return (
@@ -43,8 +47,9 @@ export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
         <div
           key={id}
           onClick={() => {
-            childSaveOnUnmount.current?.(); // call the current section save function
-            goToSection(id); // then switch section
+            // call the current section save function
+            goToSection(id);
+            childSaveOnUnmount.current?.(); // then switch section
           }}
           className={`
             flex items-center p-2 gap-2 rounded-md cursor-pointer
