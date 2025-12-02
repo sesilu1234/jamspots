@@ -1,86 +1,70 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import GeneralInfo from './edit_areas/GeneralInfo';
-import UploadPhotos from './edit_areas/UploadPhotos';
-import PlaceChars from './edit_areas/PlaceChars';
-import Social from './edit_areas/Social';
-import PlaceDescription from './edit_areas/PlaceDescription';
-import {
-  GeneralInfoType,
-  PhotosType,
-  FeaturesType,
-  DescriptionType,
-  SocialType,
-} from './edit_areas/types/types';
+
+import Sections from './sections';
+
 
 import { jamSchema } from './zodCheck';
 
 import { useParams } from 'next/navigation';
+
+import { useAtom } from "jotai";
+import { formAtom } from "./store/jotai";
+
 
 type EditAreaProps = {
   childSaveOnUnmount: React.RefObject<() => void>;
 };
 
 export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
-  const searchParams = useSearchParams();
-  const currentSection = searchParams.get('section') || 'informaciongeneral';
+
+
+  const [form, setForm] = useAtom(formAtom);
 
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
-    if (!id) return;
+  if (!id) return;
 
-    fetch(`/api/get-jam-edit/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        const jam = data[0]; // asumimos que viene un array
-        console.log(jam);
+  setLoading(true);
 
-        // asignar uno a uno
-        generalInfo.current.jam_title = jam.jam_title;
-        generalInfo.current.location_title = jam.location_title;
-        generalInfo.current.location_address = jam.location_address;
-
-        social.current.instagram = jam.social_links.instagram;
-        social.current.facebook = jam.social_links.facebook;
-        social.current.siteWeb = jam.social_links.siteWeb;
-
-        setLoading(false); // todo listo
+  fetch(`/api/get-jam-edit/${id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log('eiiiii');
+      console.log(data);
+      setForm({
+        generalInfo: {
+          jam_title: data.jam_title,
+          location_title: data.location_title,
+          location_address: data.location_address,
+          coordinates: { lat: data.lat, lng: data.lng },
+          dates: {
+            period: data.periodicity,
+            day_of_week: data.daOfWeek,
+            time: { from: data.time_start, to: null },
+            list_of_dates: data.dates,
+          },
+        },
+        photos: { images: data.images },
+        features: {
+          styles: data.styles,
+          song_list: data.lista_canciones,
+          intruments_lend: data.intruments_lend,
+          drums: data.drums,
+        },
+        description: { description: data.description },
+        social: {
+          instagram: data.social_links.instagram,
+          facebook: data.social_links.facebook,
+          siteWeb: data.social_links.siteWeb,
+        },
       });
-  }, [id]);
-  // One state per section
-  const generalInfo = useRef<GeneralInfoType>({
-    jam_title: '',
-    location_title: '',
-    location_address: '',
-    coordinates: {
-      lat: '',
-      lng: '',
-    },
-    dates: {
-      period: 'manual',
-      day_of_week: null,
-      time: { from: '21:30', to: null },
-      list_of_dates: [],
-    },
-  });
-  const photos = useRef<PhotosType>({ images: [] });
-  const features = useRef<FeaturesType>({
-    styles: [],
-    song_list: false,
-    intruments_lend: true,
-    drums: true,
-  });
-  const description = useRef<DescriptionType>({
-    description: null,
-  });
-  const social = useRef<SocialType>({
-    instagram: '',
-    facebook: '',
-    siteWeb: '',
-  });
+      setLoading(false);
+    });
+}, [id]); // ✅ solo se ejecuta cuando cambia id
+
 
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
@@ -93,7 +77,8 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
-  const uploadPhotos = async (files: File[]) => {
+
+    const uploadPhotos = async (files: File[]) => {
     const formData = new FormData();
     files.forEach((file) => formData.append('images', file));
 
@@ -121,7 +106,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     childSaveOnUnmount.current?.();
 
     const images_files: File[] = [];
-    for (const url of photos.current.images) {
+    for (const url of form.photos.images) {
       const res = await fetch(url);
       const blob = await res.blob();
       // optional: give a filename
@@ -131,24 +116,24 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     }
 
     const photos_urls = await uploadPhotos(images_files);
-    console.log(generalInfo);
+    console.log(form.generalInfo);
     const jamData = {
-      jam_title: generalInfo.current.jam_title,
-      location_title: generalInfo.current.location_title,
-      location_address: generalInfo.current.location_address,
-      periodicity: generalInfo.current.dates.period,
-      dayOfWeek: generalInfo.current.dates.day_of_week,
-      dates: generalInfo.current.dates.list_of_dates,
-      time_start: generalInfo.current.dates.time.from,
+      jam_title: form.generalInfo.jam_title,
+      location_title: form.generalInfo.location_title,
+      location_address: form.generalInfo.location_address,
+      periodicity: form.generalInfo.dates.period,
+      dayOfWeek: form.generalInfo.dates.day_of_week,
+      dates: form.generalInfo.dates.list_of_dates,
+      time_start: form.generalInfo.dates.time.from,
       images: photos_urls,
-      styles: features.current.styles,
-      lista_canciones: features.current.song_list,
+      styles: form.features.styles,
+      lista_canciones: form.features.song_list,
 
-      instruments_lend: features.current.intruments_lend,
-      drums: features.current.drums,
-      description: description.current.description,
-      social_links: social.current,
-      location_coords: generalInfo.current.coordinates,
+      instruments_lend: form.features.intruments_lend,
+      drums: form.features.drums,
+      description: form.description.description,
+      social_links: form.social,
+      location_coords: form.generalInfo.coordinates,
     };
     const parsed_jamData = jamSchema.safeParse(jamData);
     console.log(parsed_jamData);
@@ -162,44 +147,23 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     const data = await res.json();
   };
 
+
+
   if (loading) return null;
   return (
-    <div>
-      <div
-        className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
-  hover:text-black hover:bg-slate-200 hover:border hover:border-black"
-        onClick={() => handleSave()}
-      >
-        Save and Exit
-      </div>
 
-      {currentSection === 'informaciongeneral' && (
-        <GeneralInfo
-          dataRef={generalInfo}
-          childSaveOnUnmount={childSaveOnUnmount}
-        />
-      )}
-      {currentSection === 'fotos' && (
-        <UploadPhotos
-          dataRef={photos}
-          childSaveOnUnmount={childSaveOnUnmount}
-        />
-      )}
-      {currentSection === 'caracteristicas' && (
-        <PlaceChars
-          dataRef={features}
-          childSaveOnUnmount={childSaveOnUnmount}
-        />
-      )}
-      {currentSection === 'descripcion' && (
-        <PlaceDescription
-          dataRef={description}
-          childSaveOnUnmount={childSaveOnUnmount}
-        />
-      )}
-      {currentSection === 'redessociales' && (
-        <Social dataRef={social} childSaveOnUnmount={childSaveOnUnmount} />
-      )}
-    </div>
+
+    <div>
+          <div
+            className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
+      hover:text-black hover:bg-slate-200 hover:border hover:border-black"
+            onClick={() => handleSave()}
+          >
+            Save and Exit
+          </div>
+    
+          <Sections childSaveOnUnmount={childSaveOnUnmount}/>
+        </div>
+      
   );
 }

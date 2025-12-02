@@ -3,18 +3,29 @@ import { Input } from '@/components/ui/input';
 import { House, Facebook, InstagramIcon } from 'lucide-react';
 import { SocialProps } from './types/types';
 
-export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
+import { useAtom } from "jotai";
+import { formAtom } from "../store/jotai";
+
+export default function Social({ data, childSaveOnUnmount }: SocialProps) {
+
+
+  const [form, setForm] = useAtom(formAtom);
+
   const instagramRef = useRef<HTMLInputElement>(null);
   const facebookRef = useRef<HTMLInputElement>(null);
   const siteWebRef = useRef<HTMLInputElement>(null);
 
-  function updateDataRef() {
-    dataRef.current = {
-      instagram: instagramRef.current?.value || '',
-      facebook: facebookRef.current?.value || '',
-      siteWeb: siteWebRef.current?.value || '',
-    };
-  }
+function updateDataRef() {
+  setForm(prev => ({
+    ...prev,
+    social: {
+      instagram: instagramRef.current?.value || "",
+      facebook: facebookRef.current?.value || "",
+      siteWeb: siteWebRef.current?.value || "",
+    },
+  }));
+}
+
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/immutability
@@ -48,7 +59,7 @@ export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
             }
             name="INSTAGRAM"
             ref={instagramRef}
-            value={dataRef.current.instagram}
+            value={data.instagram}
           />
           <LinksInput
             svg={
@@ -66,7 +77,7 @@ export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
             }
             name="FACEBOOK"
             ref={facebookRef}
-            value={dataRef.current.facebook}
+            value={data.facebook}
           />
           <LinksInput
             svg={
@@ -84,7 +95,7 @@ export default function Social({ dataRef, childSaveOnUnmount }: SocialProps) {
             }
             name="SITE WEB"
             ref={siteWebRef}
-            value={dataRef.current.siteWeb}
+            value={data.siteWeb}
           />
           ;
         </div>

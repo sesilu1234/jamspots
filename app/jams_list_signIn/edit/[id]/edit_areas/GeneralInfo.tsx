@@ -19,22 +19,32 @@ import * as React from 'react';
 
 import { Calendar } from '@/components/ui/calendar';
 
+
+import { useAtom } from "jotai";
+import { formAtom } from "../store/jotai";
+
 export default function EditArea({
-  dataRef,
+  data,
   childSaveOnUnmount,
 }: GeneralInfoProps) {
-  const [period, setPeriod] = useState<'manual' | 'weekly'>(
-    dataRef.current.dates.period,
+
+
+  
+  const [form, setForm] = useAtom(formAtom);
+
+
+  const [period, setPeriod] = useState<'manual' | 'weekly' | string>(
+    data.dates.period,
   );
   const [weekDay, setWeekDay] = useState<string | null>(
-    dataRef.current.dates.day_of_week,
+    data.dates.day_of_week,
   );
   const [dates, setDates] = React.useState<Date[]>(
-    dataRef.current.dates.list_of_dates.map((d: string) => new Date(d)),
+    data.dates.list_of_dates.map((d: string) => new Date(d)),
   );
 
-  const [fromTime, setFromTime] = useState(dataRef.current.dates.time.from);
-  const [toTime, setToTime] = useState(dataRef.current.dates.time.to);
+  const [fromTime, setFromTime] = useState(data.dates.time.from);
+  const [toTime, setToTime] = useState(data.dates.time.to);
 
   const daysOfWeek = [
     'Monday',
@@ -46,11 +56,11 @@ export default function EditArea({
     'Sunday',
   ];
 
-  const jamTitleRef = useRef(dataRef.current.jam_title);
-  const locationTitleRef = useRef(dataRef.current.location_title);
-  const locationAddressRef = useRef(dataRef.current.location_address);
-  const coordinatesRef = useRef(dataRef.current.coordinates);
-  const datesRef = useRef(dataRef.current.dates);
+  const jamTitleRef = useRef(data.jam_title);
+  const locationTitleRef = useRef(data.location_title);
+  const locationAddressRef = useRef(data.location_address);
+  const coordinatesRef = useRef(data.coordinates);
+  const datesRef = useRef(data.dates);
 
   datesRef.current = {
     period: period,
@@ -69,13 +79,22 @@ export default function EditArea({
       datesRef.current.list_of_dates = [];
     }
 
-    dataRef.current = {
-      jam_title: jamTitleRef.current,
-      location_title: locationTitleRef.current,
-      location_address: locationAddressRef.current,
-      coordinates: coordinatesRef.current,
-      dates: datesRef.current,
-    };
+
+   setForm(prev => ({
+  ...prev,
+  generalInfo: {
+    jam_title: jamTitleRef.current,
+    location_title: locationTitleRef.current,
+    location_address: locationAddressRef.current,
+    coordinates: coordinatesRef.current,
+    dates: datesRef.current  // ✅ casteo
+  } 
+}));
+
+
+
+
+
   }
 
   useEffect(() => {
@@ -220,7 +239,7 @@ export default function EditArea({
 }
 
 interface Calendar03Props {
-  period?: 'manual' | 'weekly';
+  period?: 'manual' | 'weekly' | string;
   weekDay?: string | null;
   dates?: Date[];
   datesSetter?: (dates: Date[]) => void;

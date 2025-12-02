@@ -8,6 +8,8 @@ import FeaturesIcon from './icons/FeaturesIcon';
 import DescriptionIcon from './icons/DescriptionIcon';
 import SocialIcon from './icons/SocialIcon';
 
+import { useParams } from 'next/navigation';
+
 const sections = [
   { id: 'informaciongeneral', label: 'Información general', Icon: InfoIcon },
   { id: 'fotos', label: 'Fotos', Icon: PhotosIcon },
@@ -31,13 +33,16 @@ export default function EditSections({ childSaveOnUnmount }: EditAreaProps){
   const searchParams = useSearchParams();
   const initialSection = searchParams.get('section') || 'informaciongeneral';
 
+const { id: slugId } = useParams();
+
   // local state for instant highlight
   const [currentSection, setCurrentSection] = useState(initialSection);
 
   const goToSection = (id: string) => {
     setCurrentSection(id); // instant highlight
-    router.push(`/jam_create_edit?section=${id}`); // update URL
+    router.push(`/jams_list_signIn/edit/${slugId}?section=${id}`); // update URL
   };
+  
 
   return (
     <div className="flex flex-col gap-8 mx-8  w-3/5">

@@ -11,7 +11,7 @@ const DraftEditor = dynamic(() => import('./textSlate'), {
 });
 
 export default function PlaceDescription({
-  dataRef,
+  data,
   childSaveOnUnmount,
 }: PlaceDescriptionProps) {
   const [text, setText] = useState('');
@@ -21,7 +21,7 @@ export default function PlaceDescription({
       <Toaster />
       <div className="ml-48 mt-12">
         <DraftEditor
-          dataRef={dataRef}
+          data={data}
           childSaveOnUnmount={childSaveOnUnmount}
         />
       </div>

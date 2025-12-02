@@ -5,19 +5,35 @@ import Image from 'next/image';
 import TrashButton from './icons/TrashButton';
 import { UploadPhotosProps } from './types/types';
 
+import { useAtom } from "jotai";
+import { formAtom } from "../store/jotai";
+
 export default function PhotoUploader({
-  dataRef,
+  data,
   childSaveOnUnmount,
 }: UploadPhotosProps) {
-  const [photos, setPhotos] = useState<string[]>(dataRef.current.images);
+
+
+  const [form, setForm] = useAtom(formAtom);
+
+  const [photos, setPhotos] = useState<string[]>(data.images);
+  console.log(photos);
 
   const photoStateRef = useRef(photos);
-  photoStateRef.current = photos; // update every render
+  photoStateRef.current = photos;
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/immutability
     childSaveOnUnmount.current = () => {
-      dataRef.current.images = photoStateRef.current;
+      console.log('photos');
+      console.log(photoStateRef);
+      setForm(prev => ({
+  ...prev,
+  photos: {
+    
+    images: photoStateRef .current
+  } 
+}));
     };
 
     return () => {

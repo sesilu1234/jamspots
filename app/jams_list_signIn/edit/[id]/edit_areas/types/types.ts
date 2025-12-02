@@ -11,7 +11,7 @@ export type GeneralInfoType = {
     lng: string;
   };
   dates: {
-    period: 'manual' | 'weekly';
+    period: string;
     day_of_week: string | null;
     time: { from: string; to: string | null };
     list_of_dates: string[];
@@ -41,26 +41,26 @@ export type SocialType = {
 
 // Props for child components
 export interface GeneralInfoProps {
-  dataRef: React.RefObject<GeneralInfoType>;
+  data: GeneralInfoType;
   childSaveOnUnmount: React.RefObject<() => void>;
 }
 
 export interface UploadPhotosProps {
-  dataRef: React.RefObject<PhotosType>;
+  data: PhotosType;
   childSaveOnUnmount: React.RefObject<() => void>;
 }
 
 export interface PlaceCharsProps {
-  dataRef: React.RefObject<FeaturesType>;
+  data: FeaturesType;
   childSaveOnUnmount: React.RefObject<() => void>;
 }
 
 export interface PlaceDescriptionProps {
-  dataRef: React.RefObject<DescriptionType>;
+  data: DescriptionType;
   childSaveOnUnmount: React.RefObject<() => void>;
 }
 
 export interface SocialProps {
-  dataRef: React.RefObject<SocialType>;
+  data: SocialType;
   childSaveOnUnmount: React.RefObject<() => void>;
 }
