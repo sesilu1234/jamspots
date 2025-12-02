@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 import Sections from './sections';
-
+import { useRouter } from 'next/navigation';
 
 import { jamSchema } from './zodCheck';
 
@@ -139,12 +139,15 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     console.log(parsed_jamData);
     console.log('Saving all data:', jamData);
 
-    const res = await fetch('/api/create-session', {
-      method: 'POST',
-      body: JSON.stringify(jamData),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await res.json();
+    await fetch(`/api/update-session/${id}`, {
+  method: 'POST',
+  body: JSON.stringify(jamData),
+  headers: { 'Content-Type': 'application/json' },
+});
+
+    
+    const router = useRouter();
+    router.push(`/jams_list_signIn/`); 
   };
 
 
