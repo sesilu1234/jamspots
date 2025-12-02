@@ -20,13 +20,11 @@ const sections = [
   { id: 'redessociales', label: 'Redes sociales', Icon: SocialIcon },
 ];
 
-
 type EditAreaProps = {
   childSaveOnUnmount: React.RefObject<() => void>;
 };
 
-
-export default function EditSections({ childSaveOnUnmount }: EditAreaProps){
+export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialSection = searchParams.get('section') || 'informaciongeneral';
@@ -45,9 +43,9 @@ export default function EditSections({ childSaveOnUnmount }: EditAreaProps){
         <div
           key={id}
           onClick={() => {
-  childSaveOnUnmount.current?.(); // call the current section save function
-  goToSection(id);               // then switch section
-}}
+            childSaveOnUnmount.current?.(); // call the current section save function
+            goToSection(id); // then switch section
+          }}
           className={`
             flex items-center p-2 gap-2 rounded-md cursor-pointer
            ${currentSection === id ? 'bg-gray-800/80  text-white' : 'bg-white hover:bg-gray-100'}

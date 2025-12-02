@@ -39,7 +39,9 @@ export const MapProvider = ({ children }: MapProviderProps) => {
 
   const setPosition = (lat: number, lng: number) => {
     setLocationSearch({ coordinates: { lat, lng } });
-    if (map) {map.flyTo([lat, lng], 10, { duration: 1.5 })};
+    if (map) {
+      map.flyTo([lat, lng], 10, { duration: 1.5 });
+    }
   };
 
   useEffect(() => {

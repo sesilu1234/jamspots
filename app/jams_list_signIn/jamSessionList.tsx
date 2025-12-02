@@ -17,7 +17,7 @@ type JamProps = {
   jam_title: string;
   jam_adress: string;
   jam_image_src: string;
-  deleteJam: (id:string)=> void,
+  deleteJam: (id: string) => void;
 };
 
 export default function JamSessionList() {
@@ -25,14 +25,13 @@ export default function JamSessionList() {
 
   const [loading, setLoading] = useState(true);
 
-   async function deleteJam(jamId: string) {
+  async function deleteJam(jamId: string) {
     // Llamada al API para eliminar
     await fetch(`/api/delete-session/${jamId}`, { method: 'DELETE' });
 
     // Actualizar estado eliminando el jam con ese id
-    setJams(prev => prev.filter(j => j.id !== jamId));
+    setJams((prev) => prev.filter((j) => j.id !== jamId));
   }
-
 
   useEffect(() => {
     const fetchJams = async () => {
@@ -68,7 +67,7 @@ export default function JamSessionList() {
           jam_title={jam.jam_title}
           jam_adress={jam.location_address}
           jam_image_src={jam.image}
-          deleteJam = {deleteJam}
+          deleteJam={deleteJam}
         />
       ))}
 
@@ -98,7 +97,13 @@ export default function JamSessionList() {
   );
 }
 
-function Jam({ id, jam_title, jam_adress, jam_image_src, deleteJam  }: JamProps) {
+function Jam({
+  id,
+  jam_title,
+  jam_adress,
+  jam_image_src,
+  deleteJam,
+}: JamProps) {
   return (
     <div className="flex items-center gap-8 py-4 mx-auto w-[1070px]">
       <div className=" w-[300px] h-32 relative">
@@ -127,8 +132,9 @@ function Jam({ id, jam_title, jam_adress, jam_image_src, deleteJam  }: JamProps)
           Editar
         </Link>
 
-        <button className="px-3 py-1 rounded-sm bg-red-600/80 text-white hover:bg-red-700"
-        onClick={()=>deleteJam(id)}
+        <button
+          className="px-3 py-1 rounded-sm bg-red-600/80 text-white hover:bg-red-700"
+          onClick={() => deleteJam(id)}
         >
           Eliminar
         </button>

@@ -22,18 +22,16 @@ const sections = [
   { id: 'redessociales', label: 'Redes sociales', Icon: SocialIcon },
 ];
 
-
 type EditAreaProps = {
   childSaveOnUnmount: React.RefObject<() => void>;
 };
 
-
-export default function EditSections({ childSaveOnUnmount }: EditAreaProps){
+export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialSection = searchParams.get('section') || 'informaciongeneral';
 
-const { id: slugId } = useParams();
+  const { id: slugId } = useParams();
 
   // local state for instant highlight
   const [currentSection, setCurrentSection] = useState(initialSection);
@@ -42,7 +40,6 @@ const { id: slugId } = useParams();
     setCurrentSection(id); // instant highlight
     router.push(`/jams_list_signIn/edit/${slugId}?section=${id}`); // update URL
   };
-  
 
   return (
     <div className="flex flex-col gap-8 mx-8  w-3/5">
@@ -50,9 +47,10 @@ const { id: slugId } = useParams();
         <div
           key={id}
           onClick={() => {
-  childSaveOnUnmount.current?.(); // call the current section save function
-  goToSection(id);               // then switch section
-}}
+            // call the current section save function
+            goToSection(id);
+            childSaveOnUnmount.current?.(); // then switch section
+          }}
           className={`
             flex items-center p-2 gap-2 rounded-md cursor-pointer
            ${currentSection === id ? 'bg-gray-800/80  text-white' : 'bg-white hover:bg-gray-100'}

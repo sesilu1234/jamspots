@@ -1,8 +1,7 @@
-
 'use client';
 import { divIcon } from 'leaflet';
-import { signIn } from "next-auth/react";
- import Link from 'next/link';
+import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -25,27 +24,29 @@ export default function Home() {
           <div className="h-[1.5px] bg-gray-700/50 w-168 mt-4 mx-auto"></div>
           <div className="flex w-168 justify-between mx-auto mt-4">
             <Link href="/">
-            <div className="flex gap-4 items-center font-bold">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 23 23"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4.40527 12.65H23V10.35H4.40527L13.1395 1.61575L11.5 0L0 11.5L11.5 23L13.1395 21.3842L4.40527 12.65Z"
-                  fill="#1F1F1F"
-                />
-              </svg>
-              Back to Home Page
-            </div>
+              <div className="flex gap-4 items-center font-bold">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 23 23"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4.40527 12.65H23V10.35H4.40527L13.1395 1.61575L11.5 0L0 11.5L11.5 23L13.1395 21.3842L4.40527 12.65Z"
+                    fill="#1F1F1F"
+                  />
+                </svg>
+                Back to Home Page
+              </div>
             </Link>
             <div className="font-bold">SIGN IN</div>
           </div>
 
-          <div className="flex items-center font-bold px-8 py-4 mt-24 bg-white w-84 gap-8 mx-auto justify-center rounded-xl cursor-pointer"
-          onClick={() => signIn("google", { callbackUrl: "/" })}>
+          <div
+            className="flex items-center font-bold px-8 py-4 mt-24 bg-white w-84 gap-8 mx-auto justify-center rounded-xl cursor-pointer"
+            onClick={() => signIn('google', { callbackUrl: '/' })}
+          >
             <svg
               width="35"
               height="35"

@@ -3,29 +3,28 @@ import { Input } from '@/components/ui/input';
 import { House, Facebook, InstagramIcon } from 'lucide-react';
 import { SocialProps } from './types/types';
 
-import { useAtom } from "jotai";
-import { formAtom } from "../store/jotai";
+import { useAtom } from 'jotai';
+import { formAtom } from '../store/jotai';
+
+import { useFormStore } from '../store/formStore'; // path a tu store
 
 export default function Social({ data, childSaveOnUnmount }: SocialProps) {
-
-
-  const [form, setForm] = useAtom(formAtom);
+  const setForm = useFormStore((state) => state.setForm);
 
   const instagramRef = useRef<HTMLInputElement>(null);
   const facebookRef = useRef<HTMLInputElement>(null);
   const siteWebRef = useRef<HTMLInputElement>(null);
 
-function updateDataRef() {
-  setForm(prev => ({
-    ...prev,
-    social: {
-      instagram: instagramRef.current?.value || "",
-      facebook: facebookRef.current?.value || "",
-      siteWeb: siteWebRef.current?.value || "",
-    },
-  }));
-}
-
+  function updateDataRef() {
+    setForm((prev) => ({
+      ...prev,
+      social: {
+        instagram: instagramRef.current?.value || '',
+        facebook: facebookRef.current?.value || '',
+        siteWeb: siteWebRef.current?.value || '',
+      },
+    }));
+  }
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/immutability

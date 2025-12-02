@@ -4,8 +4,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PlaceCharsProps } from './types/types';
 
-import { useAtom } from "jotai";
-import { formAtom } from "../store/jotai";
+import { useAtom } from 'jotai';
+import { formAtom } from '../store/jotai';
+
+import { useFormStore } from '../store/formStore'; // path a tu store
 
 const all_styles = [
   // Musical styles
@@ -43,16 +45,11 @@ export default function PlaceChars({
   data,
   childSaveOnUnmount,
 }: PlaceCharsProps) {
-
-
-  const [form, setForm] = useAtom(formAtom);
-
+  const setForm = useFormStore((state) => state.setForm);
 
   const [search, setSearch] = useState('');
 
-  const [selectedStyles, setSelectedStyles] = useState<string[]>(
-    data.styles,
-  );
+  const [selectedStyles, setSelectedStyles] = useState<string[]>(data.styles);
   const [song_list, setSongList] = useState<boolean>(data.song_list);
   const [instruments_lend, setIntrumentsLend] = useState<boolean>(
     data.intruments_lend,
@@ -83,23 +80,16 @@ export default function PlaceChars({
     }
   };
 
-
   function updateDataRef() {
-    
-    
-    
-   setForm(prev => ({
-  ...prev,
-  features: {
-          styles: stylesRef.current,
-          song_list: songRef.current,
-          intruments_lend: instrumentsRef.current,
-          drums: drumsRef.current,
-        },
-}));
-
-
-
+    setForm((prev) => ({
+      ...prev,
+      features: {
+        styles: stylesRef.current,
+        song_list: songRef.current,
+        intruments_lend: instrumentsRef.current,
+        drums: drumsRef.current,
+      },
+    }));
   }
 
   useEffect(() => {

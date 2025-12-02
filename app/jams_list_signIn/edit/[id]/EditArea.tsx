@@ -8,63 +8,62 @@ import { jamSchema } from './zodCheck';
 
 import { useParams } from 'next/navigation';
 
-import { useAtom } from "jotai";
-import { formAtom } from "./store/jotai";
+import { useAtom } from 'jotai';
+import { formAtom } from './store/jotai';
 
+import { useFormStore } from './store/formStore'; // path a tu store
 
 type EditAreaProps = {
   childSaveOnUnmount: React.RefObject<() => void>;
 };
 
 export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
+  const setForm = useFormStore((state) => state.setForm);
 
-
-  const [form, setForm] = useAtom(formAtom);
+  const router = useRouter(); // ✅ call hook here, at top level
 
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
-  if (!id) return;
+    if (!id) return;
 
-  setLoading(true);
+    fetch(`/api/get-jam-edit/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('eiiiii', data);
 
-  fetch(`/api/get-jam-edit/${id}`)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log('eiiiii');
-      console.log(data);
-      setForm({
-        generalInfo: {
-          jam_title: data.jam_title,
-          location_title: data.location_title,
-          location_address: data.location_address,
-          coordinates: { lat: data.lat, lng: data.lng },
-          dates: {
-            period: data.periodicity,
-            day_of_week: data.daOfWeek,
-            time: { from: data.time_start, to: null },
-            list_of_dates: data.dates,
+        setForm({
+          generalInfo: {
+            jam_title: data.jam_title,
+            location_title: data.location_title,
+            location_address: data.location_address,
+            coordinates: { lat: data.lat, lng: data.lng },
+            dates: {
+              period: data.periodicity,
+              day_of_week: data.dayOfWeek,
+              time: { from: data.time_start, to: null },
+              list_of_dates: data.dates,
+            },
           },
-        },
-        photos: { images: data.images },
-        features: {
-          styles: data.styles,
-          song_list: data.lista_canciones,
-          intruments_lend: data.intruments_lend,
-          drums: data.drums,
-        },
-        description: { description: data.description },
-        social: {
-          instagram: data.social_links.instagram,
-          facebook: data.social_links.facebook,
-          siteWeb: data.social_links.siteWeb,
-        },
+          photos: { images: data.images },
+          features: {
+            styles: data.styles,
+            song_list: data.lista_canciones,
+            intruments_lend: data.instruments_lend,
+            drums: data.drums,
+          },
+          description: { description: data.description },
+          social: {
+            instagram: data.social_links.instagram,
+            facebook: data.social_links.facebook,
+            siteWeb: data.social_links.siteWeb,
+          },
+        });
+
+        setLoading(false);
       });
-      setLoading(false);
-    });
-}, [id]); // ✅ solo se ejecuta cuando cambia id
-
+  }, [id]); // ✅ solo se ejecuta cuando cambia id
 
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
@@ -77,8 +76,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
-
-    const uploadPhotos = async (files: File[]) => {
+  const uploadPhotos = async (files: File[]) => {
     const formData = new FormData();
     files.forEach((file) => formData.append('images', file));
 
@@ -103,7 +101,17 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
   const handleSave = async () => {
-    childSaveOnUnmount.current?.();
+    childSaveOnUnmount.current();
+
+    const form = useFormStore.getState().form;
+
+    console.log('YYYYYYYYYYYYYYYYYY');
+    console.log('YYYYYYYYYYYYYYYYYY');
+    console.log('YYYYYYYYYYYYYYYYYY');
+    console.log('YYYYYYYYYYYYYYYYYY');
+    console.log('YYYYYYYYYYYYYYYYYY');
+
+    console.log(form);
 
     const images_files: File[] = [];
     for (const url of form.photos.images) {
@@ -140,33 +148,26 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     console.log('Saving all data:', jamData);
 
     await fetch(`/api/update-session/${id}`, {
-  method: 'POST',
-  body: JSON.stringify(jamData),
-  headers: { 'Content-Type': 'application/json' },
-});
+      method: 'POST',
+      body: JSON.stringify(jamData),
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    
-    const router = useRouter();
-    router.push(`/jams_list_signIn/`); 
+    router.push(`/jams_list_signIn/`);
   };
-
-
 
   if (loading) return null;
   return (
-
-
     <div>
-          <div
-            className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
+      <div
+        className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
       hover:text-black hover:bg-slate-200 hover:border hover:border-black"
-            onClick={() => handleSave()}
-          >
-            Save and Exit
-          </div>
-    
-          <Sections childSaveOnUnmount={childSaveOnUnmount}/>
-        </div>
-      
+        onClick={() => handleSave()}
+      >
+        Save and Exit
+      </div>
+
+      <Sections childSaveOnUnmount={childSaveOnUnmount} />
+    </div>
   );
 }

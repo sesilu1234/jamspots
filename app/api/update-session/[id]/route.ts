@@ -1,32 +1,37 @@
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 export async function POST(
   req: Request,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params;
   console.log('Updating session with id:', id);
 
   const body = await req.json();
 
-  const {
-    jam_title,
-    location_title,
-    location_address,
-    periodicity,
-    dayOfWeek,
-    dates,
-    time_start,
-    images,
-    styles,
-    lista_canciones,
-    instruments_lend,
-    drums,
-    description,
-    social_links,
-    location_coords,
-  } = body;
+  console.log(body);
+
+  const session = await getServerSession(authOptions); // App Router uses new form
+
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const userEmail = session.user.email;
+
+  // get host_id from profiles table
+  const { data: profile, error: profileError } = await supabaseAdmin
+    .from('profiles')
+    .select('id')
+    .eq('email', userEmail)
+    .single();
+
+  const host_id = profile?.id;
+
+  const { location_coords } = body;
 
   // Handle geometry safely
   let pointValue: string | null = null;
@@ -42,24 +47,12 @@ export async function POST(
     .from('sessions')
     .update([
       {
-        jam_title,
-        location_title,
-        location_address,
-        periodicity,
-        dayOfWeek,
-        dates,
-        time_start,
-        images,
-        styles,
-        lista_canciones,
-        instruments_lend,
-        drums,
-        description,
-        social_links,
+        ...body,
         location_coords: pointValue,
       },
     ])
     .eq('id', id)
+    .eq('host_id', host_id)
     .select()
     .maybeSingle(); // return the updated row
 

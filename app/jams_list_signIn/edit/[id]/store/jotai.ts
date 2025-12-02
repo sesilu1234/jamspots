@@ -1,4 +1,4 @@
-import { atom } from "jotai";
+import { atom } from 'jotai';
 import {
   GeneralInfoType,
   PhotosType,
@@ -17,19 +17,24 @@ export interface FormType {
 
 export const formAtom = atom<FormType>({
   generalInfo: {
-    jam_title: "",
-    location_title: "",
-    location_address: "",
-    coordinates: { lat: "", lng: "" },
+    jam_title: '',
+    location_title: '',
+    location_address: '',
+    coordinates: { lat: '', lng: '' },
     dates: {
-      period: "manual",
+      period: 'manual',
       day_of_week: null,
-      time: { from: "21:30", to: null },
+      time: { from: '21:30', to: null },
       list_of_dates: [],
     },
   },
   photos: { images: [] },
-  features: { styles: [], song_list: false, intruments_lend: true, drums: true },
+  features: {
+    styles: [],
+    song_list: false,
+    intruments_lend: true,
+    drums: true,
+  },
   description: { description: null },
-  social: { instagram: "", facebook: "", siteWeb: "" },
+  social: { instagram: '', facebook: '', siteWeb: '' },
 });

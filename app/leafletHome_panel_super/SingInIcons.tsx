@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useState, useRef, useEffect } from 'react';
+import { useSession, signIn } from 'next-auth/react';
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
-import Link from "next/link";
+import Link from 'next/link';
 
-export default function SessionMenu()  {
+export default function SessionMenu() {
   const { data: session } = useSession();
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -17,28 +17,26 @@ export default function SessionMenu()  {
         setShowSignIn(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
     <div className="absolute top-16 right-6 flex items-center gap-2">
       {session ? (
-
-<Link href="/jams_list_signIn">
-  <div className="w-16 h-16 flex items-center cursor-pointer">
-    <Avatar>
-      <AvatarImage
-        src={session.user?.image || "https://github.com/shadcn.png"}
-        className="rounded-full"
-      />
-      <AvatarFallback>
-        {session.user?.name ? session.user.name[0] : "U"}
-      </AvatarFallback>
-    </Avatar>
-  </div>
-</Link>
-
+        <Link href="/jams_list_signIn">
+          <div className="w-16 h-16 flex items-center cursor-pointer">
+            <Avatar>
+              <AvatarImage
+                src={session.user?.image || 'https://github.com/shadcn.png'}
+                className="rounded-full"
+              />
+              <AvatarFallback>
+                {session.user?.name ? session.user.name[0] : 'U'}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+        </Link>
       ) : (
         <>
           <button
@@ -76,13 +74,12 @@ export default function SessionMenu()  {
 
             {showSignIn && (
               <div className="absolute top-10 right-0 w-32 bg-gray-900/30 flex flex-col items-center gap-2 rounded-md z-50">
-                
                 <Link
-  href="/signIn_page"
-  className="pt-3 hover:underline cursor-pointer font-semibold"
->
-  Sign In
-</Link>
+                  href="/signIn_page"
+                  className="pt-3 hover:underline cursor-pointer font-semibold"
+                >
+                  Sign In
+                </Link>
                 <div className="h-[1.5px] bg-gray-700/50 w-3/5 mt-1"></div>
                 <span className="pb-3 hover:underline cursor-pointer font-[400]">
                   + Añadir sitio

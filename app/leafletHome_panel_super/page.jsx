@@ -8,9 +8,8 @@ import GooglePlacesSearch from './GooglePlacesSearch';
 import JamCarousel from './jamsCarousel';
 import { Input } from '@/components/ui/input';
 import { Menu } from 'lucide-react';
-import Link from "next/link";
-import SignInIcons from './SingInIcons'
-
+import Link from 'next/link';
+import SignInIcons from './SingInIcons';
 
 const MapRender = dynamic(() => import('./MapRender'), { ssr: false });
 
@@ -30,13 +29,9 @@ export default function Home() {
 
   return (
     <>
-
-
-
       <MapProvider>
         <div className="relative flex flex-col w-[1300px] max-w-[90%] mx-auto p-6 ">
-
-          <SignInIcons/>
+          <SignInIcons />
 
           <div className="inline-block">
             <div className="ml-3 flex gap-2 items-end">
@@ -126,29 +121,36 @@ export default function Home() {
       </div>
 
       <footer className="w-screen bg-black/90 text-white py-12 mt-12">
-      <div className="max-w-[90%] w-[1300px] mx-auto p-6">
-        {/* Navigation Links */}
-        <div className="flex flex-row items-center justify-center gap-16 mb-12">
-          <Link href="/contact" className="hover:text-gray-300 cursor-pointer">
-            CONTACT
-          </Link>
-          <Link href="/help" className="hover:text-gray-300 cursor-pointer">
-            HELP
-          </Link>
-          <Link href="/about" className="hover:text-gray-300 cursor-pointer">
-            ABOUT
-          </Link>
-        </div>
+        <div className="max-w-[90%] w-[1300px] mx-auto p-6">
+          {/* Navigation Links */}
+          <div className="flex flex-row items-center justify-center gap-16 mb-12">
+            <Link
+              href="/contact"
+              className="hover:text-gray-300 cursor-pointer"
+            >
+              CONTACT
+            </Link>
+            <Link href="/help" className="hover:text-gray-300 cursor-pointer">
+              HELP
+            </Link>
+            <Link href="/about" className="hover:text-gray-300 cursor-pointer">
+              ABOUT
+            </Link>
+          </div>
 
-        {/* Branding / Tagline */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
-          <img src="/jamspots_icon.png" alt="Jamspots icon" className="h-16" />
-          <p className="text-sm text-gray-400 font-semibold text-center sm:text-left">
-            Find the next spot to share your sound.
-          </p>
+          {/* Branding / Tagline */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+            <img
+              src="/jamspots_icon.png"
+              alt="Jamspots icon"
+              className="h-16"
+            />
+            <p className="text-sm text-gray-400 font-semibold text-center sm:text-left">
+              Find the next spot to share your sound.
+            </p>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
     </>
   );
 }

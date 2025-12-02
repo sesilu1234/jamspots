@@ -19,26 +19,21 @@ import * as React from 'react';
 
 import { Calendar } from '@/components/ui/calendar';
 
+import { useAtom } from 'jotai';
+import { formAtom } from '../store/jotai';
 
-import { useAtom } from "jotai";
-import { formAtom } from "../store/jotai";
+import { useFormStore } from '../store/formStore'; // path a tu store
 
 export default function EditArea({
   data,
   childSaveOnUnmount,
 }: GeneralInfoProps) {
-
-
-  
-  const [form, setForm] = useAtom(formAtom);
-
+  const setForm = useFormStore((state) => state.setForm);
 
   const [period, setPeriod] = useState<'manual' | 'weekly' | string>(
     data.dates.period,
   );
-  const [weekDay, setWeekDay] = useState<string | null>(
-    data.dates.day_of_week,
-  );
+  const [weekDay, setWeekDay] = useState<string | null>(data.dates.day_of_week);
   const [dates, setDates] = React.useState<Date[]>(
     data.dates.list_of_dates.map((d: string) => new Date(d)),
   );
@@ -75,34 +70,27 @@ export default function EditArea({
   };
 
   function updateDataRef() {
-    if (datesRef.current.period == 'weekly') {
+    if (datesRef.current.period === 'weekly') {
       datesRef.current.list_of_dates = [];
     }
 
-
-   setForm(prev => ({
-  ...prev,
-  generalInfo: {
-    jam_title: jamTitleRef.current,
-    location_title: locationTitleRef.current,
-    location_address: locationAddressRef.current,
-    coordinates: coordinatesRef.current,
-    dates: datesRef.current  // ✅ casteo
-  } 
-}));
-
-
-
-
-
+    setForm((prev) => ({
+      ...prev,
+      generalInfo: {
+        jam_title: jamTitleRef.current,
+        location_title: locationTitleRef.current,
+        location_address: locationAddressRef.current,
+        coordinates: coordinatesRef.current,
+        dates: datesRef.current,
+      },
+    }));
   }
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/immutability
     childSaveOnUnmount.current = updateDataRef;
 
     return () => {
-      childSaveOnUnmount.current = () => {};
+      childSaveOnUnmount.current = () => Promise.resolve();
     };
   }, []);
 

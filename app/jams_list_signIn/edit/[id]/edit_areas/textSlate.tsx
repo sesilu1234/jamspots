@@ -16,8 +16,9 @@ import { DescriptionType } from './types/types';
 import { RefObject } from 'react';
 import { RawDraftContentState } from 'draft-js';
 
-import { useAtom } from "jotai";
-import { formAtom } from "../store/jotai";
+import { useAtom } from 'jotai';
+import { formAtom } from '../store/jotai';
+import { useFormStore } from '../store/formStore'; // path a tu store
 
 const MAX_CHARS = 1400;
 
@@ -29,15 +30,11 @@ interface DraftEditorProps {
 }
 
 const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
-
-
-    const [form, setForm] = useAtom(formAtom);
+  const setForm = useFormStore((state) => state.setForm);
 
   const [editorState, setEditorState] = useState(
     data.description
-      ? EditorState.createWithContent(
-          convertFromRaw(data.description),
-        )
+      ? EditorState.createWithContent(convertFromRaw(data.description))
       : EditorState.createEmpty(),
   );
 
@@ -49,18 +46,12 @@ const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
   editorStateRef.current = editorState; // update every render
 
   function updateDataRef() {
-    
-    
-   setForm(prev => ({
-  ...prev,
-  description: {
-    description: convertToRaw(
-      editorStateRef.current.getCurrentContent(),
-    )
-   
-  } 
-}));
-
+    setForm((prev) => ({
+      ...prev,
+      description: {
+        description: convertToRaw(editorStateRef.current.getCurrentContent()),
+      },
+    }));
   }
 
   useEffect(() => {
