@@ -9,7 +9,6 @@ import Image from 'next/image';
 
 type Marker = {
   id: number;
-  name: string;
   lat: number;
   lng: number;
 };
@@ -32,36 +31,6 @@ export default function MapMarkersCluster() {
   const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
 
   const cardId = useRef<number | null>(null);
-
-  // Fetch markers positions
-  useEffect(() => {
-    fetch('/markers.json')
-      .then((res) => res.json())
-      .then((data: Marker[]) => {
-        setMarkersData(data); // update state
-      })
-      .catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    if (!map || markersData.length === 0) return;
-
-    // @ts-ignore
-    const clusterGroup = L.markerClusterGroup();
-
-    markersData.forEach((m) => {
-      const marker = L.marker([m.lat, m.lng]);
-      marker.on('click', () => onClickMarker(m.id));
-      clusterGroup.addLayer(marker);
-    });
-
-    map.addLayer(clusterGroup);
-
-    // ✅ Cleanup function: remove the cluster from map
-    return () => {
-      map.removeLayer(clusterGroup);
-    };
-  }, [map, markersData]);
 
   async function fetchMarker() {
     try {
@@ -101,6 +70,36 @@ export default function MapMarkersCluster() {
 
     await fetchMarker();
   };
+
+  // Fetch markers positions
+  useEffect(() => {
+    fetch('/api/get-all-markers')
+      .then((res) => res.json())
+      .then((data: Marker[]) => {
+        setMarkersData(data); // update state
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    if (!map || markersData.length === 0) return;
+
+    // @ts-ignore
+    const clusterGroup = L.markerClusterGroup();
+
+    markersData.forEach((m) => {
+      const marker = L.marker([m.lat, m.lng]);
+      marker.on('click', () => onClickMarker(m.id));
+      clusterGroup.addLayer(marker);
+    });
+
+    map.addLayer(clusterGroup);
+
+    // ✅ Cleanup function: remove the cluster from map
+    return () => {
+      map.removeLayer(clusterGroup);
+    };
+  }, [map, markersData]);
 
   if (selectedMarker)
     return (

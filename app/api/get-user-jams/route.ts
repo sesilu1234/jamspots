@@ -26,7 +26,7 @@ export async function GET() {
   // Fetch jams where host_id = profile id
   const { data, error } = await supabaseAdmin
     .from('sessions')
-    .select('id, jam_title, location_address, images')
+    .select('id, jam_title, location_address, images, slug')
     .eq('host_id', dataProfiles.id);
 
   if (error) {
@@ -38,6 +38,7 @@ export async function GET() {
     jam_title: j.jam_title,
     location_address: j.location_address,
     image: j.images?.[0] || null,
+    slug: j.slug,
   }));
 
   return NextResponse.json(formatted);

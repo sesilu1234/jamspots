@@ -10,6 +10,7 @@ interface Jam {
   jam_title: string;
   location_address: string;
   image: string;
+  slug: string;
 }
 
 type JamProps = {
@@ -17,6 +18,7 @@ type JamProps = {
   jam_title: string;
   jam_adress: string;
   jam_image_src: string;
+  jam_slug: string;
   deleteJam: (id: string) => void;
 };
 
@@ -67,11 +69,12 @@ export default function JamSessionList() {
           jam_title={jam.jam_title}
           jam_adress={jam.location_address}
           jam_image_src={jam.image}
+          jam_slug={jam.slug}
           deleteJam={deleteJam}
         />
       ))}
 
-      <div className="mt-4 mx-auto w-[1070px]">
+      <div className="mt-4 mx-auto w-[1170px]">
         <Link
           href={`/jams_list_signIn/create`}
           prefetch={false}
@@ -102,10 +105,11 @@ function Jam({
   jam_title,
   jam_adress,
   jam_image_src,
+  jam_slug,
   deleteJam,
 }: JamProps) {
   return (
-    <div className="flex items-center gap-8 py-4 mx-auto w-[1070px]">
+    <div className="flex items-center gap-8 py-4 mx-auto w-[1170px]">
       <div className=" w-[300px] h-32 relative">
         <Image
           src={jam_image_src}
@@ -123,11 +127,19 @@ function Jam({
         </h1>
       </div>
 
-      <div className="flex gap-4  w-[200px] ">
+      <div className="flex gap-4  w-[300px] ">
+        <Link
+          href={`/jam/${jam_slug}`}
+          prefetch={false}
+          className="px-3 py-1 rounded-sm  text-black  bg-[#eab308] hover:bg-[#d8a408]  transition-colors"
+        >
+          View
+        </Link>
+
         <Link
           href={`/jams_list_signIn/edit/${id}`}
           prefetch={false}
-          className="px-3 py-1 rounded-sm bg-black/80 text-white hover:bg-black"
+          className="px-3 py-1 rounded-sm ml-[20px] bg-black/80 text-white hover:bg-black"
         >
           Editar
         </Link>

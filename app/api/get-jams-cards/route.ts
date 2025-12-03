@@ -5,7 +5,7 @@ export async function GET() {
   const { data, error } = await supabaseAdmin
     .from('sessions')
     .select(
-      'id, jam_title, location_title, styles, location_address, dates, time_start, images',
+      'id, jam_title, location_title, styles, location_address, dates, time_start, images, slug',
     );
 
   if (error)

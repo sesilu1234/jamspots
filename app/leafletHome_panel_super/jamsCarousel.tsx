@@ -66,6 +66,7 @@ export default function JamCarousel() {
               address={jam.location_address}
               time={jam.date}
               src={jam.image}
+              slug={jam.slug}
             />
           ))
         )}
