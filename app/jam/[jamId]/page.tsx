@@ -1,30 +1,47 @@
+'use client';
+
 import Image from 'next/image';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { Jam } from '../types/jam';
+import draftToHtml from 'draftjs-to-html';
+import { RawDraftContentState } from 'draft-js';
+import SocialLinks from './SocialLinks';
+import StaticMap from './LocationImageGMaps';
+import TimeAndPlace from './TimeAndPlace';
+import JamImages from './JamImages';
+import JamChars from './JamChars';
 
-interface JamPageProps {
-  params: { jamId: string };
+interface HtmlReadOnlyProps {
+  rawContent: RawDraftContentState;
 }
 
-const detailsTextFromDb =
-  '🔥NEW LOCATION + GRANDE🔥Más espacio para moverse cómodamente ⏰ 19:00 - 23:30(Recomendamos llegar no más tarde de las 21:30)Monday 6 October📍Bunji - The PlaceCalle de Juan Ramón Jiménez, 26, Chamartín, 28036🧑🏽‍💼Dress Code: Business casual/Smart casual💲 PRICE: € 15Válido durante toda la duración del evento ✍🏼Pásate en nuestra mesa de registro para tu name-tag y tu color 🚗Parking gratis en toda la zone desde las 21:00 🚇 Plaza Castilla (500 metros) ⬆️SALIDA: Fundación Canal / Cuzco (650 metros) + Terminal de autobuses Urbanos, nocturnos e interurbanos ✨Si vienes solo no te preocupes: todos estamos aquí con las mismas ganas y la energía de crecer y conectar y el name-tag y tu color te harán más fácil el primer contacto. ➡ ¿Qué necesito para participar?Solo tienes que inscribirte aquí en Meetup (haz clic en el botón “Asistiré”) y añadir este evento a tu calendario. Sigue leyendo para más detalles y mándanos un mensaje privado si tienes alguna pregunta - ¡estaremos encantados de ayudarte!';
-
-const formatText = (text: string) => {
-  // 1) Reemplazar retornos raros (como los que vienen de móviles)
-  const cleaned = text.replace(/[\u2028\u2029]/g, '\n');
-
-  // 2) Separar por saltos de línea o iconos clave
-  const parts = cleaned.split(/(?=🔥|⏰|📍|🧑🏽‍💼|💲|✍🏼|🚗|🚇|✨|➡)/g);
-
-  return parts.map((p, i) => (
-    <p key={i} className="leading-relaxed mb-2">
-      {p.trim()}
-    </p>
-  ));
+const HtmlReadOnly = ({ rawContent }: HtmlReadOnlyProps) => {
+  const html = draftToHtml(rawContent);
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
 };
 
-export default async function JamPage({ params }: JamPageProps) {
-  const { jamId } = await params;
+export default function JamPage() {
+  const params = useParams();
+  const jamId = params.jamId;
+
+  const [jam, setJam] = useState<Jam | null>(null);
+
+  useEffect(() => {
+    async function fetchJam() {
+      const res = await fetch(`/api/get-jam/${jamId}`);
+      const data = await res.json();
+      setJam(data);
+      console.log(data);
+      console.log(Object.keys(data!));
+      // <-- log here, after fetch
+    }
+    fetchJam();
+  }, [jamId]);
+
+  if (!jam) return null;
 
   return (
     <div className="min-h-screen bg-black/90">
@@ -52,179 +69,31 @@ export default async function JamPage({ params }: JamPageProps) {
           </div>
         </div>
         <div className="w-[1100px] max-w-[60%] mx-auto flex flex-col">
-          <h3 className="text-5xl font-bold">La Otra Jam, at Moe Club</h3>
+          <h3 className="text-5xl font-bold">
+            {jam.jam_title + ' at ' + jam.location_title}
+          </h3>
 
-          <div className="grid grid-cols-4 grid-rows-2 gap-2 w-full h-[300px] mt-12">
-            {/* Photo 1: col-span-2 row-span-2 */}
-            <div className="col-span-2 row-span-2 bg-red-400">
-              <img
-                src="/images_Jam/moe0.jpg"
-                alt="Photo 1"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            {/* Photo 2: col-span-2 row-1 */}
-            <div className="col-span-2 row-span-1 bg-blue-400">
-              <img
-                src="/images_Jam/moe1.jpg"
-                alt="Photo 2"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            {/* Photo 3: col-3 row-2 */}
-            <div className="col-start-3 row-start-2 bg-green-400">
-              <img
-                src="/images_Jam/moe3.jpg"
-                alt="Photo 3"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            {/* Photo 4: col-4 row-2 */}
-            <div className="col-start-4 row-start-2 bg-yellow-400">
-              <img
-                src="/images_Jam/moe4.jpg"
-                alt="Photo 4"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
+          <JamImages images={jam.images} />
         </div>
         <div className="flex gap-2 w-[1300px] max-w-[75%] mx-auto py-12 ">
-          <div className="bg-[rgb(170_170_170/0.7)] rounded-lg flex justify-center pt-8 pb-10 px-8 w-1/2">
-            <div className=" gap-8 flex flex-col items-center">
-              <div className=" gap-5 flex flex-col items-center">
-                {' '}
-                <h1 className="text-2xl font-semibold">Cómo es esta Jam?</h1>
-                <div className="h-[1.5px] bg-gray-700/50 w-3/5 "></div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="flex gap-1 items-center font-medium">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 21C8.9 21 7.95833 20.6083 7.175 19.825C6.39167 19.0417 6 18.1 6 17C6 15.9 6.39167 14.9583 7.175 14.175C7.95833 13.3917 8.9 13 10 13C10.3833 13 10.7375 13.0458 11.0625 13.1375C11.3875 13.2292 11.7 13.3667 12 13.55V3H18V7H14V17C14 18.1 13.6083 19.0417 12.825 19.825C12.0417 20.6083 11.1 21 10 21Z"
-                      fill="#1F1F1F"
-                    />
-                  </svg>
-                  <h2>Estilos:</h2>
-                </div>
-                <div className="flex gap-3">
-                  <div className="bg-[rgb(170_170_170/1)] py-1 px-2 rounded-lg">
-                    Blues
-                  </div>
-                  <div className="bg-[rgb(170_170_170/1)] p-1 px-2 rounded-lg">
-                    Improvisación
-                  </div>
-                  <div className="bg-[rgb(170_170_170/1)] p-1 px-2 rounded-lg">
-                    Funk
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-12">
-                <div className="flex gap-3 items-center">
-                  {' '}
-                  <svg
-                    width="20"
-                    height="27"
-                    viewBox="0 0 20 27"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M16.5446 7.40721C16.2562 7.28105 15.9498 7.17292 15.6254 7.06479L19.0677 1.11739L17.1213 0L13.3366 6.52411C12.2045 6.34031 11.0592 6.24989 9.91233 6.25378C8.81411 6.25363 7.71752 6.33799 6.63225 6.50609L2.88359 0L0.901121 1.11739L4.3434 7.02874C3.98065 7.13022 3.62536 7.25668 3.28008 7.40721C0.432538 8.56065 0 10.1466 0 11.0117V21.6449C0 22.4739 0.432538 24.0599 3.28008 25.2494C5.40164 26.0311 7.65201 26.4041 9.91233 26.3488C12.1749 26.3926 14.4254 26.0073 16.5446 25.2134C19.3921 24.0419 19.8247 22.4559 19.8247 21.6089V10.9937C19.8247 10.1466 19.3921 8.56065 16.5446 7.40721ZM4.12713 9.5699C4.57442 9.39284 5.03179 9.24239 5.49684 9.11934L6.92061 11.5884L8.86703 10.453L7.85777 8.65076C8.53953 8.56579 9.22538 8.51766 9.91233 8.50658C10.653 8.50957 11.3929 8.55168 12.1291 8.63274L11.1198 10.435L13.0662 11.5704L14.472 9.15539C16.4545 9.69606 17.5719 10.5251 17.5719 11.0658C17.5719 11.6064 16.9951 12.039 15.7696 12.5616C13.892 13.2307 11.9042 13.5365 9.91233 13.4627C5.15441 13.4627 2.2528 11.8587 2.2528 10.9937C2.2528 10.6152 2.82952 10.0205 4.12713 9.5699ZM15.6975 23.2129C13.8414 23.8669 11.879 24.1664 9.91233 24.096C5.15441 24.096 2.2528 22.492 2.2528 21.6269V19.4101C2.58672 19.5897 2.92959 19.7521 3.28008 19.8967C5.39927 20.6907 7.64971 21.076 9.91233 21.0322C12.1749 21.076 14.4254 20.6907 16.5446 19.8967C16.8951 19.7521 17.2379 19.5897 17.5719 19.4101V21.6269C17.5719 21.9873 16.9951 22.6001 15.6975 23.1228V23.2129ZM15.6975 17.8963C13.8414 18.5502 11.879 18.8498 9.91233 18.7794C5.15441 18.7794 2.2528 17.1754 2.2528 16.3103V14.0935C2.58672 14.2731 2.92959 14.4355 3.28008 14.5801C5.39927 15.3741 7.64971 15.7594 9.91233 15.7155C12.1749 15.7594 14.4254 15.3741 16.5446 14.5801C16.8951 14.4355 17.2379 14.2731 17.5719 14.0935V16.3103C17.5719 16.6707 16.9951 17.2835 15.6975 17.8061V17.8963Z"
-                      fill="black"
-                    />
-                  </svg>
-                  Acústico
-                </div>
-                <div className="flex gap-3 items-center">
-                  <svg
-                    width="31"
-                    height="31"
-                    viewBox="0 0 31 31"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10.3637 22.756C10.6863 22.756 10.9565 22.6468 11.1743 22.4286C11.3918 22.2104 11.5006 21.94 11.5006 21.6174C11.5006 21.2948 11.3915 21.0246 11.1733 20.8068C10.9551 20.5892 10.6847 20.4804 10.3621 20.4804C10.0394 20.4804 9.76934 20.5895 9.55176 20.8077C9.33397 21.026 9.22508 21.2964 9.22508 21.619C9.22508 21.9416 9.33419 22.2117 9.55241 22.4293C9.77084 22.6471 10.0413 22.756 10.3637 22.756ZM10.3637 17.7595C10.6863 17.7595 10.9565 17.6504 11.1743 17.4322C11.3918 17.214 11.5006 16.9435 11.5006 16.6209C11.5006 16.2983 11.3915 16.0282 11.1733 15.8106C10.9551 15.5931 10.6847 15.4843 10.3621 15.4843C10.0394 15.4843 9.76934 15.5934 9.55176 15.8116C9.33397 16.0298 9.22508 16.3002 9.22508 16.6229C9.22508 16.9455 9.33419 17.2156 9.55241 17.4331C9.77084 17.6507 10.0413 17.7595 10.3637 17.7595ZM10.3637 12.7634C10.6863 12.7634 10.9565 12.6543 11.1743 12.4361C11.3918 12.2178 11.5006 11.9474 11.5006 11.6248C11.5006 11.3022 11.3915 11.0321 11.1733 10.8145C10.9551 10.5967 10.6847 10.4878 10.3621 10.4878C10.0394 10.4878 9.76934 10.5969 9.55176 10.8152C9.33397 11.0334 9.22508 11.3038 9.22508 11.6264C9.22508 11.949 9.33419 12.2192 9.55241 12.437C9.77084 12.6546 10.0413 12.7634 10.3637 12.7634ZM14.271 22.5826H21.5922V20.6537H14.271V22.5826ZM14.271 17.5865H21.5922V15.6573H14.271V17.5865ZM14.271 12.5901H21.5922V10.6611H14.271V12.5901ZM6.82605 27.5543C6.17632 27.5543 5.62637 27.3293 5.17622 26.8791C4.72606 26.4289 4.50098 25.879 4.50098 25.2293V8.01453C4.50098 7.3648 4.72606 6.81485 5.17622 6.36469C5.62637 5.91453 6.17632 5.68945 6.82605 5.68945H24.0408C24.6905 5.68945 25.2405 5.91453 25.6906 6.36469C26.1408 6.81485 26.3659 7.3648 26.3659 8.01453V25.2293C26.3659 25.879 26.1408 26.4289 25.6906 26.8791C25.2405 27.3293 24.6905 27.5543 24.0408 27.5543H6.82605ZM6.82605 25.6251H24.0408C24.1398 25.6251 24.2305 25.5838 24.3128 25.5013C24.3953 25.419 24.4366 25.3283 24.4366 25.2293V8.01453C24.4366 7.91549 24.3953 7.82482 24.3128 7.7425C24.2305 7.65997 24.1398 7.61871 24.0408 7.61871H6.82605C6.72701 7.61871 6.63634 7.65997 6.55402 7.7425C6.4715 7.82482 6.43023 7.91549 6.43023 8.01453V25.2293C6.43023 25.3283 6.4715 25.419 6.55402 25.5013C6.63634 25.5838 6.72701 25.6251 6.82605 25.6251Z"
-                      fill="#1F1F1F"
-                    />
-                  </svg>
-                  Lista opcional
-                </div>
-                <div className="flex gap-3 items-center">
-                  <svg
-                    width="30"
-                    height="30"
-                    viewBox="0 0 30 30"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6.47043 24.9923C5.85458 24.9923 5.33332 24.779 4.90663 24.3523C4.47994 23.9256 4.2666 23.4043 4.2666 22.7885V6.47141C4.2666 5.85556 4.47994 5.33429 4.90663 4.90761C5.33332 4.48092 5.85458 4.26758 6.47043 4.26758H22.7875C23.4033 4.26758 23.9246 4.48092 24.3513 4.90761C24.778 5.33429 24.9913 5.85556 24.9913 6.47141V22.7885C24.9913 23.4043 24.778 23.9256 24.3513 24.3523C23.9246 24.779 23.4033 24.9923 22.7875 24.9923H6.47043ZM6.47043 23.1636H10.3036V17.4903H9.90494C9.5829 17.4903 9.3149 17.3832 9.10095 17.169C8.88679 16.9549 8.77971 16.6868 8.77971 16.3647V6.09623H6.47043C6.36092 6.09623 6.27101 6.13138 6.20071 6.20168C6.1304 6.27198 6.09525 6.36189 6.09525 6.47141V22.7885C6.09525 22.898 6.1304 22.9879 6.20071 23.0582C6.27101 23.1285 6.36092 23.1636 6.47043 23.1636ZM18.9543 23.1636H22.7875C22.897 23.1636 22.9869 23.1285 23.0572 23.0582C23.1275 22.9879 23.1627 22.898 23.1627 22.7885V6.47141C23.1627 6.36189 23.1275 6.27198 23.0572 6.20168C22.9869 6.13138 22.897 6.09623 22.7875 6.09623H20.4782V16.3647C20.4782 16.6868 20.3711 16.9549 20.157 17.169C19.943 17.3832 19.675 17.4903 19.353 17.4903H18.9543V23.1636ZM11.7571 23.1636H17.5009V17.4903H17.1022C16.7804 17.4903 16.5124 17.3832 16.2982 17.169C16.0841 16.9549 15.977 16.6868 15.977 16.3647V6.09623H13.2809V16.3647C13.2809 16.6868 13.1739 16.9549 12.9597 17.169C12.7456 17.3832 12.4776 17.4903 12.1557 17.4903H11.7571V23.1636Z"
-                      fill="#1F1F1F"
-                    />
-                  </svg>
-                  Sí hay instrumentos
-                </div>
-              </div>
-            </div>
-          </div>
+          <JamChars
+            jamDetails={{
+              styles: jam.styles,
+              drums: jam.drums,
+              lista_canciones: jam.lista_canciones,
+              instruments_lend: jam.instruments_lend,
+            }}
+          />
 
           <div className="bg-[rgb(170_170_170/0.7)] rounded-lg flex pt-8 pb-10 px-8 w-1/2">
-            <div className=" gap-8 flex flex-col ">
-              <div className=" gap-5 flex flex-row">
-                <svg
-                  width="43"
-                  height="35"
-                  viewBox="0 0 43 35"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8.79056 12.6692H33.4048V9.07291C33.4048 8.96214 33.3484 8.86073 33.2356 8.76867C33.1231 8.67636 32.9991 8.63021 32.8638 8.63021H9.33164C9.19626 8.63021 9.07231 8.67636 8.95979 8.76867C8.84697 8.86073 8.79056 8.96214 8.79056 9.07291V12.6692ZM9.33164 30.9269C8.44347 30.9269 7.69171 30.6752 7.07636 30.1717C6.461 29.6682 6.15332 29.0531 6.15332 28.3265V9.07291C6.15332 8.34623 6.461 7.73115 7.07636 7.22768C7.69171 6.7242 8.44347 6.47247 9.33164 6.47247H11.7658V3.42969H14.4707V6.47247H27.7923V3.42969H30.4296V6.47247H32.8638C33.7519 6.47247 34.5037 6.7242 35.119 7.22768C35.7344 7.73115 36.0421 8.34623 36.0421 9.07291V16.9321C35.6204 16.7809 35.1898 16.6586 34.7503 16.5653C34.3107 16.4723 33.8623 16.3991 33.4048 16.3456V14.8269H8.79056V28.3265C8.79056 28.4372 8.84697 28.5386 8.95979 28.6307C9.07231 28.723 9.19626 28.7692 9.33164 28.7692H20.7632C20.9118 29.1674 21.0915 29.544 21.3025 29.8991C21.5132 30.2542 21.7526 30.5968 22.0207 30.9269H9.33164ZM31.9847 32.3654C29.7893 32.3654 27.9219 31.7356 26.3823 30.4759C24.8427 29.2163 24.073 27.6884 24.073 25.8922C24.073 24.096 24.8427 22.568 26.3823 21.3084C27.9219 20.0488 29.7893 19.4189 31.9847 19.4189C34.1803 19.4189 36.0478 20.0488 37.5871 21.3084C39.1266 22.568 39.8964 24.096 39.8964 25.8922C39.8964 27.6884 39.1266 29.2163 37.5871 30.4759C36.0478 31.7356 34.1803 32.3654 31.9847 32.3654ZM34.9129 29.1842L36.0082 28.288L32.7627 25.6322V21.6598H31.2071V26.1522L34.9129 29.1842Z"
-                    fill="#1F1F1F"
-                  />
-                </svg>
-
-                <h1 className="text-2xl font-semibold">
-                  Monday, Oct 6 7:00 PM to 11:00 PM
-                </h1>
-              </div>
-              <div className="h-[1.5px] bg-gray-700/50 w-3/5 mx-auto"></div>
-
-              <div className="grid grid-cols-[auto_1fr] grid-rows-2 gap-x-3 gap-y-1 items-center">
-                <div className="">
-                  <svg
-                    width="52"
-                    height="52"
-                    viewBox="0 0 42 42"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M20.6185 36.9408C17.7153 36.9408 15.3429 36.5241 13.5013 35.6908C11.6597 34.8575 10.7388 33.7817 10.7388 32.4636C10.7388 31.8533 10.9685 31.2795 11.4278 30.742C11.8872 30.2044 12.5222 29.743 13.3329 29.3575L15.3617 31.1981C14.9937 31.3456 14.607 31.5295 14.2015 31.7497C13.7962 31.9702 13.5188 32.2026 13.369 32.4468C13.6531 32.9603 14.4984 33.408 15.9051 33.79C17.3114 34.1723 18.8798 34.3635 20.6104 34.3635C22.3406 34.3635 23.9162 34.1723 25.3371 33.79C26.7578 33.408 27.6103 32.9603 27.8947 32.4468C27.7492 32.1848 27.4557 31.9437 27.0141 31.7235C26.5722 31.5033 26.1531 31.3193 25.7568 31.1715L27.7589 29.3047C28.6378 29.7079 29.3141 30.1782 29.7877 30.7157C30.2614 31.2533 30.4982 31.8334 30.4982 32.4563C30.4982 33.7767 29.5774 34.8542 27.7358 35.6887C25.8941 36.5234 23.5217 36.9408 20.6185 36.9408ZM20.6615 28.5646C23.5074 26.4079 25.6436 24.2718 27.07 22.1561C28.4963 20.0401 29.2095 17.9392 29.2095 15.8533C29.2095 12.8885 28.2816 10.6506 26.4256 9.1394C24.5697 7.62795 22.6367 6.87223 20.6267 6.87223C18.6167 6.87223 16.681 7.62838 14.8196 9.14069C12.9582 10.6527 12.0275 12.8918 12.0275 15.858C12.0275 17.8064 12.7318 19.8271 14.1405 21.9198C15.5491 24.0126 17.7228 26.2275 20.6615 28.5646ZM20.6185 31.7862C16.8691 28.9829 14.0704 26.2604 12.2225 23.6187C10.3743 20.9773 9.4502 18.3896 9.4502 15.8559C9.4502 13.9421 9.78782 12.266 10.4631 10.8275C11.1383 9.38911 12.01 8.18465 13.0782 7.21415C14.1466 6.24394 15.3454 5.51485 16.6744 5.02688C18.0031 4.53891 19.3187 4.29492 20.6211 4.29492C21.9235 4.29492 23.2382 4.53891 24.5652 5.02688C25.8926 5.51485 27.0904 6.24394 28.1589 7.21415C29.227 8.18465 30.0987 9.38954 30.774 10.8288C31.4492 12.2681 31.7869 13.9429 31.7869 15.8533C31.7869 18.3873 30.8627 20.9754 29.0145 23.6174C27.1666 26.2594 24.3679 28.9824 20.6185 31.7862ZM20.6267 18.718C21.4781 18.718 22.2071 18.4173 22.814 17.8159C23.4211 17.2145 23.7246 16.4826 23.7246 15.62C23.7246 14.7578 23.4205 14.0232 22.8122 13.4164C22.204 12.8093 21.4728 12.5058 20.6185 12.5058C19.7726 12.5058 19.0435 12.8099 18.4312 13.4182C17.8187 14.0267 17.5124 14.7579 17.5124 15.6119C17.5124 16.4799 17.8187 17.2145 18.4312 17.8159C19.0435 18.4173 19.7753 18.718 20.6267 18.718Z"
-                      fill="#1F1F1F"
-                    />
-                  </svg>
-                </div>
-                <h4 className="text-3xl font-semibold">Moe Club</h4>
-                <h2 className="col-start-2 row-start-2 text-xl">
-                  Av. de Alberto de Alcocer, 32, Chamartín, 28036 Madrid 28036
-                  Madrid
-                </h2>
-              </div>
-            </div>
+            <TimeAndPlace
+              location_title={jam.location_title}
+              address={jam.location_address}
+              fallbackLat={jam.lat}
+              fallbackLng={jam.lng}
+              date={jam.dates[0]}
+              time={jam.time_start}
+            />
           </div>
         </div>
 
@@ -232,78 +101,32 @@ export default async function JamPage({ params }: JamPageProps) {
           <div className="flex flex-col gap-4 bg-[rgb(170_170_170/0.7)] rounded-lg pt-8 pb-10 px-8 w-1/2">
             <h3 className="text-3xl font-semibold">Details</h3>
 
-            <div> {formatText(detailsTextFromDb)}</div>
+            <div>
+              <HtmlReadOnly rawContent={jam.description} />
+            </div>
           </div>
 
-          <div className="pl-36 w-1/2">
-            <img
-              src="https://maps.googleapis.com/maps/api/staticmap?center=40.4483,-3.6819&zoom=16&size=600x400&maptype=roadmap&markers=color:blue%7Clabel:M%7C40.4583,-3.6819&scale=2&key=AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE"
-              alt="Moe Club Map"
-              className="border border-gray-800 rounded-lg"
-            />
-          </div>
+          <StaticMap
+            address={jam.location_address}
+            fallbackLat={jam.lat}
+            fallbackLng={jam.lng}
+            apiKey="AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE"
+          />
         </div>
 
         <div className="w-[1300px] max-w-[75%] mx-auto pb-24  ">
-          <div className="inline-flex gap-8  bg-[rgb(170_170_170/0.7)]  p-6  rounded-lg">
-            <div className="flex items-center justify-start px-0 gap-2">
-              <svg
-                width="33"
-                height="33"
-                viewBox="0 0 33 33"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M21.0839 5.15625H11.9151C10.1229 5.15762 8.4046 5.87014 7.13737 7.13737C5.87014 8.4046 5.15762 10.1229 5.15625 11.9151V21.0839C5.15734 22.8762 5.86975 24.5948 7.137 25.8623C8.40426 27.1297 10.1228 27.8424 11.9151 27.8438H21.0839C22.8761 27.8421 24.5945 27.1294 25.8617 25.862C27.1289 24.5946 27.8414 22.8761 27.8427 21.0839V11.9151C27.8419 10.1228 27.1295 8.40411 25.8622 7.13677C24.5949 5.86942 22.8762 5.15707 21.0839 5.15625ZM25.5616 21.0839C25.5613 22.2714 25.0895 23.4101 24.2498 24.2498C23.4101 25.0895 22.2714 25.5613 21.0839 25.5616H11.9151C11.3271 25.5616 10.7449 25.4458 10.2017 25.2207C9.65848 24.9957 9.16493 24.6659 8.74922 24.25C8.33351 23.8342 8.00379 23.3406 7.77888 22.7974C7.55396 22.2541 7.43827 21.6719 7.43841 21.0839V11.9151C7.43827 11.3271 7.55397 10.745 7.7789 10.2018C8.00382 9.65857 8.33356 9.16501 8.74929 8.74929C9.16501 8.33356 9.65857 8.00382 10.2018 7.7789C10.745 7.55397 11.3271 7.43827 11.9151 7.43841H21.0839C22.2711 7.43868 23.4096 7.91041 24.2491 8.74989C25.0886 9.58937 25.5603 10.7279 25.5606 11.9151L25.5616 21.0839Z"
-                  fill="black"
-                />
-                <path
-                  d="M16.4995 10.6338C13.2635 10.6338 10.6338 13.2645 10.6338 16.4995C10.6338 19.7345 13.2645 22.3653 16.4995 22.3653C19.7346 22.3653 22.3653 19.7345 22.3653 16.4995C22.3653 13.2645 19.7356 10.6338 16.4995 10.6338ZM16.4995 20.0831C15.5491 20.0832 14.6376 19.7058 13.9654 19.0339C13.2933 18.3619 12.9156 17.4505 12.9154 16.5C12.9153 15.5496 13.2927 14.638 13.9647 13.9659C14.6366 13.2937 15.5481 12.9161 16.4985 12.9159C17.4489 12.9158 18.3605 13.2932 19.0326 13.9652C19.7048 14.6371 20.0825 15.5486 20.0826 16.499C20.0828 17.4494 19.7053 18.361 19.0334 19.0331C18.3614 19.7053 17.45 20.083 16.4995 20.0831ZM22.3777 9.27148C22.6556 9.27169 22.9272 9.35427 23.1582 9.5088C23.3892 9.66333 23.5692 9.88286 23.6754 10.1397C23.7817 10.3965 23.8094 10.679 23.7552 10.9515C23.7009 11.2241 23.5671 11.4745 23.3705 11.671C23.174 11.8675 22.9237 12.0013 22.6511 12.0556C22.3785 12.1099 22.096 12.0821 21.8392 11.9759C21.5824 11.8696 21.3629 11.6896 21.2084 11.4586C21.0538 11.2276 20.9712 10.956 20.971 10.6781C20.971 9.90261 21.497 9.27148 22.3777 9.27148Z"
-                  fill="black"
-                />
-              </svg>
-              instagram.com/moeclubmadrid
-            </div>
-            <div className="flex items-center  gap-2">
-              <svg
-                width="27"
-                height="27"
-                viewBox="0 0 27 27"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M22.5 1.125C24.364 1.125 25.875 2.63604 25.875 4.5V22.5C25.875 24.364 24.364 25.875 22.5 25.875H4.5C2.63604 25.875 1.125 24.364 1.125 22.5V4.5C1.125 2.63604 2.63604 1.125 4.5 1.125H22.5ZM22.5 3.375C23.1213 3.375 23.625 3.87868 23.625 4.5V22.5C23.625 23.1213 23.1213 23.625 22.5 23.625H16.875V15.7499H19.2107C19.6949 15.7499 20.1248 15.4401 20.278 14.9806L20.7764 13.4855C20.9585 12.9391 20.5518 12.3749 19.9759 12.3749H16.875V10.1249C16.875 9.56241 17.4375 8.99991 18 8.99991H20.25C20.8713 8.99991 21.375 8.49622 21.375 7.87491V7.10317C21.375 6.73977 21.1429 6.41396 20.7915 6.32123C19.3168 5.93207 18 5.93207 18 5.93207C15.1875 5.93207 13.5 7.87491 13.5 9.56241V12.3749H11.25C10.6287 12.3749 10.125 12.8785 10.125 13.4999V14.6249C10.125 15.2462 10.6287 15.7499 11.25 15.7499H13.5V23.625H4.5C3.87868 23.625 3.375 23.1213 3.375 22.5V4.5C3.375 3.87868 3.87868 3.375 4.5 3.375H22.5Z"
-                  fill="#0F0F0F"
-                />
-              </svg>
-              facebook.com/moe_club
-            </div>
-            <div className="flex items-center  gap-2">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M2.33301 22.166V11.666L6.99967 6.99935H8.16634V4.66602H10.4997V6.99935H20.9997L25.6663 11.666V22.166H2.33301ZM18.6663 19.8327H23.333V12.6285L20.9997 10.2952L18.6663 12.6285V19.8327ZM4.66634 19.8327H16.333V13.9993H4.66634V19.8327Z"
-                  fill="#1F1F1F"
-                />
-              </svg>
-              instagram.com/moeclubmadrid
-            </div>
-          </div>
+          <SocialLinks socialLinks={jam.social_links} />
         </div>
 
-        <div className="w-[1300px] max-w-[75%] mx-auto pb-24  ">
-          <div className="flex flex-col gap-8  bg-[rgb(170_170_170/0.7)]  p-6  rounded-lg">
-            <h3>Questions</h3>
+        <div className="relative w-[1300px] max-w-[75%] mx-auto pb-24">
+          <span className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-3xl">
+            Disabled
+          </span>
+
+          <div className="flex flex-col gap-8  bg-[rgb(170_170_170/0.7)]  p-6  rounded-lg opacity-40">
+            <h3 className="text-2xl">Questions</h3>
             <p className="opacity-70">
-              Ask any question you d like to the jam s host
+              Ask any question you want to the jam´s host
             </p>
           </div>
         </div>
