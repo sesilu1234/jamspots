@@ -126,6 +126,9 @@ importers:
       '@types/draft-js':
         specifier: ^0.11.20
         version: 0.11.20
+      '@types/draftjs-to-html':
+        specifier: ^0.8.4
+        version: 0.8.4
       '@types/google.maps':
         specifier: ^3.58.1
         version: 3.58.1
@@ -1177,6 +1180,9 @@ packages:
 
   '@types/draft-js@0.11.20':
     resolution: {integrity: sha512-bZHtHxXnCu4wlUXlDWrIlJSG2LJ6wcycSWoxcTCcGd0cVOm35p0vh87qpIPzGK2NALMMvJhQXdS330iYB3iGlw==}
+
+  '@types/draftjs-to-html@0.8.4':
+    resolution: {integrity: sha512-5FZcjFoJL57N/IttLCTCNI0krX+181oCl5hf76u3TqPkqBAphHrJAO9ReYesx9138kcObaYmpnWC2Yrqxoqd2Q==}
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
@@ -4096,6 +4102,10 @@ snapshots:
     dependencies:
       '@types/react': 19.2.2
       immutable: 3.7.6
+
+  '@types/draftjs-to-html@0.8.4':
+    dependencies:
+      '@types/draft-js': 0.11.20
 
   '@types/estree@1.0.8': {}
 
