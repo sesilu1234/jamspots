@@ -6,69 +6,57 @@ import 'leaflet.markercluster';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type Marker = {
-  id: number;
+  id: string;
   lat: number;
   lng: number;
 };
 
-type MarkerDetail = {
-  id: number;
-  description: string;
-  image: string;
+type JamCardMarkerProps = {
+  slug: string;
+  images?: string;
+  jam_title: string;
+  location_title: string;
+  location_address: string;
+  time: string;
+  styles?: string[];
 };
+
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function MapMarkersCluster() {
   const map = useMap();
 
   const [markersData, setMarkersData] = useState<Marker[]>([]);
   // const [markersDetails, setMarkersDetails] = useState<Record<number, MarkerDetail>>({});
-  const [selectedMarker, setSelectedMarker] = useState<MarkerDetail | null>(
-    null,
-  );
+  const [selectedMarker, setSelectedMarker] =
+    useState<JamCardMarkerProps | null>(null);
 
   const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
 
-  const cardId = useRef<number | null>(null);
-
-  async function fetchMarker() {
+  async function fetchMarker(id: string) {
     try {
       setShowSkeleton(true); // force skeleton visible immediately
 
-      const res = await fetch('/markersDetails.json');
-      const data: MarkerDetail[] = await res.json();
+      const res = await fetch(`/api/get-jam-by-id/${id}`);
+      const markerDetail: JamCardMarkerProps = await res.json();
 
-      const markerDetail = data.find((m) => m.id === cardId.current);
-      if (markerDetail) {
-        // preload image
-        const img = new window.Image();
-        img.src = markerDetail.image;
-
-        img.onload = async () => {
-          // ensure skeleton shows for at least 400ms
-          await new Promise((r) => setTimeout(r, 400));
-
-          setSelectedMarker(markerDetail);
-          setShowSkeleton(false);
-        };
-      }
+      setSelectedMarker(markerDetail);
+      setShowSkeleton(false);
     } catch (err) {
       console.error('Failed to fetch marker details:', err);
       setShowSkeleton(false);
     }
   }
 
-  const onClickMarker = async (id: number) => {
-    console.log('00876sds');
-
-    cardId.current = id;
-
+  const onClickMarker = async (id: string) => {
     setSelectedMarker(null);
 
     setShowSkeleton(true);
 
-    await fetchMarker();
+    await fetchMarker(id);
   };
 
   // Fetch markers positions
@@ -84,7 +72,7 @@ export default function MapMarkersCluster() {
   useEffect(() => {
     if (!map || markersData.length === 0) return;
 
-    // @ts-ignore
+    // @ts-expect-error makerExists
     const clusterGroup = L.markerClusterGroup();
 
     markersData.forEach((m) => {
@@ -103,9 +91,8 @@ export default function MapMarkersCluster() {
 
   if (selectedMarker)
     return (
-      <div className="absolute top-4 right-4 bg-white p-4 shadow-lg rounded-xl flex flex-col gap-3 w-48 z-[401] border border-gray-200">
-        <div className="flex justify-between items-center py-1 h-1">
-          <h3 className="font-semibold text-gray-900 truncate">{'Image'}</h3>
+      <div className="absolute top-4 right-4 bg-white p-4 shadow-lg rounded-xl flex flex-col gap-3  z-[401] border border-gray-200">
+        <div className="flex justify-end items-center py-1 h-1">
           <button
             onClick={() => {
               setSelectedMarker(null);
@@ -117,18 +104,7 @@ export default function MapMarkersCluster() {
           </button>
         </div>
 
-        <div className="relative w-full h-30 overflow-hidden rounded-lg">
-          <Image
-            src={selectedMarker.image}
-            alt={'Image'}
-            fill
-            className="object-cover"
-          />
-        </div>
-
-        <p className="text-xs text-gray-700 leading-snug line-clamp-3 h-4">
-          {selectedMarker.description}
-        </p>
+        <JamCardMarker jamData={selectedMarker} classname={'cursor-pointer'} />
       </div>
     );
 
@@ -137,20 +113,48 @@ export default function MapMarkersCluster() {
   return null;
 }
 
-import { Skeleton } from '@/components/ui/skeleton';
-
-
-
-export function CardSkeleton_1() {
+export function JamCardMarker({
+  jamData,
+  classname,
+}: {
+  jamData: JamCardMarkerProps;
+  classname?: string;
+}) {
   return (
-    <div className="flex flex-col space-y-3  w-64     absolute top-4 right-4 bg-white p-4 shadow-lg rounded-xl z-[401] border border-gray-200 ">
-      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-[250px]" />
-        <Skeleton className="h-4 w-[200px]" />
-        <Skeleton className="h-4 w-[200px]" />
-      </div>
-    </div>
+    <Card className={`flex flex-col p-2    w-64  shadow-md   ${classname}`}>
+      <Link href={`/jam/${jamData.slug}`} prefetch={false}>
+        {/* Image left (desktop) / top (mobile) */}
+        <div className="relative   h-48">
+          {jamData.images && (
+            <Image
+              src={jamData.images}
+              alt={`${jamData.jam_title} at ${jamData.location_title}`}
+              fill
+              className="object-cover"
+            />
+          )}
+        </div>
+        <CardContent className="flex flex-col justify-between text-xs ">
+          <div className="font-bold text-lg text-black">
+            {jamData.jam_title} at {jamData.location_title}
+          </div>
+
+          <div className="text-xs text-gray-500">
+            {jamData.location_address}
+          </div>
+          <div className="text-sm text-gray-500">{jamData.time}</div>
+          {jamData.styles && (
+            <div className="flex flex-wrap gap-1 mt-2">
+              {jamData.styles.map((tag, i) => (
+                <span key={i} className="bg-gray-200 rounded px-2 py-1 text-xs">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </CardContent>{' '}
+      </Link>
+    </Card>
   );
 }
 
@@ -168,37 +172,35 @@ const tags = ['blues', 'rap'];
 
 export function CardSkeleton() {
   return (
-      <Card className={`flex flex-col p-4    w-84  shadow-md absolute  top-4 right-4 z-[401]   `}>
-     
-        {/* Image left (desktop) / top (mobile) */}
-        <div className="relative   h-54">
-         <Skeleton className="h-full" />
+    <Card
+      className={`flex flex-col p-4 w-70  shadow-md absolute  top-4 right-4 z-[401]   `}
+    >
+      {/* Image left (desktop) / top (mobile) */}
+      <div className="relative ">
+        <Skeleton className="h-48" />
+      </div>
+
+      {/* Right panel */}
+      <CardContent className="flex flex-col justify-between text-xs ">
+        <div className="flex flex-col gap-2 font-bold text-lg pt-4">
+          <Skeleton className="h-4" />
+          <Skeleton className="h-4 w-3/5 " />
         </div>
 
-        {/* Right panel */}
-        <CardContent className="flex flex-col justify-between text-xs ">
-          <div className="flex flex-col gap-2 font-bold text-lg pt-4">
-            <Skeleton className="h-4" />
-        <Skeleton className="h-4 w-3/5 " />
-          </div>
+        <div className="flex flex-col gap-2 text-xs text-gray-500 pt-4">
+          <Skeleton className="h-4 w-3/5 " />
+        </div>
 
-          <div className="flex flex-col gap-2 text-xs text-gray-500 pt-4"><Skeleton className="h-4" /><Skeleton className="h-4 w-3/5 " /></div>
-         
-          {tags && (
-            <div className="flex flex-wrap gap-1 pt-12">
-              {tags.map((tag, i) => (
-                <span key={i} className="bg-gray-200 rounded px-2 py-1 text-xs">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      
+        {tags && (
+          <div className="flex flex-wrap gap-1 pt-8">
+            {[1, 2, 3].map((tag, i) => (
+              <span key={i} className="bg-gray-200 rounded px-0 py-0 text-xs">
+                <Skeleton className="w-12 h-6   " />
+              </span>
+            ))}
+          </div>
+        )}
+      </CardContent>
     </Card>
   );
 }
-
-
-
-
