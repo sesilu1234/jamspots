@@ -139,18 +139,66 @@ export default function MapMarkersCluster() {
 
 import { Skeleton } from '@/components/ui/skeleton';
 
-function CardSkeleton() {
+
+
+export function CardSkeleton_1() {
   return (
-    <div className="absolute top-4 right-4 bg-white p-4 shadow-lg rounded-xl flex flex-col gap-3 w-48 z-[401] border border-gray-200">
-      <div className="flex justify-between items-center h-2">
-        <Skeleton className="h-full w-3/4" />
-      </div>
-
-      <Skeleton className="h-30 w-full rounded-lg" />
-
-      <div className="flex flex-col h-4">
-        <Skeleton className="h-3/4 w-5/6" />
+    <div className="flex flex-col space-y-3  w-64     absolute top-4 right-4 bg-white p-4 shadow-lg rounded-xl z-[401] border border-gray-200 ">
+      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[200px]" />
+        <Skeleton className="h-4 w-[200px]" />
       </div>
     </div>
   );
 }
+
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+
+const tags = ['blues', 'rap'];
+
+export function CardSkeleton() {
+  return (
+      <Card className={`flex flex-col p-4    w-84  shadow-md absolute  top-4 right-4 z-[401]   `}>
+     
+        {/* Image left (desktop) / top (mobile) */}
+        <div className="relative   h-54">
+         <Skeleton className="h-full" />
+        </div>
+
+        {/* Right panel */}
+        <CardContent className="flex flex-col justify-between text-xs ">
+          <div className="flex flex-col gap-2 font-bold text-lg pt-4">
+            <Skeleton className="h-4" />
+        <Skeleton className="h-4 w-3/5 " />
+          </div>
+
+          <div className="flex flex-col gap-2 text-xs text-gray-500 pt-4"><Skeleton className="h-4" /><Skeleton className="h-4 w-3/5 " /></div>
+         
+          {tags && (
+            <div className="flex flex-wrap gap-1 pt-12">
+              {tags.map((tag, i) => (
+                <span key={i} className="bg-gray-200 rounded px-2 py-1 text-xs">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      
+    </Card>
+  );
+}
+
+
+
+
