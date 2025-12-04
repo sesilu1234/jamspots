@@ -92,13 +92,13 @@ export default function MapMarkersCluster() {
   if (selectedMarker)
     return (
       <div className="absolute top-4 right-4 bg-white p-4 shadow-lg rounded-xl flex flex-col gap-3  z-[401] border border-gray-200">
-        <div className="flex justify-end items-center py-1 h-1">
+        <div className=" absolute flex justify-end items-center py-1 h-1 top-0 right-[0] bg-red-400  z-5">
           <button
             onClick={() => {
               setSelectedMarker(null);
               setShowSkeleton(false);
             }}
-            className="text-gray-500 hover:text-gray-800 text-sm font-bold"
+            className="text-gray-500 hover:text-gray-800 text-4xl font-bold"
           >
             ×
           </button>
