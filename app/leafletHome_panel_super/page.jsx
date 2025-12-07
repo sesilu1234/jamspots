@@ -10,12 +10,18 @@ import { Input } from '@/components/ui/input';
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import SignInIcons from './SingInIcons';
+import Filtro from './Filtro';
 
 const MapRender = dynamic(() => import('./MapRender'), { ssr: false });
 
 export default function Home() {
   const [showSignIn, setShowSignIn] = useState(false);
   const menuRef = useRef(null);
+
+  const coordinatesRef = useRef(null);
+
+  const [jams, setJams] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -56,7 +62,17 @@ export default function Home() {
             />
 
             <div className="w-52 ">
-              <GooglePlacesSearch />
+              <GooglePlacesSearch coordinatesRef={coordinatesRef} />
+            </div>
+
+            <div className="w-52 ">
+              <Filtro
+                coordinatesRef={coordinatesRef}
+                jams={jams}
+                setJams={setJams}
+                loading={loading}
+                setLoading={setLoading}
+              />
             </div>
           </div>
 
@@ -66,7 +82,12 @@ export default function Home() {
 
           <div className="relative w-full mx-auto mt-4 h-148 rounded-sm border border-gray-500/70 shadow-md overflow-hidden">
             <MapRender />
-            <JamCarousel />
+            <JamCarousel
+              jams={jams}
+              setJams={setJams}
+              loading={loading}
+              setLoading={setLoading}
+            />
           </div>
         </div>
       </MapProvider>

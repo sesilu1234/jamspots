@@ -37,6 +37,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     null,
   );
 
+  const [initialLocation, setInitialLocation] = useState(null);
+
   const setPosition = (lat: number, lng: number) => {
     setLocationSearch({ coordinates: { lat, lng } });
     if (map) {
@@ -45,22 +47,57 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   };
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          setPosition(latitude, longitude);
-        },
-        () => setPosition(-33.8688, 151.2093), // fallback → Sydney
-      );
-    } else {
-      setPosition(-33.8688, 151.2093);
+    if (!navigator.geolocation) {
+      setPosition(-33.8688, 151.2093); // fallback → Sydney
+      setInitialLocation({
+        latitude: -33.8688,
+        longitude: 151.2093,
+        city: 'Sidney',
+      });
+      return;
     }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+
+        setPosition(latitude, longitude);
+
+        fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            const city =
+              data.address.city ||
+              data.address.town ||
+              data.address.county ||
+              data.address.state;
+
+            setInitialLocation({ latitude, longitude, city });
+          })
+          .catch((err) => console.error(err));
+      },
+      () => {
+        setInitialLocation({
+          latitude: -33.8688,
+          longitude: 151.2093,
+          city: 'Sidney',
+        });
+        setPosition(-33.8688, 151.2093);
+      },
+    );
   }, [map]);
 
   return (
     <MapContext.Provider
-      value={{ map, setMap, locationSearch, setLocationSearch }}
+      value={{
+        map,
+        setMap,
+        locationSearch,
+        setLocationSearch,
+        initialLocation,
+      }}
     >
       {children}
     </MapContext.Provider>

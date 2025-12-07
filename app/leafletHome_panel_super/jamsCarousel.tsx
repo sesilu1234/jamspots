@@ -2,11 +2,9 @@ import JamCardShadcn from './CardJam';
 import { useState, useEffect, useRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export default function JamCarousel() {
+export default function JamCarousel({ jams, setJams, loading, setLoading }) {
   const [collapsed, setCollapsed] = useState(false);
 
-  const [jams, setJams] = useState<Jam[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);

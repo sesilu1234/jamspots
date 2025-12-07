@@ -91,14 +91,14 @@ export default function MapMarkersCluster() {
 
   if (selectedMarker)
     return (
-      <div className="absolute top-4 right-4 bg-white p-4 shadow-lg rounded-xl flex flex-col gap-3  z-[401] border border-gray-200">
-        <div className=" absolute flex justify-end items-center py-1 h-1 top-0 right-[0] bg-red-400  z-5">
+      <div className="absolute top-4 right-4  z-[401] border border-gray-200">
+        <div className=" absolute flex justify-end items-center top-[-15] right-[-15] z-5">
           <button
             onClick={() => {
               setSelectedMarker(null);
               setShowSkeleton(false);
             }}
-            className="text-gray-500 hover:text-gray-800 text-4xl font-bold"
+            className="text-gray-500 hover:text-gray-800 text-3xl font-extralight flex items-center justify-center    w-8 h-8 bg-black rounded-4xl text-white hover:text-black hover:bg-gray-100 transition"
           >
             ×
           </button>
@@ -121,10 +121,12 @@ export function JamCardMarker({
   classname?: string;
 }) {
   return (
-    <Card className={`flex flex-col p-2    w-64  shadow-md   ${classname}`}>
+    <Card
+      className={`flex flex-col p-2    w-82   border-1 border-black/30  ${classname}`}
+    >
       <Link href={`/jam/${jamData.slug}`} prefetch={false}>
         {/* Image left (desktop) / top (mobile) */}
-        <div className="relative   h-48">
+        <div className="relative   h-64">
           {jamData.images && (
             <Image
               src={jamData.images}
@@ -134,8 +136,8 @@ export function JamCardMarker({
             />
           )}
         </div>
-        <CardContent className="flex flex-col justify-between text-xs ">
-          <div className="font-bold text-lg text-black">
+        <CardContent className="flex flex-col gap-2 justify-between text-xs mt-3 mb-1  ">
+          <div className="font-bold text-lg text-black line-clamp-2 leading-tight">
             {jamData.jam_title} at {jamData.location_title}
           </div>
 
@@ -144,15 +146,18 @@ export function JamCardMarker({
           </div>
           <div className="text-sm text-gray-500">{jamData.time}</div>
           {jamData.styles && (
-            <div className="flex flex-wrap gap-1 mt-2">
+            <div className="flex flex-wrap gap-1">
               {jamData.styles.map((tag, i) => (
-                <span key={i} className="bg-gray-200 rounded px-2 py-1 text-xs">
+                <span
+                  key={i}
+                  className="bg-gray-200 rounded px-2 py-1 text-xs text-black"
+                >
                   {tag}
                 </span>
               ))}
             </div>
           )}
-        </CardContent>{' '}
+        </CardContent>
       </Link>
     </Card>
   );

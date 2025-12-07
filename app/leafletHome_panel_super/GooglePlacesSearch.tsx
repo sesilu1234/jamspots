@@ -9,19 +9,28 @@ interface PlaceAutocompleteProps {
   onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
 }
 
-export default function GooglePlacesSearch() {
+export default function GooglePlacesSearch({ coordinatesRef }) {
   const [selectedPlace, setSelectedPlace] =
     useState<google.maps.places.PlaceResult | null>(null);
 
   return (
     <APIProvider apiKey={API_KEY}>
-      <PlaceAutocomplete />
+      <PlaceAutocomplete coordinatesRef={coordinatesRef} />
     </APIProvider>
   );
 }
 
-const PlaceAutocomplete = () => {
-  const { map } = useMapContext();
+const PlaceAutocomplete = ({ coordinatesRef }) => {
+  const { initialLocation, map } = useMapContext();
+
+  useEffect(() => {
+    if (initialLocation) {
+      coordinatesRef.current = {
+        lat: initialLocation.latitude,
+        lng: initialLocation.longitude,
+      };
+    }
+  }, [initialLocation]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const places = useMapsLibrary('places');
@@ -38,7 +47,8 @@ const PlaceAutocomplete = () => {
       if (place?.geometry?.location) {
         const lat = place.geometry.location.lat();
         const lng = place.geometry.location.lng();
-        console.log('Selected coordinates:', { lat, lng });
+
+        coordinatesRef.current = { lat: lat, lng: lng };
         if (map) {
           map.flyTo([lat, lng], 13, {
             duration: 1.5,
@@ -57,7 +67,7 @@ const PlaceAutocomplete = () => {
   return (
     <input
       ref={inputRef}
-      placeholder="2337 NW 5th Ave, Miami, FL. "
+      placeholder={initialLocation?.city || ''}
       className="w-full h-12 px-3 text-sm text-gray-500 placeholder-gray-500 bg-gray-500/20 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   );
