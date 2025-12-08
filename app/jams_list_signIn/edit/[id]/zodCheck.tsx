@@ -14,6 +14,7 @@ const all_styles = [
   // Musical styles
   'Blues',
   'Rock',
+  'All styles',
   'Country',
   'Jazz',
   'Pop',

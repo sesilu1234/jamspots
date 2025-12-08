@@ -380,6 +380,7 @@ export function SelectStyles({ styles, setStyles }: SelectStylesProps) {
     // Musical styles
     'Blues',
     'Rock',
+    'All styles',
     'Country',
     'Jazz',
     'Pop',
