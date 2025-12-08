@@ -36,6 +36,18 @@ export default function Filtro({
   const [distance, setDistance] = useState(20);
   const [styles, setStyles] = useState<string[]>([]);
 
+  const dateOptionsRef = useRef(dateOptions);
+  dateOptionsRef.current = dateOptions;
+
+  const orderRef = useRef(order);
+  orderRef.current = order;
+
+  const distanceRef = useRef(distance);
+  distanceRef.current = distance;
+
+  const stylesRef = useRef(styles);
+  stylesRef.current = styles;
+
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
 
   // Close on outside click or Esc
@@ -74,25 +86,25 @@ export default function Filtro({
 
   const fetchJams = async () => {
     try {
+      const clientDate = new Date();
+      const year = clientDate.getFullYear();
+      const month = String(clientDate.getMonth() + 1).padStart(2, '0');
+      const day = String(clientDate.getDate()).padStart(2, '0');
+      const localDateLocal = `${year}-${month}-${day}`;
+
       const params = new URLSearchParams({
-        dateOptions,
-        order,
+        userDate: localDateLocal,
+        dateOptions: dateOptionsRef.current,
+        order: orderRef.current,
         lat: String(coordinatesRef.current.lat),
         lng: String(coordinatesRef.current.lng),
-        distance: String(distance),
-        styles: JSON.stringify(styles),
+        distance: String(distanceRef.current),
+        styles: JSON.stringify(stylesRef.current),
       });
 
-      console.log({
-        dateOptions,
-        order,
-        lat: String(coordinatesRef.current.lat),
-        lng: String(coordinatesRef.current.lng),
-        distance: String(distance),
-        styles: JSON.stringify(styles),
-      });
-
-      const res = await fetch(`/api/get-jams-filtered?${params.toString()}`);
+      const res = await fetch(
+        `/api/get-jams-cards-filtered?${params.toString()}`,
+      );
 
       if (!res.ok) throw new Error('Failed to fetch jams');
       const data = await res.json();
@@ -132,7 +144,7 @@ export default function Filtro({
         <div className="fixed inset-0 z-[503] flex justify-center items-start pt-20 bg-black/30">
           <div
             ref={panelRef}
-            className="bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg w-xl max-h-182 overflow-y-auto"
+            className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg w-xl max-h-182 overflow-y-auto"
           >
             <h2 className="text-4xl font-bold mb-2 mt-2 text-gray-900 text-center  dark:text-white">
               Filters
@@ -221,15 +233,15 @@ export default function Filtro({
                   </label>
                 </div>
               </div>
-              <div className="flex flex-wrap justify-end">
-                <Button
-                  className="hover:bg-[rgb(63,62,62)]"
-                  onClick={() => handleAccept()}
-                >
-                  Accept
-                </Button>
-              </div>
+              <div className="flex flex-wrap justify-end"></div>
             </div>
+            <Button
+              variant={'outline'}
+              className="top-5 right-5 absolute bg-[rgb(216,138,74)] text-[rgb(34,33,33)] hover:bg-[rgb(63,62,62)] hover:text-[rgb(235,235,235)]"
+              onClick={() => handleAccept()}
+            >
+              Close
+            </Button>
           </div>
         </div>
       )}
@@ -277,7 +289,7 @@ export function DateOptions({
       <div className="relative" ref={calRef}>
         <Button
           variant={dateOptions.startsWith('custom') ? 'secondary' : 'outline'}
-          className={`${dateOptions.startsWith('custom') ? 'border border-black/20' : ''} hover:bg-black/5`}
+          className={`w-28 ${dateOptions.startsWith('custom') ? 'border border-black/20' : ''} hover:bg-black/5`}
           onClick={() => setShowCalendar((prev) => !prev)}
         >
           {dateOptions.startsWith('custom')
@@ -295,7 +307,17 @@ export function CalendarDemo({ setDateOption }) {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   useEffect(() => {
-    if (date) setDateOption('custom: ' + date.toISOString().split('T')[0]);
+    if (date) {
+      const localDate =
+        date.getFullYear() +
+        '-' +
+        String(date.getMonth() + 1).padStart(2, '0') +
+        '-' +
+        String(date.getDate()).padStart(2, '0');
+
+      console.log('custom: ' + localDate);
+      setDateOption('custom: ' + localDate);
+    }
   }, [date]);
 
   return (

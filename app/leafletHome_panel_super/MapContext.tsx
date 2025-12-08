@@ -80,11 +80,11 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       },
       () => {
         setInitialLocation({
-          latitude: -33.8688,
-          longitude: 151.2093,
-          city: 'Sidney',
+          latitude: -33.815,
+          longitude: 151.001,
+          city: 'Parramatta Nueva Gales del Sur, Australia',
         });
-        setPosition(-33.8688, 151.2093);
+        setPosition(-33.815, 151.001);
       },
     );
   }, [map]);

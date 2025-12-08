@@ -4,8 +4,14 @@ import { NextResponse } from 'next/server';
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
-  const order = searchParams.get('order') || 'popular';
+  console.log('ew0ee9ew');
+  console.log(searchParams);
 
+  const userDate = searchParams.get('userDate');
+
+  const dateOptions = searchParams.get('dateOptions');
+
+  const order = searchParams.get('order') || 'popular';
   const lat = parseFloat(searchParams.get('lat') || '38.9848328');
   const lng = parseFloat(searchParams.get('lng') || '-77.09431719999999');
   const distance = parseFloat(searchParams.get('distance') || '20'); // km
