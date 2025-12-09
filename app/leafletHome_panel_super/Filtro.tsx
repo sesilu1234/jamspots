@@ -136,7 +136,7 @@ export default function Filtro({
         styles: JSON.stringify(stylesRefMap.current),
       });
 
-
+console.log('uejeje');
 
 const [cardsFetch, markersFetch] = await Promise.all([
   fetch(`/api/get-jams-cards-filtered?${paramsCards}`),

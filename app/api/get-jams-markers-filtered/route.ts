@@ -7,7 +7,7 @@ export async function GET(req: Request) {
 
   const { searchParams } = new URL(req.url);
 
-  console.log(searchParams);
+
 
   const userDate = searchParams.get('userDate'); // "2025-12-09"
   const dateOptions = searchParams.get('dateOptions'); // "all", "week", "custom: 2025-12-21"
@@ -33,11 +33,11 @@ if (dateOptions && dateOptions !== 'all' && userDate) {
     }
 
     query = query.overlaps('dates', rangeDates);
-    console.log(rangeDates);
+    
   } else if (dateOptions.startsWith('custom:')) {
     const customDate = dateOptions.split('custom:')[1].trim();
     query = query.overlaps('dates', [customDate]);
-    console.log(customDate);
+   
   }
 }
 
@@ -58,9 +58,6 @@ if (dateOptions && dateOptions !== 'all' && userDate) {
 
   const { data, error } = await query;
 
-
-  console.log('9999999999999999999');
-  console.log(data);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
