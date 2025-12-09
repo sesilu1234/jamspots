@@ -27,7 +27,7 @@ export const authOptions = {
           last_login: new Date().toISOString(),
         });
       } else {
-        console.log('eiiii111');
+        
         await supabaseAdmin
           .from('profiles')
           .update({ last_login: new Date().toISOString() })

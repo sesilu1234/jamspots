@@ -106,13 +106,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
 
     const form = useFormStore.getState().form;
 
-    console.log('YYYYYYYYYYYYYYYYYY');
-    console.log('YYYYYYYYYYYYYYYYYY');
-    console.log('YYYYYYYYYYYYYYYYYY');
-    console.log('YYYYYYYYYYYYYYYYYY');
-    console.log('YYYYYYYYYYYYYYYYYY');
-
-    console.log(form);
+  
 
     const images_files: File[] = [];
     for (const url of form.photos.images) {

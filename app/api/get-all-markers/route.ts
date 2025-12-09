@@ -6,7 +6,7 @@ export async function GET() {
     .from('sessions_with_coords')
     .select('id, lat, lng');
 
-  console.log(data);
+
 
   if (error)
     return NextResponse.json({ error: error.message }, { status: 500 });

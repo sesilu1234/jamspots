@@ -38,6 +38,31 @@
   font-weight: 200; /* thin variant */
 }
 
+/* WebKit (Chrome, Edge, Safari) */
+.bg-white::-webkit-scrollbar {
+  width: 6px;        /* thin */
+}
+
+.bg-white::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.bg-white::-webkit-scrollbar-thumb {
+  background: #bcbcbc;
+  border-radius: 8px;
+}
+
+.bg-white::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* Firefox */
+.bg-white {
+  scrollbar-width: thin;
+  scrollbar-color: #bcbcbc transparent;
+}
+
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

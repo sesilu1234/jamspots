@@ -34,7 +34,7 @@ export default function JamPage() {
       const res = await fetch(`/api/get-jam/${jamId}`);
       const data = await res.json();
       setJam(data);
-      console.log(data);
+  
       console.log(Object.keys(data!));
       // <-- log here, after fetch
     }

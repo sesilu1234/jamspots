@@ -16,7 +16,7 @@ export default function JamCarousel({ jams, setJams, loading, setLoading }) {
         if (!res.ok) throw new Error('Failed to fetch jams');
         const data: Jam[] = await res.json();
         setJams(data);
-        console.log('Fetched jams:', data);
+    
       } catch (err: any) {
         setError(err.message);
       } finally {

@@ -7,6 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useMapContext } from './MapContext';
 
 type Marker = {
   id: string;
@@ -29,7 +30,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function MapMarkersCluster() {
   const map = useMap();
 
-  const [markersData, setMarkersData] = useState<Marker[]>([]);
+   const { markersData, setMarkersData } = useMapContext();
+
   // const [markersDetails, setMarkersDetails] = useState<Record<number, MarkerDetail>>({});
   const [selectedMarker, setSelectedMarker] =
     useState<JamCardMarkerProps | null>(null);
@@ -71,6 +73,9 @@ export default function MapMarkersCluster() {
 
   useEffect(() => {
     if (!map || markersData.length === 0) return;
+
+
+
 
     // @ts-expect-error makerExists
     const clusterGroup = L.markerClusterGroup();

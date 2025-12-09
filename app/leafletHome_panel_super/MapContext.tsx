@@ -19,6 +19,13 @@ type MapContextType = {
   setLocationSearch: React.Dispatch<
     React.SetStateAction<LocationSearch | null>
   >;
+ 
+};
+
+type Marker = {
+  id: string;
+  lat: number;
+  lng: number;
 };
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -38,6 +45,9 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   );
 
   const [initialLocation, setInitialLocation] = useState(null);
+
+
+  const [markersData, setMarkersData] = useState<Marker[]>([]);
 
   const setPosition = (lat: number, lng: number) => {
     setLocationSearch({ coordinates: { lat, lng } });
@@ -97,6 +107,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         locationSearch,
         setLocationSearch,
         initialLocation,
+        markersData,
+        setMarkersData
       }}
     >
       {children}

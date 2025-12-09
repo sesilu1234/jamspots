@@ -31,7 +31,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     fetch(`/api/get-jam-edit/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log('eiiiii', data);
+      
 
         setForm({
           generalInfo: {
@@ -105,13 +105,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
 
     const form = useFormStore.getState().form;
 
-    console.log('YYYYYYYYYYYYYYYYYY');
-    console.log('YYYYYYYYYYYYYYYYYY');
-    console.log('YYYYYYYYYYYYYYYYYY');
-    console.log('YYYYYYYYYYYYYYYYYY');
-    console.log('YYYYYYYYYYYYYYYYYY');
 
-    console.log(form);
 
     const images_files: File[] = [];
     for (const url of form.photos.images) {

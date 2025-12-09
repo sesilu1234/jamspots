@@ -23,7 +23,7 @@ function generateSlug(title: string, id: string) {
 export async function POST(req: Request) {
   const body = await req.json();
 
-  console.log('POST hit!', body);
+
   const id = uuidv4();
   const slug = generateSlug(body.jam_title, id);
 
