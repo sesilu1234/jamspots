@@ -10,7 +10,6 @@ import { useMapContext } from './MapContext';
 
 import L from 'leaflet';
 
-
 type SliderProps = React.ComponentProps<typeof Slider>;
 
 export default function Filtro({
@@ -36,13 +35,12 @@ export default function Filtro({
     distancia: 20,
     estilos: [],
   });
-  const [dateOptions, setDateOptions] = useState('today');
+  const [dateOptions, setDateOptions] = useState('week');
   const [order, setOrder] = useState('popular');
   const [distance, setDistance] = useState(20);
   const [styles, setStyles] = useState<string[]>([]);
 
-
-    const [dateOptionsMap, setDateOptionsMap] = useState('all');
+  const [dateOptionsMap, setDateOptionsMap] = useState('all');
   const [stylesMap, setStylesMap] = useState<string[]>([]);
 
   const dateOptionsRef = useRef(dateOptions);
@@ -63,20 +61,17 @@ export default function Filtro({
   const stylesRefMap = useRef(stylesMap);
   stylesRefMap.current = stylesMap;
 
-
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
 
-    const [showCalendarMap, setShowCalendarMap] = useState<boolean>(false);
+  const [showCalendarMap, setShowCalendarMap] = useState<boolean>(false);
 
+  const [cardFiltersOpen, setCardFiltersOpen] = useState(true);
 
-    const [cardFiltersOpen, setCardFiltersOpen] = useState(true);
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
+  const [dateMap, setDateMap] = useState<Date | undefined>(new Date());
 
-     const [date, setDate] = useState<Date | undefined>(new Date());
-
-      const [dateMap, setDateMap] = useState<Date | undefined>(new Date());
-
-       const {setMarkersData } = useMapContext();
+  const { setMarkersData } = useMapContext();
 
   // Close on outside click or Esc
   useEffect(() => {
@@ -136,44 +131,27 @@ export default function Filtro({
         styles: JSON.stringify(stylesRefMap.current),
       });
 
-console.log('uejeje');
+      console.log('uejeje');
 
-const [cardsFetch, markersFetch] = await Promise.all([
-  fetch(`/api/get-jams-cards-filtered?${paramsCards}`),
-  fetch(`/api/get-jams-markers-filtered?${paramsMarkers}`)
-]);
+      const [cardsFetch, markersFetch] = await Promise.all([
+        fetch(`/api/get-jams-cards-filtered?${paramsCards}`),
+        fetch(`/api/get-jams-markers-filtered?${paramsMarkers}`),
+      ]);
 
-if (!cardsFetch.ok || !markersFetch.ok) throw new Error('Failed to fetch jams');
+      if (!cardsFetch.ok || !markersFetch.ok)
+        throw new Error('Failed to fetch jams');
 
-const [resCards, resMarkers] = await Promise.all([
-  cardsFetch.json(),
-  markersFetch.json()
-]);
+      const [resCards, resMarkers] = await Promise.all([
+        cardsFetch.json(),
+        markersFetch.json(),
+      ]);
 
-
-
-
-    console.log('Fetched jams:', resCards);
+      console.log('Fetched jams:', resCards);
 
       console.log('Fetched markers:', resMarkers);
 
-
-      
-
-     
-      setMarkersData(resMarkers)
+      setMarkersData(resMarkers);
       setJams(resCards);
-
-
-
-
-      
-
-
-
-
-
-    
     } catch (err: any) {
       console.log(err.message);
     } finally {
@@ -206,174 +184,167 @@ const [resCards, resMarkers] = await Promise.all([
       {/* Overlay + Filter Panel */}
       {open && (
         <div className="fixed inset-0 z-[503] flex flex-col  items-center pt-5 bg-black/30">
-
-      
-      
-          <div
-            ref={panelRef}
-            className="relative   w-xl "
-          >
+          <div ref={panelRef} className="relative   w-xl ">
+            <div className=" flex justify-center items-end gap-0  w-xl  ">
               <div
-          
-            className=" flex justify-center items-end gap-0  w-xl  "
-          >
+                className={`pt-5 pb-2 px-2 bg-white w-40 rounded-t-xl text-center cursor-pointer ${
+                  cardFiltersOpen ? '' : 'border-4'
+                }`}
+                onClick={() => setCardFiltersOpen(true)}
+              >
+                Card Filters
+              </div>
 
-          <div
-  className={`pt-5 pb-2 px-2 bg-white w-40 rounded-t-xl text-center cursor-pointer ${
-    cardFiltersOpen ? '' : 'border-4'
-  }`}
-  onClick={() => setCardFiltersOpen(true)}
->
-  Card Filters
-</div>
+              <div
+                className={`pt-5 pb-2 px-2 bg-white w-40 rounded-t-xl text-center cursor-pointer ${
+                  cardFiltersOpen ? 'border-4' : ''
+                }`}
+                onClick={() => setCardFiltersOpen(false)}
+              >
+                Map Filters
+              </div>
+            </div>
 
-        <div
-  className={`pt-5 pb-2 px-2 bg-white w-40 rounded-t-xl text-center cursor-pointer ${
-    cardFiltersOpen ? 'border-4' : ''
-  }`}
-  onClick={() => setCardFiltersOpen(false)}
->
-  Map Filters
-</div>
+            {cardFiltersOpen ? (
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg overflow-y-scroll max-h-112 ">
+                <h2 className="text-4xl font-bold mb-2 mt-2 text-gray-900 text-center  dark:text-white text-center">
+                  Card Filters
+                </h2>
+                <div className="flex flex-col gap-12 p-6">
+                  <div className="flex flex-col ">
+                    <h1 className="text-3xl font-semibold">Cuándo</h1>
+                    <DateOptions
+                      dateOptions={dateOptions}
+                      setDateOption={setDateOptions}
+                      showCalendar={showCalendar}
+                      setShowCalendar={setShowCalendar}
+                      dateRef={date}
+                      setDate={setDate}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <h1 className="text-3xl font-semibold">Ordenar</h1>
+                    <div className="flex flex-col pt-8 gap-4 ml-8">
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="order"
+                          className="hidden peer"
+                          checked={order === 'popular'}
+                          onChange={() => setOrder('popular')}
+                        />
+                        <div
+                          className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
+      peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
+                        >
+                          <svg
+                            className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                        <span className="select-none">Más populares</span>
+                      </label>
 
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="order"
+                          className="hidden peer"
+                          checked={order === 'closeness'}
+                          onChange={() => setOrder('closeness')}
+                        />
+                        <div
+                          className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
+      peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
+                        >
+                          <svg
+                            className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                        <span className="select-none">Más cercanos</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex flex-col ">
+                    <div className="flex flex-col gap-4 ">
+                      <label>
+                        <SliderDemo
+                          distance={distance}
+                          setDistance={setDistance}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex flex-col">
+                    <h1 className="text-3xl font-semibold">Estilos</h1>
+                    <div className="flex flex-col gap-4 ml-8">
+                      <label>
+                        <SelectStyles styles={styles} setStyles={setStyles} />
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap justify-end"></div>
+                </div>
+                {/* <Button
+              variant={'outline'}
+              className="top-5 right-5 absolute bg-[rgb(216,138,74)] text-[rgb(34,33,33)] hover:bg-[rgb(63,62,62)] hover:text-[rgb(235,235,235)]"
+              onClick={() => handleAccept()}
+            >
+              Close
+            </Button> */}
+              </div>
+            ) : (
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg max-h-112 overflow-y-scroll">
+                <h2 className="text-4xl font-bold mb-2 mt-2 text-gray-900 text-center  dark:text-white text-center">
+                  Map Filters
+                </h2>
+                <div className="flex flex-col gap-12 p-6">
+                  <div className="flex flex-col ">
+                    <h1 className="text-3xl font-semibold">Cuándo</h1>
+                    <DateOptionsMap
+                      dateOptions={dateOptionsMap}
+                      setDateOption={setDateOptionsMap}
+                      showCalendar={showCalendarMap}
+                      setShowCalendar={setShowCalendarMap}
+                      dateRef={dateMap}
+                      setDate={setDateMap}
+                    />
+                  </div>
 
-
+                  <div className="flex flex-col">
+                    <h1 className="text-3xl font-semibold">Estilos</h1>
+                    <div className="flex flex-col gap-4 ml-8">
+                      <label>
+                        <SelectStyles
+                          styles={stylesMap}
+                          setStyles={setStylesMap}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap justify-end"></div>
+                </div>
+                {/* <Button
+              variant={'outline'}
+              className="top-5 right-5 absolute bg-[rgb(216,138,74)] text-[rgb(34,33,33)] hover:bg-[rgb(63,62,62)] hover:text-[rgb(235,235,235)]"
+              onClick={() => handleAccept()}
+            >
+              Close
+            </Button> */}
+              </div>
+            )}
           </div>
-
-              {cardFiltersOpen ? (
-          <div className='bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg overflow-y-scroll max-h-112 '>
-
-
-          
-            <h2 className="text-4xl font-bold mb-2 mt-2 text-gray-900 text-center  dark:text-white text-center">
-              Card Filters
-            </h2>
-            <div className="flex flex-col gap-12 p-6">
-              <div className="flex flex-col ">
-                <h1 className="text-3xl font-semibold">Cuándo</h1>
-                <DateOptions
-                  dateOptions={dateOptions}
-                  setDateOption={setDateOptions}
-                  showCalendar={showCalendar}
-                  setShowCalendar={setShowCalendar}
-                  dateRef={date} 
-                   setDate={setDate}
-                />
-              </div>
-              <div className="flex flex-col">
-                <h1 className="text-3xl font-semibold">Ordenar</h1>
-                <div className="flex flex-col pt-8 gap-4 ml-8">
-                 <label className="flex items-center space-x-2 cursor-pointer">
-  <input
-    type="radio"
-    name="order"
-    className="hidden peer"
-    checked={order === 'popular'}
-    onChange={() => setOrder('popular')}
-  />
-  <div className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
-      peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center">
-    <svg className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-      <path d="M5 13l4 4L19 7" />
-    </svg>
-  </div>
-  <span className="select-none">Más populares</span>
-</label>
-
-<label className="flex items-center space-x-2 cursor-pointer">
-  <input
-    type="radio"
-    name="order"
-    className="hidden peer"
-    checked={order === 'closeness'}
-    onChange={() => setOrder('closeness')}
-  />
-  <div className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
-      peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center">
-    <svg className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-      <path d="M5 13l4 4L19 7" />
-    </svg>
-  </div>
-  <span className="select-none">Más cercanos</span>
-</label>
-
-                </div>
-              </div>
-              <div className="flex flex-col ">
-                <div className="flex flex-col gap-4 ">
-                  <label>
-                    <SliderDemo distance={distance} setDistance={setDistance} />
-                  </label>
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <h1 className="text-3xl font-semibold">Estilos</h1>
-                <div className="flex flex-col gap-4 ml-8">
-                  <label>
-                    <SelectStyles styles={styles} setStyles={setStyles} />
-                  </label>
-                </div>
-              </div>
-              <div className="flex flex-wrap justify-end"></div>
-            </div>
-            {/* <Button
-              variant={'outline'}
-              className="top-5 right-5 absolute bg-[rgb(216,138,74)] text-[rgb(34,33,33)] hover:bg-[rgb(63,62,62)] hover:text-[rgb(235,235,235)]"
-              onClick={() => handleAccept()}
-            >
-              Close
-            </Button> */}
-          </div>) : 
-          
-          
-          
-          ( <div className='bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg max-h-112 overflow-y-scroll'>
-
-
-          
-            <h2 className="text-4xl font-bold mb-2 mt-2 text-gray-900 text-center  dark:text-white text-center">
-              Map Filters
-            </h2>
-            <div className="flex flex-col gap-12 p-6">
-              <div className="flex flex-col ">
-                <h1 className="text-3xl font-semibold">Cuándo</h1>
-                <DateOptionsMap
-                  dateOptions={dateOptionsMap}
-                  setDateOption={setDateOptionsMap}
-                  showCalendar={showCalendarMap}
-                  setShowCalendar={setShowCalendarMap}
-                   dateRef={dateMap} 
-                   setDate={setDateMap}
-                />
-              </div>
-              
-              
-              <div className="flex flex-col">
-                <h1 className="text-3xl font-semibold">Estilos</h1>
-                <div className="flex flex-col gap-4 ml-8">
-                  <label>
-                    <SelectStyles styles={stylesMap} setStyles={setStylesMap} />
-                  </label>
-                </div>
-              </div>
-              <div className="flex flex-wrap justify-end"></div>
-            </div>
-            {/* <Button
-              variant={'outline'}
-              className="top-5 right-5 absolute bg-[rgb(216,138,74)] text-[rgb(34,33,33)] hover:bg-[rgb(63,62,62)] hover:text-[rgb(235,235,235)]"
-              onClick={() => handleAccept()}
-            >
-              Close
-            </Button> */}
-          </div>)
-          
-          
-          
-          
-          
-          
-          }
-          </div> 
         </div>
       )}
     </>
@@ -386,7 +357,7 @@ export function DateOptions({
   showCalendar,
   setShowCalendar,
   dateRef,
-  setDate 
+  setDate,
 }) {
   const calRef = useRef(null);
 
@@ -430,23 +401,25 @@ export function DateOptions({
             : 'Custom'}
         </Button>
 
-        {showCalendar ? <CalendarDemo setDateOption={setDateOption} dateRef={dateRef}  setDate={setDate} /> : null}
+        {showCalendar ? (
+          <CalendarDemo
+            setDateOption={setDateOption}
+            dateRef={dateRef}
+            setDate={setDate}
+          />
+        ) : null}
       </div>
     </div>
   );
 }
-
-
-
-
 
 export function DateOptionsMap({
   dateOptions,
   setDateOption,
   showCalendar,
   setShowCalendar,
-   dateRef,
-  setDate 
+  dateRef,
+  setDate,
 }) {
   const calRef = useRef(null);
 
@@ -460,11 +433,8 @@ export function DateOptionsMap({
   }, []);
 
   const options = [
-
-   { value: 'all', label: 'Show all' },
+    { value: 'all', label: 'Show all' },
     { value: 'week', label: 'This week' },
-    
- 
   ];
 
   return (
@@ -491,21 +461,19 @@ export function DateOptionsMap({
             : 'Custom'}
         </Button>
 
-        {showCalendar ?<CalendarDemo setDateOption={setDateOption} dateRef={dateRef}  setDate={setDate} /> : null}
+        {showCalendar ? (
+          <CalendarDemo
+            setDateOption={setDateOption}
+            dateRef={dateRef}
+            setDate={setDate}
+          />
+        ) : null}
       </div>
     </div>
   );
 }
 
-
-
-
-
-
-
 export function CalendarDemo({ setDateOption, dateRef, setDate }) {
- 
-
   useEffect(() => {
     if (dateRef) {
       const localDate =
@@ -610,36 +578,35 @@ export function SelectStyles({ styles, setStyles }: SelectStylesProps) {
   ];
   return (
     <div>
-    <div className="grid grid-flow-col grid-rows-2 auto-cols-max gap-2 mt-4 border p-2 rounded max-w-3/4 overflow-x-auto">
-      {all_styles.map((style) => {
-        const isSelected = styles.includes(style);
-        return (
-          <div
-            key={style}
-            className={`flex items-center justify-between px-4 py-2 rounded cursor-pointer whitespace-nowrap ${
-              isSelected
-                ? 'bg-purple-500 text-white'
-                : 'bg-gray-200 hover:bg-gray-300'
-            }`}
-            onClick={() => toggleStyle(style)}
-          >
-            <span>{style}</span>
-            <span className="font-bold ml-1">{isSelected ? '×' : '+'}</span>
-          </div>
-        );
-      })}
+      <div className="grid grid-flow-col grid-rows-2 auto-cols-max gap-2 mt-4 border p-2 rounded max-w-3/4 overflow-x-auto">
+        {all_styles.map((style) => {
+          const isSelected = styles.includes(style);
+          return (
+            <div
+              key={style}
+              className={`flex items-center justify-between px-4 py-2 rounded cursor-pointer whitespace-nowrap ${
+                isSelected
+                  ? 'bg-purple-500 text-white'
+                  : 'bg-gray-200 hover:bg-gray-300'
+              }`}
+              onClick={() => toggleStyle(style)}
+            >
+              <span>{style}</span>
+              <span className="font-bold ml-1">{isSelected ? '×' : '+'}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      {styles.length > 0 && (
+        <div className="p-4">
+          <span>Selected styles: </span>
+          <span>{styles[0]}</span>
+          {styles.slice(1).map((s) => (
+            <span key={s}>, {s}</span>
+          ))}
+        </div>
+      )}
     </div>
-
-{styles.length > 0 && (
-  <div className='p-4'>
-    <span>Selected styles: </span>
-    <span>{styles[0]}</span>
-    {styles.slice(1).map(s => <span key={s}>, {s}</span>)}
-  </div>
-)}
-
-    </div>
-
-    
   );
 }
