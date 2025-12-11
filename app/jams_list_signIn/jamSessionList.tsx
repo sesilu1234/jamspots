@@ -27,6 +27,58 @@ export default function JamSessionList() {
 
   const [loading, setLoading] = useState(true);
 
+  const [idToDelete, setIdToDelete] = useState<string | null>(null);
+
+  function DeleteConfirmation() {
+    const [text, setText] = useState('');
+
+    const [showPanelDelete, setShowPanelDelete] = useState(true);
+
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black/40">
+        {showPanelDelete && (
+          <div className=" flex flex-col gap-2 bg-white p-4 rounded-md shadow-xl w-96">
+            <p className="font-bold">
+              Type <i className="font-semibold">delete</i> to confirm
+            </p>
+
+            <input
+              className="border border-black  w-full py-1 px-3 mt-2 rounded-md"
+              placeholder="delete"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+
+            <div className="mt-3 flex gap-2">
+              <button
+                onClick={async () => {
+                  setShowPanelDelete(false);
+                  await deleteJam(idToDelete!);
+                  setIdToDelete(null);
+                }}
+                disabled={text !== 'delete'}
+                className={
+                  text === 'delete'
+                    ? 'bg-red-500 hover:bg-red-600 px-3 py-1  rounded-md'
+                    : 'opacity-50 px-3 py-1 '
+                }
+              >
+                Accept
+              </button>
+
+              <button
+                onClick={() => setIdToDelete(null)}
+                className="bg-gray-400 px-3 py-1 rounded-md hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   async function deleteJam(jamId: string) {
     // Llamada al API para eliminar
     await fetch(`/api/delete-session/${jamId}`, { method: 'DELETE' });
@@ -70,7 +122,7 @@ export default function JamSessionList() {
           jam_adress={jam.location_address}
           jam_image_src={jam.image}
           jam_slug={jam.slug}
-          deleteJam={deleteJam}
+          deleteJam={setIdToDelete}
         />
       ))}
 
@@ -96,6 +148,8 @@ export default function JamSessionList() {
           </div>
         </Link>
       </div>
+
+      {idToDelete ? <DeleteConfirmation /> : null}
     </div>
   );
 }
