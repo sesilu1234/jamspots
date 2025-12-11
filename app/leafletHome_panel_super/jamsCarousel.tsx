@@ -16,7 +16,6 @@ export default function JamCarousel({ jams, setJams, loading, setLoading }) {
         if (!res.ok) throw new Error('Failed to fetch jams');
         const data: Jam[] = await res.json();
         setJams(data);
-    
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -44,15 +43,19 @@ export default function JamCarousel({ jams, setJams, loading, setLoading }) {
       {/* Card container */}
       <div
         ref={containerRef}
-        style={{ overflowY: 'auto', transition: 'all 1.0s ease' }}
-        className={`card-container flex flex-col items-center bg-white border border-black/20 gap-6
-    ${collapsed ? 'h-0 p-0 opacity-0' : 'h-108 p-6 opacity-100'}`}
+        className={`
+    card-container flex flex-col items-center bg-white border border-black/20 gap-6
+    overflow-y-auto transition-all duration-700 ease-in-out
+    ${collapsed ? 'max-h-0 p-0 opacity-0' : 'max-h-108 p-6 opacity-100'}
+  `}
       >
         {loading ? (
           <>
             <SkeletonCard />
             <SkeletonCard />
           </>
+        ) : jams.length === 0 ? (
+          <div className="p-2  text-center  w-64">No jams found</div>
         ) : (
           jams.map((jam, index) => (
             <JamCardShadcn

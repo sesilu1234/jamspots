@@ -61,6 +61,9 @@ export async function GET(req: Request) {
     try {
       const parsed = JSON.parse(stylesParam);
       if (Array.isArray(parsed) && parsed.length > 0) stylesArray = parsed;
+      else {
+        stylesArray = null;
+      }
     } catch {}
   } else {
     stylesArray = null;
@@ -78,12 +81,12 @@ export async function GET(req: Request) {
 
   // Llamamos la RPC
   const { data, error } = await supabaseAdmin.rpc('sessions_within_distance', {
-    lat_param: lat,
-    lng_param: lng,
-    distance_param: distance,
-    filter_dates: datesArray,
-    filter_styles: stylesArray,
-    weekDay: weekDay,
+    p_lat: lat,
+    p_lng: lng,
+    p_distance: distance,
+    p_filter_dates: datesArray,
+    p_filter_styles: stylesArray,
+    p_weekday: weekDay,
   });
 
   if (error)
