@@ -39,6 +39,7 @@ export default function Filtro({
   const [order, setOrder] = useState('popular');
   const [distance, setDistance] = useState(20);
   const [styles, setStyles] = useState<string[]>([]);
+  const [worldWide, setWorldWide] = useState<boolean>(false);
 
   const [dateOptionsMap, setDateOptionsMap] = useState('all');
   const [stylesMap, setStylesMap] = useState<string[]>([]);
@@ -184,181 +185,141 @@ export default function Filtro({
       {open && (
         <div className="fixed inset-0 z-[503] flex flex-col  items-center pt-5 bg-black/30">
           <div ref={panelRef} className="relative   w-xl ">
-            <div className=" flex justify-center items-end gap-0  w-xl  ">
-              <div
-                className={`pt-5 pb-2 px-2 bg-white w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? '' : 'border-4'
-                }`}
-                onClick={() => setCardFiltersOpen(true)}
-              >
-                Local
-              </div>
-
-              <div
-                className={`pt-5 pb-2 px-2 bg-white w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? 'border-4' : ''
-                }`}
-                onClick={() => setCardFiltersOpen(false)}
-              >
-                Worldwide
-              </div>
-            </div>
-
-            {cardFiltersOpen ? (
-              <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
-                <div className="flex justify-center items-center gap-24  mb-5 mt-5">
-                  <h2 className="text-4xl font-bold text-gray-900 text-center  dark:text-white text-center">
-                    Local
-                  </h2>
-                  <button
-                    onClick={handleAccept}
-                    className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
+            <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
+              <div className="flex justify-center items-center gap-24  mb-5 mt-5">
+                <h2 className="text-4xl font-bold text-gray-900 text-center  dark:text-white text-center">
+                  Filters
+                </h2>
+                <button
+                  onClick={handleAccept}
+                  className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
             bg-[#2F2F2F] hover:bg-[#464646] text-[#FAFAFA] hover:text-[#FFFFFF]
              transition-colors cursor-pointer"
-                  >
-                    Apply
-                  </button>
+                >
+                  Apply
+                </button>
+              </div>
+              <div className="flex flex-col gap-12 p-6">
+                <div className="flex flex-col ">
+                  <h1 className="text-3xl font-semibold">Cuándo</h1>
+                  <DateOptions
+                    dateOptions={dateOptions}
+                    setDateOption={setDateOptions}
+                    showCalendar={showCalendar}
+                    setShowCalendar={setShowCalendar}
+                    dateRef={date}
+                    setDate={setDate}
+                  />
                 </div>
-                <div className="flex flex-col gap-12 p-6">
-                  <div className="flex flex-col ">
-                    <h1 className="text-3xl font-semibold">Cuándo</h1>
-                    <DateOptions
-                      dateOptions={dateOptions}
-                      setDateOption={setDateOptions}
-                      showCalendar={showCalendar}
-                      setShowCalendar={setShowCalendar}
-                      dateRef={date}
-                      setDate={setDate}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h1 className="text-3xl font-semibold">Ordenar</h1>
-                    <div className="flex flex-col pt-8 gap-4 ml-8">
-                      <label className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="order"
-                          className="hidden peer"
-                          checked={order === 'popular'}
-                          onChange={() => setOrder('popular')}
-                        />
-                        <div
-                          className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
+                <div className="flex flex-col">
+                  <h1 className="text-3xl font-semibold">Ordenar</h1>
+                  <div className="flex flex-col pt-8 gap-4 ml-8">
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="order"
+                        className="hidden peer"
+                        checked={order === 'popular'}
+                        onChange={() => setOrder('popular')}
+                      />
+                      <div
+                        className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
       peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
+                      >
+                        <svg
+                          className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
                         >
-                          <svg
-                            className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M5 13l4 4L19 7" />
-                          </svg>
-                        </div>
-                        <span className="select-none">Más populares</span>
-                      </label>
+                          <path d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span className="select-none">Más populares</span>
+                    </label>
 
-                      <label className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="order"
-                          className="hidden peer"
-                          checked={order === 'closeness'}
-                          onChange={() => setOrder('closeness')}
-                        />
-                        <div
-                          className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="order"
+                        className="hidden peer"
+                        checked={order === 'closeness'}
+                        onChange={() => setOrder('closeness')}
+                      />
+                      <div
+                        className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
       peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
+                      >
+                        <svg
+                          className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
                         >
-                          <svg
-                            className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M5 13l4 4L19 7" />
-                          </svg>
-                        </div>
-                        <span className="select-none">Más cercanos</span>
-                      </label>
-                    </div>
+                          <path d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span className="select-none">Más cercanos</span>
+                    </label>
                   </div>
-                  <div className="flex flex-col ">
-                    <div className="flex flex-col gap-4 ">
-                      <label>
-                        <SliderDemo
-                          distance={distance}
-                          setDistance={setDistance}
-                        />
-                      </label>
-                    </div>
-                  </div>
-                  <div className="flex flex-col">
-                    <h1 className="text-3xl font-semibold">Estilos</h1>
-                    <div className="flex flex-col gap-4 ml-8">
-                      <label>
-                        <SelectStyles styles={styles} setStyles={setStyles} />
-                      </label>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap justify-end"></div>
                 </div>
-                {/* <Button
+                <div className="flex flex-col ">
+                  <div className="flex flex-col gap-12 ">
+                    <label>
+                      <SliderDemo
+                        distance={distance}
+                        setDistance={setDistance}
+                        worldWide={worldWide}
+                      />
+                    </label>
+                    <label className="flex items-center gap-2 ml-8 cursor-pointer">
+                      <input
+                        id="world"
+                        type="checkbox"
+                        className="hidden peer"
+                        checked={worldWide}
+                        onChange={() => setWorldWide((prev) => !prev)}
+                      />
+
+                      <div
+                        className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
+      peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
+                      >
+                        <svg
+                          className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+
+                      <span className="text-xl font-semibold">Worldwide</span>
+                    </label>
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <h1 className="text-3xl font-semibold">Estilos</h1>
+                  <div className="flex flex-col gap-4 ml-8">
+                    <label>
+                      <SelectStyles styles={styles} setStyles={setStyles} />
+                    </label>
+                  </div>
+                </div>
+                <div className="flex flex-wrap justify-end"></div>
+              </div>
+              {/* <Button
               variant={'outline'}
               className="top-5 right-5 absolute bg-[rgb(216,138,74)] text-[rgb(34,33,33)] hover:bg-[rgb(63,62,62)] hover:text-[rgb(235,235,235)]"
               onClick={() => handleAccept()}
             >
               Close
             </Button> */}
-              </div>
-            ) : (
-              <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll">
-                <div className="flex justify-center items-center gap-24 mb-5 mt-5">
-                  <h2 className="text-4xl font-bold  text-gray-900 text-center  dark:text-white text-center">
-                    Worldwide
-                  </h2>
-                  <button
-                    onClick={handleAccept}
-                    className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-[#2F2F2F] hover:bg-[#464646] text-[#FAFAFA] hover:text-[#FFFFFF]
-             transition-colors cursor-pointer"
-                  >
-                    Apply
-                  </button>
-                </div>
-                <div className="flex flex-col gap-12 p-6">
-                  <div className="flex flex-col ">
-                    <h1 className="text-3xl font-semibold">Cuándo</h1>
-                    <DateOptionsMap
-                      dateOptions={dateOptionsMap}
-                      setDateOption={setDateOptionsMap}
-                      showCalendar={showCalendarMap}
-                      setShowCalendar={setShowCalendarMap}
-                      dateRef={dateMap}
-                      setDate={setDateMap}
-                    />
-                  </div>
-
-                  <div className="flex flex-col">
-                    <h1 className="text-3xl font-semibold">Estilos</h1>
-                    <div className="flex flex-col gap-4 ml-8">
-                      <label>
-                        <SelectStyles
-                          styles={stylesMap}
-                          setStyles={setStylesMap}
-                        />
-                      </label>
-                    </div>
-                  </div>
-                  <div className="flex justify-start mt-8 font-light">
-                    This search will hide cards and show all jam markers in the
-                    whole world.
-                  </div>
-                </div>
-              </div>
-            )}
+            </div>
           </div>
         </div>
       )}
@@ -520,21 +481,26 @@ type SliderDemoProps = {
   distance: number;
   setDistance: (val: number) => void;
   className?: string;
+  worldWide: boolean;
 };
 
 export function SliderDemo({
   distance,
   setDistance,
   className,
+  worldWide,
 }: SliderDemoProps) {
   return (
     <>
       <div className="flex gap-32 items-end mb-4">
         <h1 className="text-3xl font-semibold pb-4">Distancia</h1>
-        <span className="pb-1">{distance}km</span>
+        <span className="pb-1">
+          {worldWide ? 'Worldwide' : `${distance}km`}
+        </span>
       </div>
 
       <Slider
+        disabled={worldWide ? true : false}
         value={[distance]} // <-- array necesario
         min={0}
         max={100}

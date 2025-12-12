@@ -54,12 +54,12 @@ export default function Home() {
             <div className="h-[1.5px] bg-gray-700/50 w-96 mt-1"></div>
           </div>
 
-          <div className="flex items-center my-4 ml-3 gap-2">
-            <Input
+          <div className="flex items-center mb-8 mt-8 ml-3 gap-2">
+            {/* <Input
               className="w-72 h-10 px-3 text-sm text-gray-500 placeholder-gray-500 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="search"
               placeholder="Search jams, bars, venues…"
-            />
+            /> */}
 
             <div className="w-52 ">
               <GooglePlacesSearch coordinatesRef={coordinatesRef} />
