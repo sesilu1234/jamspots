@@ -80,7 +80,7 @@ export default function Filtro({
         panelRef.current &&
         !panelRef.current.contains(event.target as Node)
       ) {
-        handleAccept();
+        
         setOpen(false);
       }
     };
@@ -206,10 +206,20 @@ export default function Filtro({
             </div>
 
             {cardFiltersOpen ? (
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg overflow-y-scroll max-h-112 ">
-                <h2 className="text-4xl font-bold mb-2 mt-2 text-gray-900 text-center  dark:text-white text-center">
+              <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
+                <div className='flex justify-center items-center gap-24  mb-5 mt-5'>
+                <h2 className="text-4xl font-bold text-gray-900 text-center  dark:text-white text-center">
                   Card Filters
                 </h2>
+               <button
+  onClick={handleAccept}
+  className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
+            bg-[#2F2F2F] hover:bg-[#464646] text-[#FAFAFA] hover:text-[#FFFFFF]
+             transition-colors cursor-pointer"
+>
+  Apply
+</button>
+            </div>
                 <div className="flex flex-col gap-12 p-6">
                   <div className="flex flex-col ">
                     <h1 className="text-3xl font-semibold">Cuándo</h1>
@@ -305,10 +315,23 @@ export default function Filtro({
             </Button> */}
               </div>
             ) : (
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg max-h-112 overflow-y-scroll">
-                <h2 className="text-4xl font-bold mb-2 mt-2 text-gray-900 text-center  dark:text-white text-center">
+              <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll">
+                <div className='flex justify-center items-center gap-24 mb-5 mt-5'>
+                <h2 className="text-4xl font-bold  text-gray-900 text-center  dark:text-white text-center">
                   Map Filters
                 </h2>
+              <button
+  onClick={handleAccept}
+  className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
+            bg-[#2F2F2F] hover:bg-[#464646] text-[#FAFAFA] hover:text-[#FFFFFF]
+             transition-colors cursor-pointer"
+>
+  Apply
+</button>
+
+
+
+            </div>
                 <div className="flex flex-col gap-12 p-6">
                   <div className="flex flex-col ">
                     <h1 className="text-3xl font-semibold">Cuándo</h1>
@@ -335,13 +358,7 @@ export default function Filtro({
                   </div>
                   <div className="flex flex-wrap justify-end"></div>
                 </div>
-                {/* <Button
-              variant={'outline'}
-              className="top-5 right-5 absolute bg-[rgb(216,138,74)] text-[rgb(34,33,33)] hover:bg-[rgb(63,62,62)] hover:text-[rgb(235,235,235)]"
-              onClick={() => handleAccept()}
-            >
-              Close
-            </Button> */}
+                
               </div>
             )}
           </div>

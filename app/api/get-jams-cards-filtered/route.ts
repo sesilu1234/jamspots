@@ -69,15 +69,6 @@ export async function GET(req: Request) {
     stylesArray = null;
   }
 
-  console.log('-----------------');
-  console.log({
-    lat_param: lat,
-    lng_param: lng,
-    distance_param: distance,
-    filter_dates: datesArray,
-    filter_styles: stylesArray,
-    weekDay: weekDay,
-  });
 
   // Llamamos la RPC
   const { data, error } = await supabaseAdmin.rpc('sessions_within_distance', {
@@ -111,8 +102,7 @@ export async function GET(req: Request) {
   } else if (order === 'popular') {
     dataRes = dataRes.sort(() => Math.random() - 0.5);
   }
-  console.log('ssssssssssssssssssss');
-  console.log(dataRes);
+
 
   return NextResponse.json(dataRes);
 }
