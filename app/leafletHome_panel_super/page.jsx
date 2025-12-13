@@ -23,6 +23,8 @@ export default function Home() {
   const [jams, setJams] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [searchType, setSearchType] = useState('local');
+
   useEffect(() => {
     function handleClickOutside(e) {
       if (!menuRef.current?.contains(e.target)) {
@@ -54,7 +56,7 @@ export default function Home() {
             <div className="h-[1.5px] bg-gray-700/50 w-96 mt-1"></div>
           </div>
 
-          <div className="flex items-center mb-8 mt-8 ml-3 gap-2">
+          <div className="flex items-center mb-5 mt-8 ml-3 gap-2">
             {/* <Input
               className="w-72 h-10 px-3 text-sm text-gray-500 placeholder-gray-500 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="search"
@@ -72,27 +74,36 @@ export default function Home() {
                 setJams={setJams}
                 loading={loading}
                 setLoading={setLoading}
+                setSearchType={setSearchType}
               />
             </div>
           </div>
 
-          <div className="ml-3 font-semibold uppercase text-gray-800 tracking-wide">
-            13 jams found
+          <div className="flex justify-between items-end px-3 font-semibold uppercase text-gray-800 tracking-wide">
+            <span> 13 jams found</span>
+            <div className="flex flex-col items-end">
+              {searchType === 'local' ? (
+                <span> Showing jams near you </span>
+              ) : (
+                <span> Showing global jams </span>
+              )}
+            </div>
           </div>
 
-          <div className="relative w-full mx-auto mt-4 h-148 rounded-sm border border-gray-500/70 shadow-md overflow-hidden">
+          <div className="relative w-full mx-auto mt-2 h-148 rounded-sm border border-gray-500/70 shadow-md overflow-hidden">
             <MapRender />
             <JamCarousel
               jams={jams}
               setJams={setJams}
               loading={loading}
               setLoading={setLoading}
+              searchType={searchType}
             />
           </div>
         </div>
       </MapProvider>
 
-      <div className="w-screen bg-gray-200    mt-12     ">
+      <div className="w-screen bg-gray-200    mt-12 pt-4 pb-4     ">
         <div className="max-w-[90%] w-[1300px] mx-auto p-6  grid grid-cols-2 gap-12">
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold text-gray-800">
@@ -141,7 +152,7 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="w-screen bg-black/90 text-white py-12 mt-12">
+      <footer className="w-screen bg-black/90 text-white py-12 mt-0">
         <div className="max-w-[90%] w-[1300px] mx-auto p-6">
           {/* Navigation Links */}
           <div className="flex flex-row items-center justify-center gap-16 mb-12">

@@ -69,7 +69,6 @@ export async function GET(req: Request) {
     stylesArray = null;
   }
 
-
   // Llamamos la RPC
   const { data, error } = await supabaseAdmin.rpc('sessions_within_distance', {
     p_lat: lat,
@@ -80,6 +79,7 @@ export async function GET(req: Request) {
     p_weekday: weekDay,
   });
 
+  console.log('Error: ', error);
   if (error)
     return NextResponse.json({ error: error.message }, { status: 500 });
 
@@ -90,6 +90,8 @@ export async function GET(req: Request) {
     images?: string[];
     // otros campos que uses...
   };
+
+  console.log('data: ', data);
 
   let dataRes: Jam[] =
     data?.map((jam: Jam) => ({
@@ -102,7 +104,6 @@ export async function GET(req: Request) {
   } else if (order === 'popular') {
     dataRes = dataRes.sort(() => Math.random() - 0.5);
   }
-
 
   return NextResponse.json(dataRes);
 }

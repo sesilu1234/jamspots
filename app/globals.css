@@ -40,7 +40,7 @@
 
 /* WebKit (Chrome, Edge, Safari) */
 .bg-white::-webkit-scrollbar {
-  width: 6px;        /* thin */
+  width: 6px; /* thin */
 }
 
 .bg-white::-webkit-scrollbar-track {
@@ -61,7 +61,6 @@
   scrollbar-width: thin;
   scrollbar-color: #bcbcbc transparent;
 }
-
 
 @custom-variant dark (&:is(.dark *));
 
@@ -185,6 +184,20 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@keyframes glow-ring-strong {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px 6px rgba(70, 104, 160, 0.35);
+  }
+}
+
+.animate-glow-ring-strong {
+  animation: glow-ring-strong 2s ease-in-out infinite;
 }
 
 .font-space {

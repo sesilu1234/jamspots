@@ -164,29 +164,15 @@ export default function EditArea({
           <div className="flex gap-4">
             <div className="flex flex-col gap-3">
               <Label htmlFor="time-from" className="px-1">
-                From
+                Starting Time
               </Label>
               <Input
                 type="time"
                 id="time-from"
-                step="60" // optional
+                step="60"
                 value={fromTime}
                 onChange={(e) => setFromTime(e.target.value)}
-                className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-              />
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="time-to" className="px-1">
-                To
-              </Label>
-              <Input
-                type="time"
-                id="time-to"
-                step="60" // optional
-                value={toTime ? toTime : undefined}
-                onChange={(e) => setToTime(e.target.value)}
-                className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                className="bg-background appearance-none text-center "
               />
             </div>
           </div>

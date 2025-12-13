@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 import Link from 'next/link';
+import { User } from 'lucide-react';
 
 export default function SessionMenu() {
   const { data: session } = useSession();
@@ -25,16 +26,20 @@ export default function SessionMenu() {
     <div className="absolute top-16 right-6 flex items-center gap-2">
       {session ? (
         <Link href="/jams_list_signIn">
-          <div className="w-16 h-16 flex items-center cursor-pointer">
-            <Avatar>
-              <AvatarImage
-                src={session.user?.image || 'https://github.com/shadcn.png'}
-                className="rounded-full"
-              />
-              <AvatarFallback>
-                {session.user?.name ? session.user.name[0] : 'U'}
-              </AvatarFallback>
-            </Avatar>
+          <div className="relative w-16 h-16 flex items-center cursor-pointer">
+            <div className="absolute">
+              <Avatar>
+                <AvatarImage
+                  src={session.user?.image || undefined}
+                  className="rounded-full"
+                />
+                <AvatarFallback>
+                  <div className="bg-black/90 text-white p-4 rounded-full">
+                    <User />
+                  </div>
+                </AvatarFallback>
+              </Avatar>
+            </div>
           </div>
         </Link>
       ) : (

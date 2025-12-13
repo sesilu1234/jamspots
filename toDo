@@ -1,64 +1,13 @@
+- hacer que cada 24 h se replique info de la base de datos, a otro host o
+  sitio...
 
+- en general hacer todo tipo de comprobaacioness, notificar al usuario/cliente,
+  y asegurar seguridad de apis, base de datos , y middleware , rate limiter
+  ,etc...
 
+- poner que se puede cerrar sesion (para cerrar o sin mas cambiar de usuario)
 
+- poner informar de que crear usuario solo sirve para crear jams, que para
+  consultar no tiene utilidad
 
-
-
-- hacer que cada 24 h se replique info de la base de datos, a otro host o sitio...
-
-
-- hacer que funcione el buscador tonto de keywords
-
-
-- hacer filtro
-
-
-- que al clickar en eliminar te pide introducir "eliminar" y accept
-
-
--si filtro en map :  posiblemente colapsar cards para que no haya confusion
-
-
-
-- quizas aqui poner un not found ... : http://localhost:3000/jam/null
-
-
-
-
-
-- en pagin ded jaam : clickaar en logo jamspots lleva a home
-
-- en pagin de jam, se puee clickar text underline a los social links
-
-
-
-
-
-
-
-
-
-
-
-- cuando haces lo de Primary  : completa el adresss : y la location y jam nanes solo si esta avacio : poner en placeholder que se puede clickar en el mapa para seleccionar . checkear en base datos que llega adress (y tambien coordinatees, las cuales solo seleccionar
-
-pueden conseguir clickando en el mapa)  quizas poner un popup ssin mas estsilo comic iciendo 3secondd que se pueda clickar ahi para conseguir adress y locaation coordinates    
-
-y poner encima de los inputs Adress (en negrita, indicando de que es el input)
-
-- quitara el to (solamente dejar el start time) (quitar de base de datos)
-
-
-- el calendario mejorar (parece que es min 0, y no, que sea vacio posible, y que no haya nada pre selected)
-
-
-
-
-
-
-
-- en general hacer todo tipo de comprobaacioness, notificar al usuario/cliente, y asegurar seguridad de apis, base de datos , y middleware , rate limiter ,etc...
-
-
-
-
+- cuando pones global, hacer unzoom del mapa para que se vean todas las jams

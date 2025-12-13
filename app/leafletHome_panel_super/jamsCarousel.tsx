@@ -2,7 +2,13 @@ import JamCardShadcn from './CardJam';
 import { useState, useEffect, useRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export default function JamCarousel({ jams, setJams, loading, setLoading }) {
+export default function JamCarousel({
+  jams,
+  setJams,
+  loading,
+  setLoading,
+  searchType,
+}) {
   const [collapsed, setCollapsed] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
@@ -25,6 +31,11 @@ export default function JamCarousel({ jams, setJams, loading, setLoading }) {
 
     fetchJams();
   }, []);
+
+  useEffect(() => {
+    console.log(999999999);
+    searchType === 'local' ? setCollapsed(false) : setCollapsed(true);
+  }, [searchType]);
 
   // observer-based uncollapse
 
@@ -55,7 +66,13 @@ export default function JamCarousel({ jams, setJams, loading, setLoading }) {
             <SkeletonCard />
           </>
         ) : jams.length === 0 ? (
-          <div className="p-2  text-center  w-64">No jams found</div>
+          searchType === 'global' ? (
+            <div className="p-2  text-center font-light w-64">
+              Cards not available with global search
+            </div>
+          ) : (
+            <div className="p-2  text-center  w-64">No jams found</div>
+          )
         ) : (
           jams.map((jam, index) => (
             <JamCardShadcn

@@ -13,6 +13,7 @@ import StaticMap from './LocationImageGMaps';
 import TimeAndPlace from './TimeAndPlace';
 import JamImages from './JamImages';
 import JamChars from './JamChars';
+import Link from 'next/link';
 
 interface HtmlReadOnlyProps {
   rawContent: RawDraftContentState;
@@ -34,7 +35,7 @@ export default function JamPage() {
       const res = await fetch(`/api/get-jam/${jamId}`);
       const data = await res.json();
       setJam(data);
-  
+
       console.log(Object.keys(data!));
       // <-- log here, after fetch
     }
@@ -47,7 +48,7 @@ export default function JamPage() {
     <div className="min-h-screen bg-black/90">
       <div className=" bg-gray-300 ">
         <div className="flex justify-between w-[1300px] max-w-[90%] mx-auto py-12">
-          <div className="ml-3 flex gap-2 items-end">
+          <Link href="/" className="ml-3 flex gap-2 items-end">
             <img
               src="/jamspots_icon.png"
               alt="Jamspots icon"
@@ -56,7 +57,7 @@ export default function JamPage() {
             <p className="relative bottom-0 text-xs py-3 text-gray-600 font-semibold">
               Discover a spot where musicians unite.
             </p>
-          </div>
+          </Link>
 
           <div className="w-16 h-16 ">
             <Avatar className="">

@@ -18,6 +18,7 @@ export default function Filtro({
   setJams,
   loading,
   setLoading,
+  setSearchType,
 }) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -40,8 +41,8 @@ export default function Filtro({
   const [distance, setDistance] = useState(20);
   const [styles, setStyles] = useState<string[]>([]);
 
-  const [dateOptionsMap, setDateOptionsMap] = useState('all');
-  const [stylesMap, setStylesMap] = useState<string[]>([]);
+  const [dateOptionsGlobal, setdateOptionsGlobal] = useState('all');
+  const [stylesGlobal, setstylesGlobal] = useState<string[]>([]);
 
   const dateOptionsRef = useRef(dateOptions);
   dateOptionsRef.current = dateOptions;
@@ -55,11 +56,11 @@ export default function Filtro({
   const stylesRef = useRef(styles);
   stylesRef.current = styles;
 
-  const dateOptionsRefMap = useRef(dateOptionsMap);
-  dateOptionsRefMap.current = dateOptionsMap;
+  const dateOptionsRefGlobal = useRef(dateOptionsGlobal);
+  dateOptionsRefGlobal.current = dateOptionsGlobal;
 
-  const stylesRefMap = useRef(stylesMap);
-  stylesRefMap.current = stylesMap;
+  const stylesRefGlobal = useRef(stylesGlobal);
+  stylesRefGlobal.current = stylesGlobal;
 
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
 
@@ -69,7 +70,7 @@ export default function Filtro({
 
   const [date, setDate] = useState<Date | undefined>(new Date());
 
-  const [dateMap, setDateMap] = useState<Date | undefined>(new Date());
+  const [dateGlobal, setdateGlobal] = useState<Date | undefined>(new Date());
 
   const { setMarkersData } = useMapContext();
 
@@ -99,14 +100,15 @@ export default function Filtro({
     };
   }, []);
 
-  const handleAccept = () => {
+  const handleAccept = (searchType) => {
     console.log('eiii');
-    setLoading(true);
-    fetchJams();
+    setSearchType(searchType);
+
+    fetchJams(searchType);
     setOpen(false);
   };
 
-  const fetchJams = async () => {
+  const fetchJams = async (searchType) => {
     try {
       const clientDate = new Date();
       const year = clientDate.getFullYear();
@@ -114,43 +116,58 @@ export default function Filtro({
       const day = String(clientDate.getDate()).padStart(2, '0');
       const localDateLocal = `${year}-${month}-${day}`;
 
-      const paramsCards = new URLSearchParams({
-        userDate: localDateLocal,
-        dateOptions: dateOptionsRef.current,
-        order: String(orderRef.current),
-        lat: String(coordinatesRef.current.lat),
-        lng: String(coordinatesRef.current.lng),
-        distance: String(distanceRef.current),
-        styles: JSON.stringify(stylesRef.current),
-      });
+      if (searchType === 'local') {
+        setLoading(true);
 
-      const paramsMarkers = new URLSearchParams({
-        userDate: localDateLocal,
-        dateOptions: dateOptionsRefMap.current,
-        styles: JSON.stringify(stylesRefMap.current),
-      });
+        console.log('local');
 
-      console.log('uejeje');
+        const paramsCards = new URLSearchParams({
+          userDate: localDateLocal,
+          dateOptions: dateOptionsRef.current,
+          order: String(orderRef.current),
+          lat: String(coordinatesRef.current.lat),
+          lng: String(coordinatesRef.current.lng),
+          distance: String(distanceRef.current),
+          styles: JSON.stringify(stylesRef.current),
+        });
 
-      const [cardsFetch, markersFetch] = await Promise.all([
-        fetch(`/api/get-jams-cards-filtered?${paramsCards}`),
-        fetch(`/api/get-jams-markers-filtered?${paramsMarkers}`),
-      ]);
+        const cardsFetch = await fetch(
+          `/api/get-jams-cards-filtered?${paramsCards}`,
+        );
 
-      if (!cardsFetch.ok || !markersFetch.ok)
-        throw new Error('Failed to fetch jams');
+        if (!cardsFetch.ok) throw new Error('Failed to fetch jams');
 
-      const [resCards, resMarkers] = await Promise.all([
-        cardsFetch.json(),
-        markersFetch.json(),
-      ]);
+        const resCards = await cardsFetch.json();
 
-      console.log('Fetched jams:', resCards);
+        console.log(resCards);
 
-      console.log('Fetched markers:', resMarkers);
+        setMarkersData(
+          resCards?.map((jam) => ({
+            id: jam.id,
+            lat: jam.lat,
+            lng: jam.lng,
+          })),
+        );
+        setJams(resCards);
+      }
 
-      setMarkersData(resMarkers);
-      setJams(resCards);
+      if (searchType === 'global') {
+        const paramsMarkers = new URLSearchParams({
+          userDate: localDateLocal,
+          dateOptions: dateOptionsRefGlobal.current,
+          styles: JSON.stringify(stylesRefGlobal.current),
+        });
+
+        const markersFetch = await fetch(
+          `/api/get-jams-markers-filtered?${paramsMarkers}`,
+        );
+
+        if (!markersFetch.ok) throw new Error('Failed to fetch jams');
+
+        const resMarkers = await markersFetch.json();
+        setMarkersData(resMarkers);
+        setJams([]);
+      }
     } catch (err: any) {
       console.log(err.message);
     } finally {
@@ -200,7 +217,7 @@ export default function Filtro({
                 }`}
                 onClick={() => setCardFiltersOpen(false)}
               >
-                Worldwide
+                Global
               </div>
             </div>
 
@@ -211,7 +228,7 @@ export default function Filtro({
                     Local
                   </h2>
                   <button
-                    onClick={handleAccept}
+                    onClick={() => handleAccept('local')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
             bg-[#2F2F2F] hover:bg-[#464646] text-[#FAFAFA] hover:text-[#FFFFFF]
              transition-colors cursor-pointer"
@@ -317,10 +334,10 @@ export default function Filtro({
               <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll">
                 <div className="flex justify-center items-center gap-24 mb-5 mt-5">
                   <h2 className="text-4xl font-bold  text-gray-900 text-center  dark:text-white text-center">
-                    Worldwide
+                    Global
                   </h2>
                   <button
-                    onClick={handleAccept}
+                    onClick={() => handleAccept('global')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
             bg-[#2F2F2F] hover:bg-[#464646] text-[#FAFAFA] hover:text-[#FFFFFF]
              transition-colors cursor-pointer"
@@ -331,13 +348,13 @@ export default function Filtro({
                 <div className="flex flex-col gap-12 p-6">
                   <div className="flex flex-col ">
                     <h1 className="text-3xl font-semibold">Cuándo</h1>
-                    <DateOptionsMap
-                      dateOptions={dateOptionsMap}
-                      setDateOption={setDateOptionsMap}
+                    <DateOptionsGlobal
+                      dateOptions={dateOptionsGlobal}
+                      setDateOption={setdateOptionsGlobal}
                       showCalendar={showCalendarMap}
                       setShowCalendar={setShowCalendarMap}
-                      dateRef={dateMap}
-                      setDate={setDateMap}
+                      dateRef={dateGlobal}
+                      setDate={setdateGlobal}
                     />
                   </div>
 
@@ -346,8 +363,8 @@ export default function Filtro({
                     <div className="flex flex-col gap-4 ml-8">
                       <label>
                         <SelectStyles
-                          styles={stylesMap}
-                          setStyles={setStylesMap}
+                          styles={stylesGlobal}
+                          setStyles={setstylesGlobal}
                         />
                       </label>
                     </div>
@@ -428,7 +445,7 @@ export function DateOptions({
   );
 }
 
-export function DateOptionsMap({
+export function DateOptionsGlobal({
   dateOptions,
   setDateOption,
   showCalendar,
@@ -531,7 +548,7 @@ export function SliderDemo({
     <>
       <div className="flex gap-32 items-end mb-4">
         <h1 className="text-3xl font-semibold pb-4">Distancia</h1>
-        <span className="pb-1">{distance}km</span>
+        <span className="pb-1">{distance} km</span>
       </div>
 
       <Slider
