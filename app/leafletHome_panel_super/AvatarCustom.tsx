@@ -16,19 +16,22 @@ type AvatarCustomProps = {
   session: Session | null;
 };
 
+import Image from "next/image";
+
 function AvatarCustom({ session }: AvatarCustomProps) {
-  return (
-    <div className="w-16 h-16 flex items-center justify-center">
-      <Avatar className="w-16 h-16">
-        <AvatarImage
-          src={session?.user?.image ?? ''}
-          alt="User avatar"
-          className="rounded-full object-cover"
-        />
-        <AvatarFallback className="bg-black/90 text-white">
-          <User className="w-6 h-6" />
-        </AvatarFallback>
-      </Avatar>
+  const img = session?.user?.image;
+
+  return img ? (
+    <Image
+      src={img}
+      alt="User avatar"
+      width={64}
+      height={64}
+      className="rounded-full object-cover"
+    />
+  ) : (
+    <div className="w-16 h-16 rounded-full bg-gray-600 flex items-center justify-center text-white">
+      <User />
     </div>
   );
 }
@@ -67,11 +70,12 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
     <>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button aria-label="Open menu" size="icon-sm">
-            <AvatarCustom session={session} />
-          </Button>
+          <button> 
+             <AvatarCustom session={session} />
+            </button>
+      
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40 relative top-5" align="end">
+        <DropdownMenuContent className="w-40 relative top-0" align="end">
           <DropdownMenuLabel>Your account</DropdownMenuLabel>
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>

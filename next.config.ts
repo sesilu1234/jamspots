@@ -1,22 +1,24 @@
-import type { NextConfig } from 'next';
+import type { NextConfig } from "next";
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   images: {
-    domains: ['oacuekchmzilyimjasdh.supabase.co'],
+    domains: [
+      "oacuekchmzilyimjasdh.supabase.co",
+      "lh3.googleusercontent.com",
+    ],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'maps.googleapis.com',
-        port: '', // leave empty
-        pathname: '/maps/api/staticmap**', // optional, can leave as '*' too
+        protocol: "https",
+        hostname: "maps.googleapis.com",
+        pathname: "/maps/api/staticmap**",
       },
     ],
   },
   async rewrites() {
     return [
       {
-        source: '/',
-        destination: '/leafletHome_panel_super',
+        source: "/",
+        destination: "/leafletHome_panel_super",
       },
     ];
   },
