@@ -5,10 +5,43 @@ import Image from 'next/image';
 import TrashButton from './icons/TrashButton';
 import { UploadPhotosProps } from './types/types';
 
-import { useAtom } from 'jotai';
-import { formAtom } from '../store/jotai';
-
 import { useFormStore } from '../store/formStore'; // path a tu store
+
+import { DndContext, closestCenter } from '@dnd-kit/core';
+import { SortableContext, useSortable, arrayMove } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+function SortablePhoto({ url, removePhoto }) {
+  const { setNodeRef, attributes, listeners, transform, transition } =
+    useSortable({ id: url });
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+        position: 'relative',
+        width: 160,
+        height: 160,
+      }}
+      className="rounded-xl overflow-hidden"
+    >
+      {/* DRAG HANDLE */}
+      <div
+        {...listeners}
+        className="absolute top-1 left-1 z-10 cursor-grab bg-black/50 text-white px-2 rounded rotate-90"
+      >
+        ⇅
+      </div>
+
+      <Image src={url} alt="preview" fill className="object-cover" />
+
+      <TrashButton onClick={() => removePhoto(url)} />
+    </div>
+  );
+}
 
 export default function PhotoUploader({
   data,
@@ -17,13 +50,10 @@ export default function PhotoUploader({
   const setForm = useFormStore((state) => state.setForm);
 
   const [photos, setPhotos] = useState<string[]>(data.images);
-  console.log(photos);
-
   const photoStateRef = useRef(photos);
   photoStateRef.current = photos;
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/immutability
     childSaveOnUnmount.current = () => {
       setForm((prev) => ({
         ...prev,
@@ -38,44 +68,55 @@ export default function PhotoUploader({
     };
   }, []);
 
-  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  function handleFile(e) {
+    const newImages = Array.from(e.target.files).map((file) =>
+      URL.createObjectURL(file),
+    );
 
-    const url = URL.createObjectURL(file);
-    setPhotos((prev) => [...prev, url]);
+    if (!newImages) return;
+
+    setPhotos((prev) => [...prev, ...newImages].slice(0, 4));
+    e.target.value = ''; // allow re-upload same file
   }
 
-  function removePhoto(index: number) {
-    setPhotos((prev) => prev.filter((_, i) => i !== index));
+  function removePhoto(url: string) {
+    setPhotos((prev) => prev.filter((u) => u !== url));
+  }
+
+  function handleDragEnd({ active, over }) {
+    if (!over || active.id === over.id) return;
+
+    setPhotos((prev) => {
+      const oldIndex = prev.findIndex((u) => u === active.id);
+      const newIndex = prev.findIndex((u) => u === over.id);
+      return arrayMove(prev, oldIndex, newIndex);
+    });
   }
 
   return (
     <div className="p-15 flex flex-col gap-3">
-      <div className="flex gap-3 flex-wrap">
-        {photos.map((url, index) => (
-          <div
-            key={index}
-            className="relative w-40 h-40 rounded-xl overflow-hidden"
-          >
-            <Image src={url} alt="preview" fill className="object-cover" />
+      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={photos}>
+          <div className="flex gap-3 flex-wrap">
+            {photos.map((url) => (
+              <SortablePhoto key={url} url={url} removePhoto={removePhoto} />
+            ))}
 
-            <TrashButton onClick={() => removePhoto(index)} />
+            {photos.length < 4 && (
+              <label className="w-40 h-40 bg-gray-300 rounded-xl flex items-center justify-center cursor-pointer text-black">
+                + Upload Image
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleFile}
+                  className="hidden"
+                />
+              </label>
+            )}
           </div>
-        ))}
-
-        {photos.length < 4 && (
-          <label className="w-40 h-40 bg-gray-300 rounded-xl flex items-center justify-center cursor-pointer text-black">
-            + Upload Image
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFile}
-              className="hidden"
-            />
-          </label>
-        )}
-      </div>
+        </SortableContext>
+      </DndContext>
     </div>
   );
 }

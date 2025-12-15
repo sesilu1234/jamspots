@@ -1,15 +1,9 @@
-
-
 'use client';
 
-import { useState } from "react";
-import { DndContext, closestCenter } from "@dnd-kit/core";
-import {
-  SortableContext,
-  useSortable,
-  arrayMove,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { useState } from 'react';
+import { DndContext, closestCenter } from '@dnd-kit/core';
+import { SortableContext, useSortable, arrayMove } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 function SortableImage({ image }) {
   const { setNodeRef, attributes, listeners, transform, transition } =
@@ -17,14 +11,13 @@ function SortableImage({ image }) {
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
-    cursor: "grab",
-    width: "100%",
+    transition: transition ? `transform 2000ms ease` : undefined, // 500ms instead of default
+    cursor: 'grab',
+    width: '100%',
     height: 120,
-    objectFit: "cover",
+    objectFit: 'cover',
     borderRadius: 6,
   };
-
   return (
     <img
       ref={setNodeRef}
@@ -46,15 +39,15 @@ export default function App() {
     }));
 
     setImages((prev) => [...prev, ...newImages].slice(0, 4));
-    e.target.value = ""; // allow re-upload same file
+    e.target.value = ''; // allow re-upload same file
   };
 
   const handleDragEnd = ({ active, over }) => {
     if (!over || active.id === over.id) return;
 
     setImages((imgs) => {
-      const oldIndex = imgs.findIndex(i => i.id === active.id);
-      const newIndex = imgs.findIndex(i => i.id === over.id);
+      const oldIndex = imgs.findIndex((i) => i.id === active.id);
+      const newIndex = imgs.findIndex((i) => i.id === over.id);
       return arrayMove(imgs, oldIndex, newIndex);
     });
   };
@@ -64,11 +57,11 @@ export default function App() {
       <input type="file" multiple accept="image/*" onChange={handleUpload} />
 
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={images.map(i => i.id)}>
+        <SortableContext items={images.map((i) => i.id)}>
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
               gap: 12,
               marginTop: 20,
             }}
