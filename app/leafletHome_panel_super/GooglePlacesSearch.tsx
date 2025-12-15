@@ -50,7 +50,7 @@ const PlaceAutocomplete = ({ coordinatesRef }) => {
 
         coordinatesRef.current = { lat: lat, lng: lng };
         if (map) {
-          map.flyTo([lat, lng], 13, {
+          map.flyTo([lat, lng], 12, {
             duration: 1.5,
           });
         } else {

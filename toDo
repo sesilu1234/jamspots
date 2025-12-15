@@ -5,9 +5,10 @@
   y asegurar seguridad de apis, base de datos , y middleware , rate limiter
   ,etc...
 
-- poner que se puede cerrar sesion (para cerrar o sin mas cambiar de usuario)
-
 - poner informar de que crear usuario solo sirve para crear jams, que para
   consultar no tiene utilidad
 
 - cuando pones global, hacer unzoom del mapa para que se vean todas las jams
+
+- poner la distancia que es zoom en el map que se tiene en filtro y aal poner
+  global hacer un zoom out grande

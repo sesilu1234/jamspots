@@ -5,6 +5,8 @@ import { useSession, signIn } from 'next-auth/react';
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 import Link from 'next/link';
 import { User } from 'lucide-react';
+import DropdownMenuAvatar from './AvatarCustom';
+import DropdownMenuNotSignedIn from './AvatarCustom_notSignedIn';
 
 export default function SessionMenu() {
   const { data: session } = useSession();
@@ -25,23 +27,7 @@ export default function SessionMenu() {
   return (
     <div className="absolute top-16 right-6 flex items-center gap-2">
       {session ? (
-        <Link href="/jams_list_signIn">
-          <div className="relative w-16 h-16 flex items-center cursor-pointer">
-            <div className="absolute">
-              <Avatar>
-                <AvatarImage
-                  src={session.user?.image || undefined}
-                  className="rounded-full"
-                />
-                <AvatarFallback>
-                  <div className="bg-black/90 text-white p-4 rounded-full">
-                    <User />
-                  </div>
-                </AvatarFallback>
-              </Avatar>
-            </div>
-          </div>
-        </Link>
+        <DropdownMenuAvatar session={session} />
       ) : (
         <>
           <button
@@ -55,43 +41,7 @@ export default function SessionMenu() {
             + Añadir sitio
           </button>
 
-          <div className="relative" ref={menuRef}>
-            <div
-              className="shadow-md hover:shadow-lg hover:bg-gray-700/70
-                         transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm bg-gray-900/30"
-              onClick={() => setShowSignIn((prev) => !prev)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
-            </div>
-
-            {showSignIn && (
-              <div className="absolute top-10 right-0 w-32 bg-gray-900/30 flex flex-col items-center gap-2 rounded-md z-50">
-                <Link
-                  href="/signIn_page"
-                  className="pt-3 hover:underline cursor-pointer font-semibold"
-                >
-                  Sign In
-                </Link>
-                <div className="h-[1.5px] bg-gray-700/50 w-3/5 mt-1"></div>
-                <span className="pb-3 hover:underline cursor-pointer font-[400]">
-                  + Añadir sitio
-                </span>
-              </div>
-            )}
-          </div>
+          <DropdownMenuNotSignedIn />
         </>
       )}
     </div>

@@ -19,7 +19,6 @@ type MapContextType = {
   setLocationSearch: React.Dispatch<
     React.SetStateAction<LocationSearch | null>
   >;
- 
 };
 
 type Marker = {
@@ -46,13 +45,12 @@ export const MapProvider = ({ children }: MapProviderProps) => {
 
   const [initialLocation, setInitialLocation] = useState(null);
 
-
   const [markersData, setMarkersData] = useState<Marker[]>([]);
 
   const setPosition = (lat: number, lng: number) => {
     setLocationSearch({ coordinates: { lat, lng } });
     if (map) {
-      map.flyTo([lat, lng], 10, { duration: 1.5 });
+      map.flyTo([lat, lng], 3, { duration: 1.5 });
     }
   };
 
@@ -108,7 +106,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         setLocationSearch,
         initialLocation,
         markersData,
-        setMarkersData
+        setMarkersData,
       }}
     >
       {children}
