@@ -13,5 +13,5 @@
 
            - y creo que la aparicion incial de cards esta mal
 
-- mientras editas o creas, si le das a volver, poner una confirmacion de seguro
-  que quieres salir sin guardar ( cancelar / sí, salir )
+
+             -por supuesto que cuando cambias de localizacion, se re fetch cards con tus filtros actuales
