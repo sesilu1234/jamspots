@@ -18,8 +18,6 @@ export default function Home() {
   const [showSignIn, setShowSignIn] = useState(false);
   const menuRef = useRef(null);
 
-  const coordinatesRef = useRef(null);
-
   const [jams, setJams] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,12 +62,11 @@ export default function Home() {
             /> */}
 
             <div className="w-52 ">
-              <GooglePlacesSearch coordinatesRef={coordinatesRef} />
+              <GooglePlacesSearch />
             </div>
 
             <div className="w-52 ">
               <Filtro
-                coordinatesRef={coordinatesRef}
                 jams={jams}
                 setJams={setJams}
                 loading={loading}

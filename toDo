@@ -5,13 +5,4 @@
   y asegurar seguridad de apis, base de datos , y middleware , rate limiter
   ,etc...
 
-- cuando pones global, hacer unzoom del mapa para que se vean todas las jams
-
-           - poner la distancia que es zoom en el map que se tiene en filtro y aal poner
-
-  global hacer un zoom out grande
-
-           - y creo que la aparicion incial de cards esta mal
-
-
-             -por supuesto que cuando cambias de localizacion, se re fetch cards con tus filtros actuales
+- mejorar stetic, styles, usando global css variables

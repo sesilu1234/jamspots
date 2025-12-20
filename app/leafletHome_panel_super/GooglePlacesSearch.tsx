@@ -9,28 +9,19 @@ interface PlaceAutocompleteProps {
   onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
 }
 
-export default function GooglePlacesSearch({ coordinatesRef }) {
+export default function GooglePlacesSearch() {
   const [selectedPlace, setSelectedPlace] =
     useState<google.maps.places.PlaceResult | null>(null);
 
   return (
     <APIProvider apiKey={API_KEY}>
-      <PlaceAutocomplete coordinatesRef={coordinatesRef} />
+      <PlaceAutocomplete />
     </APIProvider>
   );
 }
 
-const PlaceAutocomplete = ({ coordinatesRef }) => {
-  const { initialLocation, map } = useMapContext();
-
-  useEffect(() => {
-    if (initialLocation) {
-      coordinatesRef.current = {
-        lat: initialLocation.latitude,
-        lng: initialLocation.longitude,
-      };
-    }
-  }, [initialLocation]);
+const PlaceAutocomplete = () => {
+  const { initialLocation, setLocationSearch, map } = useMapContext();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const places = useMapsLibrary('places');
@@ -48,7 +39,7 @@ const PlaceAutocomplete = ({ coordinatesRef }) => {
         const lat = place.geometry.location.lat();
         const lng = place.geometry.location.lng();
 
-        coordinatesRef.current = { lat: lat, lng: lng };
+        setLocationSearch({ coordinates: { lat, lng } });
         if (map) {
           map.flyTo([lat, lng], 12, {
             duration: 1.5,

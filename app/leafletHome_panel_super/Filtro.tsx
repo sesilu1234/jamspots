@@ -13,7 +13,6 @@ import L from 'leaflet';
 type SliderProps = React.ComponentProps<typeof Slider>;
 
 export default function Filtro({
-  coordinatesRef,
   jams,
   setJams,
   loading,
@@ -25,20 +24,9 @@ export default function Filtro({
 
   const calendarRef = useRef<HTMLDivElement | null>(null);
 
-  type FiltroOptions = {
-    ordenar: string;
-    distancia: number;
-    estilos: string[];
-  };
-
-  const filtroOptions = useRef<FiltroOptions>({
-    ordenar: 'popular',
-    distancia: 20,
-    estilos: [],
-  });
   const [dateOptions, setDateOptions] = useState('week');
   const [order, setOrder] = useState('popular');
-  const [distance, setDistance] = useState(20);
+  const [distance, setDistance] = useState(30);
   const [styles, setStyles] = useState<string[]>([]);
 
   const [dateOptionsGlobal, setdateOptionsGlobal] = useState('all');
@@ -72,7 +60,7 @@ export default function Filtro({
 
   const [dateGlobal, setdateGlobal] = useState<Date | undefined>(new Date());
 
-  const { setMarkersData } = useMapContext();
+  const { locationSearch, setMarkersData, map } = useMapContext();
 
   // Close on outside click or Esc
   useEffect(() => {
@@ -105,6 +93,20 @@ export default function Filtro({
     setSearchType(searchType);
 
     fetchJams(searchType);
+    if (searchType === 'local') {
+      map.flyTo(
+        [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
+        12,
+        { duration: 1.5 },
+      );
+    } else {
+      map.flyTo(
+        [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
+        6,
+        { duration: 1.5 },
+      );
+    }
+
     setOpen(false);
   };
 
@@ -125,8 +127,8 @@ export default function Filtro({
           userDate: localDateLocal,
           dateOptions: dateOptionsRef.current,
           order: String(orderRef.current),
-          lat: String(coordinatesRef.current.lat),
-          lng: String(coordinatesRef.current.lng),
+          lat: String(locationSearch?.coordinates.lat),
+          lng: String(locationSearch?.coordinates.lng),
           distance: String(distanceRef.current),
           styles: JSON.stringify(stylesRef.current),
         });
@@ -174,6 +176,11 @@ export default function Filtro({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    setSearchType('local');
+    fetchJams('local');
+  }, [locationSearch]);
 
   return (
     <>

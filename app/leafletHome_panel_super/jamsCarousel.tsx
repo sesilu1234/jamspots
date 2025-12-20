@@ -16,23 +16,6 @@ export default function JamCarousel({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchJams = async () => {
-      try {
-        const res = await fetch('/api/get-jams-cards');
-        if (!res.ok) throw new Error('Failed to fetch jams');
-        const data: Jam[] = await res.json();
-        setJams(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchJams();
-  }, []);
-
-  useEffect(() => {
     console.log(999999999);
     searchType === 'local' ? setCollapsed(false) : setCollapsed(true);
   }, [searchType]);

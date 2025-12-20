@@ -50,7 +50,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const setPosition = (lat: number, lng: number) => {
     setLocationSearch({ coordinates: { lat, lng } });
     if (map) {
-      map.flyTo([lat, lng], 3, { duration: 1.5 });
+      map.flyTo([lat, lng], 12, { duration: 1.5 });
     }
   };
 
