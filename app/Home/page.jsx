@@ -34,7 +34,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <MapProvider>
         <div className="relative flex flex-col w-[1300px] max-w-[90%] mx-auto p-6 ">
           <SignInIcons />
@@ -47,7 +47,7 @@ export default function Home() {
                 className="h-16"
               />
               <p className="text-xs py-3 text-gray-600 font-semibold">
-                Find the next spot to share your sound.
+                Find the next spot where music happens.
               </p>
             </div>
 
@@ -149,20 +149,26 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="w-screen bg-black/90 text-white py-12 mt-0">
-        <div className="max-w-[90%] w-[1300px] mx-auto p-6">
+      <footer className="w-screen bg-footer text-text-1 py-12 mt-0 flex-1 ">
+        <div className="max-w-[90%] w-[1300px] mx-auto p-6 h-full">
           {/* Navigation Links */}
           <div className="flex flex-row items-center justify-center gap-16 mb-12">
             <Link
               href="/contact"
-              className="hover:text-gray-300 cursor-pointer"
+              className="hover:text-text-hover-1 cursor-pointer"
             >
               CONTACT
             </Link>
-            <Link href="/help" className="hover:text-gray-300 cursor-pointer">
+            <Link
+              href="/help"
+              className="hover:text-text-hover-1 cursor-pointer"
+            >
               HELP
             </Link>
-            <Link href="/about" className="hover:text-gray-300 cursor-pointer">
+            <Link
+              href="/about"
+              className="hover:text-text-hover-1 cursor-pointer"
+            >
               ABOUT
             </Link>
           </div>
@@ -174,12 +180,12 @@ export default function Home() {
               alt="Jamspots icon"
               className="h-16"
             />
-            <p className="text-sm text-gray-400 font-semibold text-center sm:text-left">
-              Find the next spot to share your sound.
+            <p className="text-sm text-text-1 font-semibold text-center sm:text-left">
+              Find the next spot where music happens.
             </p>
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

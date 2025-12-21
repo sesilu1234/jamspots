@@ -59,7 +59,7 @@ export default function Home() {
               <Button
                 variant="destructive"
                 onClick={() => {
-                  router.push('/jams_list_signIn');
+                  router.push('/host');
                 }}
               >
                 Leave anyway

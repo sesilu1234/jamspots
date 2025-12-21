@@ -5,4 +5,7 @@
   y asegurar seguridad de apis, base de datos , y middleware , rate limiter
   ,etc...
 
+- si no rellenas bien crear jam y falla zod o lo que sea, enviar error y toaster
+  al usuario diceinole que completo todo correctamente
+
 - mejorar stetic, styles, usando global css variables

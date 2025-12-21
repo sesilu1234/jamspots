@@ -179,7 +179,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
           await wait(200);
           // 3️⃣ done, hide progress and navigate
           setSaving(false);
-          router.push('/jams_list_signIn');
+          router.push('/host');
         }}
       >
         {saving ? 'Saving…' : 'Save and Exit'}

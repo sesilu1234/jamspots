@@ -11,7 +11,7 @@ export default function Home() {
           <div className="ml-3 flex  items-end gap-2">
             <h3 className="font-bold text-4xl">jamspots</h3>
             <p className="text-xs pb-1 text-gray-800 font-semibold">
-              Find the next spot to share your sound.
+              Find the next spot where music happens.
             </p>
           </div>
         </div>

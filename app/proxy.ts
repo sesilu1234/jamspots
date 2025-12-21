@@ -7,5 +7,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/jams_list_signIn/:path*', '/jams_list_signIn'],
+  matcher: ['/host/:path*', '/host'],
 };

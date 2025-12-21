@@ -16,22 +16,19 @@ type AvatarCustomProps = {
   session: Session | null;
 };
 
-import Image from "next/image";
-
 function AvatarCustom({ session }: AvatarCustomProps) {
-  const img = session?.user?.image;
-
-  return img ? (
-    <Image
-      src={img}
-      alt="User avatar"
-      width={64}
-      height={64}
-      className="rounded-full object-cover"
-    />
-  ) : (
-    <div className="w-16 h-16 rounded-full bg-gray-600 flex items-center justify-center text-white">
-      <User />
+  return (
+    <div className="w-16 h-16 flex items-center justify-center">
+      <Avatar className="w-16 h-16">
+        <AvatarImage
+          src={session?.user?.image ?? ''}
+          alt="User avatar"
+          className="rounded-full object-cover"
+        />
+        <AvatarFallback className="bg-black/90 text-white">
+          <User className="w-6 h-6" />
+        </AvatarFallback>
+      </Avatar>
     </div>
   );
 }
@@ -62,7 +59,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
-export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
+export default function DropdownMenuNotSignedIn() {
   const [showNewDialog, setShowNewDialog] = useState(false);
   const [showShareDialog, setShowShareDialog] = useState(false);
 
@@ -70,20 +67,33 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
     <>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <button> 
-             <AvatarCustom session={session} />
-            </button>
-      
+          <Button aria-label="Open menu" size="icon-sm">
+            <div
+              className="shadow-md hover:shadow-lg hover:bg-gray-700/70
+                         transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
+            </div>
+          </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40 relative top-0" align="end">
-          <DropdownMenuLabel>Your account</DropdownMenuLabel>
+        <DropdownMenuContent className="w-40 relative top-5" align="end">
+          <DropdownMenuLabel>Create a Jam</DropdownMenuLabel>
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href="/jams_list_signIn">Acceder</Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem onSelect={() => signOut({ callbackUrl: '/' })}>
-              Cerrar sesión
+              <Link href="/signIn">Sign In</Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem disabled>
@@ -98,6 +108,9 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
             <div className="px-0 py-0">
               <AccordionLanguage />
             </div>
+            <DropdownMenuItem onSelect={() => setShowShareDialog(true)}>
+              Share...
+            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

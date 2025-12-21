@@ -38,7 +38,7 @@ export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
 
   const goToSection = (id: string) => {
     setCurrentSection(id); // instant highlight
-    router.push(`/jams_list_signIn/create?section=${id}`); // update URL
+    router.push(`/host/create?section=${id}`); // update URL
   };
 
   return (
