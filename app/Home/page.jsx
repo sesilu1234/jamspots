@@ -34,9 +34,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background-1">
       <MapProvider>
-        <div className="relative flex flex-col w-[1300px] max-w-[90%] mx-auto p-6 ">
+        <div className="relative flex flex-col  w-[1300px] max-w-[90%] mx-auto p-6 ">
           <SignInIcons />
 
           <div className="inline-block">
@@ -46,12 +46,12 @@ export default function Home() {
                 alt="Jamspots icon"
                 className="h-16"
               />
-              <p className="text-xs py-3 text-gray-600 font-semibold">
+              <p className="text-xs py-3 text-text-2 font-semibold">
                 Find the next spot where music happens.
               </p>
             </div>
 
-            <div className="h-[1.5px] bg-gray-700/50 w-96 mt-1"></div>
+            <div className="h-[1.5px] bg-foreground-1/50 w-96 mt-1"></div>
           </div>
 
           <div className="flex items-center mb-5 mt-8 ml-3 gap-2">
@@ -76,7 +76,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex justify-between items-end px-3 font-semibold uppercase text-gray-800 tracking-wide">
+          <div className="flex justify-between items-end px-3 font-semibold uppercase text-text-1 tracking-wide">
             <span> 13 jams found</span>
             <div className="flex flex-col items-end">
               {searchType === 'local' ? (
@@ -100,14 +100,14 @@ export default function Home() {
         </div>
       </MapProvider>
 
-      <div className="w-screen bg-gray-200    mt-12 pt-4 pb-4     ">
-        <div className="max-w-[90%] w-[1300px] mx-auto p-6  grid grid-cols-2 gap-12">
+      <div className="w-screen bg-background-2    mt-12 pt-4 pb-4     ">
+        <div className="max-w-[90%] w-[1300px] mx-auto p-6  grid grid-cols-2 gap-12 text-text-1 ">
           <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-text-1">
               ¿QUÉ ES UNA JAM SESSION?
             </h3>
 
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <p className="text-sm leading-relaxed">
               Una jam es un encuentro donde músicos se suben al escenario a
               tocar juntos, improvisando y compartiendo música en el momento. No
               hace falta conocerse antes: cada noche suena diferente, y
@@ -115,16 +115,16 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 text-sm text-gray-600 leading-relaxed">
+          <div className="flex flex-col gap-2 text-sm  leading-relaxed">
             <p>
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-text-1">
                 ¿Puedo tocar si nunca he venido antes?
               </span>{' '}
               → claro, cualquiera puede subir a tocar o cantar.
             </p>
 
             <p>
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold ">
                 ¿Hace falta llevar instrumento?
               </span>{' '}
               → normalmente hay backline (batería, ampli, micro), pero trae tu
@@ -132,14 +132,12 @@ export default function Home() {
             </p>
 
             <p>
-              <span className="font-semibold text-gray-800">
-                ¿Hay entrada o es gratis?
-              </span>{' '}
+              <span className="font-semibold ">¿Hay entrada o es gratis?</span>{' '}
               → la mayoría son gratuitas o con consumición mínima.
             </p>
 
             <p>
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-text-1">
                 ¿Y si no toco nada?
               </span>{' '}
               → ¡Bienvenido igual! Ven a escuchar, relajarte y disfrutar del
@@ -149,7 +147,7 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="w-screen bg-footer text-text-1 py-12 mt-0 flex-1 ">
+      <footer className="w-screen bg-footer text-text-3 py-12 mt-0 flex-1 ">
         <div className="max-w-[90%] w-[1300px] mx-auto p-6 h-full">
           {/* Navigation Links */}
           <div className="flex flex-row items-center justify-center gap-16 mb-12">
@@ -174,13 +172,13 @@ export default function Home() {
           </div>
 
           {/* Branding / Tagline */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+          <div className="flex flex-col sm:flex-row items-end justify-center gap-2 mt-12">
             <img
               src="/jamspots_icon.png"
               alt="Jamspots icon"
               className="h-16"
             />
-            <p className="text-sm text-text-1 font-semibold text-center sm:text-left">
+            <p className="text-sm text-text-4 text-center font-medium sm:text-left pb-3">
               Find the next spot where music happens.
             </p>
           </div>

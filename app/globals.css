@@ -107,11 +107,31 @@
   /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
-  --color-text-1: var(--text-1);
-  --color-text-hover-1: var(--text-hover-1);
+  /* Text semantic roles */
+  --color-text-title: var(--text-title);
+  --color-text-subtitle: var(--text-subtitle);
+  --color-text-body: var(--text-body);
+  --color-text-link: var(--text-link);
 
-  --color-text-2: var(--text-2);
-  --color-footer: var(--footer);
+  --color-text-title-hover: var(--text-hover-title);
+  --color-text-link-hover: var(--text-hover-link);
+
+  /* Backgrounds */
+  --color-bg-main: var(--bg-main);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-accent: var(--bg-accent);
+  --color-bg-footer: var(--bg-footer);
+
+  /* Foregrounds / elements */
+  --color-fg-primary: var(--fg-primary);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-fg-accent: var(--fg-accent);
+
+  /* Optional hover for elements */
+  --color-element-hover: var(--element-hover);
+
+  /* Footer */
+  --color-footer: var(--bg-footer);
 }
 
 .leaflet-container {
@@ -154,10 +174,28 @@
   /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
-  --text-1: oklch(100% 0.00011 271.152);
-  --text-hover-1: oklch(56.532% 0.19744 26.254);
-  --text-2: oklch(19.574% 0.00002 271.152);
-  --footer: oklch(19.574% 0.00002 271.152);
+  --bg-main: oklch(100% 0 0);
+  --bg-secondary: oklch(88.5% 0 0);
+  --bg-accent: oklch(80% 0 0);
+  --bg-footer: oklch(19.5% 0 0);
+
+  /* Foregrounds / elements */
+  --fg-primary: oklch(44.9% 0 0); /* main text, headings */
+  --fg-secondary: oklch(64.3% 0 0); /* cards, secondary info */
+  --fg-accent: oklch(88.5% 0 0); /* buttons, highlights */
+
+  /* Text semantic roles */
+  --text-title: var(--fg-primary);
+  --text-subtitle: var(--fg-secondary);
+  --text-body: oklch(0% 0 0);
+  --text-link: var(--fg-accent);
+
+  /* Hover states */
+  --text-hover-link: oklch(33% 0 0);
+  --text-hover-title: oklch(46% 0 0);
+
+  /* Optional: elements hover */
+  --element-hover: oklch(44% 0 0);
 }
 
 .dark {

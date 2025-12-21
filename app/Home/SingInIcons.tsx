@@ -31,9 +31,9 @@ export default function SessionMenu() {
       ) : (
         <>
           <button
-            className="px-4 py-2 rounded-sm bg-[rgba(90,90,90,0.75)] text-white text-sm
+            className="px-4 py-2 rounded-sm bg-foreground-4 text-text-3 text-sm
                        transition-all duration-200
-                       hover:bg-gray-900
+                       hover:bg-foreground-3
                        hover:shadow-[0_10px_30px_rgba(0,0,0,0.3),0_4px_6px_rgba(0,0,0,0.3)]
                        hover:-translate-y-1 cursor-pointer"
             onClick={() => signIn()}

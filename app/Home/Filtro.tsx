@@ -187,7 +187,7 @@ export default function Filtro({
       {/* Filter button */}
       <div
         className="inline-flex items-center gap-2 px-2 py-1 h-10 justify-center shadow-md rounded-sm cursor-pointer
-                   bg-gray-300 hover:bg-gray-600 group transition-colors duration-200"
+                   bg-foreground-2 hover:bg-elements-1 group transition-colors duration-200"
         onClick={() => setOpen(!open)}
       >
         <svg
@@ -195,11 +195,11 @@ export default function Filtro({
           height="19px"
           viewBox="0 -960 960 960"
           width="19px"
-          className="fill-[rgba(17,17,17,0.8)] group-hover:fill-white transition-colors duration-200"
+          className="fill-[rgba(17,17,17,0.8)] group-hover:fill-text-1 transition-colors duration-200"
         >
           <path d="M120-40v-168q-35-12-57.5-42.5T40-320v-400h80v-160q0-17 11.5-28.5T160-920q17 0 28.5 11.5T200-880v160h80v400q0 39-22.5 69.5T200-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T360-320v-400h80v-160q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v160h80v400q0 39-22.5 69.5T520-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T680-320v-400h80v-160q0-17 11.5-28.5T800-920q17 0 28.5 11.5T840-880v160h80v400q0 39-22.5 69.5T840-208v168h-80ZM120-640v160h80v-160h-80Zm320 0v160h80v-160h-80Zm320 0v160h80v-160h-80ZM160-280q17 0 28.5-11.5T200-320v-80h-80v80q0 17 11.5 28.5T160-280Zm320 0q17 0 28.5-11.5T520-320v-80h-80v80q0 17 11.5 28.5T480-280Zm320 0q17 0 28.5-11.5T840-320v-80h-80v80q0 17 11.5 28.5T800-280ZM160-440Zm320 0Zm320 0Z" />
         </svg>
-        <span className="text-md pt-0.5 transition-colors duration-200 font-jaro group-hover:text-white hover:cursor-pointer select-none">
+        <span className="text-md pt-0.5 transition-colors duration-200 font-jaro group-hover:text-text-3 hover:cursor-pointer select-none">
           FILTER
         </span>
       </div>

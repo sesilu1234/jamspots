@@ -67,9 +67,9 @@ export default function DropdownMenuNotSignedIn() {
     <>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button aria-label="Open menu" size="icon-sm">
+          <button>
             <div
-              className="shadow-md hover:shadow-lg hover:bg-gray-700/70
+              className="shadow-md hover:shadow-lg bg-foreground-3 text hover:bg-foreground-3/70
                          transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm "
             >
               <svg
@@ -87,7 +87,7 @@ export default function DropdownMenuNotSignedIn() {
                 />
               </svg>
             </div>
-          </Button>
+          </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-40 relative top-5" align="end">
           <DropdownMenuLabel>Create a Jam</DropdownMenuLabel>

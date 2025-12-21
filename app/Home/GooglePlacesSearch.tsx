@@ -59,7 +59,7 @@ const PlaceAutocomplete = () => {
     <input
       ref={inputRef}
       placeholder={initialLocation?.city || ''}
-      className="w-full h-12 px-3 text-sm text-gray-500 placeholder-gray-500 bg-gray-500/20 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="w-full h-12 px-3 text-sm text-text-2 placeholder-text-2 bg-background-2/80 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   );
 };
