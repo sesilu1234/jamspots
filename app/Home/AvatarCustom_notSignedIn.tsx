@@ -70,7 +70,7 @@ export default function DropdownMenuNotSignedIn() {
           <button>
             <div
               className="shadow-md hover:shadow-lg bg-foreground-3 text hover:bg-foreground-3/70
-                         transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm "
+                         transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm border-2 "
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

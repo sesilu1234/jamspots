@@ -25,9 +25,9 @@ function AvatarCustom({ session }: AvatarCustomProps) {
     <Image
       src={img}
       alt="User avatar"
-      width={64}
-      height={64}
-      className="rounded-full object-cover"
+      width={42}
+      height={42}
+      className="rounded-2xl object-cover"
     />
   ) : (
     <div className="w-16 h-16 rounded-full bg-gray-600 flex items-center justify-center text-white">

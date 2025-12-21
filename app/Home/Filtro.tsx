@@ -229,15 +229,15 @@ export default function Filtro({
             </div>
 
             {cardFiltersOpen ? (
-              <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
+              <div className="relative bg-white p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
                 <div className="flex justify-center items-center gap-24  mb-5 mt-5">
-                  <h2 className="text-4xl font-bold text-gray-900 text-center  dark:text-white text-center">
+                  <h2 className="text-4xl font-bold text-center  text-text-secondary">
                     Local
                   </h2>
                   <button
                     onClick={() => handleAccept('local')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-[#2F2F2F] hover:bg-[#464646] text-[#FAFAFA] hover:text-[#FFFFFF]
+            bg-[#2F2F2F] hover:bg-[#464646] text-text-secondary hover:text-[#FFFFFF]
              transition-colors cursor-pointer"
                   >
                     Apply
@@ -271,7 +271,7 @@ export default function Filtro({
       peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
                         >
                           <svg
-                            className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
+                            className="w-3 h-3 text-text-secondary opacity-0 peer-checked:opacity-100"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -296,7 +296,7 @@ export default function Filtro({
       peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
                         >
                           <svg
-                            className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
+                            className="w-3 h-3 text-text-secondary opacity-0 peer-checked:opacity-100"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -340,13 +340,13 @@ export default function Filtro({
             ) : (
               <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll">
                 <div className="flex justify-center items-center gap-24 mb-5 mt-5">
-                  <h2 className="text-4xl font-bold  text-gray-900 text-center  dark:text-white text-center">
+                  <h2 className="text-4xl font-bold  text-text-secondary  text-center">
                     Global
                   </h2>
                   <button
                     onClick={() => handleAccept('global')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-[#2F2F2F] hover:bg-[#464646] text-[#FAFAFA] hover:text-[#FFFFFF]
+            bg-[#2F2F2F] hover:bg-[#464646] text-text-secondary hover:text-[#FFFFFF]
              transition-colors cursor-pointer"
                   >
                     Apply
@@ -553,7 +553,7 @@ export function SliderDemo({
 }: SliderDemoProps) {
   return (
     <>
-      <div className="flex gap-32 items-end mb-4">
+      <div className="flex gap-32 items-end mb-4 text-text-secondary">
         <h1 className="text-3xl font-semibold pb-4">Distancia</h1>
         <span className="pb-1">{distance} km</span>
       </div>
@@ -564,7 +564,7 @@ export function SliderDemo({
         max={100}
         step={1}
         onValueChange={(val) => setDistance(val[0])} // <-- devolver número
-        className={cn('w-[60%] ml-8', className)}
+        className={cn('w-[60%] ml-8 text-text-secondary', className)}
       />
     </>
   );
@@ -625,7 +625,7 @@ export function SelectStyles({ styles, setStyles }: SelectStylesProps) {
               key={style}
               className={`flex items-center justify-between px-4 py-2 rounded cursor-pointer whitespace-nowrap ${
                 isSelected
-                  ? 'bg-purple-500 text-white'
+                  ? 'bg-purple-500 text-text-secondary'
                   : 'bg-gray-200 hover:bg-gray-300'
               }`}
               onClick={() => toggleStyle(style)}

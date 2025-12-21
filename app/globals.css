@@ -104,34 +104,27 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-  -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-  -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
   /* Text semantic roles */
-  --color-text-title: var(--text-title);
-  --color-text-subtitle: var(--text-subtitle);
-  --color-text-body: var(--text-body);
-  --color-text-link: var(--text-link);
-
-  --color-text-title-hover: var(--text-hover-title);
-  --color-text-link-hover: var(--text-hover-link);
+  --color-text-primary: var(--text-primary); /* questions / headings */
+  --color-text-secondary: var(--text-secondary); /* subheadings */
+  --color-text-tertiary: var(--text-tertiary); /* answers / paragraphs */
 
   /* Backgrounds */
-  --color-bg-main: var(--bg-main);
+  --color-bg-primary: var(--bg-primary);
   --color-bg-secondary: var(--bg-secondary);
-  --color-bg-accent: var(--bg-accent);
-  --color-bg-footer: var(--bg-footer);
+  --color-bg-tertiary: var(--bg-tertiary);
 
   /* Foregrounds / elements */
   --color-fg-primary: var(--fg-primary);
   --color-fg-secondary: var(--fg-secondary);
-  --color-fg-accent: var(--fg-accent);
+  --color-fg-tertiary: var(--fg-tertiary);
 
   /* Optional hover for elements */
-  --color-element-hover: var(--element-hover);
 
-  /* Footer */
-  --color-footer: var(--bg-footer);
+  --color-text-hover-primary: var(--text-hover-primary);
+  --color-text-hover-secondary: var(--text-hover-secondary);
+
+  --color-element-hover-primary: var(--element-hover-primary);
 }
 
 .leaflet-container {
@@ -174,28 +167,26 @@
   /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
-  --bg-main: oklch(100% 0 0);
-  --bg-secondary: oklch(88.5% 0 0);
-  --bg-accent: oklch(80% 0 0);
-  --bg-footer: oklch(19.5% 0 0);
+  /* Backgrounds */
+  --bg-primary: oklch(100% 0.00011 271.152); /* dark base */
+  --bg-secondary: oklch(76.358% 0.00009 271.152); /* main light surface */
+  --bg-tertiary: oklch(12.856% 0.00001 271.152);
 
   /* Foregrounds / elements */
-  --fg-primary: oklch(44.9% 0 0); /* main text, headings */
-  --fg-secondary: oklch(64.3% 0 0); /* cards, secondary info */
-  --fg-accent: oklch(88.5% 0 0); /* buttons, highlights */
+  --fg-primary: oklch(44.953% 0.00005 271.152); /* strong text / headings */
+  --fg-secondary: oklch(33.289% 0.00004 271.152); /* secondary text */
+  --fg-tertiary: oklch(28.502% 0.00003 271.152); /* highlights on dark bg */
 
   /* Text semantic roles */
-  --text-title: var(--fg-primary);
-  --text-subtitle: var(--fg-secondary);
-  --text-body: oklch(0% 0 0);
-  --text-link: var(--fg-accent);
+  --text-primary: oklch(100% 0.00011 271.152); /* questions, headings */
+  --text-secondary: oklch(21.779% 0.00002 271.152);
+  --text-tertiary: oklch(66.655% 0.00008 271.152); /* answers, paragraphs */
 
   /* Hover states */
-  --text-hover-link: oklch(33% 0 0);
-  --text-hover-title: oklch(46% 0 0);
+  --text-hover-primary: oklch(48.839% 0.07212 201.483);
+  --text-hover-secondary: oklch(82.355% 0.14558 100.304);
 
-  /* Optional: elements hover */
-  --element-hover: oklch(44% 0 0);
+  --element-hover-primary: oklch(42% 0 0);
 }
 
 .dark {
@@ -233,10 +224,140 @@
   /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
-  --text-1: oklch(100% 0.00011 271.152);
-  --text-hover-1: oklch(100% 0.00011 271.152);
-  --text-2: oklch(19.574% 0.00002 271.152);
-  --footer: oklch(19.574% 0.00002 271.152);
+  /* Backgrounds */
+  --bg-primary: oklch(0.15 0.04 130); /* deep green */
+  --bg-secondary: oklch(0.25 0.05 120); /* medium green */
+  --bg-tertiary: oklch(0.35 0.06 110);
+
+  /* Foregrounds / elements */
+  --fg-primary: oklch(44.953% 0.00005 271.152); /* strong text / headings */
+  --fg-secondary: oklch(33.289% 0.00004 271.152); /* secondary text */
+  --fg-tertiary: oklch(28.502% 0.00003 271.152); /* highlights on dark bg */
+
+  /* Text semantic roles */
+  --text-primary: oklch(100% 0.00011 271.152); /* questions, headings */
+  --text-secondary: oklch(21.779% 0.00002 271.152);
+  --text-tertiary: oklch(66.655% 0.00008 271.152); /* answers, paragraphs */
+
+  /* Hover states */
+  --text-hover-primary: oklch(48.839% 0.07212 201.483);
+  --text-hover-secondary: oklch(82.355% 0.14558 100.304);
+
+  --element-hover-primary: oklch(42% 0 0);
+}
+
+.ocean {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.9521 0 0);
+  --chart-2: oklch(0.8576 0 0);
+  --chart-3: oklch(0.7572 0 0);
+  --chart-4: oklch(0.6534 0 0);
+  --chart-5: oklch(0.5452 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+  /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+  -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+  -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
+  /* Backgrounds */
+  --bg-primary: oklch(0.145 0 0); /* very dark blue */
+  --bg-secondary: oklch(0.218 0.02 271); /* medium soft blue */
+  --bg-tertiary: oklch(0.343 0.047 215); /*
+
+  /* Foregrounds / elements */
+  --fg-primary: oklch(44.953% 0.00005 271.152); /* strong text / headings */
+  --fg-secondary: oklch(33.289% 0.00004 271.152); /* secondary text */
+  --fg-tertiary: oklch(28.502% 0.00003 271.152); /* highlights on dark bg */
+
+  /* Text semantic roles */
+  --text-primary: oklch(100% 0.00011 271.152); /* questions, headings */
+  --text-secondary: oklch(21.779% 0.00002 271.152);
+  --text-tertiary: oklch(66.655% 0.00008 271.152); /* answers, paragraphs */
+
+  /* Hover states */
+  --text-hover-primary: oklch(48.839% 0.07212 201.483);
+  --text-hover-secondary: oklch(82.355% 0.14558 100.304);
+
+  --element-hover-primary: oklch(42% 0 0);
+}
+
+.forest {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.9521 0 0);
+  --chart-2: oklch(0.8576 0 0);
+  --chart-3: oklch(0.7572 0 0);
+  --chart-4: oklch(0.6534 0 0);
+  --chart-5: oklch(0.5452 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+  /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+  -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+  -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
+  /* Backgrounds */
+  --bg-primary: oklch(0.15 0.04 130); /* deep green */
+  --bg-secondary: oklch(0.25 0.05 120); /* medium green */
+  --bg-tertiary: oklch(0.35 0.06 110);
+
+  /* Foregrounds / elements */
+  --fg-primary: oklch(44.953% 0.00005 271.152); /* strong text / headings */
+  --fg-secondary: oklch(33.289% 0.00004 271.152); /* secondary text */
+  --fg-tertiary: oklch(28.502% 0.00003 271.152); /* highlights on dark bg */
+
+  /* Text semantic roles */
+  --text-primary: oklch(100% 0.00011 271.152); /* questions, headings */
+  --text-secondary: oklch(21.779% 0.00002 271.152);
+  --text-tertiary: oklch(66.655% 0.00008 271.152); /* answers, paragraphs */
+
+  /* Hover states */
+  --text-hover-primary: oklch(48.839% 0.07212 201.483);
+  --text-hover-secondary: oklch(82.355% 0.14558 100.304);
+
+  --element-hover-primary: oklch(42% 0 0);
 }
 
 @layer base {
