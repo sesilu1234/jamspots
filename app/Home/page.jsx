@@ -105,7 +105,7 @@ export default function Home() {
 
       <div className="w-screen mt-12 pt-4 pb-4">
         <div className="max-w-[90%] w-[1300px] mx-auto p-6 grid grid-cols-2 gap-12">
-          <div className="flex flex-col gap-2 border-t-2 border-amber-300 pt-8">
+          <div className="flex flex-col gap-2 border-t-2 border-blue-300 pt-8">
             <h3 className="text-lg font-semibold text-text-title">
               ¿QUÉ ES UNA JAM SESSION?
             </h3>
@@ -118,7 +118,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-amber-300 pt-8">
+          <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-blue-300 pt-8">
             <p>
               <span className="font-semibold text-text-title">
                 ¿Puedo tocar si nunca he venido antes?
