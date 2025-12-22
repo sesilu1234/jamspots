@@ -34,7 +34,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-bg-primary">
+    <div className="flex flex-col min-h-screen ">
       <MapProvider>
         <div className="relative flex flex-col  w-[1300px] max-w-[90%] mx-auto p-0 ">
           <SignInIcons />
@@ -103,9 +103,9 @@ export default function Home() {
         </div>
       </MapProvider>
 
-      <div className="w-screen bg-bg-secondary mt-12 pt-4 pb-4">
+      <div className="w-screen mt-12 pt-4 pb-4">
         <div className="max-w-[90%] w-[1300px] mx-auto p-6 grid grid-cols-2 gap-12">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 border-t-2 border-amber-300 pt-8">
             <h3 className="text-lg font-semibold text-text-title">
               ¿QUÉ ES UNA JAM SESSION?
             </h3>
@@ -118,7 +118,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 text-sm leading-relaxed">
+          <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-amber-300 pt-8">
             <p>
               <span className="font-semibold text-text-title">
                 ¿Puedo tocar si nunca he venido antes?
@@ -161,9 +161,9 @@ export default function Home() {
       </div>
 
       <footer className="w-screen bg-bg-tertiary text-text-3 py-12 mt-0 flex-1 ">
-        <div className="max-w-[90%] w-[1300px] mx-auto p-6 h-full">
+        <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 h-full">
           {/* Navigation Links */}
-          <div className="flex flex-row text-text-primary items-center justify-center gap-16 mb-12">
+          <div className="flex flex-col text-text-primary items-between justify-between gap-8 ">
             <Link
               href="/contact"
               className="hover:text-text-hover-1 cursor-pointer"
@@ -185,7 +185,7 @@ export default function Home() {
           </div>
 
           {/* Branding / Tagline */}
-          <div className="flex flex-col sm:flex-row items-end justify-center gap-2 mt-12">
+          <div className="flex flex-col sm:flex-row items-end justify-center gap-2 ">
             <img
               src="/jamspots_icon.png"
               alt="Jamspots icon"
