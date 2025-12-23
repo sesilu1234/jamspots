@@ -211,7 +211,7 @@ export default function Filtro({
             <div className=" flex justify-center items-end gap-0  w-xl   text-text-secondary">
               <div
                 className={`pt-5 pb-2 px-2 bg-fg-primary w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? '' : 'border-4 border-black'
+                  cardFiltersOpen ? '' : 'border-4 border-black/50'
                 }`}
                 onClick={() => setCardFiltersOpen(true)}
               >
@@ -220,7 +220,7 @@ export default function Filtro({
 
               <div
                 className={`pt-5 pb-2 px-2 bg-fg-primary w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? 'border-4 border-white' : ''
+                  cardFiltersOpen ? 'border-4 border-bg-primary/50' : ''
                 }`}
                 onClick={() => setCardFiltersOpen(false)}
               >
@@ -229,7 +229,7 @@ export default function Filtro({
             </div>
 
             {cardFiltersOpen ? (
-              <div className="relative bg-fg-primary text-text-secondary p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
+              <div className="relative bg-fg-primary text-text-secondary p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] border-0 border-t-0 border-black/50 ">
                 <div className="flex justify-center items-center gap-24  mb-5 mt-5">
                   <h2 className="text-4xl font-bold text-center  text-text-secondary">
                     Local
@@ -237,7 +237,7 @@ export default function Filtro({
                   <button
                     onClick={() => handleAccept('local')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-[#2F2F2F] hover:bg-[#464646] text-text-secondary hover:text-[#FFFFFF]
+            bg-yellow-500 hover:bg-yellow-600 text-text-secondary font-semibold 
              transition-colors cursor-pointer"
                   >
                     Apply
@@ -315,6 +315,7 @@ export default function Filtro({
                         <SliderDemo
                           distance={distance}
                           setDistance={setDistance}
+                          className='bg-red-400'
                         />
                       </label>
                     </div>
@@ -346,7 +347,7 @@ export default function Filtro({
                   <button
                     onClick={() => handleAccept('global')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-[#2F2F2F] hover:bg-[#464646] text-text-secondary hover:text-[#FFFFFF]
+          bg-yellow-500 hover:bg-yellow-600 font-semibold text-text-secondary hover:text-[#FFFFFF]
              transition-colors cursor-pointer"
                   >
                     Apply
@@ -419,20 +420,26 @@ export function DateOptions({
   return (
     <div className="flex gap-3 pt-8 ml-8">
       {options.slice(0, 3).map((opt) => (
-        <Button
-          key={opt.value}
-          variant={opt.value === dateOptions ? 'secondary' : 'outline'}
-          className={`${opt.value === dateOptions ? 'border border-black/20' : ''} hover:bg-black/5`}
-          onClick={() => setDateOption(opt.value)}
-        >
-          {opt.label}
-        </Button>
+       <Button
+  key={opt.value}
+  variant={opt.value === dateOptions ? 'secondary' : undefined}
+ 
+
+
+
+
+
+  onClick={() => setDateOption(opt.value)}
+>
+  {opt.label}
+</Button>
+
       ))}
 
       <div className="relative" ref={calRef}>
         <Button
-          variant={dateOptions.startsWith('custom') ? 'secondary' : 'outline'}
-          className={`w-28 ${dateOptions.startsWith('custom') ? 'border border-black/20' : ''} hover:bg-black/5`}
+         
+          variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
         >
           {dateOptions.startsWith('custom')
@@ -481,8 +488,7 @@ export function DateOptionsGlobal({
       {options.map((opt) => (
         <Button
           key={opt.value}
-          variant={opt.value === dateOptions ? 'secondary' : 'outline'}
-          className={`${opt.value === dateOptions ? 'border border-black/20' : ''} hover:bg-black/5`}
+          variant={opt.value === dateOptions ? 'secondary' : undefined}
           onClick={() => setDateOption(opt.value)}
         >
           {opt.label}
@@ -491,8 +497,7 @@ export function DateOptionsGlobal({
 
       <div className="relative" ref={calRef}>
         <Button
-          variant={dateOptions.startsWith('custom') ? 'secondary' : 'outline'}
-          className={`w-28 ${dateOptions.startsWith('custom') ? 'border border-black/20' : ''} hover:bg-black/5`}
+          variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
         >
           {dateOptions.startsWith('custom')
@@ -553,7 +558,7 @@ export function SliderDemo({
 }: SliderDemoProps) {
   return (
     <>
-      <div className="flex gap-32 items-end mb-4 text-text-secondary">
+      <div className="flex gap-32 items-end mb-4 ">
         <h1 className="text-3xl font-semibold pb-4">Distancia</h1>
         <span className="pb-1">{distance} km</span>
       </div>
@@ -564,7 +569,7 @@ export function SliderDemo({
         max={100}
         step={1}
         onValueChange={(val) => setDistance(val[0])} // <-- devolver número
-        className={cn('w-[60%] ml-8 text-text-secondary', className)}
+        className={cn('w-[60%] ml-8 ', className)}
       />
     </>
   );
