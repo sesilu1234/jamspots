@@ -187,7 +187,7 @@ export default function Filtro({
       {/* Filter button */}
       <div
         className="inline-flex items-center gap-2 px-2 py-1 h-10 justify-center shadow-md rounded-sm cursor-pointer
-                   bg-fg-tertiary hover:bg-elements-1 group transition-colors duration-200"
+                   bg-fg-tertiary hover:bg-bg-secondary group transition-colors duration-200"
         onClick={() => setOpen(!open)}
       >
         <svg
@@ -206,12 +206,12 @@ export default function Filtro({
 
       {/* Overlay + Filter Panel */}
       {open && (
-        <div className="fixed inset-0 z-[503] flex flex-col  items-center pt-5 bg-black/30">
+        <div className="fixed inset-0 z-[503] flex flex-col  items-center pt-5 ">
           <div ref={panelRef} className="relative   w-xl ">
-            <div className=" flex justify-center items-end gap-0  w-xl  ">
+            <div className=" flex justify-center items-end gap-0  w-xl   text-text-secondary">
               <div
-                className={`pt-5 pb-2 px-2 bg-white w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? '' : 'border-4'
+                className={`pt-5 pb-2 px-2 bg-fg-primary w-40 rounded-t-xl text-center cursor-pointer ${
+                  cardFiltersOpen ? '' : 'border-4 border-black'
                 }`}
                 onClick={() => setCardFiltersOpen(true)}
               >
@@ -219,8 +219,8 @@ export default function Filtro({
               </div>
 
               <div
-                className={`pt-5 pb-2 px-2 bg-white w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? 'border-4' : ''
+                className={`pt-5 pb-2 px-2 bg-fg-primary w-40 rounded-t-xl text-center cursor-pointer ${
+                  cardFiltersOpen ? 'border-4 border-white' : ''
                 }`}
                 onClick={() => setCardFiltersOpen(false)}
               >
@@ -229,7 +229,7 @@ export default function Filtro({
             </div>
 
             {cardFiltersOpen ? (
-              <div className="relative bg-white p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
+              <div className="relative bg-fg-primary text-text-secondary p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
                 <div className="flex justify-center items-center gap-24  mb-5 mt-5">
                   <h2 className="text-4xl font-bold text-center  text-text-secondary">
                     Local
@@ -338,7 +338,7 @@ export default function Filtro({
             </Button> */}
               </div>
             ) : (
-              <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll">
+              <div className="relative bg-fg-primary text-text-secondary  p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll">
                 <div className="flex justify-center items-center gap-24 mb-5 mt-5">
                   <h2 className="text-4xl font-bold  text-text-secondary  text-center">
                     Global
