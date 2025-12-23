@@ -27,7 +27,7 @@ export default function SessionMenu() {
   }, []);
 
   return (
-    <div className="absolute top-16 right-6 flex items-center gap-2">
+    <div className="absolute top-16 right-6 flex items-center gap-2 ">
       {session ? (
         <DropdownMenuAvatar session={session} />
       ) : (

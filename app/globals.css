@@ -105,26 +105,26 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* Text semantic roles */
-  --color-text-primary: var(--text-primary); /* questions / headings */
-  --color-text-secondary: var(--text-secondary); /* subheadings */
-  --color-text-tertiary: var(--text-tertiary); /* answers / paragraphs */
+  --color-bg-dark: var(--bg-dark);
+  --color-bg: var(--bg);
+  --color-bg-light: var(--bg-light);
 
-  /* Backgrounds */
-  --color-bg-primary: var(--bg-primary);
-  --color-bg-secondary: var(--bg-secondary);
-  --color-bg-tertiary: var(--bg-tertiary);
+  /* Text */
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
 
-  /* Foregrounds / elements */
-  --color-fg-primary: var(--fg-primary);
-  --color-fg-secondary: var(--fg-secondary);
-  --color-fg-tertiary: var(--fg-tertiary);
+  /* Highlights / UI elements */
+  --color-highlight: var(--highlight);
+  --color-border: var(--border);
+  --color-border-muted: var(--border-muted);
 
-  /* Optional hover for elements */
-
-  --color-text-hover-primary: var(--text-hover-primary);
-  --color-text-hover-secondary: var(--text-hover-secondary);
-
-  --color-element-hover-primary: var(--element-hover-primary);
+  /* Brand / semantic */
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+  --color-info: var(--info);
 }
 
 .leaflet-container {
@@ -137,16 +137,16 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+ 
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.3211 0 0);
@@ -167,27 +167,20 @@
   /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
-  /* Backgrounds */
-  --bg-primary: oklch(100% 0.00011 271.152); /* dark base */
-  --bg-secondary: oklch(76.358% 0.00009 271.152); /* main light surface */
-  --bg-tertiary: oklch(12.856% 0.00001 271.152);
-
-  /* Foregrounds / elements */
-  --fg-primary: oklch(44.953% 0.00005 271.152); /* strong text / headings */
-  --fg-secondary: oklch(33.289% 0.00004 271.152); /* secondary text */
-  --fg-tertiary: oklch(28.502% 0.00003 271.152); /* highlights on dark bg */
-
-  /* Text semantic roles */
-  --text-primary: oklch(100% 0.00011 271.152); /* questions, headings */
-  --text-secondary: oklch(21.779% 0.00002 271.152);
-  
-  --text-tertiary: oklch(66.655% 0.00008 271.152); /* answers, paragraphs */
-
-  /* Hover states */
-  --text-hover-primary: oklch(48.839% 0.07212 201.483);
-  --text-hover-secondary: oklch(82.355% 0.14558 100.304);
-
-  --element-hover-primary: oklch(42% 0 0);
+--bg-dark: oklch(0.1 0 250);
+--bg: oklch(0.15 0 250);
+--bg-light: oklch(0.2 0 250);
+--text: oklch(0.96 0 250);
+--text-muted: oklch(0.76 0 250);
+--highlight: oklch(0.5 0 250);
+--border: oklch(0.4 0 250);
+--border-muted: oklch(0.3 0 250);
+--primary: oklch(0.76 0.1 250);
+--secondary: oklch(0.76 0.1 70);
+--danger: oklch(0.7 0.05 30);
+--warning: oklch(0.7 0.05 100);
+--success: oklch(0.7 0.05 160);
+--info: oklch(0.7 0.05 260);
 }
 
 .dark {
@@ -197,16 +190,16 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+  
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.9521 0 0);
@@ -225,27 +218,20 @@
   /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
-  /* Backgrounds */
-  /* Backgrounds */
-  --bg-primary: oklch(0.1 0 0); /* very dark base */
-  --bg-secondary: oklch(68.65% 0.00939 16.93); /* slightly lighter for cards/sections */
-  --bg-tertiary: oklch(0.2 0 0); /* subtle accent */
-
-  /* Foregrounds / elements */
-  --fg-primary: oklch(100% 0.00011 271.152); /* strong text / headings */
-  --fg-secondary: oklch(0.75 0.21 264); /* secondary text */
-  --fg-tertiary: oklch(0.6 0 0); /* highlights or less important elements */
-
-  /* Text semantic roles */
-  --text-primary: oklch(1 0 0); /* headings, questions */
-  --text-secondary: oklch(23.503% 0.00003 271.152); /* secondary text */
-  --text-tertiary: oklch(0.5 0 0); /* paragraphs, answers */
-
-  /* Hover states 
-  --text-hover-primary: oklch(0.85 0 0);
-  --text-hover-secondary: oklch(0.9 0 0);
-
-  --element-hover-primary: oklch(0.3 0 0); subtle hover highlight */
+   --bg-dark: oklch(0.1 0 250);
+--bg: oklch(0.15 0 250);
+--bg-light: oklch(0.2 0 250);
+--text: oklch(0.96 0 250);
+--text-muted: oklch(0.76 0 250);
+--highlight: oklch(0.5 0 250);
+--border: oklch(0.4 0 250);
+--border-muted: oklch(0.3 0 250);
+--primary: oklch(0.76 0.1 250);
+--secondary: oklch(0.76 0.1 70);
+--danger: oklch(0.7 0.05 30);
+--warning: oklch(0.7 0.05 100);
+--success: oklch(0.7 0.05 160);
+--info: oklch(0.7 0.05 260);
 }
 
 .ocean {
@@ -284,25 +270,20 @@
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
   /* Backgrounds */
-  --bg-primary: oklch(0.145 0 0); /* very dark blue */
-  --bg-secondary: oklch(0.218 0.02 271); /* medium soft blue */
-  --bg-tertiary: oklch(0.343 0.047 215); /*
-
-  /* Foregrounds / elements */
-  --fg-primary: oklch(44.953% 0.00005 271.152); /* strong text / headings */
-  --fg-secondary: oklch(33.289% 0.00004 271.152); /* secondary text */
-  --fg-tertiary: oklch(28.502% 0.00003 271.152); /* highlights on dark bg */
-
-  /* Text semantic roles */
-  --text-primary: oklch(100% 0.00011 271.152); /* questions, headings */
-  --text-secondary: oklch(21.779% 0.00002 271.152);
-  --text-tertiary: oklch(66.655% 0.00008 271.152); /* answers, paragraphs */
-
-  /* Hover states */
-  --text-hover-primary: oklch(48.839% 0.07212 201.483);
-  --text-hover-secondary: oklch(82.092% 0.16366 99.151);
-
-  --element-hover-primary: oklch(42% 0 0);
+ --bg-dark: oklch(0.1 0 250);
+--bg: oklch(0.15 0 250);
+--bg-light: oklch(0.2 0 250);
+--text: oklch(0.96 0 250);
+--text-muted: oklch(0.76 0 250);
+--highlight: oklch(0.5 0 250);
+--border: oklch(0.4 0 250);
+--border-muted: oklch(0.3 0 250);
+--primary: oklch(0.76 0.1 250);
+--secondary: oklch(0.76 0.1 70);
+--danger: oklch(0.7 0.05 30);
+--warning: oklch(0.7 0.05 100);
+--success: oklch(0.7 0.05 160);
+--info: oklch(0.7 0.05 260);
 }
 
 .forest {
@@ -390,7 +371,7 @@
 }
 /* Para Chrome, Edge, Safari */
 .card-container::-webkit-scrollbar {
-  width: 6px; /* grosor */
+  width: 120px; /* grosor */
 }
 
 .card-container::-webkit-scrollbar-track {

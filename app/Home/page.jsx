@@ -41,7 +41,7 @@ export default function Home() {
 
           <div className="inline-block">
             <div
-              className="ml-0 flex justify-end gap-2 items-end w-118 h-24 p-4 pb-4 rounded-b-3xl
+              className="ml-0 flex justify-end gap-2 items-end w-118 h-24 p-4 pb-2 pt-2 rounded-b-3xl
              shadow-[5px_0_6px_-1px_rgba(255,255,255,0.1),_-5px_0_6px_-1px_rgba(255,255,255,0.1),0_6px_6px_-1px_rgba(255,255,255,0.1)]"
             >
               <img
@@ -160,8 +160,10 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="w-screen bg-bg-tertiary text-text-3 py-12 mt-0 flex-1 ">
-        <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 h-full">
+    
+
+      <footer className="w-screen bg-bg/0 text-text-3 pb-12 mt-0 flex-1 ">
+        <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-fg-secondary">
           {/* Navigation Links */}
           <div className="flex flex-col text-text-primary items-between justify-between gap-8 ">
             <Link

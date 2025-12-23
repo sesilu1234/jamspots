@@ -41,7 +41,7 @@ export default function JamCard({
         </div>
 
         {/* Right panel */}
-        <CardContent className="flex flex-col justify-between text-xs ">
+        <CardContent className="flex flex-col justify-between text-xs pt-3 pb-2 ">
           <div className="font-bold text-lg">
             {jamName} at {spotName}
           </div>

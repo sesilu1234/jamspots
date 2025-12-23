@@ -25,9 +25,10 @@ function AvatarCustom({ session }: AvatarCustomProps) {
     <Image
       src={img}
       alt="User avatar"
-      width={42}
-      height={42}
-      className="rounded-2xl object-cover"
+      width={62}
+      height={62}
+      className="rounded-full object-cover border border-white/40 k"
+
     />
   ) : (
     <div className="w-16 h-16 rounded-full bg-gray-600 flex items-center justify-center text-white">
@@ -141,30 +142,45 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
   );
 }
 
+import { Sun, Moon, Coffee, Droplet, Leaf } from 'lucide-react';
+
 export function AccordionTheme() {
   const [theme, setTheme] = useState<
     'light' | 'dark' | 'tangerine' | 'ocean' | 'forest'
   >('light');
 
+  const themes = ['light', 'dark', 'tangerine', 'ocean', 'forest'];
+  const icons = [Sun, Moon, Coffee, Droplet, Leaf];
+  const iconColors: Record<string, string> = {
+    light: 'text-yellow-400',
+    dark: 'text-purple-400',
+    tangerine: 'text-orange-500',
+    ocean: 'text-blue-400',
+    forest: 'text-green-500',
+  };
+
   return (
-    <Accordion
-      type="single"
-      collapsible
-      className="w-full"
-      defaultValue={undefined}
-    >
+    <Accordion type="single" collapsible className="w-full" defaultValue={undefined}>
       <AccordionItem value="item-1">
         <AccordionTrigger>Theme Mode</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-2 py-2">
-          {['light', 'dark', 'tangerine', 'ocean', 'forest'].map((t) => (
-            <button
-              key={t}
-              className={`px-4 py-1 text-left ${theme === t ? 'font-bold' : ''}`}
-              onClick={() => setTheme(t as typeof theme)}
-            >
-              {t.charAt(0).toUpperCase() + t.slice(1)}
-            </button>
-          ))}
+          {themes.map((t, i) => {
+            const Icon = icons[i];
+            return (
+              <button
+                key={t}
+                className={`flex items-center gap-2 px-4 py-1 text-left ${
+                  theme === t
+                    ? 'font-bold'
+                    : 'hover:bg-accent hover:underline rounded-md'
+                }`}
+                onClick={() => setTheme(t as typeof theme)}
+              >
+                <Icon className={`w-4 h-4 ${theme === t ? iconColors[t] : 'text-slate-400'}`} />
+                {t.charAt(0).toUpperCase() + t.slice(1)}
+              </button>
+            );
+          })}
         </AccordionContent>
       </AccordionItem>
     </Accordion>

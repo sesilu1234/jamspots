@@ -38,7 +38,7 @@ export default function JamCarousel({
       <div
         ref={containerRef}
         className={`
-    card-container flex flex-col items-center bg-white border border-black/20 gap-6
+    card-container flex flex-col items-center bg-bg-primary/70 rounded-b-xl border border-black/20 gap-6
     overflow-y-auto transition-all duration-700 ease-in-out
     ${collapsed ? 'max-h-0 p-0 opacity-0' : 'max-h-108 p-6 opacity-100'}
   `}
@@ -60,7 +60,7 @@ export default function JamCarousel({
           jams.map((jam, index) => (
             <JamCardShadcn
               key={index}
-              classname="cursor-pointer"
+              classname="cursor-pointer border-2 border-white/40"
               jamName={jam.jam_title}
               spotName={jam.location_title}
               tags={jam.styles}
