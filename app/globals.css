@@ -231,8 +231,8 @@
   --bg-tertiary: oklch(0.2 0 0); /* subtle accent */
 
   /* Foregrounds / elements */
-  --fg-primary: oklch(0.95 0 0); /* strong text / headings */
-  --fg-secondary: oklch(0.75 0 0); /* secondary text */
+  --fg-primary: oklch(100% 0.00011 271.152); /* strong text / headings */
+  --fg-secondary: oklch(0.75 0.21 264); /* secondary text */
   --fg-tertiary: oklch(0.6 0 0); /* highlights or less important elements */
 
   /* Text semantic roles */
@@ -299,7 +299,7 @@
 
   /* Hover states */
   --text-hover-primary: oklch(48.839% 0.07212 201.483);
-  --text-hover-secondary: oklch(82.355% 0.14558 100.304);
+  --text-hover-secondary: oklch(82.092% 0.16366 99.151);
 
   --element-hover-primary: oklch(42% 0 0);
 }

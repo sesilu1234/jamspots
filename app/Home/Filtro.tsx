@@ -187,7 +187,7 @@ export default function Filtro({
       {/* Filter button */}
       <div
         className="inline-flex items-center gap-2 px-2 py-1 h-10 justify-center shadow-md rounded-sm cursor-pointer
-                   bg-foreground-2 hover:bg-elements-1 group transition-colors duration-200"
+                   bg-fg-tertiary hover:bg-elements-1 group transition-colors duration-200"
         onClick={() => setOpen(!open)}
       >
         <svg

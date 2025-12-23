@@ -49,12 +49,12 @@ export default function Home() {
                 alt="Jamspots icon"
                 className="h-16"
               />
-              <p className="text-xs py-3 text-text-2 font-semibold">
+              <p className="text-xs py-4 text-text-2 font-semibold">
                 Find the next spot where music happens.
               </p>
             </div>
 
-            <div className="h-[1.5px] bg-foreground-1/50 w-96 mt-1"></div>
+            <div className="h-[1.5px] bg-foreground-1/50 w-96 mt-1 opacity-0"></div>
           </div>
 
           <div className="flex items-center mb-5 mt-4 ml-3 gap-2">
@@ -90,7 +90,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative w-full mx-auto mt-2 h-148 rounded-sm border border-gray-500/70 shadow-md overflow-hidden">
+          <div className="relative w-full mx-auto mt-2 h-148 rounded-sm bg-fg-primary/30 shadow-md overflow-hidden">
             <MapRender />
             <JamCarousel
               jams={jams}
@@ -105,12 +105,12 @@ export default function Home() {
 
       <div className="w-screen mt-12 pt-4 pb-4">
         <div className="max-w-[90%] w-[1300px] mx-auto p-6 grid grid-cols-2 gap-12">
-          <div className="flex flex-col gap-2 border-t-2 border-blue-300 pt-8">
-            <h3 className="text-lg font-semibold text-text-title">
+          <div className="flex flex-col gap-2 border-t-2 border-fg-secondary pt-8">
+            <h3 className="text-lg font-semibold ">
               ¿QUÉ ES UNA JAM SESSION?
             </h3>
 
-            <p className="text-sm leading-relaxed text-text-subtitle">
+            <p className="text-sm leading-relaxed ">
               Una jam es un encuentro donde músicos se suben al escenario a
               tocar juntos, improvisando y compartiendo música en el momento. No
               hace falta conocerse antes: cada noche suena diferente, y
@@ -118,40 +118,40 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-blue-300 pt-8">
+          <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-fg-secondary pt-8">
             <p>
-              <span className="font-semibold text-text-title">
+              <span className="font-semibold ">
                 ¿Puedo tocar si nunca he venido antes?
               </span>{' '}
-              <span className="text-text-subtitle">
+              <span className="">
                 → claro, cualquiera puede subir a tocar o cantar.
               </span>
             </p>
 
             <p>
-              <span className="font-semibold text-text-title">
+              <span className="font-semibold ">
                 ¿Hace falta llevar instrumento?
               </span>{' '}
-              <span className="text-text-subtitle">
+              <span className="">
                 → normalmente hay backline (batería, ampli, micro), pero trae tu
                 instrumento si quieres.
               </span>
             </p>
 
             <p>
-              <span className="font-semibold text-text-title">
+              <span className="font-semibold ">
                 ¿Hay entrada o es gratis?
               </span>{' '}
-              <span className="text-text-subtitle">
+              <span className="">
                 → la mayoría son gratuitas o con consumición mínima.
               </span>
             </p>
 
             <p>
-              <span className="font-semibold text-text-title">
+              <span className="font-semibold ">
                 ¿Y si no toco nada?
               </span>{' '}
-              <span className="text-text-subtitle">
+              <span className="">
                 → ¡Bienvenido igual! Ven a escuchar, relajarte y disfrutar del
                 ambiente.
               </span>
@@ -166,19 +166,19 @@ export default function Home() {
           <div className="flex flex-col text-text-primary items-between justify-between gap-8 ">
             <Link
               href="/contact"
-              className="hover:text-text-hover-1 cursor-pointer"
+              className="hover:text-text-hover-secondary cursor-pointer"
             >
               CONTACT
             </Link>
             <Link
               href="/help"
-              className="hover:text-text-hover-1 cursor-pointer"
+              className="hover:text-text-hover-secondary cursor-pointer"
             >
               HELP
             </Link>
             <Link
               href="/about"
-              className="hover:text-text-hover-1 cursor-pointer"
+              className="hover:text-text-hover-secondary cursor-pointer"
             >
               ABOUT
             </Link>
@@ -191,7 +191,7 @@ export default function Home() {
               alt="Jamspots icon"
               className="h-16"
             />
-            <p className="text-sm text-text-tertiary text-center font-medium sm:text-left pb-3">
+            <p className="text-sm  text-center font-medium sm:text-left pb-3">
               Find the next spot where music happens.
             </p>
           </div>

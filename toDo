@@ -9,3 +9,63 @@
   al usuario diceinole que completo todo correctamente
 
 - mejorar stetic, styles, usando global css variables
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- hacer los styles, primero dark y light, y despues sin mas poniendo una paleta suave para los styles (poner en seleccionar styles usuario iconos de theme)
+
+- ver como seria lo del ingles/español , y sino dejarlo en ingles y ya esta por ahora (si, meetup lo hace asi, asi que...)
+
+- mejorar pagina jam y poner para poder cambiar theme naa esto no...que tengas el theme de la home...y ya...simplemente mejorar la pagina /jam/
+
+
+- hacer a movil, que seria lo mismo que para desktop pero un poco mas pequeño...(o quizas hacer el slider aunque rapido...)
+
+
+
+
+
+
+- mejorar cosas de la base de datos, checkeos, pedir cookies
+
+- poner algo de middleware
+
+-probar testing  , ultimos ajustes y retoques y checkeos
+
+
+
+
+-subir a vercel como jamspots.com (ver si hay algo para checkear cuanto visitantes tiene)
+
+
+
+
+
+
+
+---------------
+--------------------------------------
+-
+-------------------
+
+bg-gradient-to-b from-slate-950 to-slate-900
+
+
+bg-gradient-to-br from-[#020617] via-[#020617] to-[#0f172a]
+
+
+bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800
+
