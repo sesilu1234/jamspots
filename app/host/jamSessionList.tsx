@@ -128,7 +128,7 @@ export default function JamSessionList() {
 
       <div className="mt-4 mx-auto w-[1170px]">
         <Link
-          href={`/jams_list_signIn/create`}
+          href={`/host/create`}
           prefetch={false}
           className="flex justify-center items-center h-32 bg-gray-500 rounded-lg w-[300px]"
         >
@@ -191,7 +191,7 @@ function Jam({
         </Link>
 
         <Link
-          href={`/jams_list_signIn/edit/${id}`}
+          href={`/host/edit/${id}`}
           prefetch={false}
           className="px-3 py-1 rounded-sm ml-[20px] bg-black/80 text-white hover:bg-black"
         >

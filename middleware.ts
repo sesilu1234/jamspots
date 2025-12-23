@@ -11,7 +11,7 @@ export async function middleware(req: NextRequest) {
 
   // If NOT logged in → redirect to sign in page
   if (!token) {
-    url.pathname = '/signIn_page';
+    url.pathname = '/signIn';
     return NextResponse.redirect(url);
   }
 
@@ -20,5 +20,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/jams_list_signIn'],
+  matcher: ['/host'],
 };

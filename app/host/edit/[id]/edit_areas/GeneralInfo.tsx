@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import Primary from '@/app/google_createJam/primary';
+import Primary from '@/app/createJam/primary';
 import { GeneralInfoProps } from './types/types';
 import {
   Select,
@@ -166,14 +166,16 @@ export default function EditArea({
               <Label htmlFor="time-from" className="px-1">
                 Starting Time
               </Label>
-              <Input
-                type="time"
-                id="time-from"
-                step="60"
-                value={fromTime}
-                onChange={(e) => setFromTime(e.target.value)}
-                className="bg-background appearance-none text-center "
-              />
+              <div className="flex justify-center">
+                <Input
+                  type="time"
+                  id="time-from"
+                  step="60"
+                  value={fromTime}
+                  onChange={(e) => setFromTime(e.target.value)}
+                  className="bg-background appearance-none text-center "
+                />
+              </div>
             </div>
           </div>
         </div>

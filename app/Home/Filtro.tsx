@@ -13,7 +13,6 @@ import L from 'leaflet';
 type SliderProps = React.ComponentProps<typeof Slider>;
 
 export default function Filtro({
-  coordinatesRef,
   jams,
   setJams,
   loading,
@@ -25,20 +24,9 @@ export default function Filtro({
 
   const calendarRef = useRef<HTMLDivElement | null>(null);
 
-  type FiltroOptions = {
-    ordenar: string;
-    distancia: number;
-    estilos: string[];
-  };
-
-  const filtroOptions = useRef<FiltroOptions>({
-    ordenar: 'popular',
-    distancia: 20,
-    estilos: [],
-  });
   const [dateOptions, setDateOptions] = useState('week');
   const [order, setOrder] = useState('popular');
-  const [distance, setDistance] = useState(20);
+  const [distance, setDistance] = useState(30);
   const [styles, setStyles] = useState<string[]>([]);
 
   const [dateOptionsGlobal, setdateOptionsGlobal] = useState('all');
@@ -72,7 +60,7 @@ export default function Filtro({
 
   const [dateGlobal, setdateGlobal] = useState<Date | undefined>(new Date());
 
-  const { setMarkersData } = useMapContext();
+  const { locationSearch, setMarkersData, map } = useMapContext();
 
   // Close on outside click or Esc
   useEffect(() => {
@@ -105,6 +93,20 @@ export default function Filtro({
     setSearchType(searchType);
 
     fetchJams(searchType);
+    if (searchType === 'local') {
+      map.flyTo(
+        [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
+        12,
+        { duration: 1.5 },
+      );
+    } else {
+      map.flyTo(
+        [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
+        6,
+        { duration: 1.5 },
+      );
+    }
+
     setOpen(false);
   };
 
@@ -125,8 +127,8 @@ export default function Filtro({
           userDate: localDateLocal,
           dateOptions: dateOptionsRef.current,
           order: String(orderRef.current),
-          lat: String(coordinatesRef.current.lat),
-          lng: String(coordinatesRef.current.lng),
+          lat: String(locationSearch?.coordinates.lat),
+          lng: String(locationSearch?.coordinates.lng),
           distance: String(distanceRef.current),
           styles: JSON.stringify(stylesRef.current),
         });
@@ -175,12 +177,17 @@ export default function Filtro({
     }
   };
 
+  useEffect(() => {
+    setSearchType('local');
+    fetchJams('local');
+  }, [locationSearch]);
+
   return (
     <>
       {/* Filter button */}
       <div
         className="inline-flex items-center gap-2 px-2 py-1 h-10 justify-center shadow-md rounded-sm cursor-pointer
-                   bg-gray-300 hover:bg-gray-600 group transition-colors duration-200"
+                   bg-foreground-2 hover:bg-elements-1 group transition-colors duration-200"
         onClick={() => setOpen(!open)}
       >
         <svg
@@ -188,11 +195,11 @@ export default function Filtro({
           height="19px"
           viewBox="0 -960 960 960"
           width="19px"
-          className="fill-[rgba(17,17,17,0.8)] group-hover:fill-white transition-colors duration-200"
+          className="fill-[rgba(17,17,17,0.8)] group-hover:fill-text-1 transition-colors duration-200"
         >
           <path d="M120-40v-168q-35-12-57.5-42.5T40-320v-400h80v-160q0-17 11.5-28.5T160-920q17 0 28.5 11.5T200-880v160h80v400q0 39-22.5 69.5T200-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T360-320v-400h80v-160q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v160h80v400q0 39-22.5 69.5T520-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T680-320v-400h80v-160q0-17 11.5-28.5T800-920q17 0 28.5 11.5T840-880v160h80v400q0 39-22.5 69.5T840-208v168h-80ZM120-640v160h80v-160h-80Zm320 0v160h80v-160h-80Zm320 0v160h80v-160h-80ZM160-280q17 0 28.5-11.5T200-320v-80h-80v80q0 17 11.5 28.5T160-280Zm320 0q17 0 28.5-11.5T520-320v-80h-80v80q0 17 11.5 28.5T480-280Zm320 0q17 0 28.5-11.5T840-320v-80h-80v80q0 17 11.5 28.5T800-280ZM160-440Zm320 0Zm320 0Z" />
         </svg>
-        <span className="text-md pt-0.5 transition-colors duration-200 font-jaro group-hover:text-white hover:cursor-pointer select-none">
+        <span className="text-md pt-0.5 transition-colors duration-200 font-jaro group-hover:text-text-3 hover:cursor-pointer select-none">
           FILTER
         </span>
       </div>
@@ -222,15 +229,15 @@ export default function Filtro({
             </div>
 
             {cardFiltersOpen ? (
-              <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
+              <div className="relative bg-white p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
                 <div className="flex justify-center items-center gap-24  mb-5 mt-5">
-                  <h2 className="text-4xl font-bold text-gray-900 text-center  dark:text-white text-center">
+                  <h2 className="text-4xl font-bold text-center  text-text-secondary">
                     Local
                   </h2>
                   <button
                     onClick={() => handleAccept('local')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-[#2F2F2F] hover:bg-[#464646] text-[#FAFAFA] hover:text-[#FFFFFF]
+            bg-[#2F2F2F] hover:bg-[#464646] text-text-secondary hover:text-[#FFFFFF]
              transition-colors cursor-pointer"
                   >
                     Apply
@@ -264,7 +271,7 @@ export default function Filtro({
       peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
                         >
                           <svg
-                            className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
+                            className="w-3 h-3 text-text-secondary opacity-0 peer-checked:opacity-100"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -289,7 +296,7 @@ export default function Filtro({
       peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
                         >
                           <svg
-                            className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100"
+                            className="w-3 h-3 text-text-secondary opacity-0 peer-checked:opacity-100"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -333,13 +340,13 @@ export default function Filtro({
             ) : (
               <div className="relative bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll">
                 <div className="flex justify-center items-center gap-24 mb-5 mt-5">
-                  <h2 className="text-4xl font-bold  text-gray-900 text-center  dark:text-white text-center">
+                  <h2 className="text-4xl font-bold  text-text-secondary  text-center">
                     Global
                   </h2>
                   <button
                     onClick={() => handleAccept('global')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-[#2F2F2F] hover:bg-[#464646] text-[#FAFAFA] hover:text-[#FFFFFF]
+            bg-[#2F2F2F] hover:bg-[#464646] text-text-secondary hover:text-[#FFFFFF]
              transition-colors cursor-pointer"
                   >
                     Apply
@@ -546,7 +553,7 @@ export function SliderDemo({
 }: SliderDemoProps) {
   return (
     <>
-      <div className="flex gap-32 items-end mb-4">
+      <div className="flex gap-32 items-end mb-4 text-text-secondary">
         <h1 className="text-3xl font-semibold pb-4">Distancia</h1>
         <span className="pb-1">{distance} km</span>
       </div>
@@ -557,7 +564,7 @@ export function SliderDemo({
         max={100}
         step={1}
         onValueChange={(val) => setDistance(val[0])} // <-- devolver número
-        className={cn('w-[60%] ml-8', className)}
+        className={cn('w-[60%] ml-8 text-text-secondary', className)}
       />
     </>
   );
@@ -618,7 +625,7 @@ export function SelectStyles({ styles, setStyles }: SelectStylesProps) {
               key={style}
               className={`flex items-center justify-between px-4 py-2 rounded cursor-pointer whitespace-nowrap ${
                 isSelected
-                  ? 'bg-purple-500 text-white'
+                  ? 'bg-purple-500 text-text-secondary'
                   : 'bg-gray-200 hover:bg-gray-300'
               }`}
               onClick={() => toggleStyle(style)}

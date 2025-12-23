@@ -18,8 +18,6 @@ export default function Home() {
   const [showSignIn, setShowSignIn] = useState(false);
   const menuRef = useRef(null);
 
-  const coordinatesRef = useRef(null);
-
   const [jams, setJams] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,27 +34,30 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen ">
       <MapProvider>
-        <div className="relative flex flex-col w-[1300px] max-w-[90%] mx-auto p-6 ">
+        <div className="relative flex flex-col  w-[1300px] max-w-[90%] mx-auto p-0 ">
           <SignInIcons />
 
           <div className="inline-block">
-            <div className="ml-3 flex gap-2 items-end">
+            <div
+              className="ml-0 flex justify-end gap-2 items-end w-118 h-24 p-4 pb-4 rounded-b-3xl
+             shadow-[5px_0_6px_-1px_rgba(255,255,255,0.1),_-5px_0_6px_-1px_rgba(255,255,255,0.1),0_6px_6px_-1px_rgba(255,255,255,0.1)]"
+            >
               <img
                 src="jamspots_icon.png"
                 alt="Jamspots icon"
                 className="h-16"
               />
-              <p className="text-xs py-3 text-gray-600 font-semibold">
-                Find the next spot to share your sound.
+              <p className="text-xs py-3 text-text-2 font-semibold">
+                Find the next spot where music happens.
               </p>
             </div>
 
-            <div className="h-[1.5px] bg-gray-700/50 w-96 mt-1"></div>
+            <div className="h-[1.5px] bg-foreground-1/50 w-96 mt-1"></div>
           </div>
 
-          <div className="flex items-center mb-5 mt-8 ml-3 gap-2">
+          <div className="flex items-center mb-5 mt-4 ml-3 gap-2">
             {/* <Input
               className="w-72 h-10 px-3 text-sm text-gray-500 placeholder-gray-500 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="search"
@@ -64,12 +65,11 @@ export default function Home() {
             /> */}
 
             <div className="w-52 ">
-              <GooglePlacesSearch coordinatesRef={coordinatesRef} />
+              <GooglePlacesSearch />
             </div>
 
             <div className="w-52 ">
               <Filtro
-                coordinatesRef={coordinatesRef}
                 jams={jams}
                 setJams={setJams}
                 loading={loading}
@@ -79,7 +79,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex justify-between items-end px-3 font-semibold uppercase text-gray-800 tracking-wide">
+          <div className="flex justify-between items-end px-3 font-semibold uppercase text-text-1 tracking-wide">
             <span> 13 jams found</span>
             <div className="flex flex-col items-end">
               {searchType === 'local' ? (
@@ -103,14 +103,14 @@ export default function Home() {
         </div>
       </MapProvider>
 
-      <div className="w-screen bg-gray-200    mt-12 pt-4 pb-4     ">
-        <div className="max-w-[90%] w-[1300px] mx-auto p-6  grid grid-cols-2 gap-12">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-semibold text-gray-800">
+      <div className="w-screen mt-12 pt-4 pb-4">
+        <div className="max-w-[90%] w-[1300px] mx-auto p-6 grid grid-cols-2 gap-12">
+          <div className="flex flex-col gap-2 border-t-2 border-blue-300 pt-8">
+            <h3 className="text-lg font-semibold text-text-title">
               ¿QUÉ ES UNA JAM SESSION?
             </h3>
 
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <p className="text-sm leading-relaxed text-text-subtitle">
               Una jam es un encuentro donde músicos se suben al escenario a
               tocar juntos, improvisando y compartiendo música en el momento. No
               hace falta conocerse antes: cada noche suena diferente, y
@@ -118,71 +118,85 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 text-sm text-gray-600 leading-relaxed">
+          <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-blue-300 pt-8">
             <p>
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-text-title">
                 ¿Puedo tocar si nunca he venido antes?
               </span>{' '}
-              → claro, cualquiera puede subir a tocar o cantar.
+              <span className="text-text-subtitle">
+                → claro, cualquiera puede subir a tocar o cantar.
+              </span>
             </p>
 
             <p>
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-text-title">
                 ¿Hace falta llevar instrumento?
               </span>{' '}
-              → normalmente hay backline (batería, ampli, micro), pero trae tu
-              instrumento si quieres.
+              <span className="text-text-subtitle">
+                → normalmente hay backline (batería, ampli, micro), pero trae tu
+                instrumento si quieres.
+              </span>
             </p>
 
             <p>
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-text-title">
                 ¿Hay entrada o es gratis?
               </span>{' '}
-              → la mayoría son gratuitas o con consumición mínima.
+              <span className="text-text-subtitle">
+                → la mayoría son gratuitas o con consumición mínima.
+              </span>
             </p>
 
             <p>
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-text-title">
                 ¿Y si no toco nada?
               </span>{' '}
-              → ¡Bienvenido igual! Ven a escuchar, relajarte y disfrutar del
-              ambiente.
+              <span className="text-text-subtitle">
+                → ¡Bienvenido igual! Ven a escuchar, relajarte y disfrutar del
+                ambiente.
+              </span>
             </p>
           </div>
         </div>
       </div>
 
-      <footer className="w-screen bg-black/90 text-white py-12 mt-0">
-        <div className="max-w-[90%] w-[1300px] mx-auto p-6">
+      <footer className="w-screen bg-bg-tertiary text-text-3 py-12 mt-0 flex-1 ">
+        <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 h-full">
           {/* Navigation Links */}
-          <div className="flex flex-row items-center justify-center gap-16 mb-12">
+          <div className="flex flex-col text-text-primary items-between justify-between gap-8 ">
             <Link
               href="/contact"
-              className="hover:text-gray-300 cursor-pointer"
+              className="hover:text-text-hover-1 cursor-pointer"
             >
               CONTACT
             </Link>
-            <Link href="/help" className="hover:text-gray-300 cursor-pointer">
+            <Link
+              href="/help"
+              className="hover:text-text-hover-1 cursor-pointer"
+            >
               HELP
             </Link>
-            <Link href="/about" className="hover:text-gray-300 cursor-pointer">
+            <Link
+              href="/about"
+              className="hover:text-text-hover-1 cursor-pointer"
+            >
               ABOUT
             </Link>
           </div>
 
           {/* Branding / Tagline */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+          <div className="flex flex-col sm:flex-row items-end justify-center gap-2 ">
             <img
               src="/jamspots_icon.png"
               alt="Jamspots icon"
               className="h-16"
             />
-            <p className="text-sm text-gray-400 font-semibold text-center sm:text-left">
-              Find the next spot to share your sound.
+            <p className="text-sm text-text-tertiary text-center font-medium sm:text-left pb-3">
+              Find the next spot where music happens.
             </p>
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

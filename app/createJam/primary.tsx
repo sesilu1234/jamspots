@@ -53,8 +53,8 @@ export default function Primary({
 
     const openPopup = () => {
       window.open(
-        '/google_createJam/google_selectOnMap',
-        'google_createJam',
+        '/createJam/selectOnMap',
+        'createJam',
         'width=400,height=300',
       );
     };

@@ -23,48 +23,45 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
   const router = useRouter(); // ✅ call hook here, at top level
 
   const [loading, setLoading] = useState(true);
-
+  const { id } = useParams();
 
   useEffect(() => {
-    
+    if (!id) return;
 
- 
-
+    fetch(`/api/get-jam-edit/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
         setForm({
-     
           generalInfo: {
-    jam_title: '',
-    location_title: '',
-    location_address: '',
-    coordinates: {
-      lat: '',
-      lng: '',
-    },
-    dates: {
-      period: 'manual',
-      day_of_week: null,
-      time: { from: '21:30', to: null },
-      list_of_dates: [],
-    },
-  },
-          photos: { images: [] },
-          features:{
-    styles: [],
-    song_list: false,
-    intruments_lend: true,
-    drums: true,
-  },
-          description: { description: null },
-          social:{
-    instagram: '',
-    facebook: '',
-    siteWeb: '',
-  },
+            jam_title: data.jam_title,
+            location_title: data.location_title,
+            location_address: data.location_address,
+            coordinates: { lat: data.lat, lng: data.lng },
+            dates: {
+              period: data.periodicity,
+              day_of_week: data.dayOfWeek,
+              time: { from: data.time_start, to: null },
+              list_of_dates: data.dates,
+            },
+          },
+          photos: { images: data.images },
+          features: {
+            styles: data.styles,
+            song_list: data.lista_canciones,
+            intruments_lend: data.instruments_lend,
+            drums: data.drums,
+          },
+          description: { description: data.description },
+          social: {
+            instagram: data.social_links.instagram,
+            facebook: data.social_links.facebook,
+            siteWeb: data.social_links.siteWeb,
+          },
         });
 
         setLoading(false);
-      },[]);
-// ✅ solo se ejecuta cuando cambia id
+      });
+  }, [id]); // ✅ solo se ejecuta cuando cambia id
 
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
   //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
@@ -106,8 +103,6 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
 
     const form = useFormStore.getState().form;
 
-  
-
     const images_files: File[] = [];
     for (const url of form.photos.images) {
       const res = await fetch(url);
@@ -142,28 +137,68 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     console.log(parsed_jamData);
     console.log('Saving all data:', jamData);
 
-    const res = await fetch('/api/create-session', {
+    await fetch(`/api/update-session/${id}`, {
       method: 'POST',
       body: JSON.stringify(jamData),
       headers: { 'Content-Type': 'application/json' },
     });
-    const data = await res.json();
-
-    router.push(`/jams_list_signIn/`);
   };
+
+  const [progress, setProgress] = useState(0);
+  const [saving, setSaving] = useState(false);
 
   if (loading) return null;
   return (
-    <div>
+    <div className="relative">
+      {saving ? (
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-6 z-[501]">
+          <ProgressDemo progress={progress} setProgress={setProgress} />
+        </div>
+      ) : null}
       <div
         className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
-      hover:text-black hover:bg-slate-200 hover:border hover:border-black"
-        onClick={() => handleSave()}
+        hover:text-black hover:bg-slate-200 hover:border hover:border-black"
+        onClick={async () => {
+          setProgress(13);
+          setSaving(true);
+
+          // 1️⃣ helper to wait
+          const wait = (ms: number) =>
+            new Promise((resolve) => setTimeout(resolve, ms));
+
+          // 2️⃣ run progress animation and save in parallel
+          await Promise.all([
+            (async () => {
+              await wait(500);
+              setProgress(33);
+              await wait(1000);
+              setProgress(66);
+            })(),
+            handleSave(),
+          ]);
+          await wait(200);
+          setProgress(100);
+          await wait(200);
+          // 3️⃣ done, hide progress and navigate
+          setSaving(false);
+          router.push('/host');
+        }}
       >
-        Save and Exit
+        {saving ? 'Saving…' : 'Save and Exit'}
       </div>
 
       <Sections childSaveOnUnmount={childSaveOnUnmount} />
     </div>
   );
+}
+
+import { Progress } from '@/components/ui/progress';
+
+export function ProgressDemo({ progress, setProgress }) {
+  useEffect(() => {
+    const timer = setTimeout(() => setProgress(66), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return <Progress value={progress} className="w-64" />;
 }

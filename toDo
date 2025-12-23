@@ -5,13 +5,7 @@
   y asegurar seguridad de apis, base de datos , y middleware , rate limiter
   ,etc...
 
-- cuando pones global, hacer unzoom del mapa para que se vean todas las jams
+- si no rellenas bien crear jam y falla zod o lo que sea, enviar error y toaster
+  al usuario diceinole que completo todo correctamente
 
-           - poner la distancia que es zoom en el map que se tiene en filtro y aal poner
-
-  global hacer un zoom out grande
-
-           - y creo que la aparicion incial de cards esta mal
-
-- mientras editas o creas, si le das a volver, poner una confirmacion de seguro
-  que quieres salir sin guardar ( cancelar / sí, salir )
+- mejorar stetic, styles, usando global css variables

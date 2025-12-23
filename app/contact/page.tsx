@@ -22,7 +22,7 @@ export default function Contact() {
         <div className="ml-3 flex gap-2 items-end">
           <img src="jamspots_icon.png" alt="Jamspots icon" className="h-16" />
           <p className="text-xs py-3 text-gray-600 font-semibold">
-            Find the next spot to share your sound.
+            Find the next spot where music happens.
           </p>
         </div>
       </div>

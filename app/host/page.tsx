@@ -11,7 +11,7 @@ import JamSessionList from './jamSessionList';
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
-  if (!session) redirect('/signIn_page');
+  if (!session) redirect('/signIn');
 
   return (
     <div className="min-h-screen bg-gray-300">
@@ -20,7 +20,7 @@ export default async function Home() {
           <div className="relative ml-3 flex  items-center gap-2">
             <h3 className="font-bold text-4xl">jamspots</h3>
             <p className="text-xs pt-5 text-gray-800 font-semibold">
-              Find the next spot to share your sound.
+              Find the next where music happens.
             </p>
           </div>
 
