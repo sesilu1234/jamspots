@@ -26,7 +26,8 @@ export default function JamCard({
   classname,
 }) {
   return (
-    <Card className={`flex flex-col p-2    w-64  shadow-md   ${classname}`}>
+    <Card className={`flex flex-col p-2    w-64  shadow-md  bg-tone-6 
+ ${classname}`}>
       <Link href={`/jam/${slug}`} prefetch={false}>
         {/* Image left (desktop) / top (mobile) */}
         <div className="relative   h-48">
@@ -41,17 +42,17 @@ export default function JamCard({
         </div>
 
         {/* Right panel */}
-        <CardContent className="flex flex-col justify-between text-xs pt-3 pb-2 ">
-          <div className="font-bold text-lg">
+        <CardContent className="flex flex-col gap-1 justify-between text-xs pt-3 pb-2 ">
+          <div className="font-medium text-lg mb-2">
             {jamName} at {spotName}
           </div>
 
-          <div className="text-xs text-gray-500">{address}</div>
-          <div className="text-sm text-gray-500">{time}</div>
+          <div className="text-xs text-gray-400">{address}</div>
+          <div className="text-sm text-gray-200">{'Tuesday 9, 20:15'}</div>
           {tags && (
-            <div className="flex flex-wrap gap-1 mt-2">
+            <div className="flex flex-wrap gap-1 mt-3">
               {tags.map((tag, i) => (
-                <span key={i} className="bg-gray-200 rounded px-2 py-1 text-xs">
+                <span key={i} className=" border-1 border-white rounded px-2 py-1 text-xs">
                   {tag}
                 </span>
               ))}

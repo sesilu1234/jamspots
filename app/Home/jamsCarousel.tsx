@@ -60,7 +60,7 @@ export default function JamCarousel({
           jams.map((jam, index) => (
             <JamCardShadcn
               key={index}
-              classname="cursor-pointer border-2 border-white/40"
+              classname="cursor-pointer border-2 border-white/75"
               jamName={jam.jam_title}
               spotName={jam.location_title}
               tags={jam.styles}

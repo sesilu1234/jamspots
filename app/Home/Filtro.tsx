@@ -209,7 +209,7 @@ export default function Filtro({
         >
           <path d="M120-40v-168q-35-12-57.5-42.5T40-320v-400h80v-160q0-17 11.5-28.5T160-920q17 0 28.5 11.5T200-880v160h80v400q0 39-22.5 69.5T200-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T360-320v-400h80v-160q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v160h80v400q0 39-22.5 69.5T520-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T680-320v-400h80v-160q0-17 11.5-28.5T800-920q17 0 28.5 11.5T840-880v160h80v400q0 39-22.5 69.5T840-208v168h-80ZM120-640v160h80v-160h-80Zm320 0v160h80v-160h-80Zm320 0v160h80v-160h-80ZM160-280q17 0 28.5-11.5T200-320v-80h-80v80q0 17 11.5 28.5T160-280Zm320 0q17 0 28.5-11.5T520-320v-80h-80v80q0 17 11.5 28.5T480-280Zm320 0q17 0 28.5-11.5T840-320v-80h-80v80q0 17 11.5 28.5T800-280ZM160-440Zm320 0Zm320 0Z" className="fill-current" />
         </svg>
-        <span className="text-md text-tone-0/85 pt-0.5 transition-colors duration-200 font-jaro group-hover:text-primary hover:cursor-pointer select-none">
+        <span className="text-md text-tone-0/85 pt-0.5 transition-colors duration-200 font-semibold group-hover:text-primary hover:cursor-pointer select-none">
           FILTER
         </span>
       </div>
@@ -239,7 +239,7 @@ export default function Filtro({
             </div>
 
             {cardFiltersOpen ? (
-              <div className="relative bg-tone-0 text-tone-6  p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] border-0 border-t-0 border-black/50 ">
+              <div className="relative bg-tone-0/95 text-tone-6  p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] border-0 border-t-0 border-black/50 ">
                 <div className="flex justify-center items-center gap-24  mb-5 mt-5">
                   <h2 className="text-4xl font-bold text-center  text-text-secondary">
                     Local
@@ -433,13 +433,8 @@ export function DateOptions({
        <Button
   key={opt.value}
   variant={opt.value === dateOptions ? 'secondary' : undefined}
-  className={opt.value === dateOptions ? 'hover:bg-black hover:text-white ' : ''}
- 
 
-
-
-
-
+  className={`text-lg ${opt.value === dateOptions  ? 'hover:bg-black hover:text-white' : ''}`}
   onClick={() => setDateOption(opt.value)}
 >
   {opt.label}
@@ -449,7 +444,7 @@ export function DateOptions({
 
       <div className="relative" ref={calRef}>
         <Button
-         className={dateOptions.startsWith('custom')? 'hover:bg-black hover:text-white' : ''}
+         className={`text-lg ${dateOptions.startsWith('custom') ? 'hover:bg-black hover:text-white' : ''}`}
           variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
         >
@@ -501,7 +496,7 @@ export function DateOptionsGlobal({
           key={opt.value}
           variant={opt.value === dateOptions ? 'secondary' : undefined}
           onClick={() => setDateOption(opt.value)}
-          className={opt.value === dateOptions ? 'hover:bg-black hover:text-white ' : ''}
+        className={`text-lg ${opt.value === dateOptions  ? 'hover:bg-black hover:text-white' : ''}`}
         >
           {opt.label}
         </Button>
@@ -511,7 +506,7 @@ export function DateOptionsGlobal({
         <Button
           variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
-           className={dateOptions.startsWith('custom')? 'hover:bg-black hover:text-white' : ''}
+             className={`text-lg ${dateOptions.startsWith('custom') ? 'hover:bg-black hover:text-white' : ''}`}
         >
           {dateOptions.startsWith('custom')
             ? dateOptions.split('custom: ')[1]

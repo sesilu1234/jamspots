@@ -75,7 +75,7 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
             <AvatarCustom session={session} />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40 relative top-0" align="end">
+        <DropdownMenuContent className="w-40 relative top-0 border-1 border-white/25" align="end">
           <DropdownMenuLabel>Your account</DropdownMenuLabel>
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
