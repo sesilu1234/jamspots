@@ -69,7 +69,7 @@ export default function DropdownMenuNotSignedIn() {
         <DropdownMenuTrigger asChild>
           <button>
             <div
-              className="shadow-md hover:shadow-lg   text hover:bg-bg-secondary/20
+              className="shadow-md hover:shadow-lg   text hover:bg-tone-4
                          transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm border-2 border-fg-tertiary"
             >
               <svg

@@ -105,7 +105,7 @@ export default function Home() {
 
       <div className="w-screen mt-12 pt-4 pb-4">
         <div className="max-w-[90%] w-[1300px] mx-auto p-6 grid grid-cols-2 gap-12">
-          <div className="flex flex-col gap-2 border-t-2 border-fg-secondary pt-8">
+          <div className="flex flex-col gap-2 border-t-2 border-primary pt-8">
             <h3 className="text-lg font-semibold ">
               ¿QUÉ ES UNA JAM SESSION?
             </h3>
@@ -118,7 +118,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-fg-secondary pt-8">
+          <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-primary pt-8">
             <p>
               <span className="font-semibold ">
                 ¿Puedo tocar si nunca he venido antes?
@@ -162,25 +162,25 @@ export default function Home() {
 
     
 
-      <footer className="w-screen bg-bg/0 text-text-3 pb-12 mt-0 flex-1 ">
-        <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-fg-secondary">
+      <footer className="w-screen bg-bg/0 pb-12 mt-0 flex-1 ">
+        <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary">
           {/* Navigation Links */}
-          <div className="flex flex-col text-text-primary items-between justify-between gap-8 ">
+          <div className="flex flex-col text-tone-1/95 items-between justify-between gap-8 ">
             <Link
               href="/contact"
-              className="hover:text-text-hover-secondary cursor-pointer"
+              className="hover:text-tone-0  cursor-pointer"
             >
               CONTACT
             </Link>
             <Link
               href="/help"
-              className="hover:text-text-hover-secondary cursor-pointer"
+              className="hover:text-tone-0  cursor-pointer"
             >
               HELP
             </Link>
             <Link
               href="/about"
-              className="hover:text-text-hover-secondary cursor-pointer"
+              className="hover:text-tone-0  cursor-pointer"
             >
               ABOUT
             </Link>

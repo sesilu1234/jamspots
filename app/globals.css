@@ -105,26 +105,20 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* Text semantic roles */
-  --color-bg-dark: var(--bg-dark);
-  --color-bg: var(--bg);
-  --color-bg-light: var(--bg-light);
+  --color-tone-0: var(--tone-0);
+  --color-tone-1: var(--tone-1);
+  --color-tone-2: var(--tone-2);
+  --color-tone-3: var(--tone-3);
+  --color-tone-4: var(--tone-4);
+  --color-tone-5: var(--tone-5);
+  --color-tone-6: var(--tone-6);
 
-  /* Text */
-  --color-text: var(--text);
-  --color-text-muted: var(--text-muted);
-
-  /* Highlights / UI elements */
-  --color-highlight: var(--highlight);
-  --color-border: var(--border);
-  --color-border-muted: var(--border-muted);
-
-  /* Brand / semantic */
-  --color-primary: var(--primary);
+    --color-primary:   var(--primary);
   --color-secondary: var(--secondary);
-  --color-danger: var(--danger);
-  --color-warning: var(--warning);
-  --color-success: var(--success);
-  --color-info: var(--info);
+  --color-danger:    var(--danger);
+  --color-warning:   var(--warning);
+  --color-success:   var(--success);
+  --color-info:      var(--info);
 }
 
 .leaflet-container {
@@ -167,20 +161,23 @@
   /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
---bg-dark: oklch(0.1 0 250);
---bg: oklch(0.15 0 250);
---bg-light: oklch(0.2 0 250);
---text: oklch(0.96 0 250);
---text-muted: oklch(0.76 0 250);
---highlight: oklch(0.5 0 250);
---border: oklch(0.4 0 250);
---border-muted: oklch(0.3 0 250);
---primary: oklch(0.76 0.1 250);
---secondary: oklch(0.76 0.1 70);
---danger: oklch(0.7 0.05 30);
---warning: oklch(0.7 0.05 100);
---success: oklch(0.7 0.05 160);
---info: oklch(0.7 0.05 260);
+ --tone-0: oklch(98.5% 0.001 106.423); /* highest / lightest */
+  --tone-1: oklch(92.3% 0.003 48.717);
+  --tone-2: oklch(70.9% 0.01  56.259);
+  --tone-3: oklch(44.4% 0.011 73.639);
+  --tone-4: oklch(26.8% 0.007 34.298);
+  --tone-5: oklch(21% 0.006 285.885)
+  --tone-6: oklch(14.7% 0.004 49.25);  /* lowest / darkest */
+    /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+  -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+  -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
+
+--primary: oklch(0.76 0.2 279);
+--secondary: oklch(0.76 0.2 99);
+--danger: oklch(0.7 0.2 30);
+--warning: oklch(0.7 0.2 100);
+--success: oklch(0.7 0.2 160);
+--info: oklch(0.7 0.2 260);
 }
 
 .dark {
@@ -215,23 +212,26 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+/* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
   -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
-   --bg-dark: oklch(0.1 0 250);
---bg: oklch(0.15 0 250);
---bg-light: oklch(0.2 0 250);
---text: oklch(0.96 0 250);
---text-muted: oklch(0.76 0 250);
---highlight: oklch(0.5 0 250);
---border: oklch(0.4 0 250);
---border-muted: oklch(0.3 0 250);
---primary: oklch(0.76 0.1 250);
---secondary: oklch(0.76 0.1 70);
---danger: oklch(0.7 0.05 30);
---warning: oklch(0.7 0.05 100);
---success: oklch(0.7 0.05 160);
---info: oklch(0.7 0.05 260);
+ --tone-0: oklch(98.5% 0.001 106.423); /* highest / lightest */
+  --tone-1: oklch(92.3% 0.003 48.717);
+  --tone-2: oklch(70.9% 0.01  56.259);
+  --tone-3: oklch(44.4% 0.011 73.639);
+  --tone-4: oklch(26.8% 0.007 34.298);
+  --tone-5: oklch(21% 0.006 285.885);
+  --tone-6: oklch(14.7% 0.004 49.25);   /* lowest / darkest */
+    /* -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+  -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+  -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# */
+
+--primary: oklch(0.76 0.2 279);
+--secondary: oklch(0.76 0.2 99);
+--danger: oklch(0.7 0.2 30);
+--warning: oklch(0.7 0.2 100);
+--success: oklch(0.7 0.2 160);
+--info: oklch(0.7 0.2 260);
 }
 
 .ocean {

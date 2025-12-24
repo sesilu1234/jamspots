@@ -15,16 +15,16 @@ export default function SessionMenu() {
 
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setShowSignIn(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  // // Close dropdown when clicking outside
+  // useEffect(() => {
+  //   function handleClickOutside(event: MouseEvent) {
+  //     if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+  //       setShowSignIn(false);
+  //     }
+  //   }
+  //   document.addEventListener('mousedown', handleClickOutside);
+  //   return () => document.removeEventListener('mousedown', handleClickOutside);
+  // }, []);
 
   return (
     <div className="absolute top-16 right-6 flex items-center gap-2 ">

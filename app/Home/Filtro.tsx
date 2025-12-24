@@ -186,20 +186,30 @@ export default function Filtro({
     <>
       {/* Filter button */}
       <div
-        className="inline-flex items-center gap-2 px-2 py-1 h-10 justify-center shadow-md rounded-sm cursor-pointer
-                   bg-fg-tertiary hover:bg-bg-secondary group transition-colors duration-200"
-        onClick={() => setOpen(!open)}
-      >
+  onClick={() => setOpen(!open)}
+  className="
+    inline-flex items-center gap-2 px-3 h-10
+    rounded border border-tone-3
+    bg-tone-3
+    text-tone-4
+    cursor-pointer select-none
+    hover:bg-tone-4
+    hover:text-primary
+    transition-colors
+    group
+  "
+>
+
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="19px"
           viewBox="0 -960 960 960"
           width="19px"
-          className="fill-[rgba(17,17,17,0.8)] group-hover:fill-text-1 transition-colors duration-200"
+          className=" transition-colors duration-200  "
         >
-          <path d="M120-40v-168q-35-12-57.5-42.5T40-320v-400h80v-160q0-17 11.5-28.5T160-920q17 0 28.5 11.5T200-880v160h80v400q0 39-22.5 69.5T200-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T360-320v-400h80v-160q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v160h80v400q0 39-22.5 69.5T520-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T680-320v-400h80v-160q0-17 11.5-28.5T800-920q17 0 28.5 11.5T840-880v160h80v400q0 39-22.5 69.5T840-208v168h-80ZM120-640v160h80v-160h-80Zm320 0v160h80v-160h-80Zm320 0v160h80v-160h-80ZM160-280q17 0 28.5-11.5T200-320v-80h-80v80q0 17 11.5 28.5T160-280Zm320 0q17 0 28.5-11.5T520-320v-80h-80v80q0 17 11.5 28.5T480-280Zm320 0q17 0 28.5-11.5T840-320v-80h-80v80q0 17 11.5 28.5T800-280ZM160-440Zm320 0Zm320 0Z" />
+          <path d="M120-40v-168q-35-12-57.5-42.5T40-320v-400h80v-160q0-17 11.5-28.5T160-920q17 0 28.5 11.5T200-880v160h80v400q0 39-22.5 69.5T200-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T360-320v-400h80v-160q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v160h80v400q0 39-22.5 69.5T520-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T680-320v-400h80v-160q0-17 11.5-28.5T800-920q17 0 28.5 11.5T840-880v160h80v400q0 39-22.5 69.5T840-208v168h-80ZM120-640v160h80v-160h-80Zm320 0v160h80v-160h-80Zm320 0v160h80v-160h-80ZM160-280q17 0 28.5-11.5T200-320v-80h-80v80q0 17 11.5 28.5T160-280Zm320 0q17 0 28.5-11.5T520-320v-80h-80v80q0 17 11.5 28.5T480-280Zm320 0q17 0 28.5-11.5T840-320v-80h-80v80q0 17 11.5 28.5T800-280ZM160-440Zm320 0Zm320 0Z" className="fill-current" />
         </svg>
-        <span className="text-md pt-0.5 transition-colors duration-200 font-jaro group-hover:text-text-3 hover:cursor-pointer select-none">
+        <span className="text-md text-tone-0/85 pt-0.5 transition-colors duration-200 font-jaro group-hover:text-primary hover:cursor-pointer select-none">
           FILTER
         </span>
       </div>
@@ -208,10 +218,10 @@ export default function Filtro({
       {open && (
         <div className="fixed inset-0 z-[503] flex flex-col  items-center pt-5 ">
           <div ref={panelRef} className="relative   w-xl ">
-            <div className=" flex justify-center items-end gap-0  w-xl   text-text-secondary">
+            <div className=" flex justify-center items-end gap-0  w-xl   text-tone-6">
               <div
-                className={`pt-5 pb-2 px-2 bg-fg-primary w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? '' : 'border-4 border-black/50'
+                className={`pt-5 pb-2 px-2 bg-tone-0 w-40 rounded-t-xl text-center cursor-pointer ${
+                  cardFiltersOpen ? '' : 'border-4 border-tone-3/40'
                 }`}
                 onClick={() => setCardFiltersOpen(true)}
               >
@@ -219,8 +229,8 @@ export default function Filtro({
               </div>
 
               <div
-                className={`pt-5 pb-2 px-2 bg-fg-primary w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? 'border-4 border-bg-primary/50' : ''
+                className={`pt-5 pb-2 px-2 bg-tone-0 w-40 rounded-t-xl text-center cursor-pointer ${
+                  cardFiltersOpen ? 'border-4 border-tone-3/40' : ''
                 }`}
                 onClick={() => setCardFiltersOpen(false)}
               >
@@ -229,7 +239,7 @@ export default function Filtro({
             </div>
 
             {cardFiltersOpen ? (
-              <div className="relative bg-fg-primary text-text-secondary p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] border-0 border-t-0 border-black/50 ">
+              <div className="relative bg-tone-0 text-tone-6  p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] border-0 border-t-0 border-black/50 ">
                 <div className="flex justify-center items-center gap-24  mb-5 mt-5">
                   <h2 className="text-4xl font-bold text-center  text-text-secondary">
                     Local
@@ -237,7 +247,7 @@ export default function Filtro({
                   <button
                     onClick={() => handleAccept('local')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-yellow-500 hover:bg-yellow-600 text-text-secondary font-semibold 
+            bg-yellow-500 hover:bg-yellow-600 hover:border-black/80 text-black font-semibold 
              transition-colors cursor-pointer"
                   >
                     Apply
@@ -339,7 +349,7 @@ export default function Filtro({
             </Button> */}
               </div>
             ) : (
-              <div className="relative bg-fg-primary text-text-secondary  p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll">
+              <div className="relative bg-tone-0 text-tone-6   p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll">
                 <div className="flex justify-center items-center gap-24 mb-5 mt-5">
                   <h2 className="text-4xl font-bold  text-text-secondary  text-center">
                     Global
@@ -347,7 +357,7 @@ export default function Filtro({
                   <button
                     onClick={() => handleAccept('global')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-          bg-yellow-500 hover:bg-yellow-600 font-semibold text-text-secondary hover:text-[#FFFFFF]
+            bg-yellow-500 hover:bg-yellow-600 hover:border-black/80 text-black font-semibold 
              transition-colors cursor-pointer"
                   >
                     Apply
@@ -423,6 +433,7 @@ export function DateOptions({
        <Button
   key={opt.value}
   variant={opt.value === dateOptions ? 'secondary' : undefined}
+  className={opt.value === dateOptions ? 'hover:bg-black hover:text-white ' : ''}
  
 
 
@@ -438,7 +449,7 @@ export function DateOptions({
 
       <div className="relative" ref={calRef}>
         <Button
-         
+         className={dateOptions.startsWith('custom')? 'hover:bg-black hover:text-white' : ''}
           variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
         >
@@ -490,6 +501,7 @@ export function DateOptionsGlobal({
           key={opt.value}
           variant={opt.value === dateOptions ? 'secondary' : undefined}
           onClick={() => setDateOption(opt.value)}
+          className={opt.value === dateOptions ? 'hover:bg-black hover:text-white ' : ''}
         >
           {opt.label}
         </Button>
@@ -499,6 +511,7 @@ export function DateOptionsGlobal({
         <Button
           variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
+           className={dateOptions.startsWith('custom')? 'hover:bg-black hover:text-white' : ''}
         >
           {dateOptions.startsWith('custom')
             ? dateOptions.split('custom: ')[1]
@@ -622,7 +635,7 @@ export function SelectStyles({ styles, setStyles }: SelectStylesProps) {
   ];
   return (
     <div>
-      <div className="grid grid-flow-col grid-rows-2 auto-cols-max gap-2 mt-4 border p-2 rounded max-w-3/4 overflow-x-auto">
+      <div className="grid grid-flow-col grid-rows-2 auto-cols-max gap-2 mt-4 border border-black/20 p-2 rounded max-w-3/4 overflow-x-auto">
         {all_styles.map((style) => {
           const isSelected = styles.includes(style);
           return (

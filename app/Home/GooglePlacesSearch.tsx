@@ -56,10 +56,22 @@ const PlaceAutocomplete = () => {
   }, [places, map]);
 
   return (
-    <input
-      ref={inputRef}
-      placeholder={initialLocation?.city || ''}
-      className="w-full h-12 px-3 text-sm text-text-2 placeholder-text-primary/70 bg-fg-tertiary/30 border-0 border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
+   <input
+  ref={inputRef}
+  placeholder={initialLocation?.city || ''}
+  className="
+    w-full h-12 px-3 text-sm
+    bg-tone-4/60
+    text-tone-1
+    placeholder:text-tone-1/60
+    border border-tone-3
+    rounded
+    focus:outline-none
+    focus:ring-2 focus:ring-primary
+    focus:border-primary
+    mt-0
+  "
+/>
+
   );
 };
