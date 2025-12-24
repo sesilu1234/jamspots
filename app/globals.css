@@ -1,10 +1,5 @@
 /* custom font classes */
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..1000&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@100..900&family=Exo+2:wght@100..900&display=swap');
 
 @import 'tailwindcss';
 @import 'tw-animate-css';
@@ -15,28 +10,6 @@
   font-style: normal;
 }
 
-.font-jaro {
-  font-family: 'Jaro', sans-serif;
-  font-weight: 100;
-  font-style: light;
-}
-
-.font-inter {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600; /* adjust for lightness */
-  font-style: normal;
-}
-
-/* optional custom classes */
-.font-jost {
-  font-family: 'Jost', sans-serif;
-  font-weight: 200; /* lightest for testing */
-}
-
-.font-exo2 {
-  font-family: 'Exo 2', sans-serif;
-  font-weight: 200; /* thin variant */
-}
 
 /* WebKit (Chrome, Edge, Safari) */
 .bg-white::-webkit-scrollbar {
@@ -231,7 +204,7 @@
 --danger: oklch(0.7 0.2 30);
 --warning: oklch(0.7 0.2 100);
 --success: oklch(0.7 0.2 160);
---info: oklch(0.7 0.2 260);
+--info: oklch(38.596% 0.05288 256.134);
 }
 
 .ocean {

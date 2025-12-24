@@ -27,8 +27,8 @@ export default function JamCarousel({
       {/* Collapse button */}
       <div
         className="p-2 flex items-center justify-center rounded-t-sm
-               bg-gray-700/75 text-white cursor-pointer
-               hover:bg-gray-600/75 transition-all duration-200"
+               bg-info/80 text-white cursor-pointer
+               hover:bg-info/95 transition-all duration-200"
         onClick={() => setCollapsed(!collapsed)}
       >
         {!collapsed ? 'Collapse cards' : 'Show cards'}
@@ -38,7 +38,7 @@ export default function JamCarousel({
       <div
         ref={containerRef}
         className={`
-    card-container flex flex-col items-center bg-bg-primary/70 rounded-b-xl border border-black/20 gap-6
+    card-container flex flex-col items-center bg-tone-3/45 rounded-b-xl border border-black/20 gap-6
     overflow-y-auto transition-all duration-700 ease-in-out
     ${collapsed ? 'max-h-0 p-0 opacity-0' : 'max-h-108 p-6 opacity-100'}
   `}
