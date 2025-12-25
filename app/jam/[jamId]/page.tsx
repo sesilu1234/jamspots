@@ -3,7 +3,7 @@
 import Image from 'next/image';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { Jam } from '../types/jam';
 import draftToHtml from 'draftjs-to-html';
@@ -47,16 +47,21 @@ export default function JamPage() {
   return (
     <div className="min-h-screen ">
       <div className=" ">
-        <div className="flex justify-between w-[1300px] max-w-[90%] mx-auto py-12">
+        <div className="flex justify-between w-[1300px] max-w-[90%] mx-auto p-0">
           <Link href="/" className="ml-3 flex gap-2 items-end">
-            <img
-              src="/jamspots_icon.png"
-              alt="Jamspots icon"
-              className="h-16"
-            />
-            <p className="relative bottom-0 text-xs py-3 text-gray-600 font-semibold">
-              Discover a spot where musicians unite.
-            </p>
+            <div
+              className="ml-0 flex justify-end gap-2 items-end w-118 h-24 p-4 pb-2 pt-2 rounded-b-3xl
+             shadow-[5px_0_6px_-1px_rgba(255,255,255,0.1),_-5px_0_6px_-1px_rgba(255,255,255,0.1),0_6px_6px_-1px_rgba(255,255,255,0.1)]"
+            >
+              <img
+                src="jamspots_icon.png"
+                alt="Jamspots icon"
+                className="h-16"
+              />
+              <p className="text-xs py-4 text-text-2 font-semibold">
+                Find the next spot where music happens.
+              </p>
+            </div>
           </Link>
 
           {/* <div className="w-16 h-16 ">
@@ -69,24 +74,26 @@ export default function JamPage() {
             </Avatar>
           </div> */}
         </div>
-        <div className=" w-[1100px] max-w-[60%] mx-auto flex flex-col justify-center mt-12">
-          <h3 className=" text-5xl font-bold text-center mb-12">
+        <div className=" w-[1100px] max-w-[60%] mx-auto flex flex-col justify-center mt-18">
+          <h3 className="text-5xl font-bold text-left mb-12 max-w-3/5 leading-relaxed">
             {jam.jam_title + ' at ' + jam.location_title}
           </h3>
 
           <JamImages images={jam.images} />
         </div>
-        <div className="flex gap-2 w-[1300px] max-w-[75%] mx-auto py-12 mt-12">
-          <JamChars
-            jamDetails={{
-              styles: jam.styles,
-              drums: jam.drums,
-              lista_canciones: jam.lista_canciones,
-              instruments_lend: jam.instruments_lend,
-            }}
-          />
+        <div className="flex gap-6 w-[1300px] max-w-[75%] mx-auto py-12 mt-12 ">
+          <div className="bg-[rgb(170_170_170/0.1)] rounded-lg flex justify-center pt-8 pb-10 px-8 w-1/2 border border-white/30">
+            <JamChars
+              jamDetails={{
+                styles: jam.styles,
+                drums: jam.drums,
+                lista_canciones: jam.lista_canciones,
+                instruments_lend: jam.instruments_lend,
+              }}
+            />
+          </div>
 
-          <div className="bg-[rgb(170_170_170/0.7)] rounded-lg flex pt-8 pb-10 px-8 w-1/2">
+          <div className="bg-[rgb(170_170_170/0.1)] rounded-lg flex pt-8 pb-10 px-8 w-1/2 border border-white/30">
             <TimeAndPlace
               location_title={jam.location_title}
               address={jam.location_address}
@@ -98,7 +105,7 @@ export default function JamPage() {
           </div>
         </div>
 
-        <div className="flex  gap-2 w-[1300px] max-w-[75%] mx-auto pb-12 ">
+        <div className="flex flex-col gap-12 w-[1300px] max-w-[75%] mx-auto pb-12 ">
           <div className="flex flex-col gap-4 bg-[rgb(170_170_170/0.7)] rounded-lg pt-8 pb-10 px-8 w-1/2">
             <h3 className="text-3xl font-semibold">Details</h3>
 
@@ -113,6 +120,8 @@ export default function JamPage() {
             fallbackLng={jam.lng}
             apiKey="AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE"
           />
+
+          <JamImages images={jam.images} />
         </div>
 
         <div className="w-[1300px] max-w-[75%] mx-auto pb-24  ">
@@ -132,24 +141,33 @@ export default function JamPage() {
           </div>
         </div>
 
-        <footer className=" flex-grow  w-screen bg-black/90 text-white py-12 mt-12">
-          <div className="flex-1 max-w-[90%] w-[1300px] mx-auto p-6">
+        <footer className="w-screen bg-bg/0 pb-12 mt-0 flex-1 ">
+          <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary">
             {/* Navigation Links */}
-            <div className=" flex flex-row items-center justify-center   gap-48 mb-12 mt-12 ">
-              <h3 className="hover:text-gray-300 cursor-pointer">CONTACT</h3>
-              <h3 className="hover:text-gray-300 cursor-pointer">HELP</h3>
-              <h3 className="hover:text-gray-300 cursor-pointer">ABOUT</h3>
+            <div className="flex flex-col text-tone-1/95 items-between justify-between gap-8 ">
+              <Link
+                href="/contact"
+                className="hover:text-tone-0  cursor-pointer"
+              >
+                CONTACT
+              </Link>
+              <Link href="/help" className="hover:text-tone-0  cursor-pointer">
+                HELP
+              </Link>
+              <Link href="/about" className="hover:text-tone-0  cursor-pointer">
+                ABOUT
+              </Link>
             </div>
 
             {/* Branding / Tagline */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-24">
+            <div className="flex flex-col sm:flex-row items-end justify-center gap-2 ">
               <img
                 src="/jamspots_icon.png"
                 alt="Jamspots icon"
                 className="h-16"
               />
-              <p className="text-sm text-gray-400 font-semibold text-center sm:text-left">
-                Discover places where music comes alive.
+              <p className="text-sm  text-center font-medium sm:text-left pb-3">
+                Find the next spot where music happens.
               </p>
             </div>
           </div>

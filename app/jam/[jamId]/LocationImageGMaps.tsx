@@ -11,7 +11,7 @@ export default function StaticMap({
   address,
   fallbackLat,
   fallbackLng,
-  apiKey
+  apiKey,
 }: StaticMapProps) {
   const hasAddress = address && address.trim().length > 0;
 
@@ -30,25 +30,18 @@ export default function StaticMap({
 
   const googleMapsUrl = hasAddress
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        address!
+        address!,
       )}`
     : `https://www.google.com/maps/search/?api=1&query=${fallbackLat},${fallbackLng}`;
 
   return (
-    <div className="pl-36 w-1/2">
+    <div className="pl-0 w-1/2">
       <img
         src={mapUrl}
         alt="Static Map"
         className="border border-gray-800 rounded-lg cursor-pointer"
-        onClick={() => window.open(googleMapsUrl, "_blank")}
+        onClick={() => window.open(googleMapsUrl, '_blank')}
       />
     </div>
   );
 }
-
-
-  
-
-
-
-
