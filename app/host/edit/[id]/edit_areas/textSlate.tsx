@@ -110,7 +110,7 @@ const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
         <span className="font-semibold">Caracteres restantes: </span>{' '}
         {editorState.getCurrentContent().getPlainText('').length} / 1400
       </div>
-      <div className="mb-0 flex flex-wrap gap-2 mt-12 ml-4">
+      <div className="mb-0 flex flex-wrap gap-2 mt-2 ml-4">
         <button
           onMouseDown={(e) => {
             e.preventDefault();

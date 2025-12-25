@@ -21,7 +21,19 @@ interface HtmlReadOnlyProps {
 
 const HtmlReadOnly = ({ rawContent }: HtmlReadOnlyProps) => {
   const html = draftToHtml(rawContent);
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <div
+      className="
+    text-2xl
+    leading-relaxed
+    tracking-wide
+    space-y-5
+    text-pretty
+    max-w-prose
+  "
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
 };
 
 export default function JamPage() {
@@ -51,13 +63,17 @@ export default function JamPage() {
           <Link href="/" className="ml-3 flex gap-2 items-end">
             <div
               className="ml-0 flex justify-end gap-2 items-end w-118 h-24 p-4 pb-2 pt-2 rounded-b-3xl
-             shadow-[5px_0_6px_-1px_rgba(255,255,255,0.1),_-5px_0_6px_-1px_rgba(255,255,255,0.1),0_6px_6px_-1px_rgba(255,255,255,0.1)]"
+  shadow-[5px_0_6px_-1px_rgba(255,255,255,0.1),_-5px_0_6px_-1px_rgba(255,255,255,0.1),0_6px_6px_-1px_rgba(255,255,255,0.1)]"
             >
-              <img
-                src="jamspots_icon.png"
+              <Image
+                src="/jamspots_icon.png"
                 alt="Jamspots icon"
-                className="h-16"
+                width={204}
+                height={64}
+                className="h-16 w-auto"
+                priority
               />
+
               <p className="text-xs py-4 text-text-2 font-semibold">
                 Find the next spot where music happens.
               </p>
@@ -107,7 +123,7 @@ export default function JamPage() {
         </div>
 
         <div className="flex flex-col gap-12 w-[1300px] max-w-[75%] mx-auto pb-12 ">
-          <div className="flex flex-col gap-4 bg-[rgb(170_170_170/0.7)] rounded-lg pt-8 pb-10 px-8 w-1/2">
+          <div className="flex flex-col gap-4 bg-[rgb(170_170_170/0.0)] rounded-lg pt-8 pb-10 px-8 w-1/2">
             <h3 className="text-3xl font-semibold">Details</h3>
 
             <div>

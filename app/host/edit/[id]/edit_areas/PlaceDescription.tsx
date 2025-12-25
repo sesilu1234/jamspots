@@ -19,7 +19,7 @@ export default function PlaceDescription({
   return (
     <div className="p-6 flex flex-col gap-3">
       <Toaster />
-      <div className="ml-48 mt-12">
+      <div className="ml-48 mt-0">
         <DraftEditor data={data} childSaveOnUnmount={childSaveOnUnmount} />
       </div>
     </div>
