@@ -45,8 +45,8 @@ export default function JamPage() {
   if (!jam) return null;
 
   return (
-    <div className="min-h-screen bg-black/90">
-      <div className=" bg-gray-300 ">
+    <div className="min-h-screen ">
+      <div className=" ">
         <div className="flex justify-between w-[1300px] max-w-[90%] mx-auto py-12">
           <Link href="/" className="ml-3 flex gap-2 items-end">
             <img
@@ -59,7 +59,7 @@ export default function JamPage() {
             </p>
           </Link>
 
-          <div className="w-16 h-16 ">
+          {/* <div className="w-16 h-16 ">
             <Avatar className="">
               <AvatarImage
                 src="https://github.com/shadcn.png"
@@ -67,16 +67,16 @@ export default function JamPage() {
               />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-          </div>
+          </div> */}
         </div>
-        <div className="w-[1100px] max-w-[60%] mx-auto flex flex-col">
-          <h3 className="text-5xl font-bold">
+        <div className=" w-[1100px] max-w-[60%] mx-auto flex flex-col justify-center mt-12">
+          <h3 className=" text-5xl font-bold text-center mb-12">
             {jam.jam_title + ' at ' + jam.location_title}
           </h3>
 
           <JamImages images={jam.images} />
         </div>
-        <div className="flex gap-2 w-[1300px] max-w-[75%] mx-auto py-12 ">
+        <div className="flex gap-2 w-[1300px] max-w-[75%] mx-auto py-12 mt-12">
           <JamChars
             jamDetails={{
               styles: jam.styles,

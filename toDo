@@ -10,72 +10,47 @@
 
 - mejorar stetic, styles, usando global css variables
 
+- para enseñar la hora y date en caards home (y en general) : no buscar en base
+  de datos proxima daate ni nada de eso. no haay que hacer eso . simplemente
+  coges la hora (Horario de laa jam), y poner la fecha date de busqueda ( y en
+  el caaso de semanal )
 
+                     ojo a lo de las daates en general, checkear y asegurar bien la logica
 
+- hacer los styles, primero dark y light, y despues sin mas poniendo una paleta
+  suave para los styles (poner en seleccionar styles usuario iconos de theme)
 
+- colores es es solo para home y jams (para despues lo otro es estandar igual
+  siempre, aunque tengo que cambiar el background a algo como rubbed, y algo
+  mejor, y modificar algunas cositas de positioning, etc...)
 
+- ver como seria lo del ingles/español , y sino dejarlo en ingles y ya esta por
+  ahora (si, meetup lo hace asi, asi que...)
 
+- mejorar pagina jam y poner para poder cambiar theme naa esto no...que tengas
+  el theme de la home...y ya...simplemente mejorar la pagina /jam/
 
-
-
-
-
-
-
-
-
-
-- hacer los styles, primero dark y light, y despues sin mas poniendo una paleta suave para los styles (poner en seleccionar styles usuario iconos de theme)
-
-
-
-- colores es es solo para home y jams (para despues lo otro es estandar igual siempre, aunque tengo que cambiar el background a algo como rubbed, y algo mejor, y modificar algunas cositas de positioning, etc...)
-
-
-
-
-
-
-
-- ver como seria lo del ingles/español , y sino dejarlo en ingles y ya esta por ahora (si, meetup lo hace asi, asi que...)
-
-- mejorar pagina jam y poner para poder cambiar theme naa esto no...que tengas el theme de la home...y ya...simplemente mejorar la pagina /jam/
-
-
-- hacer a movil, que seria lo mismo que para desktop pero un poco mas pequeño...(o quizas hacer el slider aunque rapido...)
-
-
-
-
-
+- hacer a movil, que seria lo mismo que para desktop pero un poco mas
+  pequeño...(o quizas hacer el slider aunque rapido...)
 
 - mejorar cosas de la base de datos, checkeos, pedir cookies
 
 - poner algo de middleware
 
--probar testing  , ultimos ajustes y retoques y checkeos
+-probar testing , ultimos ajustes y retoques y checkeos
 
+-subir a vercel como jamspots.com (ver si hay algo para checkear cuanto
+visitantes tiene)
 
+-haacer lo que yaa hice : si saales sin apply filters, voler a como estaban ( no
+puede ser que entonces confunda y parezca que tienes esos filtros aplicados)
 
+---
 
--subir a vercel como jamspots.com (ver si hay algo para checkear cuanto visitantes tiene)
-
-
-
-
-
-
-
----------------
---------------------------------------
--
--------------------
+- ***
 
 bg-gradient-to-b from-slate-950 to-slate-900
 
-
 bg-gradient-to-br from-[#020617] via-[#020617] to-[#0f172a]
 
-
 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800
-

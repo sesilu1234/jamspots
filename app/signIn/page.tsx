@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-300">
+    <div className="min-h-screen bg-white/85 text-black">
       <div className="w-[1300px] max-w-[90%] mx-auto ">
         <div className="inline-block ml-24 mt-12">
           <div className="ml-3 flex  items-end gap-2">
@@ -22,7 +22,7 @@ export default function Home() {
           </div>
 
           <div className="h-[1.5px] bg-gray-700/50 w-168 mt-4 mx-auto"></div>
-          <div className="flex w-168 justify-between mx-auto mt-4">
+          <div className="flex w-168 justify-between mx-auto mt-4 text-black/95">
             <Link href="/">
               <div className="flex gap-4 items-center font-bold">
                 <svg
@@ -40,11 +40,11 @@ export default function Home() {
                 Back to Home Page
               </div>
             </Link>
-            <div className="font-bold">SIGN IN</div>
+            <div className="font-bold text-black/95">SIGN IN</div>
           </div>
 
           <div
-            className="flex items-center font-bold px-8 py-4 mt-24 bg-white w-84 gap-8 mx-auto justify-center rounded-xl cursor-pointer"
+            className="flex items-center font-bold px-8 py-4 mt-24 bg-white w-84 gap-8 mx-auto justify-center rounded-xl cursor-pointer border border-black hover:bg-black/10"
             onClick={() => signIn('google', { callbackUrl: '/' })}
           >
             <svg

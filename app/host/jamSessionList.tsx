@@ -113,7 +113,7 @@ export default function JamSessionList() {
     );
 
   return (
-    <div className="flex flex-col mt-24 gap-6">
+    <div className="flex flex-col mt-8 gap-6">
       {jams.map((jam, i) => (
         <Jam
           key={i}
@@ -185,7 +185,7 @@ function Jam({
         <Link
           href={`/jam/${jam_slug}`}
           prefetch={false}
-          className="px-3 py-1 rounded-sm  text-black  bg-[#eab308] hover:bg-[#d8a408]  transition-colors"
+          className="px-3 py-1 rounded-sm  text-black  border border-black  hover:bg-[#d8a408]  transition-colors"
         >
           View
         </Link>

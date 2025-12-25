@@ -14,14 +14,12 @@ export default async function Home() {
   if (!session) redirect('/signIn');
 
   return (
-    <div className="min-h-screen bg-gray-300">
+    <div className="min-h-screen bg-white/85 text-black ">
       <div className="w-[1300px] max-w-[90%] mx-auto pt-12 pb-128">
         <div className="flex justify-between  p">
-          <div className="relative ml-3 flex  items-center gap-2">
-            <h3 className="font-bold text-4xl">jamspots</h3>
-            <p className="text-xs pt-5 text-gray-800 font-semibold">
-              Find the next where music happens.
-            </p>
+          <div className="flex flex-col relative ml-3 flex  items-center gap-2">
+            <h3 className="font-bold text-5xl">jamspots</h3>
+            <p className="text-xs pt- text-gray-800 font-semibold"></p>
           </div>
 
           <div className="w-16 h-16 ">
@@ -36,7 +34,7 @@ export default async function Home() {
             </Avatar>
           </div>
         </div>
-        <div className="flex flex-col gap-8 mt-16 ml-48">
+        <div className="flex flex-col gap-8 mt-4 ml-3">
           <Link href="/">
             <div className="flex gap-4 items-center font-semibold cursor-pointer">
               <svg
@@ -55,7 +53,7 @@ export default async function Home() {
             </div>
           </Link>
 
-          <h3 className="font-bold text-3xl">Your jams</h3>
+          <h3 className="font-bold text-3xl ml-24 mt-12">Your jams</h3>
         </div>
 
         <JamSessionList />
