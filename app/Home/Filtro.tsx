@@ -186,20 +186,19 @@ export default function Filtro({
     <>
       {/* Filter button */}
       <div
-  onClick={() => setOpen(!open)}
-  className="
+        onClick={() => setOpen(!open)}
+        className="
     inline-flex items-center gap-2 px-3 h-10
     rounded border border-tone-3
     bg-tone-3
     text-tone-4
     cursor-pointer select-none
     hover:bg-tone-4
-    hover:text-primary
+    hover:text-primary-1
     transition-colors
     group
   "
->
-
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="19px"
@@ -207,9 +206,12 @@ export default function Filtro({
           width="19px"
           className=" transition-colors duration-200  "
         >
-          <path d="M120-40v-168q-35-12-57.5-42.5T40-320v-400h80v-160q0-17 11.5-28.5T160-920q17 0 28.5 11.5T200-880v160h80v400q0 39-22.5 69.5T200-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T360-320v-400h80v-160q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v160h80v400q0 39-22.5 69.5T520-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T680-320v-400h80v-160q0-17 11.5-28.5T800-920q17 0 28.5 11.5T840-880v160h80v400q0 39-22.5 69.5T840-208v168h-80ZM120-640v160h80v-160h-80Zm320 0v160h80v-160h-80Zm320 0v160h80v-160h-80ZM160-280q17 0 28.5-11.5T200-320v-80h-80v80q0 17 11.5 28.5T160-280Zm320 0q17 0 28.5-11.5T520-320v-80h-80v80q0 17 11.5 28.5T480-280Zm320 0q17 0 28.5-11.5T840-320v-80h-80v80q0 17 11.5 28.5T800-280ZM160-440Zm320 0Zm320 0Z" className="fill-current" />
+          <path
+            d="M120-40v-168q-35-12-57.5-42.5T40-320v-400h80v-160q0-17 11.5-28.5T160-920q17 0 28.5 11.5T200-880v160h80v400q0 39-22.5 69.5T200-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T360-320v-400h80v-160q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v160h80v400q0 39-22.5 69.5T520-208v168h-80Zm320 0v-168q-35-12-57.5-42.5T680-320v-400h80v-160q0-17 11.5-28.5T800-920q17 0 28.5 11.5T840-880v160h80v400q0 39-22.5 69.5T840-208v168h-80ZM120-640v160h80v-160h-80Zm320 0v160h80v-160h-80Zm320 0v160h80v-160h-80ZM160-280q17 0 28.5-11.5T200-320v-80h-80v80q0 17 11.5 28.5T160-280Zm320 0q17 0 28.5-11.5T520-320v-80h-80v80q0 17 11.5 28.5T480-280Zm320 0q17 0 28.5-11.5T840-320v-80h-80v80q0 17 11.5 28.5T800-280ZM160-440Zm320 0Zm320 0Z"
+            className="fill-current"
+          />
         </svg>
-        <span className="text-md text-tone-0/85 pt-0.5 transition-colors duration-200 font-semibold group-hover:text-primary hover:cursor-pointer select-none">
+        <span className="text-md text-tone-0/85 pt-0.5 transition-colors duration-200 font-semibold group-hover:text-primary-1 hover:cursor-pointer select-none">
           FILTER
         </span>
       </div>
@@ -325,7 +327,7 @@ export default function Filtro({
                         <SliderDemo
                           distance={distance}
                           setDistance={setDistance}
-                          className='bg-red-400'
+                          className="bg-red-400"
                         />
                       </label>
                     </div>
@@ -430,21 +432,19 @@ export function DateOptions({
   return (
     <div className="flex gap-3 pt-8 ml-8">
       {options.slice(0, 3).map((opt) => (
-       <Button
-  key={opt.value}
-  variant={opt.value === dateOptions ? 'secondary' : undefined}
-
-  className={`text-lg ${opt.value === dateOptions  ? 'hover:bg-black hover:text-white' : ''}`}
-  onClick={() => setDateOption(opt.value)}
->
-  {opt.label}
-</Button>
-
+        <Button
+          key={opt.value}
+          variant={opt.value === dateOptions ? 'secondary' : undefined}
+          className={`text-lg ${opt.value === dateOptions ? 'hover:bg-black hover:text-white' : ''}`}
+          onClick={() => setDateOption(opt.value)}
+        >
+          {opt.label}
+        </Button>
       ))}
 
       <div className="relative" ref={calRef}>
         <Button
-         className={`text-lg ${dateOptions.startsWith('custom') ? 'hover:bg-black hover:text-white' : ''}`}
+          className={`text-lg ${dateOptions.startsWith('custom') ? 'hover:bg-black hover:text-white' : ''}`}
           variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
         >
@@ -496,7 +496,7 @@ export function DateOptionsGlobal({
           key={opt.value}
           variant={opt.value === dateOptions ? 'secondary' : undefined}
           onClick={() => setDateOption(opt.value)}
-        className={`text-lg ${opt.value === dateOptions  ? 'hover:bg-black hover:text-white' : ''}`}
+          className={`text-lg ${opt.value === dateOptions ? 'hover:bg-black hover:text-white' : ''}`}
         >
           {opt.label}
         </Button>
@@ -506,7 +506,7 @@ export function DateOptionsGlobal({
         <Button
           variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
-             className={`text-lg ${dateOptions.startsWith('custom') ? 'hover:bg-black hover:text-white' : ''}`}
+          className={`text-lg ${dateOptions.startsWith('custom') ? 'hover:bg-black hover:text-white' : ''}`}
         >
           {dateOptions.startsWith('custom')
             ? dateOptions.split('custom: ')[1]
