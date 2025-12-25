@@ -28,7 +28,6 @@ function AvatarCustom({ session }: AvatarCustomProps) {
       width={62}
       height={62}
       className="rounded-full object-cover border border-white/40 k"
-
     />
   ) : (
     <div className="w-16 h-16 rounded-full bg-gray-600 flex items-center justify-center text-white">
@@ -75,7 +74,10 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
             <AvatarCustom session={session} />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40 relative top-0 border-1 border-white/25" align="end">
+        <DropdownMenuContent
+          className="w-40 relative top-0 border-1 border-white/25"
+          align="end"
+        >
           <DropdownMenuLabel>Your account</DropdownMenuLabel>
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
@@ -160,7 +162,12 @@ export function AccordionTheme() {
   };
 
   return (
-    <Accordion type="single" collapsible className="w-full" defaultValue={undefined}>
+    <Accordion
+      type="single"
+      collapsible
+      className="w-full"
+      defaultValue={undefined}
+    >
       <AccordionItem value="item-1">
         <AccordionTrigger>Theme Mode</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-2 py-2">
@@ -176,7 +183,9 @@ export function AccordionTheme() {
                 }`}
                 onClick={() => setTheme(t as typeof theme)}
               >
-                <Icon className={`w-4 h-4 ${theme === t ? iconColors[t] : 'text-slate-400'}`} />
+                <Icon
+                  className={`w-4 h-4 ${theme === t ? iconColors[t] : 'text-slate-400'}`}
+                />
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </button>
             );
