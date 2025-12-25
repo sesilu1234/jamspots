@@ -5,8 +5,6 @@ import EditSections from './EditSections';
 import EditArea from './EditArea';
 import { useRouter } from 'next/navigation';
 
-import '../../globals_OG.css';
-
 import {
   Dialog,
   DialogTrigger,
@@ -24,7 +22,7 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <div className="flex original_shadcn">
+    <div className="flex bg-background text-primary">
       <div className="min-h-screen w-1/4 bg-[rgb(30,30,30)]">
         <Dialog>
           <DialogTrigger asChild>
@@ -42,11 +40,9 @@ export default function Home() {
             </button>
           </DialogTrigger>
 
-          <DialogContent className="sm:max-w-[420px] bg-white">
+          <DialogContent className="sm:max-w-[420px] bg-white text-primary">
             <DialogHeader>
-              <DialogTitle className="text-base">
-                Leave without saving?
-              </DialogTitle>
+              <DialogTitle className="">Leave without saving?</DialogTitle>
               <DialogDescription className="text-sm">
                 Your changes haven’t been saved. If you leave now, they’ll be
                 lost.
@@ -55,7 +51,9 @@ export default function Home() {
 
             <DialogFooter className="gap-2">
               <DialogClose asChild>
-                <Button variant="ghost">Stay</Button>
+                <Button variant="ghost" className="border-1 border-black/60">
+                  Stay
+                </Button>
               </DialogClose>
 
               <Button
