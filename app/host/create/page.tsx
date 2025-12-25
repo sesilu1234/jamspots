@@ -5,6 +5,8 @@ import EditSections from './EditSections';
 import EditArea from './EditArea';
 import { useRouter } from 'next/navigation';
 
+import '../../globals_OG.css';
+
 import {
   Dialog,
   DialogTrigger,
@@ -22,7 +24,7 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <div className="flex">
+    <div className="flex original_shadcn">
       <div className="min-h-screen w-1/4 bg-[rgb(30,30,30)]">
         <Dialog>
           <DialogTrigger asChild>

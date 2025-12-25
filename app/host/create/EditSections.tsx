@@ -53,7 +53,7 @@ export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
           }}
           className={`
             flex items-center p-2 gap-2 rounded-md cursor-pointer
-           ${currentSection === id ? 'bg-gray-800/80  text-white' : 'bg-white hover:bg-gray-100'}
+           ${currentSection === id ? 'bg-gray-800/80  text-white' : 'bg-white hover:bg-gray-300'}
            
           `}
         >
