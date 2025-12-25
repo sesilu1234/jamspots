@@ -105,10 +105,8 @@ export default function Home() {
 
       <div className="w-screen mt-12 pt-4 pb-4">
         <div className="max-w-[90%] w-[1300px] mx-auto p-6 grid grid-cols-2 gap-12">
-          <div className="flex flex-col gap-2 border-t-2 border-primary pt-8">
-            <h3 className="text-lg font-semibold ">
-              ¿QUÉ ES UNA JAM SESSION?
-            </h3>
+          <div className="flex flex-col gap-2 border-t-2 border-primary-1 pt-8">
+            <h3 className="text-lg font-semibold ">¿QUÉ ES UNA JAM SESSION?</h3>
 
             <p className="text-sm leading-relaxed ">
               Una jam es un encuentro donde músicos se suben al escenario a
@@ -118,7 +116,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-primary pt-8">
+          <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-primary-1 pt-8">
             <p>
               <span className="font-semibold ">
                 ¿Puedo tocar si nunca he venido antes?
@@ -139,18 +137,14 @@ export default function Home() {
             </p>
 
             <p>
-              <span className="font-semibold ">
-                ¿Hay entrada o es gratis?
-              </span>{' '}
+              <span className="font-semibold ">¿Hay entrada o es gratis?</span>{' '}
               <span className="">
                 → la mayoría son gratuitas o con consumición mínima.
               </span>
             </p>
 
             <p>
-              <span className="font-semibold ">
-                ¿Y si no toco nada?
-              </span>{' '}
+              <span className="font-semibold ">¿Y si no toco nada?</span>{' '}
               <span className="">
                 → ¡Bienvenido igual! Ven a escuchar, relajarte y disfrutar del
                 ambiente.
@@ -160,28 +154,17 @@ export default function Home() {
         </div>
       </div>
 
-    
-
       <footer className="w-screen bg-bg/0 pb-12 mt-0 flex-1 ">
-        <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary">
+        <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">
           {/* Navigation Links */}
           <div className="flex flex-col text-tone-1/95 items-between justify-between gap-8 ">
-            <Link
-              href="/contact"
-              className="hover:text-tone-0  cursor-pointer"
-            >
+            <Link href="/contact" className="hover:text-tone-0  cursor-pointer">
               CONTACT
             </Link>
-            <Link
-              href="/help"
-              className="hover:text-tone-0  cursor-pointer"
-            >
+            <Link href="/help" className="hover:text-tone-0  cursor-pointer">
               HELP
             </Link>
-            <Link
-              href="/about"
-              className="hover:text-tone-0  cursor-pointer"
-            >
+            <Link href="/about" className="hover:text-tone-0  cursor-pointer">
               ABOUT
             </Link>
           </div>

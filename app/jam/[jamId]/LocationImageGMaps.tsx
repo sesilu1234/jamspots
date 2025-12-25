@@ -35,11 +35,11 @@ export default function StaticMap({
     : `https://www.google.com/maps/search/?api=1&query=${fallbackLat},${fallbackLng}`;
 
   return (
-    <div className="pl-0 w-1/2">
+    <div className="pl-0 w-1/2 h-64">
       <img
         src={mapUrl}
         alt="Static Map"
-        className="border border-gray-800 rounded-lg cursor-pointer"
+        className="border border-gray-800 rounded-lg cursor-pointer w-full h-full object-cover"
         onClick={() => window.open(googleMapsUrl, '_blank')}
       />
     </div>

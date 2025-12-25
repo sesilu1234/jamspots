@@ -74,12 +74,13 @@ export default function JamPage() {
             </Avatar>
           </div> */}
         </div>
-        <div className=" w-[1100px] max-w-[60%] mx-auto flex flex-col justify-center mt-18">
-          <h3 className="text-5xl font-bold text-left mb-12 max-w-3/5 leading-relaxed">
+        <div className=" w-[1100px] max-w-[90%] mx-auto flex flex-col justify-center mt-18">
+          <h3 className="text-5xl font-bold text-left mb-12 max-w-5/5 leading-relaxed">
             {jam.jam_title + ' at ' + jam.location_title}
           </h3>
-
-          <JamImages images={jam.images} />
+        </div>
+        <div className=" w-[1100px] max-w-[60%] mx-auto flex flex-col justify-center ">
+          <JamImages images={jam.images.slice(0, 2)} />
         </div>
         <div className="flex gap-6 w-[1300px] max-w-[75%] mx-auto py-12 mt-12 ">
           <div className="bg-[rgb(170_170_170/0.1)] rounded-lg flex justify-center pt-8 pb-10 px-8 w-1/2 border border-white/30">
@@ -121,7 +122,7 @@ export default function JamPage() {
             apiKey="AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE"
           />
 
-          <JamImages images={jam.images} />
+          <JamImages images={jam.images.slice(2, 4)} />
         </div>
 
         <div className="w-[1300px] max-w-[75%] mx-auto pb-24  ">
@@ -142,7 +143,7 @@ export default function JamPage() {
         </div>
 
         <footer className="w-screen bg-bg/0 pb-12 mt-0 flex-1 ">
-          <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary">
+          <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">
             {/* Navigation Links */}
             <div className="flex flex-col text-tone-1/95 items-between justify-between gap-8 ">
               <Link

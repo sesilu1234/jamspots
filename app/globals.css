@@ -80,8 +80,8 @@
   --color-tone-4: var(--tone-4);
   --color-tone-5: var(--tone-5);
   --color-tone-6: var(--tone-6);
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
+  --color-primary-1: var(--primary-1);
+  --color-secondary-1: var(--secondary-1);
   --color-danger: var(--danger);
   --color-warning: var(--warning);
   --color-success: var(--success);
@@ -135,8 +135,8 @@
   --tone-4: oklch(26.8% 0.007 34.298);
   --tone-5: oklch(21% 0.006 285.885);
   --tone-6: oklch(14.7% 0.004 49.25); /* lowest / darkest */
-  --primary_new: oklch(0.76 0.2 279);
-  --secondary_new: oklch(0.76 0.2 99);
+  --primary-1: oklch(0.76 0.2 279);
+  --secondary-1: oklch(0.76 0.2 99);
   --danger: oklch(0.7 0.2 30);
   --warning: oklch(0.7 0.2 100);
   --success: oklch(0.7 0.2 160);
@@ -186,8 +186,8 @@
   --tone-4: oklch(26.8% 0.007 34.298);
   --tone-5: oklch(21% 0.006 285.885);
   --tone-6: oklch(14.7% 0.004 49.25); /* lowest / darkest */
-  --primary_new: oklch(0.76 0.2 279);
-  --secondary_new: oklch(0.76 0.2 99);
+  --primary-1: oklch(0.76 0.2 279);
+  --secondary-1: oklch(0.76 0.2 99);
   --danger: oklch(0.7 0.2 30);
   --warning: oklch(0.7 0.2 100);
   --success: oklch(0.7 0.2 160);
