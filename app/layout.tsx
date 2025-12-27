@@ -1,9 +1,14 @@
 import { Geist, Geist_Mono } from 'next/font/google';
-import { Oswald, Inter } from 'next/font/google';
+import { Oswald, Inter, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import SessionWrapper from './SessionWrapper';
 
 const oswald = Oswald({ subsets: ['latin'], weight: ['400', '700'] });
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
 
 export default function RootLayout({
   children,

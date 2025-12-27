@@ -14,6 +14,14 @@ import TimeAndPlace from './TimeAndPlace';
 import JamImages from './JamImages';
 import JamChars from './JamChars';
 import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
+
+import { Space_Grotesk } from 'next/font/google';
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
 
 interface HtmlReadOnlyProps {
   rawContent: RawDraftContentState;
@@ -24,7 +32,8 @@ const HtmlReadOnly = ({ rawContent }: HtmlReadOnlyProps) => {
   return (
     <div
       className="
-    text-2xl
+     
+    text-xl
     leading-relaxed
     tracking-wide
     space-y-5
@@ -57,7 +66,9 @@ export default function JamPage() {
   if (!jam) return null;
 
   return (
-    <div className="min-h-screen ">
+    <div
+      className={`${spaceGrotesk.className} min-h-screen bg-neutral-900 text-white`}
+    >
       <div className=" ">
         <div className="flex justify-between w-[1300px] max-w-[90%] mx-auto p-0">
           <Link href="/" className="ml-3 flex gap-2 items-end">
@@ -90,8 +101,8 @@ export default function JamPage() {
             </Avatar>
           </div> */}
         </div>
-        <div className=" w-[1100px] max-w-[90%] mx-auto flex flex-col justify-center mt-18">
-          <h3 className="text-5xl font-bold text-left mb-12 max-w-5/5 leading-relaxed">
+        <div className=" w-[1100px] max-w-[90%] mx-auto flex flex-col justify-center mt-12">
+          <h3 className="text-3xl font-bold text-left mb-12 max-w-5/5 leading-relaxed">
             {jam.jam_title + ' at ' + jam.location_title}
           </h3>
         </div>
@@ -99,7 +110,7 @@ export default function JamPage() {
           <JamImages images={jam.images.slice(0, 2)} />
         </div>
         <div className="flex gap-6 w-[1300px] max-w-[75%] mx-auto py-12 mt-12 ">
-          <div className="bg-[rgb(170_170_170/0.1)] rounded-lg flex justify-center pt-8 pb-10 px-8 w-1/2 border border-white/30">
+          <div className="rounded-xl flex justify-center pt-8 pb-10 px-8 w-1/2 border-1  border-white/30">
             <JamChars
               jamDetails={{
                 styles: jam.styles,
@@ -110,7 +121,9 @@ export default function JamPage() {
             />
           </div>
 
-          <div className="bg-[rgb(170_170_170/0.1)] rounded-lg flex pt-8 pb-10 px-8 w-1/2 border border-white/30">
+          <Separator orientation="vertical" />
+
+          <div className=" rounded-xl flex pt-8 pb-10 px-8 w-1/2 border-1  border-white/30">
             <TimeAndPlace
               location_title={jam.location_title}
               address={jam.location_address}
@@ -123,8 +136,8 @@ export default function JamPage() {
         </div>
 
         <div className="flex flex-col gap-12 w-[1300px] max-w-[75%] mx-auto pb-12 ">
-          <div className="flex flex-col gap-4 bg-[rgb(170_170_170/0.0)] rounded-lg pt-8 pb-10 px-8 w-1/2">
-            <h3 className="text-3xl font-semibold">Details</h3>
+          <div className="flex flex-col gap-4  rounded-lg pt-8 pb-10 px-8 w-1/2">
+            <h3 className="text-3xl font-semibold"></h3>
 
             <div>
               <HtmlReadOnly rawContent={jam.description} />

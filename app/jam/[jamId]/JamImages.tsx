@@ -9,20 +9,17 @@ export default function JamImages({ images }: JamImagesProps) {
   return (
     <div className="grid grid-cols-4 grid-rows-2 gap-6 w-full h-[200px] ">
       {/* Photo 1: col-span-2 row-span-2 */}
-      <div className="col-span-2 row-span-2 relative w-full h-full bg-gray-350 ">
+      <div
+        className="col-span-2 row-span-2 relative w-full h-full rounded-xl overflow-hidden
+  ring-1 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)] "
+      >
         {images[0] && (
-          <Image
-            src={images[0]}
-            alt="Photo 1"
-            layout="fill"
-            objectFit="cover"
-            className="rounded-xl"
-          />
+          <Image src={images[0]} alt="Photo 1" fill className="object-cover" />
         )}
       </div>
 
       {/* Photo 2: col-span-2 row-1 */}
-      <div className="col-span-2 row-span-2 relative w-full h-full bg-gray-350">
+      <div className="col-span-2 row-span-2 relative w-full h-full  ring-2 ring-neutral-400/20 rounded-xl shadow-[0_12px_24px_rgba(255,255,255,0.1)] ">
         {images[1] && (
           <Image
             src={images[1]}
