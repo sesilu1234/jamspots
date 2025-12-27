@@ -33,7 +33,7 @@ const HtmlReadOnly = ({ rawContent }: HtmlReadOnlyProps) => {
     <div
       className="
      
-    text-xl
+    text-lg
     leading-relaxed
     tracking-wide
     space-y-5
@@ -114,7 +114,7 @@ export default function JamPage() {
         <div className="flex gap-6 w-[1300px] max-w-[75%] mx-auto py-12 mt-12">
           <div className="flex flex-col   w-1/2">
             {/* Left column: JamChars */}
-            <div className="flex-1 rounded-xl flex justify-center pt-8 pb-10 px-8 border border-white/30">
+            <div className="flex-1 rounded-xl flex justify-center pt-8 pb-10 px-8 border border-white/10 bg-tone-0/5">
               <JamChars
                 jamDetails={{
                   styles: jam.styles,
@@ -126,7 +126,7 @@ export default function JamPage() {
             </div>
 
             <div className="flex flex-col gap-4  rounded-lg pt-8 pb-10 px-8">
-              <h3 className="text-3xl font-semibold"></h3>
+              <h3 className="text-sm font-semibold"></h3>
 
               <div>
                 <HtmlReadOnly rawContent={jam.description} />
@@ -142,7 +142,7 @@ export default function JamPage() {
 
           {/* Right column: TimeAndPlace sticky */}
 
-          <div className="sticky top-24 rounded-xl w-1/2 flex flex-col pt-8 pb-10 px-8 border border-white/30 self-start">
+          <div className="sticky top-24 rounded-xl w-1/2 flex flex-col pt-8 pb-10 px-8 border border-white/10 self-start bg-tone-0/5">
             <TimeAndPlace
               location_title={jam.location_title}
               address={jam.location_address}

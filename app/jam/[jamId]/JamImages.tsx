@@ -32,7 +32,7 @@ export function JamImagesBottom({ images }: JamImagesProps) {
       {/* Photo 1: col-span-2 row-span-2 */}
       <div
         className="col-span-2 row-span-2 relative w-4/4 aspect-video rounded-xl overflow-hidden
-          ring-1 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)]"
+          ring-0 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)]"
       >
         {images[0] && (
           <Image src={images[0]} alt="Photo 1" fill className="object-cover" />
@@ -42,7 +42,7 @@ export function JamImagesBottom({ images }: JamImagesProps) {
       {/* Photo 2: col-span-2 row-span-2 */}
       <div
         className="col-span-2 row-span-2 relative  w-4/4 aspect-video  rounded-xl overflow-hidden
-          ring-1 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)]"
+          ring-0 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)]"
       >
         {images[1] && (
           <Image src={images[1]} alt="Photo 2" fill className="object-cover" />
