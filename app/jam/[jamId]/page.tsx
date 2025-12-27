@@ -67,7 +67,7 @@ export default function JamPage() {
 
   return (
     <div
-      className={`${spaceGrotesk.className} min-h-screen bg-neutral-900 text-white`}
+      className={`${spaceGrotesk.className} min-h-screen bg-tone-5 text-white`}
     >
       <div className=" ">
         <div className="flex justify-between w-[1300px] max-w-[90%] mx-auto p-0">
