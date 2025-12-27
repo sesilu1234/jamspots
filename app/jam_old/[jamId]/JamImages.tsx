@@ -5,33 +5,12 @@ type JamImagesProps = {
   images: string[];
 };
 
-export function JamImagesTop({ images }: JamImagesProps) {
-  return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-2 w-4/4">
-      {/* Photo 1: col-span-2 row-span-2 */}
-      <div
-        className="col-span-2 row-span-2 relative aspect-8/3 rounded-xl overflow-hidden
-          ring-1 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)]"
-      >
-        {images[0] && (
-          <Image src={images[0]} alt="Photo 1" fill className="object-cover" />
-        )}
-      </div>
-
-      {/* Photo 2: col-span-2 row-span-2 */}
-
-      {/* Photo 3: col-3 row-2 */}
-      {/* Add more photos here using the same pattern */}
-    </div>
-  );
-}
-
-export function JamImagesBottom({ images }: JamImagesProps) {
+export default function JamImages({ images }: JamImagesProps) {
   return (
     <div className="grid grid-cols-4 grid-rows-2 gap-6 w-full">
       {/* Photo 1: col-span-2 row-span-2 */}
       <div
-        className="col-span-2 row-span-2 relative w-4/4 aspect-video rounded-xl overflow-hidden
+        className="col-span-2 row-span-2 relative w-3/4 aspect-4/3 rounded-xl overflow-hidden
           ring-1 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)]"
       >
         {images[0] && (
@@ -41,7 +20,7 @@ export function JamImagesBottom({ images }: JamImagesProps) {
 
       {/* Photo 2: col-span-2 row-span-2 */}
       <div
-        className="col-span-2 row-span-2 relative  w-4/4 aspect-video  rounded-xl overflow-hidden
+        className="col-span-2 row-span-2 relative  w-3/4 aspect-4/3  rounded-xl overflow-hidden
           ring-1 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)]"
       >
         {images[1] && (
@@ -54,6 +33,7 @@ export function JamImagesBottom({ images }: JamImagesProps) {
     </div>
   );
 }
+
 // export default function JamImages({ images }: JamImagesProps) {
 //   return (
 //     <div className="grid grid-cols-4 grid-rows-2 gap-2 w-full h-[200px] mt-8">

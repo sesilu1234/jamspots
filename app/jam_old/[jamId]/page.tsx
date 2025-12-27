@@ -11,7 +11,7 @@ import { RawDraftContentState } from 'draft-js';
 import SocialLinks from './SocialLinks';
 import StaticMap from './LocationImageGMaps';
 import TimeAndPlace from './TimeAndPlace';
-import { JamImagesTop, JamImagesBottom } from './JamImages';
+import JamImages from './JamImages';
 import JamChars from './JamChars';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
@@ -101,48 +101,29 @@ export default function JamPage() {
             </Avatar>
           </div> */}
         </div>
-
-        <div className=" w-[1100px] max-w-[80%] mx-auto flex items-end gap-12  mt-12 ">
-          <div className="w-5/7">
-            <h3 className="text-4xl font-bold leading-relaxed ">
-              {jam.jam_title + ' at ' + jam.location_title}
-            </h3>
-          </div>
-          <JamImagesTop images={jam.images.slice(0, 1)} />
+        <div className=" w-[1100px] max-w-[90%] mx-auto flex flex-col justify-center mt-12">
+          <h3 className="text-3xl font-bold text-left mb-12 max-w-5/5 leading-relaxed">
+            {jam.jam_title + ' at ' + jam.location_title}
+          </h3>
         </div>
-
-        <div className="flex gap-6 w-[1300px] max-w-[75%] mx-auto py-12 mt-12">
-          <div className="flex flex-col   w-1/2">
-            {/* Left column: JamChars */}
-            <div className="flex-1 rounded-xl flex justify-center pt-8 pb-10 px-8 border border-white/30">
-              <JamChars
-                jamDetails={{
-                  styles: jam.styles,
-                  drums: jam.drums,
-                  lista_canciones: jam.lista_canciones,
-                  instruments_lend: jam.instruments_lend,
-                }}
-              />
-            </div>
-
-            <div className="flex flex-col gap-4  rounded-lg pt-8 pb-10 px-8">
-              <h3 className="text-3xl font-semibold"></h3>
-
-              <div>
-                <HtmlReadOnly rawContent={jam.description} />
-              </div>
-            </div>
-            <StaticMap
-              address={jam.location_address}
-              fallbackLat={jam.lat}
-              fallbackLng={jam.lng}
-              apiKey="AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE"
+        <div className=" w-[1100px] max-w-[60%] mx-auto flex flex-col justify-center ">
+          <JamImages images={jam.images.slice(0, 2)} />
+        </div>
+        <div className="flex gap-6 w-[1300px] max-w-[75%] mx-auto py-12 mt-12 ">
+          <div className="rounded-xl flex justify-center pt-8 pb-10 px-8 w-1/2 border-1  border-white/30">
+            <JamChars
+              jamDetails={{
+                styles: jam.styles,
+                drums: jam.drums,
+                lista_canciones: jam.lista_canciones,
+                instruments_lend: jam.instruments_lend,
+              }}
             />
           </div>
 
-          {/* Right column: TimeAndPlace sticky */}
+          <Separator orientation="vertical" />
 
-          <div className="sticky top-24 rounded-xl w-1/2 flex flex-col pt-8 pb-10 px-8 border border-white/30 self-start">
+          <div className=" rounded-xl flex pt-8 pb-10 px-8 w-1/2 border-1  border-white/30">
             <TimeAndPlace
               location_title={jam.location_title}
               address={jam.location_address}
@@ -155,7 +136,22 @@ export default function JamPage() {
         </div>
 
         <div className="flex flex-col gap-12 w-[1300px] max-w-[75%] mx-auto pb-12 ">
-          <JamImagesBottom images={jam.images.slice(2, 4)} />
+          <div className="flex flex-col gap-4  rounded-lg pt-8 pb-10 px-8 w-1/2">
+            <h3 className="text-3xl font-semibold"></h3>
+
+            <div>
+              <HtmlReadOnly rawContent={jam.description} />
+            </div>
+          </div>
+
+          <StaticMap
+            address={jam.location_address}
+            fallbackLat={jam.lat}
+            fallbackLng={jam.lng}
+            apiKey="AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE"
+          />
+
+          <JamImages images={jam.images.slice(2, 4)} />
         </div>
 
         <div className="w-[1300px] max-w-[75%] mx-auto pb-24  ">
