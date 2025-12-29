@@ -52,8 +52,16 @@ export default function JamPage() {
   const [jam, setJam] = useState<Jam | null>(null);
 
   useEffect(() => {
+    const clientDate = new Date();
+    const year = clientDate.getFullYear();
+    const month = String(clientDate.getMonth() + 1).padStart(2, '0');
+    const day = String(clientDate.getDate()).padStart(2, '0');
+    const localDateLocal = `${year}-${month}-${day}`;
+    const paramsJam = new URLSearchParams({
+      userDate: localDateLocal,
+    });
     async function fetchJam() {
-      const res = await fetch(`/api/get-jam/${jamId}`);
+      const res = await fetch(`/api/get-jam/${jamId}?${paramsJam}`);
       const data = await res.json();
       setJam(data);
 
@@ -125,7 +133,7 @@ export default function JamPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-4  rounded-lg pt-8 pb-10 px-8">
+            <div className="flex flex-col gap-4  rounded-lg pt-24 pb-10 px-8">
               <h3 className="text-sm font-semibold"></h3>
 
               <div>
