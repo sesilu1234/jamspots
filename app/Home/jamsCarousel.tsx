@@ -66,7 +66,8 @@ export default function JamCarousel({
               spotName={jam.location_title}
               tags={jam.styles}
               address={jam.location_address}
-              time={jam.date}
+              date={jam.next_date}
+              time={jam.time_start}
               src={jam.image}
               slug={jam.slug}
             />

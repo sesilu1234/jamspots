@@ -24,10 +24,13 @@ export default function TimeAndPlace({
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address!)}`
     : `https://www.google.com/maps/search/?api=1&query=${fallbackLat},${fallbackLng}`;
 
+    let formattedDate
+
+if (date) {
 
  const dateObj = new Date(`${date}T${time}`);
 
-let formattedDate = dateObj.toLocaleString('en-US', {
+formattedDate = dateObj.toLocaleString('en-US', {
   weekday: 'short',
   month: 'short',
   day: 'numeric',
@@ -52,7 +55,17 @@ for (const char of formattedDate) {
   result += char;
 }
 
-formattedDate = result;
+formattedDate = result;}
+
+
+else {
+
+  console.log('eiii3219');
+
+  formattedDate = 'No upcoming jam';
+
+}
+
 
   //   return (
   //     <div className="gap-4 flex flex-col">

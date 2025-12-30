@@ -211,7 +211,7 @@ export default function Filtro({
             className="fill-current"
           />
         </svg>
-        <span className="text-md text-tone-0/85 pt-0.5 transition-colors duration-200 font-semibold group-hover:text-primary-1 hover:cursor-pointer select-none">
+        <span className="text-md text-tone-0/85  transition-colors duration-200 font-semibold group-hover:text-primary-1 hover:cursor-pointer select-none">
           FILTER
         </span>
       </div>
