@@ -32,6 +32,7 @@ export type Jam = {
   host_id: string;
   created_at: string;
   time_start: string;
+  f_next_date: string;
   slug: string;
   lng: number;
   lat: number;

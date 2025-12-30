@@ -1,3 +1,4 @@
+import { it } from 'node:test';
 import React from 'react';
 
 type TimeAndPlaceProps = {
@@ -23,20 +24,35 @@ export default function TimeAndPlace({
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address!)}`
     : `https://www.google.com/maps/search/?api=1&query=${fallbackLat},${fallbackLng}`;
 
-  console.log(date, time, 'eiiiiiii');
-  const dateObj = new Date(`${date}T${time}`);
-  console.log('og dateobject: ', dateObj); // Fri Dec 12 2025 21:30:00 (local time)
 
-  const formattedDate = dateObj.toLocaleString('en-US', {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
+ const dateObj = new Date(`${date}T${time}`);
 
-  console.log(formattedDate); // "Friday, Dec 12, 9:30 PM"
+let formattedDate = dateObj.toLocaleString('en-US', {
+  weekday: 'short',
+  month: 'short',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,
+});
+
+
+let commaCount = 0;
+let result = '';
+
+for (const char of formattedDate) {
+  if (char === ',') {
+    commaCount++;
+    if (commaCount === 1) continue;          // skip first comma
+    if (commaCount === 2) {                  // replace second comma
+      result += ' –';
+      continue;
+    }
+  }
+  result += char;
+}
+
+formattedDate = result;
 
   //   return (
   //     <div className="gap-4 flex flex-col">

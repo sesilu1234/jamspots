@@ -58,8 +58,8 @@ export default function JamPage() {
     const day = String(clientDate.getDate()).padStart(2, '0');
     const localDateLocal = `${year}-${month}-${day}`;
     const paramsJam = new URLSearchParams({
-      userDate: localDateLocal,
-    });
+  userDate: localDateLocal,
+}).toString();
     async function fetchJam() {
       const res = await fetch(`/api/get-jam/${jamId}?${paramsJam}`);
       const data = await res.json();
@@ -156,7 +156,7 @@ export default function JamPage() {
               address={jam.location_address}
               fallbackLat={jam.lat}
               fallbackLng={jam.lng}
-              date={jam.dates[0]}
+              date={jam.f_next_date}
               time={jam.time_start}
             />
           </div>
