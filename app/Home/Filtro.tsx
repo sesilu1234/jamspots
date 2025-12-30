@@ -89,7 +89,6 @@ export default function Filtro({
   }, []);
 
   const handleAccept = (searchType) => {
-    console.log('eiii');
     setSearchType(searchType);
 
     fetchJams(searchType);
@@ -121,8 +120,6 @@ export default function Filtro({
       if (searchType === 'local') {
         setLoading(true);
 
-        console.log('local');
-
         const paramsCards = new URLSearchParams({
           userDate: localDateLocal,
           dateOptions: dateOptionsRef.current,
@@ -140,8 +137,6 @@ export default function Filtro({
         if (!cardsFetch.ok) throw new Error('Failed to fetch jams');
 
         const resCards = await cardsFetch.json();
-
-        console.log(resCards);
 
         setMarkersData(
           resCards?.map((jam) => ({
@@ -535,7 +530,6 @@ export function CalendarDemo({ setDateOption, dateRef, setDate }) {
         '-' +
         String(dateRef.getDate()).padStart(2, '0');
 
-      console.log('custom: ' + localDate);
       setDateOption('custom: ' + localDate);
     }
   }, [dateRef]);

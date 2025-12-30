@@ -24,48 +24,40 @@ export default function TimeAndPlace({
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address!)}`
     : `https://www.google.com/maps/search/?api=1&query=${fallbackLat},${fallbackLng}`;
 
-    let formattedDate
+  let formattedDate;
 
-if (date) {
+  if (date) {
+    const dateObj = new Date(`${date}T${time}`);
 
- const dateObj = new Date(`${date}T${time}`);
+    formattedDate = dateObj.toLocaleString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
 
-formattedDate = dateObj.toLocaleString('en-US', {
-  weekday: 'short',
-  month: 'short',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: '2-digit',
-  hour12: true,
-});
+    let commaCount = 0;
+    let result = '';
 
-
-let commaCount = 0;
-let result = '';
-
-for (const char of formattedDate) {
-  if (char === ',') {
-    commaCount++;
-    if (commaCount === 1) continue;          // skip first comma
-    if (commaCount === 2) {                  // replace second comma
-      result += ' –';
-      continue;
+    for (const char of formattedDate) {
+      if (char === ',') {
+        commaCount++;
+        if (commaCount === 1) continue; // skip first comma
+        if (commaCount === 2) {
+          // replace second comma
+          result += ' –';
+          continue;
+        }
+      }
+      result += char;
     }
+
+    formattedDate = result;
+  } else {
+    formattedDate = 'No upcoming jam';
   }
-  result += char;
-}
-
-formattedDate = result;}
-
-
-else {
-
-  console.log('eiii3219');
-
-  formattedDate = 'No upcoming jam';
-
-}
-
 
   //   return (
   //     <div className="gap-4 flex flex-col">

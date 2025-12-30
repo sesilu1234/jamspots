@@ -69,29 +69,18 @@ export async function GET(req: Request) {
     stylesArray = null;
   }
 
-  console.log('------------');
-   console.log('------------');
-    console.log('------------');
-     console.log('------------');
-
-  console.log( {
-    p_lat: lat,
-    p_lng: lng,
-    p_distance: distance,
-    p_filter_dates: datesArray,
-    p_filter_styles: stylesArray,
-    p_weekday: weekDay,
-  });
-
   // Llamamos la RPC
-  const { data, error } = await supabaseAdmin.rpc('sessions_within_distance_1', {
-    p_lat: lat,
-    p_lng: lng,
-    p_distance: distance,
-    p_filter_dates: datesArray,
-    p_filter_styles: stylesArray,
-    p_weekday: weekDay,
-  });
+  const { data, error } = await supabaseAdmin.rpc(
+    'sessions_within_distance_1',
+    {
+      p_lat: lat,
+      p_lng: lng,
+      p_distance: distance,
+      p_filter_dates: datesArray,
+      p_filter_styles: stylesArray,
+      p_weekday: weekDay,
+    },
+  );
 
   console.log('Error: ', error);
   if (error)
@@ -104,8 +93,6 @@ export async function GET(req: Request) {
     images?: string[];
     // otros campos que uses...
   };
-
-  console.log('data: ', data);
 
   let dataRes: Jam[] =
     data?.map((jam: Jam) => ({

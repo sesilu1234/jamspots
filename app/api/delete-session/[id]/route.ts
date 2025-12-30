@@ -6,7 +6,6 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params;
-  console.log('Deleting session with id:', id);
 
   const { error } = await supabaseAdmin.from('sessions').delete().eq('id', id);
 

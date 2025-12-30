@@ -16,7 +16,6 @@ export default function JamCarousel({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log(999999999);
     searchType === 'local' ? setCollapsed(false) : setCollapsed(true);
   }, [searchType]);
 

@@ -8,11 +8,8 @@ export async function POST(
   context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params;
-  console.log('Updating session with id:', id);
 
   const body = await req.json();
-
-  console.log(body);
 
   const session = await getServerSession(authOptions); // App Router uses new form
 

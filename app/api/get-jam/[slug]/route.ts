@@ -9,16 +9,10 @@ export async function GET(
   const userDate = searchParams.get('userDate')!;
   const { slug } = await context.params;
 
-  console.log('eiiii1');
-
-  console.log(slug,userDate);
-
   const { data, error } = await supabaseAdmin.rpc('run_jam_query', {
-  p_slug: slug,
-  p_date: userDate
-});
-
-  console.log(data);
+    p_slug: slug,
+    p_date: userDate,
+  });
 
   if (error)
     return NextResponse.json({ error: error.message }, { status: 500 });

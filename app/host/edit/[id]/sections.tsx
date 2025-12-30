@@ -23,8 +23,6 @@ export default function Sections({ childSaveOnUnmount }: EditAreaProps) {
 
   const form = useFormStore((state) => state.form);
 
-  console.log('348');
-
   return (
     <div>
       {currentSection === 'informaciongeneral' && (

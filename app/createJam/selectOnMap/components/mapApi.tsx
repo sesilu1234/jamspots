@@ -124,9 +124,6 @@ function PlaceAutocomplete({ onPlaceSelect }: PlaceAutocompleteProps) {
     });
 
     autocomplete.addListener('place_changed', () => {
-      console.log('eii');
-      console.log(autocomplete.getPlace());
-
       onPlaceSelect(autocomplete.getPlace() || null);
     });
 

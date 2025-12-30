@@ -9,8 +9,7 @@ export default function Button({ className }: { className?: string }) {
   const handleSubmit = () => {
     const channel = new BroadcastChannel('location_broadcast');
     channel.postMessage(locationData);
-    console.log('here is :');
-    console.log(locationData);
+
     channel.close();
 
     setSubmitted(true);

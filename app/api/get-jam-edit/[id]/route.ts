@@ -7,15 +7,12 @@ export async function GET(
   context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params; // aquí unwrap de la promesa
-  console.log('id:', id);
 
   const { data, error } = await supabaseAdmin
     .from('sessions_with_coords')
     .select('*')
     .eq('id', id)
     .maybeSingle();
-
-  console.log(data);
 
   if (error)
     return NextResponse.json({ error: error.message }, { status: 500 });

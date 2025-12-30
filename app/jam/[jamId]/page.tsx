@@ -58,14 +58,13 @@ export default function JamPage() {
     const day = String(clientDate.getDate()).padStart(2, '0');
     const localDateLocal = `${year}-${month}-${day}`;
     const paramsJam = new URLSearchParams({
-  userDate: localDateLocal,
-}).toString();
+      userDate: localDateLocal,
+    }).toString();
     async function fetchJam() {
       const res = await fetch(`/api/get-jam/${jamId}?${paramsJam}`);
       const data = await res.json();
       setJam(data);
 
-      console.log(Object.keys(data!));
       // <-- log here, after fetch
     }
     fetchJam();

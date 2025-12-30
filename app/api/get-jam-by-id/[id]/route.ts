@@ -6,7 +6,6 @@ export async function GET(
   context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params; // aquí unwrap de la promesa
-  console.log('id:', id);
 
   const { data, error } = await supabaseAdmin
     .from('sessions')
@@ -15,9 +14,6 @@ export async function GET(
     .maybeSingle();
 
   const result = data ? { ...data, images: data.images?.[0] ?? null } : null;
-
-  console.log('dddd');
-  console.log(result);
 
   if (error)
     return NextResponse.json({ error: error.message }, { status: 500 });

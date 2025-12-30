@@ -111,7 +111,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     }
 
     const photos_urls = await uploadPhotos(images_files);
-    console.log(form.generalInfo);
+
     const jamData = {
       jam_title: form.generalInfo.jam_title,
       location_title: form.generalInfo.location_title,
@@ -131,8 +131,6 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       location_coords: form.generalInfo.coordinates,
     };
     const parsed_jamData = jamSchema.safeParse(jamData);
-    console.log(parsed_jamData);
-    console.log('Saving all data:', jamData);
 
     const res = await fetch('/api/create-session', {
       method: 'POST',
