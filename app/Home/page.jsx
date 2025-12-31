@@ -80,12 +80,18 @@ export default function Home() {
           </div>
 
           <div className="flex justify-between items-end px-3 font-semibold uppercase text-text-1 tracking-wide">
-            <span> 13 jams found</span>
+           {searchType === 'local' ? (
+  <span>{jams.length} jams found</span>
+) : (
+  <span>Showing jams worldwide</span>
+)}
+
+            
             <div className="flex flex-col items-end">
               {searchType === 'local' ? (
                 <span> Showing jams near you </span>
               ) : (
-                <span> Showing global jams </span>
+                <span> Showing global </span>
               )}
             </div>
           </div>

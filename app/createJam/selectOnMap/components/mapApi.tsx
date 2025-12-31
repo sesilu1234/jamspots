@@ -134,7 +134,7 @@ function PlaceAutocomplete({ onPlaceSelect }: PlaceAutocompleteProps) {
     <input
       ref={inputRef}
       placeholder="Search a place..."
-      className="w-full h-10 px-3 text-lg bg-white border border-gray-800 rounded"
+      className="w-full h-10 px-3 text-lg text-black bg-white border border-gray-800 rounded"
     />
   );
 }

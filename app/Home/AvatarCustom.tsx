@@ -4,13 +4,15 @@ import { User } from 'lucide-react';
 
 import type { Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
-
+import { useEffect } from 'react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+
+import { useTheme } from "next-themes";
 
 type AvatarCustomProps = {
   session: Session | null;
@@ -144,30 +146,35 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
   );
 }
 
-import { Sun, Moon, Coffee, Droplet, Leaf } from 'lucide-react';
+
+
+import { Sun, Moon, Coffee, Droplet, Leaf } from "lucide-react";
+
 
 export function AccordionTheme() {
   const [theme, setTheme] = useState<
-    'light' | 'dark' | 'tangerine' | 'ocean' | 'forest'
-  >('light');
+    "light" | "dark" | "tangerine" | "ocean" | "forest"
+  >("dark");
 
-  const themes = ['light', 'dark', 'tangerine', 'ocean', 'forest'];
+  const themes = ["light", "dark", "tangerine", "ocean", "forest"] as const;
   const icons = [Sun, Moon, Coffee, Droplet, Leaf];
   const iconColors: Record<string, string> = {
-    light: 'text-yellow-400',
-    dark: 'text-purple-400',
-    tangerine: 'text-orange-500',
-    ocean: 'text-blue-400',
-    forest: 'text-green-500',
+    light: "text-yellow-400",
+    dark: "text-purple-400",
+    tangerine: "text-orange-500",
+    ocean: "text-blue-400",
+    forest: "text-green-500",
+  };
+
+  const handleThemeChange = (t: typeof theme) => {
+    setTheme(t);
+    const html = document.documentElement;
+    html.classList.remove("light", "dark", "tangerine", "ocean", "forest");
+    html.classList.add(t);
   };
 
   return (
-    <Accordion
-      type="single"
-      collapsible
-      className="w-full"
-      defaultValue={undefined}
-    >
+    <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1">
         <AccordionTrigger>Theme Mode</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-2 py-2">
@@ -176,15 +183,17 @@ export function AccordionTheme() {
             return (
               <button
                 key={t}
-                className={`flex items-center gap-2 px-4 py-1 text-left ${
+                className={`flex items-center gap-2 px-4 py-1 text-left rounded-md ${
                   theme === t
-                    ? 'font-bold'
-                    : 'hover:bg-accent hover:underline rounded-md'
+                    ? "font-bold"
+                    : "hover:bg-accent hover:underline"
                 }`}
-                onClick={() => setTheme(t as typeof theme)}
+                onClick={() => handleThemeChange(t)}
               >
                 <Icon
-                  className={`w-4 h-4 ${theme === t ? iconColors[t] : 'text-slate-400'}`}
+                  className={`w-4 h-4 ${
+                    theme === t ? iconColors[t] : "text-slate-400"
+                  }`}
                 />
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </button>
@@ -195,6 +204,10 @@ export function AccordionTheme() {
     </Accordion>
   );
 }
+
+
+
+
 export function AccordionLanguage() {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
 

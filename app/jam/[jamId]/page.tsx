@@ -109,10 +109,10 @@ export default function JamPage() {
           </div> */}
         </div>
 
-        <div className=" w-[1100px] max-w-[80%] mx-auto flex items-end gap-12  mt-12 ">
-          <div className="w-5/7">
+        <div className=" w-[1100px] max-w-[60%] mx-auto flex items-end gap-12  mt-12 ">
+          <div className="w-1/2">
             <h3 className="text-4xl font-bold leading-relaxed ">
-              {jam.jam_title + ' at ' + jam.location_title}
+              {jam.jam_title +  ' at ' + jam.location_title}
             </h3>
           </div>
           <JamImagesTop images={jam.images.slice(0, 1)} />
