@@ -39,9 +39,9 @@ export default function Home() {
         <div className="relative flex flex-col  w-[1300px] max-w-[90%] mx-auto p-0 ">
           <SignInIcons />
 
-          <div className="inline-block">
+          <div className="flex ">
             <div
-              className="ml-0 flex justify-end gap-2 items-end w-118 h-24 p-4 pb-2 pt-2 rounded-b-3xl
+              className="flex flex-col  justify-start  items-start pt-6 pb-4 pl-6 md:flex-row  md:gap-2  md:items-end w-118 md:h-24 px-4 md:py-2 rounded-b-3xl
              shadow-[5px_0_6px_-1px_var(--tone-3),_-5px_0_6px_-1px_var(--tone-3),0_6px_6px_-1px_var(--tone-3)]"
             >
               <img
@@ -49,7 +49,7 @@ export default function Home() {
                 alt="Jamspots icon"
                 className="h-16"
               />
-              <p className="text-xs py-4 text-text-2 font-semibold">
+              <p className="text-xs  md:py-4 text-text-2 font-semibold">
                 Find the next spot where music happens.
               </p>
             </div>
