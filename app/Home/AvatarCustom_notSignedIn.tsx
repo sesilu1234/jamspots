@@ -155,33 +155,35 @@ export default function DropdownMenuNotSignedIn() {
   );
 }
 
-import { Sun, Moon, Coffee, Droplet, Leaf } from 'lucide-react';
+import { Sun, Moon, Coffee, Droplet, Leaf, Rocket } from 'lucide-react';
+import { useTheme } from '../ThemeProvider';
 
 export function AccordionTheme() {
-  const [theme, setTheme] = useState<
-    'light' | 'dark' | 'tangerine' | 'ocean' | 'forest'
-  >('dark');
+  const { theme, setTheme } = useTheme(); // use context
 
-  const themes = ['light', 'dark', 'tangerine', 'ocean', 'forest'] as const;
-  const icons = [Sun, Moon, Coffee, Droplet, Leaf];
-  const iconColors: Record<string, string> = {
+  const themes = [
+    'light',
+    'dark',
+    'tangerine',
+    'ocean',
+    'forest',
+    'slate',
+  ] as const;
+
+  const icons = [Sun, Moon, Coffee, Droplet, Leaf, Rocket];
+
+  const iconColors: Record<(typeof themes)[number], string> = {
     light: 'text-yellow-400',
     dark: 'text-purple-400',
-    tangerine: 'text-orange-500',
+    tangerine: 'text-orange-400',
     ocean: 'text-blue-400',
     forest: 'text-green-500',
-  };
-
-  const handleThemeChange = (t: typeof theme) => {
-    setTheme(t);
-    const html = document.documentElement;
-    html.classList.remove('light', 'dark', 'tangerine', 'ocean', 'forest');
-    html.classList.add(t);
+    slate: 'text-slate-500',
   };
 
   return (
     <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="item-1">
+      <AccordionItem value="theme">
         <AccordionTrigger>Theme Mode</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-2 py-2">
           {themes.map((t, i) => {
@@ -189,14 +191,14 @@ export function AccordionTheme() {
             return (
               <button
                 key={t}
+                onClick={() => setTheme(t)}
                 className={`flex items-center gap-2 px-4 py-1 text-left rounded-md ${
                   theme === t ? 'font-bold' : 'hover:bg-accent hover:underline'
                 }`}
-                onClick={() => handleThemeChange(t)}
               >
                 <Icon
                   className={`w-4 h-4 ${
-                    theme === t ? iconColors[t] : 'text-tone-1/60'
+                    theme === t ? iconColors[t] : 'text-gray-400/80'
                   }`}
                 />
                 {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -208,6 +210,7 @@ export function AccordionTheme() {
     </Accordion>
   );
 }
+
 export function AccordionLanguage() {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
 

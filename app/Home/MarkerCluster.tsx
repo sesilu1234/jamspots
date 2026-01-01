@@ -8,6 +8,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMapContext } from './MapContext';
+import { Card, CardContent } from '@/components/ui/card';
 
 type Marker = {
   id: string;
@@ -154,16 +155,6 @@ export function JamCardMarker({
     </Card>
   );
 }
-
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 
 const tags = ['blues', 'rap'];
 
