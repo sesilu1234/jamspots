@@ -69,8 +69,8 @@ export default function DropdownMenuNotSignedIn() {
         <DropdownMenuTrigger asChild>
           <button>
             <div
-              className="shadow-md hover:shadow-lg   text hover:bg-tone-4
-                         transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm border-2 border-fg-tertiary"
+              className="shadow-md hover:shadow-lg   hover:bg-tone-4
+                         transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm border-2 border-tone-1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ export default function DropdownMenuNotSignedIn() {
             </DropdownMenuItem>
 
             <DropdownMenuItem disabled>
-              <div className="h-[1.5px] bg-gray-700/50 w-full "></div>
+              <div className="h-[1.5px] bg-tone-0/40 w-full "></div>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuLabel>Settings</DropdownMenuLabel>
@@ -155,18 +155,14 @@ export default function DropdownMenuNotSignedIn() {
   );
 }
 
-
-
-
-
 import { Sun, Moon, Coffee, Droplet, Leaf } from 'lucide-react';
 
 export function AccordionTheme() {
   const [theme, setTheme] = useState<
     'light' | 'dark' | 'tangerine' | 'ocean' | 'forest'
-  >('light');
+  >('dark');
 
-  const themes = ['light', 'dark', 'tangerine', 'ocean', 'forest'];
+  const themes = ['light', 'dark', 'tangerine', 'ocean', 'forest'] as const;
   const icons = [Sun, Moon, Coffee, Droplet, Leaf];
   const iconColors: Record<string, string> = {
     light: 'text-yellow-400',
@@ -176,8 +172,15 @@ export function AccordionTheme() {
     forest: 'text-green-500',
   };
 
+  const handleThemeChange = (t: typeof theme) => {
+    setTheme(t);
+    const html = document.documentElement;
+    html.classList.remove('light', 'dark', 'tangerine', 'ocean', 'forest');
+    html.classList.add(t);
+  };
+
   return (
-    <Accordion type="single" collapsible className="w-full" defaultValue={undefined}>
+    <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1">
         <AccordionTrigger>Theme Mode</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-2 py-2">
@@ -186,14 +189,16 @@ export function AccordionTheme() {
             return (
               <button
                 key={t}
-                className={`flex items-center gap-2 px-4 py-1 text-left ${
-                  theme === t
-                    ? 'font-bold'
-                    : 'hover:bg-accent hover:underline rounded-md'
+                className={`flex items-center gap-2 px-4 py-1 text-left rounded-md ${
+                  theme === t ? 'font-bold' : 'hover:bg-accent hover:underline'
                 }`}
-                onClick={() => setTheme(t as typeof theme)}
+                onClick={() => handleThemeChange(t)}
               >
-                <Icon className={`w-4 h-4 ${theme === t ? iconColors[t] : 'text-slate-400'}`} />
+                <Icon
+                  className={`w-4 h-4 ${
+                    theme === t ? iconColors[t] : 'text-tone-1/60'
+                  }`}
+                />
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </button>
             );
@@ -203,8 +208,6 @@ export function AccordionTheme() {
     </Accordion>
   );
 }
-
-
 export function AccordionLanguage() {
   const [language, setLanguage] = useState<'en' | 'es'>('en');
 

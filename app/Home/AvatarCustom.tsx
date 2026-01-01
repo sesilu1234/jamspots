@@ -12,7 +12,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-import { useTheme } from "next-themes";
+import { useTheme } from 'next-themes';
 
 type AvatarCustomProps = {
   session: Session | null;
@@ -77,7 +77,7 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-40 relative top-0 border-1 border-white/25"
+          className="w-40 relative top-0 border-1 border-tone-0/25"
           align="end"
         >
           <DropdownMenuLabel>Your account</DropdownMenuLabel>
@@ -88,10 +88,6 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
 
             <DropdownMenuItem onSelect={() => signOut({ callbackUrl: '/' })}>
               Cerrar sesión
-            </DropdownMenuItem>
-
-            <DropdownMenuItem disabled>
-              <div className="h-[1.5px] bg-gray-700/50 w-full "></div>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuLabel>Settings</DropdownMenuLabel>
@@ -146,30 +142,27 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
   );
 }
 
-
-
-import { Sun, Moon, Coffee, Droplet, Leaf } from "lucide-react";
-
+import { Sun, Moon, Coffee, Droplet, Leaf } from 'lucide-react';
 
 export function AccordionTheme() {
   const [theme, setTheme] = useState<
-    "light" | "dark" | "tangerine" | "ocean" | "forest"
-  >("dark");
+    'light' | 'dark' | 'tangerine' | 'ocean' | 'forest'
+  >('dark');
 
-  const themes = ["light", "dark", "tangerine", "ocean", "forest"] as const;
+  const themes = ['light', 'dark', 'tangerine', 'ocean', 'forest'] as const;
   const icons = [Sun, Moon, Coffee, Droplet, Leaf];
   const iconColors: Record<string, string> = {
-    light: "text-yellow-400",
-    dark: "text-purple-400",
-    tangerine: "text-orange-500",
-    ocean: "text-blue-400",
-    forest: "text-green-500",
+    light: 'text-yellow-400',
+    dark: 'text-purple-400',
+    tangerine: 'text-orange-500',
+    ocean: 'text-blue-400',
+    forest: 'text-green-500',
   };
 
   const handleThemeChange = (t: typeof theme) => {
     setTheme(t);
     const html = document.documentElement;
-    html.classList.remove("light", "dark", "tangerine", "ocean", "forest");
+    html.classList.remove('light', 'dark', 'tangerine', 'ocean', 'forest');
     html.classList.add(t);
   };
 
@@ -184,15 +177,13 @@ export function AccordionTheme() {
               <button
                 key={t}
                 className={`flex items-center gap-2 px-4 py-1 text-left rounded-md ${
-                  theme === t
-                    ? "font-bold"
-                    : "hover:bg-accent hover:underline"
+                  theme === t ? 'font-bold' : 'hover:bg-accent hover:underline'
                 }`}
                 onClick={() => handleThemeChange(t)}
               >
                 <Icon
                   className={`w-4 h-4 ${
-                    theme === t ? iconColors[t] : "text-slate-400"
+                    theme === t ? iconColors[t] : 'text-tone-1/60'
                   }`}
                 />
                 {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -204,9 +195,6 @@ export function AccordionTheme() {
     </Accordion>
   );
 }
-
-
-
 
 export function AccordionLanguage() {
   const [language, setLanguage] = useState<'en' | 'es'>('en');

@@ -22,6 +22,8 @@
 
                      ojo a lo de las daates en general, checkear y asegurar bien la logica
 
+- que al principio tambien solo aparezcan los markers de local (no whoel world)
+
 - hacer los styles, primero dark y light, y despues sin mas poniendo una paleta
   suave para los styles (poner en seleccionar styles usuario iconos de theme)
 
@@ -62,3 +64,5 @@ bg-gradient-to-b from-slate-950 to-slate-900
 bg-gradient-to-br from-[#020617] via-[#020617] to-[#0f172a]
 
 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800
+
+-mejorar eso ui -hacer cambios colores -hacer version movil facil

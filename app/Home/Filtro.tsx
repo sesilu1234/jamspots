@@ -236,7 +236,7 @@ export default function Filtro({
             </div>
 
             {cardFiltersOpen ? (
-              <div className="relative bg-tone-0/95 text-tone-6  p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] border-0 border-t-0 border-black/50 ">
+              <div className="relative bg-tone-0 text-tone-6  p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
                 <div className="flex justify-center items-center gap-24  mb-5 mt-5">
                   <h2 className="text-4xl font-bold text-center  text-text-secondary">
                     Local
@@ -244,7 +244,7 @@ export default function Filtro({
                   <button
                     onClick={() => handleAccept('local')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-yellow-500 hover:bg-yellow-600 hover:border-black/80 text-black font-semibold 
+            bg-secondary-1 hover:bg-secondary-1/75 hover:border-black/80 text-black font-semibold 
              transition-colors cursor-pointer"
                   >
                     Apply
@@ -274,11 +274,11 @@ export default function Filtro({
                           onChange={() => setOrder('popular')}
                         />
                         <div
-                          className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
-      peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
+                          className="w-5 h-5 border-2 border-tone-2 rounded-md flex-shrink-0 
+      peer-checked:bg-cyan-700 transition-colors duration-200 flex items-center justify-center"
                         >
                           <svg
-                            className="w-3 h-3 text-text-secondary opacity-0 peer-checked:opacity-100"
+                            className="w-3 h-3 opacity-0 "
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -299,11 +299,11 @@ export default function Filtro({
                           onChange={() => setOrder('closeness')}
                         />
                         <div
-                          className="w-5 h-5 border-2 border-gray-400 rounded-md flex-shrink-0 
-      peer-checked:bg-blue-500 transition-colors duration-200 flex items-center justify-center"
+                          className="w-5 h-5 border-2 border-tone-2 rounded-md flex-shrink-0 
+      peer-checked:bg-cyan-700 transition-colors duration-200 flex items-center justify-center"
                         >
                           <svg
-                            className="w-3 h-3 text-text-secondary opacity-0 peer-checked:opacity-100"
+                            className="w-3 h-3  opacity-0 "
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -322,7 +322,6 @@ export default function Filtro({
                         <SliderDemo
                           distance={distance}
                           setDistance={setDistance}
-                          className="bg-red-400"
                         />
                       </label>
                     </div>
@@ -354,7 +353,7 @@ export default function Filtro({
                   <button
                     onClick={() => handleAccept('global')}
                     className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-yellow-500 hover:bg-yellow-600 hover:border-black/80 text-black font-semibold 
+            bg-secondary-1 hover:bg-secondary-1/75  hover:border-black/80 text-black  font-semibold 
              transition-colors cursor-pointer"
                   >
                     Apply

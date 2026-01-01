@@ -47,31 +47,30 @@ export default function JamCard({
         {/* Right panel */}
         <CardContent className="flex flex-col gap-1 justify-between text-xs pt-3 pb-2 ">
           <div
-            className="font-medium text-lg text-white mb-2 line-clamp-2 overflow-hidden text-ellipsis"
+            className="font-medium text-lg text-tone-0 mb-2 line-clamp-2 overflow-hidden text-ellipsis"
             title={`${jamName} at ${spotName}`}
           >
             {jamName} at {spotName}
           </div>
 
-          <div className="text-xs text-white/70 truncate">{address}</div>
+          <div className="text-xs text-tone-0/70 truncate">{address}</div>
 
-          
-          <div className="text-sm text-white/90">
-  {new Date(`${date}T${time}`).toLocaleString('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  })}
-</div>
+          <div className="text-sm text-tone-0/90">
+            {new Date(`${date}T${time}`).toLocaleString('en-GB', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+            })}
+          </div>
           {tags && (
-            <div className="flex flex-wrap gap-1 mt-3 text-black">
+            <div className="flex flex-wrap gap-1 mt-3 text-font-6">
               {tags.map((tag, i) => (
                 <span
                   key={i}
-                  className=" border-1 border-white text-white/95 rounded px-2 py-1 text-xs"
+                  className=" border-1 border-tone-0 text-tone-0/95 rounded px-2 py-1 text-xs"
                 >
                   {tag}
                 </span>

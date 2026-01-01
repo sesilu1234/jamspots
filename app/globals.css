@@ -187,13 +187,12 @@
   --tone-5: oklch(21% 0.006 285.885);
   --tone-6: oklch(14.7% 0.004 49.25); /* lowest / darkest */
   --primary-1: oklch(0.76 0.2 279);
-  --secondary-1: oklch(0.76 0.2 99);
+  --secondary-1: oklch(80.7% 0.333 95);
   --danger: oklch(0.7 0.2 30);
   --warning: oklch(0.7 0.2 100);
   --success: oklch(0.7 0.2 160);
   --info: oklch(38.596% 0.05288 256.134);
 }
-
 
 .tangerine {
   --radius: 0.625rem;
@@ -247,7 +246,7 @@
 }
 
 .ocean {
-   --radius: 0.625rem;
+  --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(0.205 0 0);
@@ -298,7 +297,7 @@
 }
 
 .forest {
-   --radius: 0.625rem;
+  --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(0.205 0 0);

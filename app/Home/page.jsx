@@ -42,7 +42,7 @@ export default function Home() {
           <div className="inline-block">
             <div
               className="ml-0 flex justify-end gap-2 items-end w-118 h-24 p-4 pb-2 pt-2 rounded-b-3xl
-             shadow-[5px_0_6px_-1px_rgba(255,255,255,0.1),_-5px_0_6px_-1px_rgba(255,255,255,0.1),0_6px_6px_-1px_rgba(255,255,255,0.1)]"
+             shadow-[5px_0_6px_-1px_var(--tone-3),_-5px_0_6px_-1px_var(--tone-3),0_6px_6px_-1px_var(--tone-3)]"
             >
               <img
                 src="jamspots_icon.png"
@@ -54,10 +54,10 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="h-[1.5px] bg-foreground-1/50 w-96 mt-1 opacity-0"></div>
+            {/* <div className="h-[1.5px] bg-foreground-1/50 w-96 mt-1 opacity-0"></div> */}
           </div>
 
-          <div className="flex items-center mb-5 mt-4 ml-3 gap-2">
+          <div className="flex items-center mb-5 mt-12 ml-3 gap-2">
             {/* <Input
               className="w-72 h-10 px-3 text-sm text-gray-500 placeholder-gray-500 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="search"
@@ -79,14 +79,13 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex justify-between items-end px-3 font-semibold uppercase text-text-1 tracking-wide">
-           {searchType === 'local' ? (
-  <span>{jams.length} jams found</span>
-) : (
-  <span>Showing jams worldwide</span>
-)}
+          <div className="flex justify-between items-end px-3 font-semibold uppercase tracking-wide">
+            {searchType === 'local' ? (
+              <span>{jams.length} jams found</span>
+            ) : (
+              <span>Showing jams worldwide</span>
+            )}
 
-            
             <div className="flex flex-col items-end">
               {searchType === 'local' ? (
                 <span> Showing jams near you </span>
@@ -96,7 +95,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative w-full mx-auto mt-2 h-148 rounded-sm bg-fg-primary/30 shadow-md overflow-hidden">
+          <div className="relative w-full mx-auto mt-2 h-148 rounded-sm  shadow-md overflow-hidden">
             <MapRender />
             <JamCarousel
               jams={jams}
@@ -160,7 +159,7 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="w-screen bg-bg/0 pb-12 mt-0 flex-1 ">
+      <footer className="w-screen pb-12 mt-0 flex-1 ">
         <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">
           {/* Navigation Links */}
           <div className="flex flex-col text-tone-1/95 items-between justify-between gap-8 ">

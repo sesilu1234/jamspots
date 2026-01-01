@@ -30,7 +30,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function MapMarkersCluster() {
   const map = useMap();
 
-   const { markersData, setMarkersData } = useMapContext();
+  const { markersData, setMarkersData } = useMapContext();
 
   // const [markersDetails, setMarkersDetails] = useState<Record<number, MarkerDetail>>({});
   const [selectedMarker, setSelectedMarker] =
@@ -61,21 +61,8 @@ export default function MapMarkersCluster() {
     await fetchMarker(id);
   };
 
-  // Fetch markers positions
-  useEffect(() => {
-    fetch('/api/get-all-markers')
-      .then((res) => res.json())
-      .then((data: Marker[]) => {
-        setMarkersData(data); // update state
-      })
-      .catch(console.error);
-  }, []);
-
   useEffect(() => {
     if (!map || markersData.length === 0) return;
-
-
-
 
     // @ts-expect-error makerExists
     const clusterGroup = L.markerClusterGroup();
