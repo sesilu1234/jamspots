@@ -87,6 +87,9 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
             <DropdownMenuItem onSelect={() => signOut({ callbackUrl: '/' })}>
               Cerrar sesión
             </DropdownMenuItem>
+            <DropdownMenuItem disabled>
+              <div className="h-[1.5px] bg-tone-0/40 w-full "></div>
+            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuLabel>Settings</DropdownMenuLabel>
           <DropdownMenuGroup>
