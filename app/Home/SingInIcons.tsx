@@ -34,7 +34,7 @@ export default function SessionMenu() {
         <>
           <button
             className="px-4 py-2 rounded-sm  text-text-3 text-sm
-            border-2 border-tone-1
+            border-2 border-tone-1 hidden md:block
 
                        transition-all duration-200
                        hover:bg-tone-3/25 

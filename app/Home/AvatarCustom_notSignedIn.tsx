@@ -89,7 +89,7 @@ export default function DropdownMenuNotSignedIn() {
             </div>
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40 relative top-5" align="end">
+        <DropdownMenuContent className="w-40 relative top-5 z-[500]" align="end">
           <DropdownMenuLabel>Create a Jam</DropdownMenuLabel>
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>

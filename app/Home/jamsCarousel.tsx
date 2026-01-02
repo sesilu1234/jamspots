@@ -22,7 +22,8 @@ export default function JamCarousel({
   // observer-based uncollapse
 
   return (
-    <div className={`flex flex-col absolute top-8 left-18 z-[500] gap-1 `}>
+    <div className={`flex flex-col absolute top-8 left-1/2 -translate-x-1/2 md:top-8 md:left-18 md:translate-x-0 z-[500] gap-1`}>
+
       {/* Collapse button */}
       <div
         className="p-2 flex items-center justify-center rounded-t-sm

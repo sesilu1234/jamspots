@@ -41,7 +41,7 @@ export default function Home() {
 
           <div className="flex ">
             <div
-              className="flex flex-col  justify-start  items-start pt-6 pb-4 pl-6 md:flex-row  md:gap-2  md:items-end w-118 md:h-24 px-4 md:py-2 rounded-b-3xl
+              className="flex flex-col  justify-start  items-start pt-3 pb-4 pl-6 md:flex-row  md:gap-2  md:items-end  md:h-24 px-4 md:py-2 rounded-b-3xl
              shadow-[5px_0_6px_-1px_var(--tone-3),_-5px_0_6px_-1px_var(--tone-3),0_6px_6px_-1px_var(--tone-3)]"
             >
               <img
@@ -57,7 +57,7 @@ export default function Home() {
             {/* <div className="h-[1.5px] bg-foreground-1/50 w-96 mt-1 opacity-0"></div> */}
           </div>
 
-          <div className="flex items-center mb-5 mt-12 ml-3 gap-2">
+          <div className="flex items-center mb-5 mt-6 ml-3 gap-2">
             {/* <Input
               className="w-72 h-10 px-3 text-sm text-gray-500 placeholder-gray-500 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="search"
@@ -79,7 +79,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex justify-between items-end px-3 font-semibold uppercase tracking-wide">
+          <div className="flex justify-between items-end px-3 font-semibold uppercase tracking-wide text-xs md:text-lg">
             {searchType === 'local' ? (
               <span>{jams.length} jams found</span>
             ) : (
