@@ -20,7 +20,9 @@ export default function Filtro({
   setSearchType,
 }) {
   const [open, setOpen] = useState(false);
-  const panelRef = useRef<HTMLDivElement | null>(null);
+  const panelRef_1 = useRef<HTMLDivElement | null>(null);
+  const panelRef_2 = useRef<HTMLDivElement | null>(null);
+  const panelRef_3 = useRef<HTMLDivElement | null>(null);
 
   const calendarRef = useRef<HTMLDivElement | null>(null);
 
@@ -66,8 +68,9 @@ export default function Filtro({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        panelRef.current &&
-        !panelRef.current.contains(event.target as Node)
+        !panelRef_1.current?.contains(event.target as Node) &&
+        !panelRef_2.current?.contains(event.target as Node) &&
+        !panelRef_3.current?.contains(event.target as Node)
       ) {
         setOpen(false);
       }
@@ -214,11 +217,16 @@ export default function Filtro({
       {/* Overlay + Filter Panel */}
       {open && (
         <div className="fixed inset-0 z-[503] flex flex-col  items-center pt-5 ">
-          <div ref={panelRef} className="relative   max-w-[80%] md:w-xl ">
-            <div className=" flex justify-center items-end gap-0  md:w-xl   text-tone-6">
+          <div className="relative   max-w-[80%] md:w-xl ">
+            <div
+              ref={panelRef_1}
+              className="flex w-fit justify-center items-end gap-0 mx-auto text-tone-6"
+            >
               <div
                 className={`pt-5 pb-2 px-2 bg-tone-0 w-30 md:w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? '' : ' border-3 md:border-4 border-tone-3/40'
+                  cardFiltersOpen
+                    ? ''
+                    : ' border-3 md:border-4 border-tone-3/40'
                 }`}
                 onClick={() => setCardFiltersOpen(true)}
               >
@@ -227,7 +235,9 @@ export default function Filtro({
 
               <div
                 className={`pt-5 pb-2 px-2 bg-tone-0 w-30 md:w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? 'border-3 md:border-4  border-tone-3/40' : ''
+                  cardFiltersOpen
+                    ? 'border-3 md:border-4  border-tone-3/40'
+                    : ''
                 }`}
                 onClick={() => setCardFiltersOpen(false)}
               >
@@ -236,7 +246,10 @@ export default function Filtro({
             </div>
 
             {cardFiltersOpen ? (
-              <div className="relative bg-tone-0 text-tone-6  p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] ">
+              <div
+                ref={panelRef_2}
+                className="relative bg-tone-0 text-tone-6  p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] "
+              >
                 <div className="flex justify-center items-center gap-24  mb-5 mt-5">
                   <h2 className="text-4xl font-bold text-center  text-text-secondary">
                     Local
@@ -252,7 +265,9 @@ export default function Filtro({
                 </div>
                 <div className="flex flex-col gap-12 md:pl-4">
                   <div className="flex flex-col ">
-                    <h1 className="text-2xl md:text-3xl font-semibold">Cuándo</h1>
+                    <h1 className="text-2xl md:text-3xl font-semibold">
+                      Cuándo
+                    </h1>
                     <DateOptions
                       dateOptions={dateOptions}
                       setDateOption={setDateOptions}
@@ -263,7 +278,9 @@ export default function Filtro({
                     />
                   </div>
                   <div className="flex flex-col">
-                    <h1 className="text-2xl md:text-3xl  font-semibold">Ordenar</h1>
+                    <h1 className="text-2xl md:text-3xl  font-semibold">
+                      Ordenar
+                    </h1>
                     <div className="flex flex-col pt-8 gap-4 ml-8">
                       <label className="flex items-center space-x-2 cursor-pointer">
                         <input
@@ -327,7 +344,9 @@ export default function Filtro({
                     </div>
                   </div>
                   <div className="flex flex-col">
-                    <h1 className="text-2xl md:text-3xl  font-semibold">Estilos</h1>
+                    <h1 className="text-2xl md:text-3xl  font-semibold">
+                      Estilos
+                    </h1>
                     <div className="flex flex-col gap-4 ml-8">
                       <label>
                         <SelectStyles styles={styles} setStyles={setStyles} />
@@ -345,7 +364,10 @@ export default function Filtro({
             </Button> */}
               </div>
             ) : (
-              <div className="relative bg-tone-0 text-tone-6   p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll">
+              <div
+                ref={panelRef_3}
+                className="relative bg-tone-0 text-tone-6   p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll"
+              >
                 <div className="flex justify-center items-center gap-24 mb-5 mt-5">
                   <h2 className="text-4xl font-bold  text-text-secondary  text-center">
                     Global
@@ -361,7 +383,9 @@ export default function Filtro({
                 </div>
                 <div className="flex flex-col gap-12 md:pl-4">
                   <div className="flex flex-col ">
-                    <h1 className="text-2xl md:text-3xl  font-semibold">Cuándo</h1>
+                    <h1 className="text-2xl md:text-3xl  font-semibold">
+                      Cuándo
+                    </h1>
                     <DateOptionsGlobal
                       dateOptions={dateOptionsGlobal}
                       setDateOption={setdateOptionsGlobal}
@@ -373,7 +397,9 @@ export default function Filtro({
                   </div>
 
                   <div className="flex flex-col">
-                    <h1 className="text-2xl md:text-3xl  font-semibold">Estilos</h1>
+                    <h1 className="text-2xl md:text-3xl  font-semibold">
+                      Estilos
+                    </h1>
                     <div className="flex flex-col gap-4 ml-8">
                       <label>
                         <SelectStyles
