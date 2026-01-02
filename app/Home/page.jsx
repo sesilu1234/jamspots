@@ -108,7 +108,7 @@ export default function Home() {
         </div>
       </MapProvider>
 
-      <div className="w-screen mt-12 pt-4 pb-4">
+      <div className="w-full mt-12 pt-4 pb-4 ">
         <div className="max-w-[90%] w-[1300px] mx-auto p-6 grid grid-cols-2 gap-12">
           <div className="flex flex-col gap-2 border-t-2 border-primary-1 pt-8">
             <h3 className="text-lg font-semibold ">¿QUÉ ES UNA JAM SESSION?</h3>
@@ -159,7 +159,7 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="w-screen pb-12 mt-0 flex-1 ">
+      <footer className="w-full pb-12 mt-0 flex-1 ">
         <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">
           {/* Navigation Links */}
           <div className="flex flex-col text-tone-1/95 items-between justify-between gap-8 ">
