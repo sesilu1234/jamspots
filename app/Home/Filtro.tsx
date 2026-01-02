@@ -26,7 +26,7 @@ export default function Filtro({
 
   const [dateOptions, setDateOptions] = useState('week');
   const [order, setOrder] = useState('popular');
-  const [distance, setDistance] = useState(30);
+  const [distance, setDistance] = useState(40);
   const [styles, setStyles] = useState<string[]>([]);
 
   const [dateOptionsGlobal, setdateOptionsGlobal] = useState('all');
@@ -214,11 +214,11 @@ export default function Filtro({
       {/* Overlay + Filter Panel */}
       {open && (
         <div className="fixed inset-0 z-[503] flex flex-col  items-center pt-5 ">
-          <div ref={panelRef} className="relative   w-xl ">
-            <div className=" flex justify-center items-end gap-0  w-xl   text-tone-6">
+          <div ref={panelRef} className="relative   max-w-[80%] md:w-xl ">
+            <div className=" flex justify-center items-end gap-0  md:w-xl   text-tone-6">
               <div
-                className={`pt-5 pb-2 px-2 bg-tone-0 w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? '' : 'border-4 border-tone-3/40'
+                className={`pt-5 pb-2 px-2 bg-tone-0 w-30 md:w-40 rounded-t-xl text-center cursor-pointer ${
+                  cardFiltersOpen ? '' : ' border-3 md:border-4 border-tone-3/40'
                 }`}
                 onClick={() => setCardFiltersOpen(true)}
               >
@@ -226,8 +226,8 @@ export default function Filtro({
               </div>
 
               <div
-                className={`pt-5 pb-2 px-2 bg-tone-0 w-40 rounded-t-xl text-center cursor-pointer ${
-                  cardFiltersOpen ? 'border-4 border-tone-3/40' : ''
+                className={`pt-5 pb-2 px-2 bg-tone-0 w-30 md:w-40 rounded-t-xl text-center cursor-pointer ${
+                  cardFiltersOpen ? 'border-3 md:border-4  border-tone-3/40' : ''
                 }`}
                 onClick={() => setCardFiltersOpen(false)}
               >
@@ -243,16 +243,16 @@ export default function Filtro({
                   </h2>
                   <button
                     onClick={() => handleAccept('local')}
-                    className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
+                    className="absolute right-5 md:right-10 top-5 rounded-md border border-black/20 px-4 py-2
             bg-secondary-1 hover:bg-secondary-1/75 hover:border-black/80 text-black font-semibold 
              transition-colors cursor-pointer"
                   >
                     Apply
                   </button>
                 </div>
-                <div className="flex flex-col gap-12 p-6">
+                <div className="flex flex-col gap-12 md:pl-4">
                   <div className="flex flex-col ">
-                    <h1 className="text-3xl font-semibold">Cuándo</h1>
+                    <h1 className="text-2xl md:text-3xl font-semibold">Cuándo</h1>
                     <DateOptions
                       dateOptions={dateOptions}
                       setDateOption={setDateOptions}
@@ -263,7 +263,7 @@ export default function Filtro({
                     />
                   </div>
                   <div className="flex flex-col">
-                    <h1 className="text-3xl font-semibold">Ordenar</h1>
+                    <h1 className="text-2xl md:text-3xl  font-semibold">Ordenar</h1>
                     <div className="flex flex-col pt-8 gap-4 ml-8">
                       <label className="flex items-center space-x-2 cursor-pointer">
                         <input
@@ -327,7 +327,7 @@ export default function Filtro({
                     </div>
                   </div>
                   <div className="flex flex-col">
-                    <h1 className="text-3xl font-semibold">Estilos</h1>
+                    <h1 className="text-2xl md:text-3xl  font-semibold">Estilos</h1>
                     <div className="flex flex-col gap-4 ml-8">
                       <label>
                         <SelectStyles styles={styles} setStyles={setStyles} />
@@ -352,16 +352,16 @@ export default function Filtro({
                   </h2>
                   <button
                     onClick={() => handleAccept('global')}
-                    className="absolute right-10 top-5 rounded-md border border-black/20 px-4 py-2
+                    className="absolute right-5 md:right-10  top-5 rounded-md border border-black/20 px-4 py-2
             bg-secondary-1 hover:bg-secondary-1/75  hover:border-black/80 text-black  font-semibold 
              transition-colors cursor-pointer"
                   >
                     Apply
                   </button>
                 </div>
-                <div className="flex flex-col gap-12 p-6">
+                <div className="flex flex-col gap-12 md:pl-4">
                   <div className="flex flex-col ">
-                    <h1 className="text-3xl font-semibold">Cuándo</h1>
+                    <h1 className="text-2xl md:text-3xl  font-semibold">Cuándo</h1>
                     <DateOptionsGlobal
                       dateOptions={dateOptionsGlobal}
                       setDateOption={setdateOptionsGlobal}
@@ -373,7 +373,7 @@ export default function Filtro({
                   </div>
 
                   <div className="flex flex-col">
-                    <h1 className="text-3xl font-semibold">Estilos</h1>
+                    <h1 className="text-2xl md:text-3xl  font-semibold">Estilos</h1>
                     <div className="flex flex-col gap-4 ml-8">
                       <label>
                         <SelectStyles
@@ -424,7 +424,7 @@ export function DateOptions({
   ];
 
   return (
-    <div className="flex gap-3 pt-8 ml-8">
+    <div className="flex flex-wrap  gap-3 pt-8 ml-8">
       {options.slice(0, 3).map((opt) => (
         <Button
           key={opt.value}
@@ -484,7 +484,7 @@ export function DateOptionsGlobal({
   ];
 
   return (
-    <div className="flex gap-3 pt-8 ml-8">
+    <div className="flex flex-wrap  gap-3 pt-8 ml-8">
       {options.map((opt) => (
         <Button
           key={opt.value}
@@ -559,9 +559,9 @@ export function SliderDemo({
 }: SliderDemoProps) {
   return (
     <>
-      <div className="flex gap-32 items-end mb-4 ">
-        <h1 className="text-3xl font-semibold pb-4">Distancia</h1>
-        <span className="pb-1">{distance} km</span>
+      <div className="flex gap-16 md:gap-32 items-end mb-4 ">
+        <h1 className="text-2xl md:text-3xl  font-semibold pb-4">Distancia</h1>
+        <span className="pb-5 md:pb-1">{distance} km</span>
       </div>
 
       <Slider
@@ -623,7 +623,7 @@ export function SelectStyles({ styles, setStyles }: SelectStylesProps) {
   ];
   return (
     <div>
-      <div className="grid grid-flow-col grid-rows-2 auto-cols-max gap-2 mt-4 border border-black/20 p-2 rounded max-w-3/4 overflow-x-auto">
+      <div className="grid grid-flow-col grid-rows-2 auto-cols-max gap-2 mt-4 border border-black/20 p-2 rounded  overflow-x-auto">
         {all_styles.map((style) => {
           const isSelected = styles.includes(style);
           return (
