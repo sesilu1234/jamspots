@@ -7,10 +7,10 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white/85 text-black">
       <div className="w-[1300px] max-w-[90%] mx-auto ">
-        <div className="inline-block ml-24 mt-12">
-          <div className="ml-3 flex  items-end gap-2">
+        <div className="inline-block ml-6 sm:ml-12 md:ml-24 mt-12">
+          <div className="ml-3 flex flex-col  md:flex-row  md:items-end gap-2">
             <h3 className="font-bold text-4xl">jamspots</h3>
-            <p className="text-xs pb-1 text-gray-800 font-semibold">
+            <p className=" text-xs pb-1 text-gray-800 font-semibold">
               Find the next spot where music happens.
             </p>
           </div>
@@ -21,8 +21,8 @@ export default function Home() {
             <h3 className="font-bold text-5xl">BIENVENIDO A JAMSPOTS</h3>
           </div>
 
-          <div className="h-[1.5px] bg-gray-700/50 w-168 mt-4 mx-auto"></div>
-          <div className="flex w-168 justify-between mx-auto mt-4 text-black/95">
+          <div className="h-[1.5px] bg-gray-700/50 container md:w-168 mt-4 mx-auto"></div>
+          <div className="flex container md:w-168 justify-between md:mx-auto mt-4 text-black/95">
             <Link href="/">
               <div className="flex gap-4 items-center font-bold">
                 <svg
