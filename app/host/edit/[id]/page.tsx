@@ -22,8 +22,8 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <div className="flex bg-background text-primary">
-      <div className="min-h-screen w-1/4 bg-[rgb(30,30,30)]">
+    <div className="flex flex-col lg:flex-row bg-background text-primary">
+      <div className="min-h-screen  bg-[rgb(30,30,30)] ">
         <Dialog>
           <DialogTrigger asChild>
             <button className="mx-8 my-24 flex items-center gap-4 text-white cursor-pointer">
@@ -71,7 +71,7 @@ export default function Home() {
         <EditSections childSaveOnUnmount={childSaveOnUnmount} />
       </div>
 
-      <div className="min-h-screen w-3/4 bg-white">
+      <div className="min-h-screen  bg-white">
         <EditArea childSaveOnUnmount={childSaveOnUnmount} />
       </div>
     </div>

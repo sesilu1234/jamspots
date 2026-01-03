@@ -95,8 +95,8 @@ export default function EditArea({
   }, []);
 
   return (
-    <div className="p-15">
-      <div className="mx-auto w-3/4">
+    <div className="lg:p-15">
+      <div className="mx-auto lg:w-3/4">
         <Primary
           jamTitleRef={jamTitleRef}
           locationTitleRef={locationTitleRef}
@@ -105,7 +105,7 @@ export default function EditArea({
         />
       </div>
 
-      <div className="mx-auto w-3/4 p-4 ">
+      <div className="mx-auto lg:w-3/4 p-4 ">
         <h3 className="font-bold text-2xl mb-4">Horario</h3>
         <div className="flex gap-8 items-end">
           <div className="flex gap-4">
