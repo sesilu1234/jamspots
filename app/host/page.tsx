@@ -53,7 +53,7 @@ export default async function Home() {
             </div>
           </Link>
 
-          <h3 className="font-bold text-3xl ml-24 mt-12">Your jams</h3>
+          <h3 className="font-bold text-3xl ml-6 md:ml-24 mt-12">Your jams</h3>
         </div>
 
         <JamSessionList />

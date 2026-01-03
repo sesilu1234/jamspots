@@ -113,7 +113,7 @@ export default function JamSessionList() {
     );
 
   return (
-    <div className="flex flex-col mt-8 gap-6">
+    <div className=" flex flex-col mt-8 gap-6">
       {jams.map((jam, i) => (
         <Jam
           key={i}
@@ -130,7 +130,7 @@ export default function JamSessionList() {
         <Link
           href={`/host/create`}
           prefetch={false}
-          className="flex justify-center items-center h-32 bg-gray-500 rounded-lg w-[300px]"
+          className="flex justify-center items-center h-24 md:h-32 bg-gray-500 rounded-lg w-[200px] md:w-[300px]"
         >
           <div className="flex items-center justify-between font-semibold text-white gap-2">
             <div className="bg-black w-10 h-10 rounded-full flex items-center justify-center text-lg">
@@ -154,6 +154,19 @@ export default function JamSessionList() {
   );
 }
 
+import { Pencil, Eye, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
+import { ButtonGroup } from '@/components/ui/button-group';
+
 function Jam({
   id,
   jam_title,
@@ -164,7 +177,7 @@ function Jam({
 }: JamProps) {
   return (
     <div className="flex items-center gap-8 py-4 mx-auto container">
-      <div className=" w-[300px] h-32 relative">
+      <div className=" w-3/10 h-32 relative">
         <Image
           src={jam_image_src}
           alt={jam_title}
@@ -173,7 +186,7 @@ function Jam({
         />
       </div>
 
-      <div className="flex flex-col  w-[420px] px-[20px]">
+      <div className="flex flex-col  w-4/10 px-[20px]">
         <h3 className="text-lg font-bold line-clamp-2">{jam_title}</h3>
 
         <h1 className="text-sm text-gray-600 font-semibold line-clamp-2">
@@ -181,11 +194,11 @@ function Jam({
         </h1>
       </div>
 
-      <div className="flex gap-4  w-[300px] ">
+      <div className="hidden md:flex flex-col md:flex-row items-start gap-4 w-3/10 text-sm md:text-lg">
         <Link
           href={`/jam/${jam_slug}`}
           prefetch={false}
-          className="px-3 py-1 rounded-sm  text-black  border border-black  hover:bg-[#d8a408]  transition-colors"
+          className="px-3 py-1 rounded-sm  text-black  border-1 border-black bg-cyan-400/40 hover:bg-cyan-400/100  transition-colors"
         >
           View
         </Link>
@@ -193,7 +206,7 @@ function Jam({
         <Link
           href={`/host/edit/${id}`}
           prefetch={false}
-          className="px-3 py-1 rounded-sm ml-[20px] bg-black/80 text-white hover:bg-black"
+          className="px-3 py-1 rounded-sm md:ml-[20px] bg-amber-400/0 text-black hover:bg-amber-400/70 border-1 border-black"
         >
           Editar
         </Link>
@@ -204,6 +217,44 @@ function Jam({
         >
           Eliminar
         </button>
+      </div>
+      <div className="md:hidden">
+        <ButtonGroup>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="icon"
+                aria-label="More Options"
+                className="bg-slate-800/80 text-white border-1 border-black hover:bg-black/60"
+              >
+                <MoreHorizontalIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-32">
+              <DropdownMenuGroup>
+                <Link href={`/jam/${jam_slug}`} prefetch={false}>
+                  <DropdownMenuItem>
+                    <Eye className="text-cyan-400/80 hover:text-blue-700" />
+                    View
+                  </DropdownMenuItem>
+                </Link>
+                <Link href={`/host/edit/${id}`} prefetch={false}>
+                  <DropdownMenuItem>
+                    <Pencil className="text-amber-600 hover:text-amber-700" />
+                    Edit
+                  </DropdownMenuItem>
+                </Link>
+                <DropdownMenuItem
+                  variant="default"
+                  onClick={() => deleteJam(id)}
+                >
+                  <Trash2Icon className="text-red-500" />
+                  Trash
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </ButtonGroup>
       </div>
     </div>
   );
