@@ -126,7 +126,7 @@ export default function JamSessionList() {
         />
       ))}
 
-      <div className="mt-4 mx-auto w-[1170px]">
+      <div className="mt-4 mx-auto container">
         <Link
           href={`/host/create`}
           prefetch={false}
@@ -163,7 +163,7 @@ function Jam({
   deleteJam,
 }: JamProps) {
   return (
-    <div className="flex items-center gap-8 py-4 mx-auto w-[1170px]">
+    <div className="flex items-center gap-8 py-4 mx-auto container">
       <div className=" w-[300px] h-32 relative">
         <Image
           src={jam_image_src}
