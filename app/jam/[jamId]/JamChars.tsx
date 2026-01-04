@@ -12,13 +12,15 @@ type JamDetailsProps = {
 export default function JamDetails({ jamDetails }: JamDetailsProps) {
   return (
     <div className="gap-8 flex flex-col items-center">
-      <div className="gap-5 flex  flex-col items-center">
-        <h1 className="text-2xl font-semibold">Cómo es esta Jam?</h1>
+      <div className="gap-5 flex flex-col items-center w-auto">
+        <h1 className="text-2xl font-semibold break-words text-center">
+          Cómo es esta Jam?
+        </h1>
         <div className="h-[1.5px] bg-gray-300/20 w-3/5"></div>
       </div>
 
       {/* Styles */}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap justify-center gap-3">
         <div className="flex gap-1 items-center font-medium">
           <svg
             width="24"
@@ -48,7 +50,7 @@ export default function JamDetails({ jamDetails }: JamDetailsProps) {
       </div>
 
       {/* Features */}
-      <div className="flex gap-12">
+      <div className="flex flex-wrap justify-center gap-6 w-full">
         <div className="flex gap-3 items-center">
           <svg
             width="20"

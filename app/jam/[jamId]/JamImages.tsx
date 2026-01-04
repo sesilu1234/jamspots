@@ -7,7 +7,7 @@ type JamImagesProps = {
 
 export function JamImagesTop({ images }: JamImagesProps) {
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-2 w-1/2">
+    <div className="grid grid-cols-2 grid-rows-2 gap-2 w-full lg:w-1/2">
       {/* Photo 1: col-span-2 row-span-2 */}
       <div
         className="col-span-2 row-span-2 relative aspect-9/5 rounded-xl overflow-hidden

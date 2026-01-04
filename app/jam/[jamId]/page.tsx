@@ -78,9 +78,9 @@ export default function JamPage() {
     >
       <div className=" ">
         <div className="flex justify-between w-[1300px] max-w-[90%] mx-auto p-0">
-          <Link href="/" className="ml-3 flex gap-2 items-end">
+          <Link href="/" className="mx-auto lg:ml-3 flex gap-2 items-end">
             <div
-              className="ml-0 flex justify-end gap-2 items-end w-118 h-24 p-4 pb-2 pt-2 rounded-b-3xl
+              className="ml-0 flex justify-end gap-2 items-end lg:w-118 lg:h-24 p-4 pb-2 pt-2 rounded-b-3xl
   shadow-[5px_0_6px_-1px_rgba(255,255,255,0.1),_-5px_0_6px_-1px_rgba(255,255,255,0.1),0_6px_6px_-1px_rgba(255,255,255,0.1)]"
             >
               <Image
@@ -92,7 +92,7 @@ export default function JamPage() {
                 priority
               />
 
-              <p className="text-xs py-4 text-text-2 font-semibold">
+              <p className="hidden lg:block text-xs py-4 text-text-2 font-semibold">
                 Find the next spot where music happens.
               </p>
             </div>
@@ -109,9 +109,9 @@ export default function JamPage() {
           </div> */}
         </div>
 
-        <div className=" w-[1100px] max-w-[60%] mx-auto flex items-end gap-12  mt-12 ">
-          <div className="w-1/2">
-            <h3 className="text-4xl font-bold leading-relaxed ">
+        <div className=" w-[1100px] max-w-[85%] lg:max-w-[60%] mx-auto flex flex-col-reverse lg:flex-row lg:items-end gap-12  mt-12 ">
+          <div className="lg:w-1/2">
+            <h3 className="text-3xl lg:text-4xl font-bold leading-relaxed ">
               {jam.jam_title + ' at ' + jam.location_title}
             </h3>
           </div>
@@ -121,7 +121,7 @@ export default function JamPage() {
         <div className="flex gap-6 w-[1300px] max-w-[75%] mx-auto py-12 mt-12">
           <div className="flex flex-col   w-1/2">
             {/* Left column: JamChars */}
-            <div className="rounded-xl flex justify-center pt-8 pb-10 px-8 border border-white/10 bg-tone-0/5">
+            <div className="rounded-xl  pt-8 pb-10 px-8 border border-white/10 bg-tone-0/5 w-full">
               <JamChars
                 jamDetails={{
                   styles: jam.styles,
