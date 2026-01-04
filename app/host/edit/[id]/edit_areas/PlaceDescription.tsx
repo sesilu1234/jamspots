@@ -17,9 +17,9 @@ export default function PlaceDescription({
   const [text, setText] = useState('');
 
   return (
-    <div className="p-6 flex flex-col gap-3">
+    <div className="pb-12 p-6 pt-0 flex flex-col gap-3">
       <Toaster />
-      <div className="ml-48 mt-0">
+      <div className="ml-4 xl:ml-48 mt-0">
         <DraftEditor data={data} childSaveOnUnmount={childSaveOnUnmount} />
       </div>
     </div>

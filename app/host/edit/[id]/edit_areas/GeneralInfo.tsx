@@ -107,8 +107,8 @@ export default function EditArea({
 
       <div className="mx-auto lg:w-3/4 p-4 ">
         <h3 className="font-bold text-2xl mb-4">Horario</h3>
-        <div className="flex gap-8 items-end">
-          <div className="flex gap-4">
+        <div className="flex flex-wrap gap-8 items-end max-w-screen">
+          <div className="flex flex-col sm:flex-row gap-4">
             <Select
               defaultValue={period}
               onValueChange={(value) => setPeriod(value as 'manual' | 'weekly')}
@@ -139,7 +139,7 @@ export default function EditArea({
                 }
                 onValueChange={setWeekDay}
               >
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-[120px] lg:w-[180px]">
                   <SelectValue placeholder="Select day of week" />
                 </SelectTrigger>
                 <SelectContent>
@@ -155,7 +155,7 @@ export default function EditArea({
               </Select>
             ) : (
               <Select disabled>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-[120px] lg:w-[180px]">
                   <SelectValue placeholder="N/A" />
                 </SelectTrigger>
               </Select>
@@ -179,12 +179,12 @@ export default function EditArea({
             </div>
           </div>
         </div>
-        <div className="flex justify-between py-6 mt-6">
+        <div className="flex flex-col gap-4 md:gap-0 sm:flex-row justify-between py-6 mt-6">
           <h1 className="">
             Or select manually (dates keep the time inputed):
           </h1>
           <button
-            className="p-2 bg-amber-300 rounded-lg"
+            className="p-2 bg-amber-300 rounded-lg self-end"
             onClick={() => setDates([])}
           >
             Clear dates
@@ -227,6 +227,15 @@ export function Calendar03({
   dates,
   datesSetter = () => {},
 }: Calendar03Props) {
+  const [numMonths, setNumMonths] = useState(2);
+
+  useEffect(() => {
+    const handleResize = () => setNumMonths(window.innerWidth >= 1024 ? 2 : 1); // lg breakpoint = 1024px
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     if (period === 'weekly' && weekDay) {
       const dayIndex = [
@@ -263,7 +272,7 @@ export function Calendar03({
   return (
     <Calendar
       mode="multiple"
-      numberOfMonths={2}
+      numberOfMonths={numMonths}
       required
       selected={dates}
       onSelect={datesSetter}

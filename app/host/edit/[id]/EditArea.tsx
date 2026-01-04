@@ -154,7 +154,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
         </div>
       ) : null}
       <div
-        className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
+        className="flex justify-center m-6 mt-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
         hover:text-black hover:bg-slate-200 hover:border hover:border-black"
         onClick={async () => {
           setProgress(13);

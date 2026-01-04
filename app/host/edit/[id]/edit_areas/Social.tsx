@@ -37,11 +37,11 @@ export default function Social({ data, childSaveOnUnmount }: SocialProps) {
 
   return (
     <div className="p-6 flex flex-col gap-3">
-      <div className="mt-12">
-        <div className="mb-12 ml-24 font-bold">
+      <div className="lg:mt-6">
+        <div className="mb-12 ml-0 lg:ml-24 font-bold">
           <span>Add links</span>
         </div>
-        <div className="flex flex-col gap-12 ml-24">
+        <div className="flex flex-col gap-12 ml-0 lg:ml-24">
           <LinksInput
             svg={
               <svg
@@ -59,6 +59,7 @@ export default function Social({ data, childSaveOnUnmount }: SocialProps) {
             name="INSTAGRAM"
             ref={instagramRef}
             value={data.instagram}
+            placeholder="https://instagram.com/username"
           />
           <LinksInput
             svg={
@@ -77,6 +78,7 @@ export default function Social({ data, childSaveOnUnmount }: SocialProps) {
             name="FACEBOOK"
             ref={facebookRef}
             value={data.facebook}
+            placeholder="https://www.facebook.com/username"
           />
           <LinksInput
             svg={
@@ -95,6 +97,7 @@ export default function Social({ data, childSaveOnUnmount }: SocialProps) {
             name="SITE WEB"
             ref={siteWebRef}
             value={data.siteWeb}
+            placeholder="https://mywebsite.com"
           />
           ;
         </div>
@@ -109,21 +112,22 @@ type LinksInputProps = {
   svg: React.ReactNode;
   name: string;
   value: string;
+  placeholder: string;
 };
 
 const LinksInput = forwardRef<HTMLInputElement, LinksInputProps>(
-  function LinksInput({ svg, name, value }, ref) {
+  function LinksInput({ svg, name, value, placeholder }, ref) {
     return (
-      <div className="flex items-center gap-12">
+      <div className="flex items-center gap-4 md:gap-12">
         <div className="w-12">{svg}</div>
 
-        <div className="p-2 bg-gray-400 rounded-md w-28 text-center text-xs">
+        <div className="p-2 hidden lg:block bg-gray-400 rounded-md w-28 text-center text-xs">
           {name}
         </div>
 
         <input
           type="text"
-          placeholder="Search for styles"
+          placeholder={placeholder}
           className={cn(
             'w-72 file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-8 min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
             'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',

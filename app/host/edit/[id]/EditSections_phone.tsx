@@ -26,12 +26,16 @@ type EditAreaProps = {
   childSaveOnUnmount: React.RefObject<() => void>;
 };
 
-export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
+export default function EditSections_phone({
+  childSaveOnUnmount,
+}: EditAreaProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialSection = searchParams.get('section') || 'informaciongeneral';
 
   const { id: slugId } = useParams();
+
+  const [collapsed, setCollapsed] = useState(false);
 
   // local state for instant highlight
   const [currentSection, setCurrentSection] = useState(initialSection);
@@ -42,34 +46,54 @@ export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
   };
 
   return (
-    <div className="flex flex-col gap-8 mx-8  w-3/5">
-      {sections.map(({ id, label, Icon }) => (
-        <div
-          key={id}
-          onClick={() => {
-            // call the current section save function
-            goToSection(id);
-            childSaveOnUnmount.current?.(); // then switch section
-          }}
-          className={`
-            flex items-center p-2 gap-2 rounded-md cursor-pointer
+    <div className="">
+      {' '}
+      <div
+        className={`flex flex-col gap-8 mx-8 w-3/5 overflow-hidden
+    transition-[opacity,max-height,padding] duration-300 ease-in-out
+    ${
+      collapsed ? 'opacity-0 max-h-0 pb-0' : 'opacity-100 max-h-[800px] pb-12'
+    }`}
+      >
+        {sections.map(({ id, label, Icon }) => (
+          <div
+            key={id}
+            onClick={() => {
+              // call the current section save function
+              goToSection(id);
+              childSaveOnUnmount.current?.(); // then switch section
+            }}
+            className={`
+            flex items-center p-2 gap-2 rounded-md cursor-pointer w-44
            ${currentSection === id ? 'bg-gray-800/80  text-white' : 'bg-white hover:bg-gray-100'}
            
           `}
-        >
-          <Icon
-            width={32}
-            height={32}
-            key={id}
-            fill={`
+          >
+            <Icon
+              width={32}
+              height={32}
+              key={id}
+              fill={`
            ${currentSection === id ? '#FFFFFF' : '#000000'}
            
           `}
-          />
+            />
 
-          <span>{label}</span>
-        </div>
-      ))}
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
+      <div
+        onClick={() => setCollapsed((v) => !v)}
+        className="
+      absolute left-1/2 top-12 -translate-x-1/2
+      bg-white/10 p-2 border border-amber-200
+      text-white rounded-md cursor-pointer
+      transition-transform duration-200 active:scale-95
+    "
+      >
+        {sections.find((s) => s.id === currentSection)?.label}
+      </div>
     </div>
   );
 }

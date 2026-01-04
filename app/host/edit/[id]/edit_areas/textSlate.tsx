@@ -146,7 +146,7 @@ const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
           </button>
         ))}
       </div>
-      <div className="w-3xl h-124  mt-4 rounded-lg  border-4 border-black/50 p-8 bg-gray-600/15">
+      <div className="w-full lg:w-3xl h-124  mt-4 rounded-lg  border-4 border-black/50 p-8 bg-gray-600/15">
         {/* Toolbar */}
 
         {/* Editor */}
