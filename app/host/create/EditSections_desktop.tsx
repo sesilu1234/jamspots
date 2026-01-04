@@ -26,7 +26,9 @@ type EditAreaProps = {
   childSaveOnUnmount: React.RefObject<() => void>;
 };
 
-export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
+export default function EditSections_desktop({
+  childSaveOnUnmount,
+}: EditAreaProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialSection = searchParams.get('section') || 'informaciongeneral';
@@ -38,7 +40,7 @@ export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
 
   const goToSection = (id: string) => {
     setCurrentSection(id); // instant highlight
-    router.push(`/host/create?section=${id}`); // update URL
+    router.push(`/host/edit/${slugId}?section=${id}`); // update URL
   };
 
   return (
@@ -53,7 +55,7 @@ export default function EditSections({ childSaveOnUnmount }: EditAreaProps) {
           }}
           className={`
             flex items-center p-2 gap-2 rounded-md cursor-pointer
-           ${currentSection === id ? 'bg-gray-800/80  text-white' : 'bg-white hover:bg-gray-300'}
+           ${currentSection === id ? 'bg-gray-800/80  text-white' : 'bg-white hover:bg-gray-100'}
            
           `}
         >

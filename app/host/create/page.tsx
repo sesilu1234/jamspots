@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useRef } from 'react';
-import EditSections from './EditSections';
+import EditSections_desktop from './EditSections_desktop';
+import EditSections_phone from './EditSections_phone';
 import EditArea from './EditArea';
 import { useRouter } from 'next/navigation';
 
@@ -22,21 +23,26 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <div className="flex bg-background text-primary">
-      <div className="min-h-screen w-1/4 bg-[rgb(30,30,30)]">
+    <div className="relative flex flex-col lg:flex-row bg-background text-primary">
+      <div className=" lg:min-h-screen  bg-[rgb(30,30,30)] ">
         <Dialog>
           <DialogTrigger asChild>
-            <button className="mx-8 my-24 flex items-center gap-4 text-white cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="currentColor"
-              >
-                <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
-              </svg>
-              <h1 className="text-sm hover:underline">Back to home page</h1>
+            <button className="flex mx-8 lg:my-24 my-12   items-center gap-4 text-white cursor-pointer">
+              <div className="hidden lg:block">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="currentColor"
+                >
+                  <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+                </svg>
+                <h1 className="text-sm hover:underline ">Back to home page</h1>
+              </div>
+              <div className="lg:hiden border-1 border-white p-1 rounded-sm">
+                <h1 className="text-sm hover:underline ">Exit</h1>
+              </div>
             </button>
           </DialogTrigger>
 
@@ -68,10 +74,15 @@ export default function Home() {
           </DialogContent>
         </Dialog>
 
-        <EditSections childSaveOnUnmount={childSaveOnUnmount} />
+        <div className="lg:hidden">
+          <EditSections_phone childSaveOnUnmount={childSaveOnUnmount} />
+        </div>
+        <div className="hidden lg:block">
+          <EditSections_desktop childSaveOnUnmount={childSaveOnUnmount} />
+        </div>
       </div>
 
-      <div className="min-h-screen w-3/4 bg-white">
+      <div className="min-h-screen  bg-white">
         <EditArea childSaveOnUnmount={childSaveOnUnmount} />
       </div>
     </div>

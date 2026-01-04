@@ -22,6 +22,7 @@ function SortablePhoto({ url, removePhoto }) {
       style={{
         transform: CSS.Transform.toString(transform),
         transition,
+        touchAction: 'none', // 👈 VERY IMPORTANT
         position: 'relative',
         width: 160,
         height: 160,
@@ -31,7 +32,7 @@ function SortablePhoto({ url, removePhoto }) {
       {/* DRAG HANDLE */}
       <div
         {...listeners}
-        className="absolute top-1 left-1 z-10 cursor-grab bg-black/50 text-white px-2 rounded rotate-90"
+        className="absolute top-1 left-1 z-10 cursor-grab bg-black/50 text-white px-2 rounded lg:rotate-90"
       >
         ⇅
       </div>
@@ -94,7 +95,7 @@ export default function PhotoUploader({
   }
 
   return (
-    <div className="p-15 flex flex-col gap-3">
+    <div className=" p-15 pt-4 lg:pt-15 flex flex-col gap-3">
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={photos}>
           <div className="flex gap-3 flex-wrap">

@@ -95,8 +95,8 @@ export default function EditArea({
   }, []);
 
   return (
-    <div className="p-15">
-      <div className="mx-auto w-3/4">
+    <div className="lg:p-15">
+      <div className="mx-auto lg:w-3/4">
         <Primary
           jamTitleRef={jamTitleRef}
           locationTitleRef={locationTitleRef}
@@ -105,10 +105,10 @@ export default function EditArea({
         />
       </div>
 
-      <div className="mx-auto w-3/4 p-4 ">
+      <div className="mx-auto lg:w-3/4 p-4 ">
         <h3 className="font-bold text-2xl mb-4">Horario</h3>
-        <div className="flex gap-8 items-end">
-          <div className="flex gap-4">
+        <div className="flex flex-wrap gap-8 items-end max-w-screen">
+          <div className="flex flex-col sm:flex-row gap-4">
             <Select
               defaultValue={period}
               onValueChange={(value) => setPeriod(value as 'manual' | 'weekly')}
@@ -139,7 +139,7 @@ export default function EditArea({
                 }
                 onValueChange={setWeekDay}
               >
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-[120px] lg:w-[180px]">
                   <SelectValue placeholder="Select day of week" />
                 </SelectTrigger>
                 <SelectContent>
@@ -155,7 +155,7 @@ export default function EditArea({
               </Select>
             ) : (
               <Select disabled>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-[120px] lg:w-[180px]">
                   <SelectValue placeholder="N/A" />
                 </SelectTrigger>
               </Select>
@@ -166,23 +166,25 @@ export default function EditArea({
               <Label htmlFor="time-from" className="px-1">
                 Starting Time
               </Label>
-              <Input
-                type="time"
-                id="time-from"
-                step="60"
-                value={fromTime}
-                onChange={(e) => setFromTime(e.target.value)}
-                className="bg-background appearance-none text-center "
-              />
+              <div className="flex justify-center">
+                <Input
+                  type="time"
+                  id="time-from"
+                  step="60"
+                  value={fromTime}
+                  onChange={(e) => setFromTime(e.target.value)}
+                  className="bg-background appearance-none text-center "
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex justify-between py-6 mt-6">
+        <div className="flex flex-col gap-4 md:gap-0 sm:flex-row justify-between py-6 mt-6">
           <h1 className="">
             Or select manually (dates keep the time inputed):
           </h1>
           <button
-            className="p-2 bg-amber-300 rounded-lg"
+            className="p-2 bg-amber-300 rounded-lg self-end"
             onClick={() => setDates([])}
           >
             Clear dates
@@ -225,6 +227,15 @@ export function Calendar03({
   dates,
   datesSetter = () => {},
 }: Calendar03Props) {
+  const [numMonths, setNumMonths] = useState(2);
+
+  useEffect(() => {
+    const handleResize = () => setNumMonths(window.innerWidth >= 1024 ? 2 : 1); // lg breakpoint = 1024px
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     if (period === 'weekly' && weekDay) {
       const dayIndex = [
@@ -261,7 +272,7 @@ export function Calendar03({
   return (
     <Calendar
       mode="multiple"
-      numberOfMonths={2}
+      numberOfMonths={numMonths}
       required
       selected={dates}
       onSelect={datesSetter}
