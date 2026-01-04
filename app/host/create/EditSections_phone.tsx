@@ -42,7 +42,7 @@ export default function EditSections_phone({
 
   const goToSection = (id: string) => {
     setCurrentSection(id); // instant highlight
-    router.push(`/host/edit/${slugId}?section=${id}`); // update URL
+    router.push(`/host/create?section=${id}`); // update URL
   };
 
   return (

@@ -40,7 +40,7 @@ export default function EditSections_desktop({
 
   const goToSection = (id: string) => {
     setCurrentSection(id); // instant highlight
-    router.push(`/host/edit/${slugId}?section=${id}`); // update URL
+    router.push(`/host/create?section=${id}`); // update URL
   };
 
   return (
