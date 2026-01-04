@@ -12,7 +12,7 @@ type JamDetailsProps = {
 export default function JamDetails({ jamDetails }: JamDetailsProps) {
   return (
     <div className="gap-8 flex flex-col items-center">
-      <div className="gap-5 flex flex-col items-center">
+      <div className="gap-5 flex  flex-col items-center">
         <h1 className="text-2xl font-semibold">Cómo es esta Jam?</h1>
         <div className="h-[1.5px] bg-gray-300/20 w-3/5"></div>
       </div>

@@ -112,7 +112,7 @@ export default function JamPage() {
         <div className=" w-[1100px] max-w-[60%] mx-auto flex items-end gap-12  mt-12 ">
           <div className="w-1/2">
             <h3 className="text-4xl font-bold leading-relaxed ">
-              {jam.jam_title +  ' at ' + jam.location_title}
+              {jam.jam_title + ' at ' + jam.location_title}
             </h3>
           </div>
           <JamImagesTop images={jam.images.slice(0, 1)} />
@@ -121,7 +121,7 @@ export default function JamPage() {
         <div className="flex gap-6 w-[1300px] max-w-[75%] mx-auto py-12 mt-12">
           <div className="flex flex-col   w-1/2">
             {/* Left column: JamChars */}
-            <div className="flex-1 rounded-xl flex justify-center pt-8 pb-10 px-8 border border-white/10 bg-tone-0/5">
+            <div className="rounded-xl flex justify-center pt-8 pb-10 px-8 border border-white/10 bg-tone-0/5">
               <JamChars
                 jamDetails={{
                   styles: jam.styles,
@@ -182,7 +182,7 @@ export default function JamPage() {
           </div>
         </div>
 
-        <footer className="w-screen bg-bg/0 pb-12 mt-0 flex-1 ">
+        <footer className="w-full bg-bg/0 pb-12 mt-0 flex-1 ">
           <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">
             {/* Navigation Links */}
             <div className="flex flex-col text-tone-1/95 items-between justify-between gap-8 ">
