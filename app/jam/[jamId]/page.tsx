@@ -149,7 +149,7 @@ export default function JamPage() {
 
           {/* Right column: TimeAndPlace sticky */}
 
-          <div className="lg:sticky top-24 rounded-xl lg:w-1/2 flex flex-col pt-8 pb-10 px-8 border border-white/10 self-start bg-tone-0/5">
+          <div className="lg:sticky top-24 rounded-xl lg:w-1/2 flex flex-col pt-8 pb-10 px-8 border border-white/10 mx-auto self-start bg-tone-0/5">
             <TimeAndPlace
               location_title={jam.location_title}
               address={jam.location_address}
