@@ -28,10 +28,10 @@ export function JamImagesTop({ images }: JamImagesProps) {
 
 export function JamImagesBottom({ images }: JamImagesProps) {
   return (
-    <div className="grid grid-cols-4 grid-rows-2 gap-6 w-full">
+    <div className="grid grid-cols-4 grid-rows-2 gap-4 lg:gap-6 w-full">
       {/* Photo 1: col-span-2 row-span-2 */}
       <div
-        className="col-span-2 row-span-2 relative w-4/4 aspect-video rounded-xl overflow-hidden
+        className="col-span-2 row-span-2 relative w-4/4 aspect-4/3 lg:aspect-video rounded-xl overflow-hidden
           ring-0 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)]"
       >
         {images[0] && (
@@ -41,7 +41,7 @@ export function JamImagesBottom({ images }: JamImagesProps) {
 
       {/* Photo 2: col-span-2 row-span-2 */}
       <div
-        className="col-span-2 row-span-2 relative  w-4/4 aspect-video  rounded-xl overflow-hidden
+        className="col-span-2 row-span-2 relative  w-4/4 aspect-4/3 lg:aspect-video  rounded-xl overflow-hidden
           ring-0 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)]"
       >
         {images[1] && (

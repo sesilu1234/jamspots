@@ -74,7 +74,7 @@ export default function JamPage() {
 
   return (
     <div
-      className={`${spaceGrotesk.className} min-h-screen bg-tone-5 text-white`}
+      className={`${spaceGrotesk.className} min-h-screen bg-tone-5 text-tone-0`}
     >
       <div className=" ">
         <div className="flex justify-between w-[1300px] max-w-[90%] mx-auto p-0">
@@ -109,7 +109,7 @@ export default function JamPage() {
           </div> */}
         </div>
 
-        <div className=" w-[1100px] max-w-[85%] lg:max-w-[60%] mx-auto flex flex-col-reverse lg:flex-row lg:items-end gap-12  mt-12 ">
+        <div className=" w-[1100px] max-w-[85%] lg:max-w-[60%] mx-auto flex flex-col-reverse lg:flex-row lg:items-end gap-8 lg:gap-12  mt-12 ">
           <div className="lg:w-1/2">
             <h3 className="text-3xl lg:text-4xl font-bold leading-relaxed ">
               {jam.jam_title + ' at ' + jam.location_title}
@@ -118,8 +118,8 @@ export default function JamPage() {
           <JamImagesTop images={jam.images.slice(0, 1)} />
         </div>
 
-        <div className="flex gap-6 w-[1300px] max-w-[75%] mx-auto py-12 mt-12">
-          <div className="flex flex-col   w-1/2">
+        <div className="flex flex-col-reverse lg:flex-row  gap-6 w-[1300px] max-w-[90%] lg:max-w-[75%] mx-auto pt-0 lg:pt-12 py-12 mt-12">
+          <div className="flex flex-col   lg:w-1/2">
             {/* Left column: JamChars */}
             <div className="rounded-xl  pt-8 pb-10 px-8 border border-white/10 bg-tone-0/5 w-full">
               <JamChars
@@ -132,7 +132,7 @@ export default function JamPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-4  rounded-lg pt-24 pb-10 px-8">
+            <div className="flex flex-col gap-4  rounded-lg  pt-18 lg:pt-24 pb-10 px-8">
               <h3 className="text-sm font-semibold"></h3>
 
               <div>
@@ -149,7 +149,7 @@ export default function JamPage() {
 
           {/* Right column: TimeAndPlace sticky */}
 
-          <div className="sticky top-24 rounded-xl w-1/2 flex flex-col pt-8 pb-10 px-8 border border-white/10 self-start bg-tone-0/5">
+          <div className="lg:sticky top-24 rounded-xl lg:w-1/2 flex flex-col pt-8 pb-10 px-8 border border-white/10 self-start bg-tone-0/5">
             <TimeAndPlace
               location_title={jam.location_title}
               address={jam.location_address}
@@ -161,7 +161,7 @@ export default function JamPage() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-12 w-[1300px] max-w-[75%] mx-auto pb-12 ">
+        <div className="flex flex-col gap-12 w-[1300px] max-w-[85%]  lg:max-w-[75%] mx-auto pb-12 ">
           <JamImagesBottom images={jam.images.slice(2, 4)} />
         </div>
 
@@ -170,13 +170,13 @@ export default function JamPage() {
         </div>
 
         <div className="relative w-[1300px] max-w-[75%] mx-auto pb-24">
-          <span className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-3xl">
+          <span className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-3xl text-tone-0/75">
             Disabled
           </span>
 
-          <div className="flex flex-col gap-8  bg-[rgb(170_170_170/0.7)]  p-6  rounded-lg opacity-40">
-            <h3 className="text-2xl">Questions</h3>
-            <p className="opacity-70">
+          <div className="flex flex-col gap-2 lg:gap-8  bg-[rgb(170_170_170/0.5)] lg:bg-[rgb(170_170_170/0.6)]  p-6  rounded-lg opacity-30">
+            <h3 className="text-xl lg:text-2xl">Questions</h3>
+            <p className="opacity-70  text-xs  lg:text-md">
               Ask any question you want to the jam´s host
             </p>
           </div>
