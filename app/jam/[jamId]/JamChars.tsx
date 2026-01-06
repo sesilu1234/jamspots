@@ -14,7 +14,7 @@ export default function JamDetails({ jamDetails }: JamDetailsProps) {
     <div className="gap-8 flex flex-col items-center">
       <div className="gap-5 flex flex-col items-center w-auto">
         <h1 className="text-2xl font-semibold break-words text-center">
-          Cómo es esta Jam?
+          What’s this Jam like?
         </h1>
         <div className="h-[1.5px] bg-gray-300/20 w-3/5"></div>
       </div>
@@ -35,7 +35,7 @@ export default function JamDetails({ jamDetails }: JamDetailsProps) {
             />
           </svg>
 
-          <h2>Estilos:</h2>
+          <h2>Styles:</h2>
         </div>
         <div className="flex gap-3">
           {jamDetails.styles.map((style, i) => (
@@ -65,7 +65,7 @@ export default function JamDetails({ jamDetails }: JamDetailsProps) {
               fill="currentColor"
             />
           </svg>
-          {jamDetails.drums ? 'Hay batería' : 'Acústico'}
+          {jamDetails.drums ? 'Has drums' : 'Acoustic'}
         </div>
         <div className="flex gap-3 items-center">
           <svg
@@ -80,7 +80,7 @@ export default function JamDetails({ jamDetails }: JamDetailsProps) {
               fill="currentColor"
             />
           </svg>
-          {jamDetails.lista_canciones ? 'Hay lista' : 'Sin lista'}
+          {jamDetails.lista_canciones ? 'Has setlist' : 'No setlist'}
         </div>
         <div className="flex gap-3 items-center">
           <svg
@@ -97,8 +97,8 @@ export default function JamDetails({ jamDetails }: JamDetailsProps) {
             />
           </svg>
           {jamDetails.instruments_lend
-            ? 'Sí hay instrumentos'
-            : 'Trae tu instrumento'}
+            ? 'Instruments available'
+            : 'Bring your own instrument'}
         </div>
       </div>
     </div>
