@@ -11,15 +11,15 @@ import SocialIcon from './icons/SocialIcon';
 import { useParams } from 'next/navigation';
 
 const sections = [
-  { id: 'informaciongeneral', label: 'Información general', Icon: InfoIcon },
-  { id: 'fotos', label: 'Fotos', Icon: PhotosIcon },
+  { id: 'informaciongeneral', label: 'General information', Icon: InfoIcon },
+  { id: 'fotos', label: 'Photos', Icon: PhotosIcon },
   {
     id: 'caracteristicas',
-    label: 'Caracteristicas del sitio',
+    label: 'Site features',
     Icon: FeaturesIcon,
   },
-  { id: 'descripcion', label: 'Descripcion', Icon: DescriptionIcon },
-  { id: 'redessociales', label: 'Redes sociales', Icon: SocialIcon },
+  { id: 'descripcion', label: 'Description', Icon: DescriptionIcon },
+  { id: 'redessociales', label: 'Social media', Icon: SocialIcon },
 ];
 
 type EditAreaProps = {

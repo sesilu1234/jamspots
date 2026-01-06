@@ -107,7 +107,7 @@ const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
     <div className="flex flex-col gap-2 ">
       <div className="">
         {' '}
-        <span className="font-semibold">Caracteres restantes: </span>{' '}
+        <span className="font-semibold">Characters remaining: </span>{' '}
         {editorState.getCurrentContent().getPlainText('').length} / 1400
       </div>
       <div className="mb-0 flex flex-wrap gap-2 mt-2 ml-4">

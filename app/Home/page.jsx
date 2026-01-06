@@ -108,52 +108,45 @@ export default function Home() {
         </div>
       </MapProvider>
 
-      <div className="w-full mt-12 pt-4 pb-4 ">
+      <div className="w-full mt-12 pt-4 pb-4">
         <div className="max-w-[90%] w-[1300px] mx-auto p-6 grid grid-cols-2 gap-12">
           <div className="flex flex-col gap-2 border-t-2 border-primary-1 pt-8">
-            <h3 className="text-lg font-semibold ">¿QUÉ ES UNA JAM SESSION?</h3>
-
-            <p className="text-sm leading-relaxed ">
-              Una jam es un encuentro donde músicos se suben al escenario a
-              tocar juntos, improvisando y compartiendo música en el momento. No
-              hace falta conocerse antes: cada noche suena diferente, y
-              cualquiera puede participar o simplemente disfrutar escuchando.
+            <h3 className="text-lg font-semibold">WHAT IS A JAM SESSION?</h3>
+            <p className="text-sm leading-relaxed">
+              A jam session is a gathering where musicians hop on stage to play
+              together, improvising and sharing music in the moment. You don’t
+              need to know anyone beforehand—every night sounds different.
+              Anyone can join in—or just hang out, feel the music, and have a
+              good time.
             </p>
           </div>
 
           <div className="flex flex-col gap-2 text-sm leading-relaxed border-t-2 border-primary-1 pt-8">
             <p>
-              <span className="font-semibold ">
-                ¿Puedo tocar si nunca he venido antes?
+              <span className="font-semibold">
+                Can I play if it’s my first time?
               </span>{' '}
-              <span className="">
-                → claro, cualquiera puede subir a tocar o cantar.
-              </span>
+              → Absolutely! Anyone can get on stage to play or sing.
             </p>
 
             <p>
-              <span className="font-semibold ">
-                ¿Hace falta llevar instrumento?
+              <span className="font-semibold">
+                Do I need to bring an instrument?
               </span>{' '}
-              <span className="">
-                → normalmente hay backline (batería, ampli, micro), pero trae tu
-                instrumento si quieres.
-              </span>
+              → Usually there’s a backline (drums, amp, mic), but bring yours if
+              you want.
             </p>
 
             <p>
-              <span className="font-semibold ">¿Hay entrada o es gratis?</span>{' '}
-              <span className="">
-                → la mayoría son gratuitas o con consumición mínima.
-              </span>
+              <span className="font-semibold">Is there an entry fee?</span> →
+              Most sessions are free or require just a minimum drink.
             </p>
 
             <p>
-              <span className="font-semibold ">¿Y si no toco nada?</span>{' '}
-              <span className="">
-                → ¡Bienvenido igual! Ven a escuchar, relajarte y disfrutar del
-                ambiente.
-              </span>
+              <span className="font-semibold">
+                What if I don’t play anything?
+              </span>{' '}
+              → You’re welcome too! Come to listen, relax, and soak up the vibe.
             </p>
           </div>
         </div>

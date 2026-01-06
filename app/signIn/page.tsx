@@ -18,7 +18,7 @@ export default function Home() {
 
         <div className="flex flex-col justify-center">
           <div className="text-center mt-24">
-            <h3 className="font-bold text-5xl">BIENVENIDO A JAMSPOTS</h3>
+            <h3 className="font-bold text-5xl">WELCOME TO JAMSPOTS</h3>
           </div>
 
           <div className="h-[1.5px] bg-gray-700/50 container md:w-168 mt-4 mx-auto"></div>
@@ -79,7 +79,7 @@ export default function Home() {
                 fill="#4285F4"
               />
             </svg>
-            Continúa con Google
+            Continue with Google
           </div>
         </div>
       </div>

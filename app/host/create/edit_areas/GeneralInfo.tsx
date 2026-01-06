@@ -106,7 +106,7 @@ export default function EditArea({
       </div>
 
       <div className="mx-auto lg:w-3/4 p-4 ">
-        <h3 className="font-bold text-2xl mb-4">Horario</h3>
+        <h3 className="font-bold text-2xl mb-4">Schedule</h3>
         <div className="flex flex-wrap gap-8 items-end max-w-screen">
           <div className="flex flex-col sm:flex-row gap-4">
             <Select

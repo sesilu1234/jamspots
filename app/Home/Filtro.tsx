@@ -265,9 +265,7 @@ export default function Filtro({
                 </div>
                 <div className="flex flex-col gap-12 md:pl-4">
                   <div className="flex flex-col ">
-                    <h1 className="text-2xl md:text-3xl font-semibold">
-                      Cuándo
-                    </h1>
+                    <h1 className="text-2xl md:text-3xl font-semibold">When</h1>
                     <DateOptions
                       dateOptions={dateOptions}
                       setDateOption={setDateOptions}
@@ -279,7 +277,7 @@ export default function Filtro({
                   </div>
                   <div className="flex flex-col">
                     <h1 className="text-2xl md:text-3xl  font-semibold">
-                      Ordenar
+                      Sort
                     </h1>
                     <div className="flex flex-col pt-8 gap-4 ml-8">
                       <label className="flex items-center space-x-2 cursor-pointer">
@@ -304,7 +302,7 @@ export default function Filtro({
                             <path d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <span className="select-none">Más populares</span>
+                        <span className="select-none">Most popular</span>
                       </label>
 
                       <label className="flex items-center space-x-2 cursor-pointer">
@@ -329,7 +327,7 @@ export default function Filtro({
                             <path d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <span className="select-none">Más cercanos</span>
+                        <span className="select-none">Closest</span>
                       </label>
                     </div>
                   </div>
@@ -345,7 +343,7 @@ export default function Filtro({
                   </div>
                   <div className="flex flex-col">
                     <h1 className="text-2xl md:text-3xl  font-semibold">
-                      Estilos
+                      Styles
                     </h1>
                     <div className="flex flex-col gap-4 ml-8">
                       <label>
@@ -384,7 +382,7 @@ export default function Filtro({
                 <div className="flex flex-col gap-12 md:pl-4">
                   <div className="flex flex-col ">
                     <h1 className="text-2xl md:text-3xl  font-semibold">
-                      Cuándo
+                      When
                     </h1>
                     <DateOptionsGlobal
                       dateOptions={dateOptionsGlobal}
@@ -398,7 +396,7 @@ export default function Filtro({
 
                   <div className="flex flex-col">
                     <h1 className="text-2xl md:text-3xl  font-semibold">
-                      Estilos
+                      Styles
                     </h1>
                     <div className="flex flex-col gap-4 ml-8">
                       <label>
@@ -586,7 +584,7 @@ export function SliderDemo({
   return (
     <>
       <div className="flex gap-16 md:gap-32 items-end mb-4 ">
-        <h1 className="text-2xl md:text-3xl  font-semibold pb-4">Distancia</h1>
+        <h1 className="text-2xl md:text-3xl  font-semibold pb-4">Distance</h1>
         <span className="pb-5 md:pb-1">{distance} km</span>
       </div>
 

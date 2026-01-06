@@ -81,11 +81,11 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
           <DropdownMenuLabel>Your account</DropdownMenuLabel>
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href="/host">Acceder</Link>
+              <Link href="/host">Access</Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem onSelect={() => signOut({ callbackUrl: '/' })}>
-              Cerrar sesión
+              Sign out
             </DropdownMenuItem>
             <DropdownMenuItem disabled>
               <div className="h-[1.5px] bg-tone-0/40 w-full "></div>
@@ -217,12 +217,6 @@ export function AccordionLanguage() {
             onClick={() => setLanguage('en')}
           >
             English
-          </button>
-          <button
-            className={`px-4 py-1 text-left ${language === 'es' ? 'font-bold' : ''}`}
-            onClick={() => setLanguage('es')}
-          >
-            Spanish
           </button>
         </AccordionContent>
       </AccordionItem>

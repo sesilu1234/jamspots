@@ -28,7 +28,7 @@ export default function Home() {
         <Dialog>
           <DialogTrigger asChild>
             <button className="flex mx-8 lg:my-24 my-12   items-center gap-4 text-white cursor-pointer">
-              <div className="hidden lg:block">
+              <div className="hidden lg:flex gap-2 hover:underline">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24px"
@@ -38,9 +38,9 @@ export default function Home() {
                 >
                   <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
                 </svg>
-                <h1 className="text-sm hover:underline ">Back to home page</h1>
+                <h1 className="text-sm  ">Back to home page</h1>
               </div>
-              <div className="lg:hiden border-1 border-white p-1 rounded-sm">
+              <div className="lg:hidden border-1 border-white p-1 rounded-sm">
                 <h1 className="text-sm hover:underline ">Exit</h1>
               </div>
             </button>

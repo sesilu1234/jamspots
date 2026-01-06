@@ -89,7 +89,10 @@ export default function DropdownMenuNotSignedIn() {
             </div>
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40 relative top-5 z-[500]" align="end">
+        <DropdownMenuContent
+          className="w-40 relative top-5 z-[500]"
+          align="end"
+        >
           <DropdownMenuLabel>Create a Jam</DropdownMenuLabel>
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
@@ -229,12 +232,6 @@ export function AccordionLanguage() {
             onClick={() => setLanguage('en')}
           >
             English
-          </button>
-          <button
-            className={`px-4 py-1 text-left ${language === 'es' ? 'font-bold' : ''}`}
-            onClick={() => setLanguage('es')}
-          >
-            Spanish
           </button>
         </AccordionContent>
       </AccordionItem>

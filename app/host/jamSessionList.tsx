@@ -208,14 +208,14 @@ function Jam({
           prefetch={false}
           className="px-3 py-1 rounded-sm md:ml-[20px] bg-amber-400/0 text-black hover:bg-amber-400/70 border-1 border-black"
         >
-          Editar
+          Edit
         </Link>
 
         <button
           className="px-3 py-1 rounded-sm bg-red-600/80 text-white hover:bg-red-700"
           onClick={() => deleteJam(id)}
         >
-          Eliminar
+          Delete
         </button>
       </div>
       <div className="md:hidden">

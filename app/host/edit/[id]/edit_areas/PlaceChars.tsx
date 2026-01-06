@@ -106,7 +106,7 @@ export default function PlaceChars({
     <div className="p-6 flex flex-col gap-3">
       <div className="max-w-[70%] ml-[10%]">
         <div className="flex justify-between">
-          <span>Estilos</span>
+          <span className="">Styles</span>
           <span>{selectedStyles.length} / 3</span>
         </div>
 
@@ -148,13 +148,13 @@ export default function PlaceChars({
         <div className="flex flex-col gap-4 mt-16">
           <div className="flex  items-center gap-6">
             {' '}
-            <span className="w-48 font-semibold ">Hay lista de canciones?</span>
+            <span className="w-48 font-semibold ">Is there a setlist?</span>
             <Button
               variant={null}
               className={`w-12 ${song_list ? 'bg-blue-500 text-white ' : 'bg-background hover:bg-primary/30'}`}
               onClick={() => setSongList(true)}
             >
-              Sí
+              Yes
             </Button>
             <Button
               variant={null}
@@ -166,13 +166,15 @@ export default function PlaceChars({
           </div>
           <div className="flex items-center gap-6">
             {' '}
-            <span className="w-48 font-semibold ">Se prestan intrumentos?</span>
+            <span className="w-48 font-semibold ">
+              Are instruments available to borrow?
+            </span>
             <Button
               variant={null}
               className={`w-12 ${instruments_lend ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
               onClick={() => setIntrumentsLend(true)}
             >
-              Sí
+              Yes
             </Button>
             <Button
               variant={null}
@@ -184,13 +186,13 @@ export default function PlaceChars({
           </div>
           <div className="flex  items-center gap-6">
             {' '}
-            <span className="w-48 font-semibold ">Hay bateria?</span>
+            <span className="w-48 font-semibold ">Is there a drum kit?</span>
             <Button
               variant={null}
               className={`w-12 ${drums ? 'bg-blue-500 text-white' : 'bg-background hover:bg-primary/30'}`}
               onClick={() => setDrums(true)}
             >
-              Sí
+              Yes
             </Button>
             <Button
               variant={null}
