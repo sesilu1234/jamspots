@@ -1,8 +1,3 @@
-- poner bien la date en jam/slug cuando es week
-
-- asegurar que esta ya toda la ui bien, incluido footers
-- seleccionar bien los colores para el cambio, y poner los themes
-
 - hacer que cada 24 h se replique info de la base de datos, a otro host o
   sitio...
 
@@ -13,29 +8,7 @@
 - si no rellenas bien crear jam y falla zod o lo que sea, enviar error y toaster
   al usuario diceinole que completo todo correctamente
 
-- mejorar stetic, styles, usando global css variables
-
-- para enseñar la hora y date en caards home (y en general) : no buscar en base
-  de datos proxima daate ni nada de eso. no haay que hacer eso . simplemente
-  coges la hora (Horario de laa jam), y poner la fecha date de busqueda ( y en
-  el caaso de semanal )
-
-                     ojo a lo de las daates en general, checkear y asegurar bien la logica
-
-- que al principio tambien solo aparezcan los markers de local (no whoel world)
-
-- hacer los styles, primero dark y light, y despues sin mas poniendo una paleta
-  suave para los styles (poner en seleccionar styles usuario iconos de theme)
-
-- colores es es solo para home y jams (para despues lo otro es estandar igual
-  siempre, aunque tengo que cambiar el background a algo como rubbed, y algo
-  mejor, y modificar algunas cositas de positioning, etc...)
-
-- mejorar pagina jam y poner para poder cambiar theme naa esto no...que tengas
-  el theme de la home...y ya...simplemente mejorar la pagina /jam/
-
-- hacer a movil, que seria lo mismo que para desktop pero un poco mas
-  pequeño...(o quizas hacer el slider aunque rapido...)
+-                    ojo a lo de las daates en general, checkear y asegurar bien la logica
 
 - mejorar cosas de la base de datos, checkeos, pedir cookies
 
@@ -48,9 +21,6 @@ visitantes tiene)
 
 -haacer lo que yaa hice : si saales sin apply filters, voler a como estaban ( no
 puede ser que entonces confunda y parezca que tienes esos filtros aplicados)
-
-- cuando el juego se activa overatch, se actgiva el river graphic y hy mass
-  brillo, y la web casi que igual queda mejor, mas visible, no tan negraco ?
 
 ---
 

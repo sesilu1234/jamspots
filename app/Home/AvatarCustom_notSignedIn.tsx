@@ -164,14 +164,7 @@ import { useTheme } from '../ThemeProvider';
 export function AccordionTheme() {
   const { theme, setTheme } = useTheme(); // use context
 
-  const themes = [
-    'light',
-    'dark',
-    'tangerine',
-    'ocean',
-    'forest',
-    'slate',
-  ] as const;
+  const themes = ['light', 'dark', 'tangerine', 'ocean', 'forest'] as const;
 
   const icons = [Sun, Moon, Coffee, Droplet, Leaf, Rocket];
 
@@ -181,7 +174,6 @@ export function AccordionTheme() {
     tangerine: 'text-orange-400',
     ocean: 'text-blue-400',
     forest: 'text-green-500',
-    slate: 'text-slate-500',
   };
 
   return (
