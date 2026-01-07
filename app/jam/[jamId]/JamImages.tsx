@@ -27,6 +27,7 @@ export function JamImagesTop({ images }: JamImagesProps) {
 }
 
 export function JamImagesBottom({ images }: JamImagesProps) {
+  console.log(images);
   return (
     <div className="grid grid-cols-4 grid-rows-2 gap-4 lg:gap-6 w-full">
       {/* Photo 1: col-span-2 row-span-2 */}

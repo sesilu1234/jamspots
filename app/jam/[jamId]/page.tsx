@@ -65,6 +65,7 @@ export default function JamPage() {
       const data = await res.json();
       setJam(data);
 
+      
       // <-- log here, after fetch
     }
     fetchJam();
@@ -162,7 +163,7 @@ export default function JamPage() {
         </div>
 
         <div className="flex flex-col gap-12 w-[1300px] max-w-[85%]  lg:max-w-[75%] mx-auto pb-12 ">
-          <JamImagesBottom images={jam.images.slice(2, 4)} />
+          <JamImagesBottom images={jam.images.slice(1, 3)} />
         </div>
 
         <div className="w-[1300px] max-w-[75%] mx-auto pb-24  ">

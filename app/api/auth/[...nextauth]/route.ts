@@ -12,12 +12,14 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user }: { user: User }) {
+
+     
       if (!user.email) return false;
 
       const { data } = await supabaseAdmin
         .from('profiles') // include schema
         .select('id')
-        .eq('email', 'banachlindelof@gmail.com')
+        .eq('email', user.email)
         .single();
 
       if (!data) {

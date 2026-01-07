@@ -4,7 +4,8 @@ import { authOptions } from '../auth/[...nextauth]/route';
 import { NextResponse } from 'next/server';
 import { jamSchema } from './zoddeCheck';
 import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
+import { success, z } from 'zod';
+import { validateJam } from './serverCheck';
 
 function generateSlug(title: string, id: string) {
   // clean title: lowercase, remove special chars, replace spaces with hyphens
@@ -27,19 +28,36 @@ export async function POST(req: Request) {
   const id = uuidv4();
   const slug = generateSlug(body.jam_title, id);
 
-  const parsed_jamData = jamSchema.safeParse(body);
+  // const parsed_jamData = jamSchema.safeParse(body);
 
-  if (!parsed_jamData.success) {
-    const errorTree = z.treeifyError(parsed_jamData.error);
-    console.log('Zod validation failed:', JSON.stringify(errorTree, null, 2)); // logs full details
-    return NextResponse.json(
-      {
-        error: "Data couldn't pass Zod",
-        details: errorTree,
-      },
-      { status: 400 },
-    );
-  }
+  // if (!parsed_jamData.success) {
+  //   const errorTree = z.treeifyError(parsed_jamData.error);
+  //   console.log('Zod validation failed:', JSON.stringify(errorTree, null, 2)); // logs full details
+  //   return NextResponse.json(
+  //     {
+  //       error: "Data couldn't pass Zod",
+  //       details: errorTree,
+  //     },
+  //     { status: 400 },
+  //   );
+  // }
+
+  console.log(body);
+  const parsed_jamData = validateJam(body);
+console.log(parsed_jamData)
+  // if (!parsed_jamData.success)
+  // {
+
+   
+  //     return NextResponse.json(
+  //     {
+  //       error: "Data couldn't pass Zod",
+  //       details: '',
+  //     },
+  //     { status: 400 },
+  //   );
+    
+  // }
 
   // get server session
   const session = await getServerSession(authOptions); // App Router uses new form

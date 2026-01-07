@@ -101,7 +101,7 @@ export default function Primary({
               <label className="block font-semibold mb-1 ml-2"> Address</label>
               <div
                 className="border p-2 w-full"
-                placeholder="No address yet"
+                
                 onChange={(e) =>
                   setdataLocation((prev) => ({
                     ...prev,
@@ -112,7 +112,7 @@ export default function Primary({
                 {dataLocation.address ? (
                   <span>{dataLocation.address}</span>
                 ) : (
-                  <span className="p-4 text-gray-400 italic select-none">
+                  <span className="py-2 text-md text-gray-500/85 select-none">
                     Click on the map to set the address
                   </span>
                 )}
