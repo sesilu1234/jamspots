@@ -2,6 +2,8 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../auth/[...nextauth]/route';
+import { success, z } from 'zod';
+import { validateJam } from './serverCheck';
 
 export async function POST(
   req: Request,
@@ -10,6 +12,19 @@ export async function POST(
   const { id } = await context.params;
 
   const body = await req.json();
+
+  console.log(body);
+  const parsed_jamData = validateJam(body);
+  console.log(parsed_jamData);
+  if (!parsed_jamData.success) {
+    return NextResponse.json(
+      {
+        error: "Data couldn't pass Zod",
+        details: '',
+      },
+      { status: 400 },
+    );
+  }
 
   const session = await getServerSession(authOptions); // App Router uses new form
 

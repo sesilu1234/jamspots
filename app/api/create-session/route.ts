@@ -24,7 +24,6 @@ function generateSlug(title: string, id: string) {
 export async function POST(req: Request) {
   const body = await req.json();
 
-
   const id = uuidv4();
   const slug = generateSlug(body.jam_title, id);
 
@@ -44,20 +43,16 @@ export async function POST(req: Request) {
 
   console.log(body);
   const parsed_jamData = validateJam(body);
-console.log(parsed_jamData)
-  // if (!parsed_jamData.success)
-  // {
-
-   
-  //     return NextResponse.json(
-  //     {
-  //       error: "Data couldn't pass Zod",
-  //       details: '',
-  //     },
-  //     { status: 400 },
-  //   );
-    
-  // }
+  console.log(parsed_jamData);
+  if (!parsed_jamData.success) {
+    return NextResponse.json(
+      {
+        error: "Data couldn't pass Zod",
+        details: '',
+      },
+      { status: 400 },
+    );
+  }
 
   // get server session
   const session = await getServerSession(authOptions); // App Router uses new form
