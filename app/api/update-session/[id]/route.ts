@@ -18,7 +18,7 @@ export async function POST(
     return NextResponse.json(
       {
         error: "Data couldn't pass Zod",
-        details: '',
+        details: "Data couldn't pass Zod",
       },
       { status: 400 },
     );
