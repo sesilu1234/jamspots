@@ -34,6 +34,16 @@ export default function Filtro({
   const [dateOptionsGlobal, setdateOptionsGlobal] = useState('all');
   const [stylesGlobal, setstylesGlobal] = useState<string[]>([]);
 
+
+const dateOptionsHold = useRef('week');
+const orderHold = useRef('popular');
+const distanceHold = useRef(40);
+const stylesHold = useRef<string[]>([]);
+
+const dateOptionsGlobalHold = useRef('all');
+const stylesGlobalHold = useRef<string[]>([]);
+
+
   const dateOptionsRef = useRef(dateOptions);
   dateOptionsRef.current = dateOptions;
 
@@ -72,12 +82,27 @@ export default function Filtro({
         !panelRef_2.current?.contains(event.target as Node) &&
         !panelRef_3.current?.contains(event.target as Node)
       ) {
+
+        setDateOptions(dateOptionsHold.current);
+    setOrder(orderHold.current);
+    setDistance(distanceHold.current);
+    setStyles([...stylesHold.current]);
+
+    setdateOptionsGlobal(dateOptionsGlobalHold.current);
+    setstylesGlobal([...stylesGlobalHold.current]);
         setOpen(false);
       }
     };
 
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        setDateOptions(dateOptionsHold.current);
+    setOrder(orderHold.current);
+    setDistance(distanceHold.current);
+    setStyles([...stylesHold.current]);
+
+    setdateOptionsGlobal(dateOptionsGlobalHold.current);
+    setstylesGlobal([...stylesGlobalHold.current]);
         setOpen(false);
       }
     };
@@ -91,26 +116,37 @@ export default function Filtro({
     };
   }, []);
 
-  const handleAccept = (searchType) => {
-    setSearchType(searchType);
+ const handleAccept = (searchType: string) => {
+  setSearchType(searchType);
+  fetchJams(searchType);
 
-    fetchJams(searchType);
-    if (searchType === 'local') {
-      map.flyTo(
-        [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
-        12,
-        { duration: 1.5 },
-      );
-    } else {
-      map.flyTo(
-        [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
-        6,
-        { duration: 1.5 },
-      );
-    }
+  if (searchType === 'local') {
+    // sync state → refs
+    dateOptionsHold.current = dateOptions;
+    orderHold.current = order;
+    distanceHold.current = distance;
+    stylesHold.current = [...styles];
 
-    setOpen(false);
-  };
+    map!.flyTo(
+      [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
+      12,
+      { duration: 1.5 },
+    );
+  } else {
+    // sync state → refs
+    dateOptionsGlobalHold.current = dateOptionsGlobal;
+    stylesGlobalHold.current = [...stylesGlobal];
+
+    map!.flyTo(
+      [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
+      6,
+      { duration: 1.5 },
+    );
+  }
+
+  setOpen(false);
+};
+
 
   const fetchJams = async (searchType) => {
     try {
