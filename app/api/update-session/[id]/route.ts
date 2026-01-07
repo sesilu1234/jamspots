@@ -13,9 +13,7 @@ export async function POST(
 
   const body = await req.json();
 
-  console.log(body);
   const parsed_jamData = validateJam(body);
-  console.log(parsed_jamData);
   if (!parsed_jamData.success) {
     return NextResponse.json(
       {
