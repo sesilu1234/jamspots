@@ -5,13 +5,12 @@ import Sections from './sections';
 import { useRouter } from 'next/navigation';
 
 import { validateJam } from './clientCheck';
-import { convertFromRaw } from "draft-js";
+import { convertFromRaw } from 'draft-js';
 
 import { useParams } from 'next/navigation';
 
 import { toast } from 'sonner';
 import { Toaster } from '@/components/ui/sonner';
-
 
 import { useAtom } from 'jotai';
 import { formAtom } from './store/jotai';
@@ -117,14 +116,12 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
 
     const photos_urls = await uploadPhotos(images_files);
 
-    let raw_desc = ''
+    let raw_desc = '';
     try {
-
-      raw_desc = convertFromRaw(form.description.description).getPlainText().trim()
-    }
-
-    catch {}
-
+      raw_desc = convertFromRaw(form.description.description)
+        .getPlainText()
+        .trim();
+    } catch {}
 
     const jamData = {
       jam_title: form.generalInfo.jam_title,
@@ -137,7 +134,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       images: photos_urls,
       styles: form.features.styles,
       lista_canciones: form.features.song_list,
-      raw_desc : raw_desc,
+      raw_desc: raw_desc,
 
       instruments_lend: form.features.intruments_lend,
       drums: form.features.drums,
@@ -149,33 +146,27 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     console.log(jamData);
     const parsed_jamData = validateJam(jamData);
 
-    
+    if (!parsed_jamData.success) {
+      console.log(parsed_jamData);
 
+      // Get the first error message from the errors object
+      let firstMsg = 'Unknown error';
 
-    if (!true){
-  console.log(parsed_jamData);
+      const errorsObj = parsed_jamData.errors;
+      if (errorsObj && Object.keys(errorsObj).length > 0) {
+        const firstKey = Object.keys(errorsObj)[0];
+        firstMsg = errorsObj[firstKey];
+      }
 
-  // Get the first error message from the errors object
-  let firstMsg = "Unknown error";
-
-  const errorsObj = parsed_jamData.errors;
-  if (errorsObj && Object.keys(errorsObj).length > 0) {
-    const firstKey = Object.keys(errorsObj)[0];
-    firstMsg = errorsObj[firstKey];
-
-   
-  }
-
-  return { success: false, message: firstMsg };
-}
-
+      return { success: false, message: firstMsg };
+    }
 
     const res = await fetch('/api/create-session', {
       method: 'POST',
       body: JSON.stringify(jamData),
       headers: { 'Content-Type': 'application/json' },
     });
-    return {success: true};
+    return { success: true };
   };
 
   const [progress, setProgress] = useState(0);
@@ -186,58 +177,55 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     <div className="">
       {saving ? (
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-6 z-[501]">
-  <ProgressDemo progress={progress} setProgress={setProgress} />
-</div>
-
+          <ProgressDemo progress={progress} setProgress={setProgress} />
+        </div>
       ) : null}
       <div
         className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
       hover:text-black hover:bg-slate-200 hover:border hover:border-black"
         onClick={async () => {
-  setProgress(13);
-  setSaving(true);
+          setProgress(13);
+          setSaving(true);
 
-  const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+          const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-      // run progress animation in parallel with save
-      const savePromise = handleSave(); // run but capture result
-      await Promise.all([
-        (async () => {
-          await wait(500);
-          setProgress(33);
-          await wait(1000);
-          setProgress(66);
-        })(),
-        savePromise,
-      ]);
+          // run progress animation in parallel with save
+          const savePromise = handleSave(); // run but capture result
+          await Promise.all([
+            (async () => {
+              await wait(500);
+              setProgress(33);
+              await wait(1000);
+              setProgress(66);
+            })(),
+            savePromise,
+          ]);
 
-      const saveResult = await savePromise; // handleSave should return { success: true/false }
+          const saveResult = await savePromise; // handleSave should return { success: true/false }
 
-      if (!saveResult?.success) {
-        setSaving(false);
-        toast(saveResult.message, {
-        description: '',
-        action: {
-          label: 'Understood',
-          onClick: () => console.log('Understood'),
-        },
-      });
-        return // only navigate if success
-      }
+          if (!saveResult?.success) {
+            setSaving(false);
+            toast(saveResult.message, {
+              description: '',
+              action: {
+                label: 'Understood',
+                onClick: () => console.log('Understood'),
+              },
+            });
+            return; // only navigate if success
+          }
 
-      await wait(200);
-      setProgress(100);
-      await wait(200);
+          await wait(200);
+          setProgress(100);
+          await wait(200);
 
-      setSaving(false);
+          setSaving(false);
 
-        router.push("/host"); // only navigate if success
-      
-    }}
-
+          router.push('/host'); // only navigate if success
+        }}
       >
         {saving ? 'Saving…' : 'Save and Exit'}
-            <Toaster />
+        <Toaster />
       </div>
 
       <Sections childSaveOnUnmount={childSaveOnUnmount} />

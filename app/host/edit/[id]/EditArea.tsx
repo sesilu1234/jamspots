@@ -150,7 +150,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     console.log(jamData);
     const parsed_jamData = validateJam(jamData);
 
-    if (!true) {
+    if (!parsed_jamData.success) {
       console.log(parsed_jamData);
 
       // Get the first error message from the errors object
