@@ -2,8 +2,17 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['oacuekchmzilyimjasdh.supabase.co', 'lh3.googleusercontent.com'],
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'oacuekchmzilyimjasdh.supabase.co',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        pathname: '/**',
+      },
       {
         protocol: 'https',
         hostname: 'maps.googleapis.com',
