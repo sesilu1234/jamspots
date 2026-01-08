@@ -39,7 +39,6 @@ export default function Primary({
     useEffect(() => {
       const channel = new BroadcastChannel('location_broadcast');
       channel.onmessage = (event) => {
-        console.log(event.data);
         setdataLocation((prev) => ({
           jam_name: prev.jam_name || `Jam de ${event.data.name}`,
           location_name: prev.location_name || `${event.data.name}`,
@@ -101,7 +100,6 @@ export default function Primary({
               <label className="block font-semibold mb-1 ml-2"> Address</label>
               <div
                 className="border p-2 w-full"
-                
                 onChange={(e) =>
                   setdataLocation((prev) => ({
                     ...prev,

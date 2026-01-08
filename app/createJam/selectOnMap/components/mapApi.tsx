@@ -97,7 +97,6 @@ function MarkerLocation({ position }: { position: google.maps.LatLngLiteral }) {
         const lng = event.latLng?.lng();
 
         if (lat && lng) {
-          console.log('New position:', { lat, lng });
           setLocation({
             name: '',
             address: '',
