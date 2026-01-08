@@ -1,6 +1,20 @@
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../auth/[...nextauth]/route';
+import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
+
+
+    try {
+
+    const session = await getServerSession(authOptions); // App Router uses new form
+
+      if (!session?.user?.email) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    
+
   const formData = await req.formData(); // Web API method
 
   const files = formData.getAll('images') as File[]; // array of File objects
@@ -27,4 +41,15 @@ export async function POST(req: Request) {
   }
 
   return new Response(JSON.stringify({ urls }), { status: 200 });
+
 }
+
+ catch (e) {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
+
+
+}
+
+
+

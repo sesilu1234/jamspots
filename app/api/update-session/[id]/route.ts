@@ -9,6 +9,9 @@ export async function POST(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
+
+
+    try {
   const { id } = await context.params;
 
   const body = await req.json();
@@ -72,4 +75,12 @@ export async function POST(
   }
 
   return NextResponse.json({ success: true, data }, { status: 200 });
+
+}
+
+ catch (e) {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
+
+
 }

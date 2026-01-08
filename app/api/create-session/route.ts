@@ -9,6 +9,9 @@ import { validateJam } from './serverCheck';
 
 function generateSlug(title: string, id: string) {
   // clean title: lowercase, remove special chars, replace spaces with hyphens
+
+  
+
   const cleanTitle = title
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
@@ -22,6 +25,10 @@ function generateSlug(title: string, id: string) {
 }
 
 export async function POST(req: Request) {
+
+
+try {
+
   const body = await req.json();
 
   const id = uuidv4();
@@ -126,4 +133,11 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.json(data, { status: 200 });
+
+
+}
+
+catch (e) {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
 }

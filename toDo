@@ -1,16 +1,10 @@
 - hacer que cada 24 h se replique info de la base de datos, a otro host o
   sitio...
 
-- en general hacer todo tipo de comprobaacioness, notificar al usuario/cliente,
-  y asegurar seguridad de apis, base de datos , y middleware , rate limiter
-  ,etc...
 
-- si no rellenas bien crear jam y falla zod o lo que sea, enviar error y toaster
-  al usuario diceinole que completo todo correctamente
 
 -                    ojo a lo de las daates en general, checkear y asegurar bien la logica
 
-- mejorar cosas de la base de datos, checkeos, pedir cookies
 
 - poner algo de middleware
 
