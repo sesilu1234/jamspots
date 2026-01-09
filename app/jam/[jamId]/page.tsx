@@ -61,11 +61,10 @@ export default function JamPage() {
       userDate: localDateLocal,
     }).toString();
     async function fetchJam() {
-      const res = await fetch(`/api/get-jam/${jamId}?${paramsJam}`);
+      const res = await fetch(`/api/public/get-jam/${jamId}?${paramsJam}`);
       const data = await res.json();
       setJam(data);
 
-      
       // <-- log here, after fetch
     }
     fetchJam();

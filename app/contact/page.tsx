@@ -9,7 +9,7 @@ export default function Contact() {
   const [email, setEmail] = useState('');
 
   const sendData = async () => {
-    await fetch('/api/users-suggestions', {
+    await fetch('/api/public/users-suggestions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ msg, email }),

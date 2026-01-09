@@ -1,19 +1,12 @@
 - hacer que cada 24 h se replique info de la base de datos, a otro host o
   sitio...
 
-
-
--                    ojo a lo de las daates en general, checkear y asegurar bien la logica
-
-
-- poner algo de middleware
+- ojo a lo de las daates en general, checkear y asegurar bien la logica
 
 -probar testing , ultimos ajustes y retoques y checkeos
 
 -subir a vercel como jamspots.com (ver si hay algo para checkear cuanto
 visitantes tiene)
-
-
 
 ---
 

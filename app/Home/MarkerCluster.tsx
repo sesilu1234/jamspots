@@ -43,7 +43,7 @@ export default function MapMarkersCluster() {
     try {
       setShowSkeleton(true); // force skeleton visible immediately
 
-      const res = await fetch(`/api/get-jam-by-id/${id}`);
+      const res = await fetch(`/api/public/get-jam-by-id/${id}`);
       const markerDetail: JamCardMarkerProps = await res.json();
 
       setSelectedMarker(markerDetail);

@@ -81,7 +81,7 @@ export default function JamSessionList() {
 
   async function deleteJam(jamId: string) {
     // Llamada al API para eliminar
-    await fetch(`/api/delete-session/${jamId}`, { method: 'DELETE' });
+    await fetch(`/api/private/delete-session/${jamId}`, { method: 'DELETE' });
 
     // Actualizar estado eliminando el jam con ese id
     setJams((prev) => prev.filter((j) => j.id !== jamId));
@@ -90,7 +90,7 @@ export default function JamSessionList() {
   useEffect(() => {
     const fetchJams = async () => {
       try {
-        const res = await fetch('/api/get-user-jams');
+        const res = await fetch('/api/private/get-user-jams');
         if (!res.ok) throw new Error('Failed to fetch jams');
         const data: Jam[] = await res.json();
 

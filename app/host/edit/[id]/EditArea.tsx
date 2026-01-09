@@ -34,7 +34,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`/api/get-jam-edit/${id}`)
+    fetch(`/api/private/get-jam-edit/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setForm({
@@ -84,7 +84,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     const formData = new FormData();
     files.forEach((file) => formData.append('images', file));
 
-    const res = await fetch('/api/upload-photos', {
+    const res = await fetch('/api/private/upload-photos', {
       method: 'POST',
       body: formData,
     });
@@ -165,7 +165,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       return { success: false, message: firstMsg };
     }
 
-    await fetch(`/api/update-session/${id}`, {
+    await fetch(`/api/private/update-session/${id}`, {
       method: 'POST',
       body: JSON.stringify(jamData),
       headers: { 'Content-Type': 'application/json' },

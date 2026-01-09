@@ -34,15 +34,13 @@ export default function Filtro({
   const [dateOptionsGlobal, setdateOptionsGlobal] = useState('all');
   const [stylesGlobal, setstylesGlobal] = useState<string[]>([]);
 
+  const dateOptionsHold = useRef('week');
+  const orderHold = useRef('popular');
+  const distanceHold = useRef(40);
+  const stylesHold = useRef<string[]>([]);
 
-const dateOptionsHold = useRef('week');
-const orderHold = useRef('popular');
-const distanceHold = useRef(40);
-const stylesHold = useRef<string[]>([]);
-
-const dateOptionsGlobalHold = useRef('all');
-const stylesGlobalHold = useRef<string[]>([]);
-
+  const dateOptionsGlobalHold = useRef('all');
+  const stylesGlobalHold = useRef<string[]>([]);
 
   const dateOptionsRef = useRef(dateOptions);
   dateOptionsRef.current = dateOptions;
@@ -82,14 +80,13 @@ const stylesGlobalHold = useRef<string[]>([]);
         !panelRef_2.current?.contains(event.target as Node) &&
         !panelRef_3.current?.contains(event.target as Node)
       ) {
-
         setDateOptions(dateOptionsHold.current);
-    setOrder(orderHold.current);
-    setDistance(distanceHold.current);
-    setStyles([...stylesHold.current]);
+        setOrder(orderHold.current);
+        setDistance(distanceHold.current);
+        setStyles([...stylesHold.current]);
 
-    setdateOptionsGlobal(dateOptionsGlobalHold.current);
-    setstylesGlobal([...stylesGlobalHold.current]);
+        setdateOptionsGlobal(dateOptionsGlobalHold.current);
+        setstylesGlobal([...stylesGlobalHold.current]);
         setOpen(false);
       }
     };
@@ -97,12 +94,12 @@ const stylesGlobalHold = useRef<string[]>([]);
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setDateOptions(dateOptionsHold.current);
-    setOrder(orderHold.current);
-    setDistance(distanceHold.current);
-    setStyles([...stylesHold.current]);
+        setOrder(orderHold.current);
+        setDistance(distanceHold.current);
+        setStyles([...stylesHold.current]);
 
-    setdateOptionsGlobal(dateOptionsGlobalHold.current);
-    setstylesGlobal([...stylesGlobalHold.current]);
+        setdateOptionsGlobal(dateOptionsGlobalHold.current);
+        setstylesGlobal([...stylesGlobalHold.current]);
         setOpen(false);
       }
     };
@@ -116,37 +113,36 @@ const stylesGlobalHold = useRef<string[]>([]);
     };
   }, []);
 
- const handleAccept = (searchType: string) => {
-  setSearchType(searchType);
-  fetchJams(searchType);
+  const handleAccept = (searchType: string) => {
+    setSearchType(searchType);
+    fetchJams(searchType);
 
-  if (searchType === 'local') {
-    // sync state → refs
-    dateOptionsHold.current = dateOptions;
-    orderHold.current = order;
-    distanceHold.current = distance;
-    stylesHold.current = [...styles];
+    if (searchType === 'local') {
+      // sync state → refs
+      dateOptionsHold.current = dateOptions;
+      orderHold.current = order;
+      distanceHold.current = distance;
+      stylesHold.current = [...styles];
 
-    map!.flyTo(
-      [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
-      12,
-      { duration: 1.5 },
-    );
-  } else {
-    // sync state → refs
-    dateOptionsGlobalHold.current = dateOptionsGlobal;
-    stylesGlobalHold.current = [...stylesGlobal];
+      map!.flyTo(
+        [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
+        12,
+        { duration: 1.5 },
+      );
+    } else {
+      // sync state → refs
+      dateOptionsGlobalHold.current = dateOptionsGlobal;
+      stylesGlobalHold.current = [...stylesGlobal];
 
-    map!.flyTo(
-      [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
-      6,
-      { duration: 1.5 },
-    );
-  }
+      map!.flyTo(
+        [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
+        6,
+        { duration: 1.5 },
+      );
+    }
 
-  setOpen(false);
-};
-
+    setOpen(false);
+  };
 
   const fetchJams = async (searchType) => {
     try {
@@ -170,7 +166,7 @@ const stylesGlobalHold = useRef<string[]>([]);
         });
 
         const cardsFetch = await fetch(
-          `/api/get-jams-cards-filtered?${paramsCards}`,
+          `/api/public/get-jams-cards-filtered?${paramsCards}`,
         );
 
         if (!cardsFetch.ok) throw new Error('Failed to fetch jams');
@@ -195,7 +191,7 @@ const stylesGlobalHold = useRef<string[]>([]);
         });
 
         const markersFetch = await fetch(
-          `/api/get-jams-markers-filtered?${paramsMarkers}`,
+          `/api/public/get-jams-markers-filtered?${paramsMarkers}`,
         );
 
         if (!markersFetch.ok) throw new Error('Failed to fetch jams');
