@@ -7,7 +7,7 @@ on:
 
 jobs:
   backup:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu 22.04
 
     steps:
       - name: Checkout repo
@@ -20,6 +20,10 @@ jobs:
 
       - name: Install AWS CLI
         run: sudo apt-get update && sudo apt-get install -y gzip awscli
+
+      - name: Check AWS CLI
+        run: aws --version
+  
 
       - name: Dump Supabase DB
         env:
