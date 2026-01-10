@@ -30,7 +30,8 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "us-east-1"
+          AWS_DEFAULT_REGION: "eu-north-1"
+
         run: |
           DATE=$(date +%F)
           echo "Uploading dump to S3..."
@@ -43,7 +44,8 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "us-east-1"
+          AWS_DEFAULT_REGION: "eu-north-1"
+
         run: |
           echo "Deleting old backups..."
           aws s3 ls s3://jamspots-pg-dump/backups/ | awk '{print $4}' | grep dump_ | sort | head -n -30 | xargs -r -I{} aws s3 rm s3://jamspots-pg-dump/backups/{}
