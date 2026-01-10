@@ -1,0 +1,62 @@
+name: Supabase Images Backup Every 2 Hours
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # every 2 hours
+  workflow_dispatch:
+
+jobs:
+  backup_images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+
+      - name: Install AWS CLI
+        run: sudo apt-get update && sudo apt-get install -y zip awscli
+
+      - name: Download images from Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          DATE=$(date +%F-%H%M)
+          mkdir -p images_$DATE
+          echo "Downloading all images..."
+          supabase storage download jamspots_imageBucket/images images_$DATE --service-key $SUPABASE_SERVICE_KEY
+
+      - name: Compress images
+        run: |
+          DATE=$(date +%F-%H%M)
+          zip -r images_$DATE.zip images_$DATE
+
+      - name: Upload images backup to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.github-actions-backup_ACCES_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.github-actions-backup_SECRET_KEY }}
+          AWS_DEFAULT_REGION: "eu-north-1"
+        run: |
+          DATE=$(date +%F-%H%M)
+          aws s3 cp images_$DATE.zip s3://jamspots-pg-dump/backups/images/
+
+      - name: Cleanup local files
+        run: rm -rf images_* *.zip
+
+      - name: Remove old backups from S3 (keep last 4)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.github-actions-backup_ACCES_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.github-actions-backup_SECRET_KEY }}
+          AWS_DEFAULT_REGION: "eu-north-1"
+        run: |
+          aws s3 ls s3://jamspots-pg-dump/backups/images/ \
+            | awk '{print $4}' \
+            | grep '^images_' \
+            | sort \
+            | head -n -4 \
+            | while read f; do
+                [ -n "$f" ] && aws s3 rm s3://jamspots-pg-dump/backups/images/$f
+              done
