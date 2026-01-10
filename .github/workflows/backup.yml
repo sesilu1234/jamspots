@@ -2,7 +2,7 @@ name: Daily Supabase Backup
 
 on:
   schedule:
-    - cron: "*/6 * * * *"  # every 6 minutes
+    - cron: "0 2 * * *"  # every day at 2 AM UTC, adjust as needed
 
 jobs:
   backup:
@@ -16,15 +16,11 @@ jobs:
 
       - name: Dump Supabase DB
         env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_URL: ${{ secrets.DB_POOLER_URL }}   # e.g. postgresql://postgres.oacuekchmzilyimjasdh:Sesilu1234@@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require
         run: |
           DATE=$(date +%F-%H%M)
           echo "Dumping DB..."
-          export PGPASSWORD=$DB_PASS
-          pg_dump -h $DB_HOST -U $DB_USER -d $DB_NAME --no-owner --no-acl --sslmode=require | gzip > dump_$DATE.sql.gz
+          pg_dump "$DB_URL" --no-owner --no-acl | gzip > dump_$DATE.sql.gz
 
       - name: Upload dump to S3
         env:
