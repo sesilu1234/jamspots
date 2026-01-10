@@ -1,0 +1,49 @@
+name: Daily Supabase Backup
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # every 10 minutes
+
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client gzip awscli
+
+      - name: Dump Supabase DB
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: |
+          DATE=$(date +%F)
+          echo "Dumping DB..."
+          export PGPASSWORD=$DB_PASS
+          pg_dump -h $DB_HOST -U $DB_USER -d $DB_NAME --no-owner --no-acl | gzip > dump_$DATE.sql.gz
+
+      - name: Upload dump to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "us-east-1"
+        run: |
+          DATE=$(date +%F)
+          echo "Uploading dump to S3..."
+          aws s3 cp dump_$DATE.sql.gz s3://jamspots-pg-dump/backups/
+
+      - name: Cleanup local dump
+        run: rm dump_*.sql.gz
+
+      - name: Remove old backups from S3 (keep 30 latest)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "us-east-1"
+        run: |
+          echo "Deleting old backups..."
+          aws s3 ls s3://jamspots-pg-dump/backups/ | awk '{print $4}' | grep dump_ | sort | head -n -30 | xargs -r -I{} aws s3 rm s3://jamspots-pg-dump/backups/{}
