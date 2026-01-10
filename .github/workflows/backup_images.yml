@@ -36,8 +36,8 @@ jobs:
 
       - name: Upload images backup to S3
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.github-actions-backup_ACCES_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.github-actions-backup_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: "eu-north-1"
         run: |
           DATE=$(date +%F-%H%M)
@@ -48,8 +48,8 @@ jobs:
 
       - name: Remove old backups from S3 (keep last 4)
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.github-actions-backup_ACCES_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.github-actions-backup_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: "eu-north-1"
         run: |
           aws s3 ls s3://jamspots-pg-dump/backups/images/ \
