@@ -16,7 +16,7 @@ jobs:
 
       - name: Dump Supabase DB
         env:
-          DB_URL: ${{ secrets.DB_POOLER_URL }}   # e.g. postgresql://postgres.oacuekchmzilyimjasdh:Sesilu1234@@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require
+          DB_URL: ${{ secrets.DB_POOLER_URL }}  
         run: |
           DATE=$(date +%F-%H%M)
           echo "Dumping DB..."
