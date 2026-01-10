@@ -2,7 +2,7 @@ name: Daily Supabase Backup
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # every 10 minutes
+    - cron: "*/6 * * * *"  # every 6 minutes
 
 jobs:
   backup:
@@ -21,10 +21,10 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
         run: |
-          DATE=$(date +%F)
+          DATE=$(date +%F-%H%M)
           echo "Dumping DB..."
           export PGPASSWORD=$DB_PASS
-          pg_dump -h $DB_HOST -U $DB_USER -d $DB_NAME --no-owner --no-acl | gzip > dump_$DATE.sql.gz
+          pg_dump -h $DB_HOST -U $DB_USER -d $DB_NAME --no-owner --no-acl --sslmode=require | gzip > dump_$DATE.sql.gz
 
       - name: Upload dump to S3
         env:
@@ -32,7 +32,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: "eu-north-1"
         run: |
-          DATE=$(date +%F)
+          DATE=$(date +%F-%H%M)
           echo "Uploading dump to S3..."
           aws s3 cp dump_$DATE.sql.gz s3://jamspots-pg-dump/backups/
 
