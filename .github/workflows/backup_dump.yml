@@ -2,7 +2,7 @@ name: Supabase Backup Every 6 Minutes
 
 on:
   schedule:
-    - cron: '*/6 * * * *'  # every 6 minutes
+    - cron: '0 */3 * * *'  # at minute 0, every 3 hours
   workflow_dispatch:       # manual trigger
 
 jobs:
