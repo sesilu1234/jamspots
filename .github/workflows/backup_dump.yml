@@ -1,8 +1,8 @@
-name: Supabase Backup Every 6 Minutes
+name: Supabase Backup Every Night at 2AM
 
 on:
   schedule:
-    - cron: '*/6 * * * *'  # every 6 minutes
+    - cron: '0 2 * * *'  # every night at 2 AM
   workflow_dispatch:
 
 jobs:
@@ -45,7 +45,6 @@ jobs:
 
           echo "Dumping DB..."
           /usr/lib/postgresql/17/bin/pg_dump \
-            --verbose \
             "postgresql://postgres.oacuekchmzilyimjasdh@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require" \
             --no-owner --no-acl | gzip > "$DUMP_FILE"
 
