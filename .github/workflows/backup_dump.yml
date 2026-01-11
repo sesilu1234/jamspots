@@ -27,6 +27,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client-17
 
+      - name: Use Postgres 17
+        run: |
+          echo "/usr/lib/postgresql/17/bin" >> $GITHUB_PATH
+          pg_dump --version   # should now show 17.x
+
+
       - name: Dump Supabase DB
         env:
           PGPASSWORD: ${{ secrets.PGPASSWORD }}
