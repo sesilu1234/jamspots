@@ -40,7 +40,7 @@ jobs:
       - name: Upload to S3
         run: |
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
-          aws s3 cp ./supabase/images $S3_DEST/$TIMESTAMP
+          aws s3 cp ./supabase/images $S3_DEST/$TIMESTAMP --recursive
 
       - name: Keep only last 3 backups
         run: |
