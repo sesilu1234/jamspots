@@ -30,6 +30,31 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
+    const { data: images, error: fetchError } = await supabaseAdmin
+      .from('sessions')
+      .select('images')
+      .eq('id', id);
+
+    if (fetchError) throw fetchError;
+
+    // 2️⃣ Add folder prefix
+    const imageNames = images[0].images.map(
+      (path: string) => 'images/' + path.substring(path.lastIndexOf('/') + 1),
+    );
+
+    // 3️⃣ Delete files from storage
+
+    const { error: deleteErrorImages } = await supabaseAdmin.storage
+      .from('jamspots_imageBucket')
+      .remove(imageNames); // delete only this file
+
+    if (deleteErrorImages) {
+      return NextResponse.json(
+        { error: deleteErrorImages.message },
+        { status: 500 },
+      );
+    }
+
     const { error: deleteError } = await supabaseAdmin
       .from('sessions')
       .delete()

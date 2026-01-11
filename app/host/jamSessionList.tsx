@@ -59,7 +59,7 @@ export default function JamSessionList() {
                 disabled={text !== 'delete'}
                 className={
                   text === 'delete'
-                    ? 'bg-red-500 hover:bg-red-600 px-3 py-1  rounded-md'
+                    ? 'bg-red-300 hover:bg-rose-500 px-3 py-1  rounded-md'
                     : 'opacity-50 px-3 py-1 '
                 }
               >

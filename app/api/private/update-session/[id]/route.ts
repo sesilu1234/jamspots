@@ -54,6 +54,45 @@ export async function POST(
       }
     }
 
+    const { data: joins, error: authError } = await supabaseAdmin
+      .from('profiles')
+      .select('id, sessions!inner(id)')
+      .eq('email', userEmail)
+      .eq('sessions.id', id) // session id from params
+      .single();
+
+    if (authError || !joins) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
+    const { data: images, error: fetchError } = await supabaseAdmin
+      .from('sessions')
+      .select('images')
+      .eq('id', id);
+
+    if (fetchError) throw fetchError;
+
+    // 2️⃣ Add folder prefix
+    const imageNames = images[0].images.map(
+      (path: string) => 'images/' + path.substring(path.lastIndexOf('/') + 1),
+    );
+
+    console.log(imageNames);
+    // 3️⃣ Delete files from storage
+
+    const { error: deleteErrorImages } = await supabaseAdmin.storage
+      .from('jamspots_imageBucket')
+      .remove(imageNames); // delete only this file
+
+    if (deleteErrorImages) {
+      return NextResponse.json(
+        { error: deleteErrorImages.message },
+        { status: 500 },
+      );
+    }
+
+    delete body['raw_desc'];
+
     const { data, error } = await supabaseAdmin
       .from('sessions')
       .update([
