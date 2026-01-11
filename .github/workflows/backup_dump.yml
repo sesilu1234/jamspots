@@ -32,32 +32,31 @@ jobs:
           echo "/usr/lib/postgresql/17/bin" >> $GITHUB_PATH
           /usr/lib/postgresql/17/bin/pg_dump --version   # should show 17.x
 
-      - name: Dump Supabase DB
+      - name: Dump Supabase DB and upload to S3
         env:
           PGPASSWORD: ${{ secrets.PGPASSWORD }}
-        run: |
-          set -euo pipefail
-          DATE=$(date +%F-%H%M%S)
-          echo "Dumping DB..."
-          /usr/lib/postgresql/17/bin/pg_dump \
-            --verbose \
-            "postgresql://postgres.oacuekchmzilyimjasdh@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require" \
-            --no-owner --no-acl | gzip > dump_$DATE.sql.gz
-          echo "Dump file created:"
-          ls -lh dump_$DATE.sql.gz
-
-      - name: Upload dump to S3
-        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: "eu-north-1"
         run: |
+          set -euo pipefail
           DATE=$(date +%F-%H%M%S)
-          echo "Uploading dump to S3..."
-          aws s3 cp dump_$DATE.sql.gz s3://jamspots-pg-dump/backups/
+          DUMP_FILE="dump_$DATE.sql.gz"
 
-      - name: Cleanup local dump
-        run: rm dump_*.sql.gz
+          echo "Dumping DB..."
+          /usr/lib/postgresql/17/bin/pg_dump \
+            --verbose \
+            "postgresql://postgres.oacuekchmzilyimjasdh@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require" \
+            --no-owner --no-acl | gzip > "$DUMP_FILE"
+
+          echo "Dump file created:"
+          ls -lh "$DUMP_FILE"
+
+          echo "Uploading dump to S3..."
+          aws s3 cp "$DUMP_FILE" s3://jamspots-pg-dump/backups/
+
+          echo "Cleaning up local dump..."
+          rm "$DUMP_FILE"
 
       - name: Remove old backups from S3 (keep 15 latest)
         env:
