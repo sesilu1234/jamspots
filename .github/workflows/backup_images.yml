@@ -15,7 +15,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: 'us-east-1' # change if needed
       SUPABASE_PROJECT_REF: 'oacuekchmzilyimjasdh'
-      BUCKET_NAME: 'jamspots-pg-dump'
+      BUCKET_NAME: 'jamspots_imageBucket'
       S3_DEST: 's3://jamspots-pg-dump/supabase-ImageStorage-backups'
 
     steps:
