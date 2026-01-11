@@ -1,4 +1,4 @@
-name: Supabase Backup Every Night at 2AM
+name: Supabase SQL TABLES Backup Dump Every Night at 2AM
 
 on:
   schedule:
