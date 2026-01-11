@@ -2,12 +2,12 @@ name: Supabase Images Backup Every 2 Hours
 
 on:
   schedule:
-    - cron: '0 */2 * * *'  # every 2 hours
+    - cron: '*/6 * * * *'
   workflow_dispatch:
 
 jobs:
   backup_images:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu 22.04
 
     steps:
       - name: Checkout repo
