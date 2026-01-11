@@ -1,69 +1,47 @@
-name: Supabase Images Backup Every 2 Hours
+name: Supabase Backup to S3
 
 on:
+  workflow_dispatch: # allows manual trigger
   schedule:
-    - cron: '0 */2 * * *'  # every 2 hours
-  workflow_dispatch:
+    - cron: '0 3 * * 1' # every Monday at 03:00 UTC
 
 jobs:
-  backup_images:
+  backup:
     runs-on: ubuntu-latest
 
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: 'us-east-1' # change if needed
+      SUPABASE_PROJECT_REF: 'oacuekchmzilyimjasdh'
+      BUCKET_NAME: 'jamspots_imageBucket'
+      S3_DEST: 's3://jamspots_imageBucket/supabase-storage-backups'
+
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Install Supabase CLI
-        uses: supabase/setup-cli@v1
-
-      - name: Install AWS CLI
-        uses: unfor19/install-aws-cli-action@v1
-        with:
-          version: 2
-          verbose: false
-          arch: amd64
-
-      - name: Install zip
-        run: sudo apt-get update && sudo apt-get install -y zip
-
-      - name: Download images from Supabase
-        env:
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY }}
         run: |
-          DATE=$(date +%F-%H%M)
-          mkdir -p images_$DATE
-          echo "Downloading all images..."
-          supabase storage download jamspots_imageBucket/images images_$DATE --service-key $SUPABASE_SERVICE_KEY
+          curl -L https://github.com/supabase/cli/releases/download/v2.72.5/supabase_2.72.5_linux_amd64.tar.gz | tar xz
+          sudo mv supabase /usr/local/bin/
 
-      - name: Compress images
+      - name: Copy Supabase bucket locally
         run: |
-          DATE=$(date +%F-%H%M)
-          zip -r images_$DATE.zip images_$DATE
+          mkdir supabase
+          cd supabase
+          supabase login --token "$SUPABASE_ACCESS_TOKEN"
+          supabase link --project-ref "$SUPABASE_PROJECT_REF"
+          supabase storage cp -r ss:///$BUCKET_NAME ./images --experimental
 
-      - name: Upload images backup to S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "eu-north-1"
+      - name: Upload to S3
         run: |
-          DATE=$(date +%F-%H%M)
-          aws s3 cp images_$DATE.zip s3://jamspots-pg-dump/backups/images/
+          TIMESTAMP=$(date +%Y%m%d%H%M%S)
+          aws s3 cp ./supabase/images $S3_DEST/$TIMESTAMP
 
-      - name: Cleanup local files
-        run: rm -rf images_* *.zip
-
-      - name: Remove old backups from S3 (keep last 4)
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "eu-north-1"
+      - name: Keep only last 3 backups
         run: |
-          aws s3 ls s3://jamspots-pg-dump/backups/images/ \
-            | awk '{print $4}' \
-            | grep '^images_' \
-            | sort \
-            | head -n -4 \
-            | while read f; do
-                [ -n "$f" ] && aws s3 rm s3://jamspots-pg-dump/backups/images/$f
-              done
+          aws s3 ls $S3_DEST/ | awk '{print $4}' | sort | head -n -3 | while read file; do
+            aws s3 rm $S3_DEST/$file --recursive
+          done
