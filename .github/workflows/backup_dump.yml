@@ -3,21 +3,13 @@ name: Supabase Backup Every 6 Minutes
 on:
   schedule:
     - cron: '*/6 * * * *'  # every 6 minutes
-  workflow_dispatch:       # manual trigger
+  workflow_dispatch:
 
 jobs:
   backup:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Set up PostgreSQL 17
-        uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: '17'
-
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
         with:
@@ -28,13 +20,15 @@ jobs:
       - name: Check AWS CLI
         run: aws --version
 
-      - name: Dump Supabase DB
+      - name: Dump Supabase DB using Docker Postgres 17
         env:
           PGPASSWORD: ${{ secrets.PGPASSWORD }}
         run: |
           DATE=$(date +%F-%H%M%S)
           echo "Dumping DB..."
-          pg_dump "postgresql://postgres.oacuekchmzilyimjasdh@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require" --no-owner --no-acl | gzip > dump_$DATE.sql.gz
+          docker run --rm -e PGPASSWORD=${PGPASSWORD} postgres:17 \
+            pg_dump "postgresql://postgres.oacuekchmzilyimjasdh@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require" \
+            --no-owner --no-acl | gzip > dump_$DATE.sql.gz
 
       - name: Upload dump to S3
         env:
