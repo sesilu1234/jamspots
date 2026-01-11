@@ -30,7 +30,7 @@ jobs:
       - name: Use Postgres 17
         run: |
           echo "/usr/lib/postgresql/17/bin" >> $GITHUB_PATH
-          pg_dump --version   # should now show 17.x
+          /usr/lib/postgresql/17/bin/pg_dump --version   # should now show 17.x
 
 
       - name: Dump Supabase DB
