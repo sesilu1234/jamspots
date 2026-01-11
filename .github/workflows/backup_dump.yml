@@ -2,12 +2,12 @@ name: Supabase Backup Every 6 Minutes
 
 on:
   schedule:
-    - cron: '*/6 * * * *'  # at minute 0, every 3 hours
+    - cron: '*/6 * * * *'  # every 6 minutes
   workflow_dispatch:       # manual trigger
 
 jobs:
   backup:
-    runs-on: ubuntu 22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
@@ -19,11 +19,14 @@ jobs:
           postgresql version: '17'
 
       - name: Install AWS CLI
-        run: sudo apt-get update && sudo apt-get install -y gzip awscli
+        uses: unfor19/install-aws-cli-action@v1
+        with:
+          version: 2
+          verbose: false
+          arch: amd64
 
       - name: Check AWS CLI
         run: aws --version
-  
 
       - name: Dump Supabase DB
         env:
