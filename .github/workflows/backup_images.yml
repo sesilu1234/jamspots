@@ -1,4 +1,4 @@
-name: Supabase Images Storage Backup to S3
+name: Supabase Images Storage Backup
 
 on:
   workflow_dispatch: # allows manual trigger
