@@ -39,7 +39,7 @@ jobs:
         run: |
           DATE=$(date +%F-%H%M%S)
           echo "Dumping DB..."
-          pg_dump "postgresql://postgres.oacuekchmzilyimjasdh@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require" \
+          /usr/lib/postgresql/17/bin/pg_dump  "postgresql://postgres.oacuekchmzilyimjasdh@aws-1-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require" \
             --no-owner --no-acl | gzip > dump_$DATE.sql.gz
 
       - name: Upload dump to S3
