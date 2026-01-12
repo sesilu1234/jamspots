@@ -1,41 +1,41 @@
-import NextAuth, { User } from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import NextAuth, { User } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export const authOptions = {
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID!,
-      clientSecret: process.env.GOOGLE_SECRET!,
-    }),
-  ],
-  secret: process.env.NEXTAUTH_SECRET,
-  callbacks: {
-    async signIn({ user }: { user: User }) {
-      if (!user.email) return false;
+	providers: [
+		GoogleProvider({
+			clientId: process.env.GOOGLE_ID!,
+			clientSecret: process.env.GOOGLE_SECRET!,
+		}),
+	],
+	secret: process.env.NEXTAUTH_SECRET,
+	callbacks: {
+		async signIn({ user }: { user: User }) {
+			if (!user.email) return false;
 
-      const { data } = await supabaseAdmin
-        .from('profiles') // include schema
-        .select('id')
-        .eq('email', user.email)
-        .single();
+			const { data } = await supabaseAdmin
+				.from("profiles") // include schema
+				.select("id")
+				.eq("email", user.email)
+				.single();
 
-      if (!data) {
-        await supabaseAdmin.from('profiles').insert({
-          email: user.email,
-          name: user.name ?? null,
-          last_login: new Date().toISOString(),
-        });
-      } else {
-        await supabaseAdmin
-          .from('profiles')
-          .update({ last_login: new Date().toISOString() })
-          .eq('id', data.id);
-      }
+			if (!data) {
+				await supabaseAdmin.from("profiles").insert({
+					email: user.email,
+					name: user.name ?? null,
+					last_login: new Date().toISOString(),
+				});
+			} else {
+				await supabaseAdmin
+					.from("profiles")
+					.update({ last_login: new Date().toISOString() })
+					.eq("id", data.id);
+			}
 
-      return true;
-    },
-  },
+			return true;
+		},
+	},
 };
 
 const handler = NextAuth(authOptions);

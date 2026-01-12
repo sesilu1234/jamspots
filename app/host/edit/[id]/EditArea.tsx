@@ -1,250 +1,250 @@
-'use client';
-import { useState, useRef, useEffect } from 'react';
+"use client";
+import { useState, useRef, useEffect } from "react";
 
-import Sections from './sections';
-import { useRouter } from 'next/navigation';
+import Sections from "./sections";
+import { useRouter } from "next/navigation";
 
-import { validateJam } from './clientCheck';
-import { convertFromRaw } from 'draft-js';
+import { validateJam } from "./clientCheck";
+import { convertFromRaw } from "draft-js";
 
-import { toast } from 'sonner';
-import { Toaster } from '@/components/ui/sonner';
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
-import { jamSchema } from './zodCheck';
+import { jamSchema } from "./zodCheck";
 
-import { useParams } from 'next/navigation';
+import { useParams } from "next/navigation";
 
-import { useAtom } from 'jotai';
-import { formAtom } from './store/jotai';
+import { useAtom } from "jotai";
+import { formAtom } from "./store/jotai";
 
-import { useFormStore } from './store/formStore'; // path a tu store
+import { useFormStore } from "./store/formStore"; // path a tu store
 
 type EditAreaProps = {
-  childSaveOnUnmount: React.RefObject<() => void>;
+	childSaveOnUnmount: React.RefObject<() => void>;
 };
 
 export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
-  const setForm = useFormStore((state) => state.setForm);
+	const setForm = useFormStore((state) => state.setForm);
 
-  const router = useRouter(); // ✅ call hook here, at top level
+	const router = useRouter(); // ✅ call hook here, at top level
 
-  const [loading, setLoading] = useState(true);
-  const { id } = useParams();
+	const [loading, setLoading] = useState(true);
+	const { id } = useParams();
 
-  useEffect(() => {
-    if (!id) return;
+	useEffect(() => {
+		if (!id) return;
 
-    fetch(`/api/private/get-jam-edit/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setForm({
-          generalInfo: {
-            jam_title: data.jam_title,
-            location_title: data.location_title,
-            location_address: data.location_address,
-            coordinates: { lat: data.lat, lng: data.lng },
-            dates: {
-              period: data.periodicity,
-              day_of_week: data.dayOfWeek,
-              time: { from: data.time_start, to: null },
-              list_of_dates: data.dates,
-            },
-          },
-          photos: { images: data.images },
-          features: {
-            styles: data.styles,
-            song_list: data.lista_canciones,
-            intruments_lend: data.instruments_lend,
-            drums: data.drums,
-          },
-          description: { description: data.description },
-          social: {
-            instagram: data.social_links.instagram,
-            facebook: data.social_links.facebook,
-            siteWeb: data.social_links.siteWeb,
-          },
-        });
+		fetch(`/api/private/get-jam-edit/${id}`)
+			.then((res) => res.json())
+			.then((data) => {
+				setForm({
+					generalInfo: {
+						jam_title: data.jam_title,
+						location_title: data.location_title,
+						location_address: data.location_address,
+						coordinates: { lat: data.lat, lng: data.lng },
+						dates: {
+							period: data.periodicity,
+							day_of_week: data.dayOfWeek,
+							time: { from: data.time_start, to: null },
+							list_of_dates: data.dates,
+						},
+					},
+					photos: { images: data.images },
+					features: {
+						styles: data.styles,
+						song_list: data.lista_canciones,
+						intruments_lend: data.instruments_lend,
+						drums: data.drums,
+					},
+					description: { description: data.description },
+					social: {
+						instagram: data.social_links.instagram,
+						facebook: data.social_links.facebook,
+						siteWeb: data.social_links.siteWeb,
+					},
+				});
 
-        setLoading(false);
-      });
-  }, [id]); // ✅ solo se ejecuta cuando cambia id
+				setLoading(false);
+			});
+	}, [id]); // ✅ solo se ejecuta cuando cambia id
 
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
-  const uploadPhotos = async (files: File[]) => {
-    const formData = new FormData();
-    files.forEach((file) => formData.append('images', file));
+	const uploadPhotos = async (files: File[]) => {
+		const formData = new FormData();
+		files.forEach((file) => formData.append("images", file));
 
-    const res = await fetch('/api/private/upload-photos', {
-      method: 'POST',
-      body: formData,
-    });
+		const res = await fetch("/api/private/upload-photos", {
+			method: "POST",
+			body: formData,
+		});
 
-    const data = await res.json();
-    return data.urls; // array of URLs generated by Supabase
-  };
+		const data = await res.json();
+		return data.urls; // array of URLs generated by Supabase
+	};
 
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-  //#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+	//#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
-  const handleSave = async () => {
-    childSaveOnUnmount.current();
+	const handleSave = async () => {
+		childSaveOnUnmount.current();
 
-    const form = useFormStore.getState().form;
+		const form = useFormStore.getState().form;
 
-    const images_files: File[] = [];
-    for (const url of form.photos.images) {
-      const res = await fetch(url);
-      const blob = await res.blob();
-      // optional: give a filename
-      images_files.push(
-        new File([blob], `image-${Date.now()}.png`, { type: blob.type }),
-      );
-    }
+		const images_files: File[] = [];
+		for (const url of form.photos.images) {
+			const res = await fetch(url);
+			const blob = await res.blob();
+			// optional: give a filename
+			images_files.push(
+				new File([blob], `image-${Date.now()}.png`, { type: blob.type }),
+			);
+		}
 
-    const photos_urls = await uploadPhotos(images_files);
-    let raw_desc = '';
-    try {
-      raw_desc = convertFromRaw(form.description.description!)
-        .getPlainText()
-        .trim();
-    } catch {}
+		const photos_urls = await uploadPhotos(images_files);
+		let raw_desc = "";
+		try {
+			raw_desc = convertFromRaw(form.description.description!)
+				.getPlainText()
+				.trim();
+		} catch {}
 
-    const jamData = {
-      jam_title: form.generalInfo.jam_title,
-      location_title: form.generalInfo.location_title,
-      location_address: form.generalInfo.location_address,
-      periodicity: form.generalInfo.dates.period,
-      dayOfWeek: form.generalInfo.dates.day_of_week,
-      dates: form.generalInfo.dates.list_of_dates,
-      time_start: form.generalInfo.dates.time.from,
-      images: photos_urls,
-      styles: form.features.styles,
-      lista_canciones: form.features.song_list,
+		const jamData = {
+			jam_title: form.generalInfo.jam_title,
+			location_title: form.generalInfo.location_title,
+			location_address: form.generalInfo.location_address,
+			periodicity: form.generalInfo.dates.period,
+			dayOfWeek: form.generalInfo.dates.day_of_week,
+			dates: form.generalInfo.dates.list_of_dates,
+			time_start: form.generalInfo.dates.time.from,
+			images: photos_urls,
+			styles: form.features.styles,
+			lista_canciones: form.features.song_list,
 
-      instruments_lend: form.features.intruments_lend,
-      drums: form.features.drums,
-      description: form.description.description,
-      raw_desc: raw_desc,
-      social_links: form.social,
-      location_coords: form.generalInfo.coordinates,
-    };
+			instruments_lend: form.features.intruments_lend,
+			drums: form.features.drums,
+			description: form.description.description,
+			raw_desc: raw_desc,
+			social_links: form.social,
+			location_coords: form.generalInfo.coordinates,
+		};
 
-    console.log(jamData);
-    const parsed_jamData = validateJam(jamData);
+		console.log(jamData);
+		const parsed_jamData = validateJam(jamData);
 
-    if (!parsed_jamData.success) {
-      console.log(parsed_jamData);
+		if (!parsed_jamData.success) {
+			console.log(parsed_jamData);
 
-      // Get the first error message from the errors object
-      let firstMsg = 'Unknown error';
+			// Get the first error message from the errors object
+			let firstMsg = "Unknown error";
 
-      const errorsObj = parsed_jamData.errors;
-      if (errorsObj && Object.keys(errorsObj).length > 0) {
-        const firstKey = Object.keys(errorsObj)[0];
-        firstMsg = errorsObj[firstKey];
-      }
+			const errorsObj = parsed_jamData.errors;
+			if (errorsObj && Object.keys(errorsObj).length > 0) {
+				const firstKey = Object.keys(errorsObj)[0];
+				firstMsg = errorsObj[firstKey];
+			}
 
-      return { success: false, message: firstMsg };
-    }
+			return { success: false, message: firstMsg };
+		}
 
-    await fetch(`/api/private/update-session/${id}`, {
-      method: 'POST',
-      body: JSON.stringify(jamData),
-      headers: { 'Content-Type': 'application/json' },
-    });
+		await fetch(`/api/private/update-session/${id}`, {
+			method: "POST",
+			body: JSON.stringify(jamData),
+			headers: { "Content-Type": "application/json" },
+		});
 
-    return { success: true };
-  };
+		return { success: true };
+	};
 
-  const [progress, setProgress] = useState(0);
-  const [saving, setSaving] = useState(false);
+	const [progress, setProgress] = useState(0);
+	const [saving, setSaving] = useState(false);
 
-  if (loading) return null;
-  return (
-    <div className="">
-      {saving ? (
-        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-6 z-[501]">
-          <ProgressDemo progress={progress} setProgress={setProgress} />
-        </div>
-      ) : null}
-      <div
-        className="flex justify-center m-6 mt-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
+	if (loading) return null;
+	return (
+		<div className="">
+			{saving ? (
+				<div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-6 z-[501]">
+					<ProgressDemo progress={progress} setProgress={setProgress} />
+				</div>
+			) : null}
+			<div
+				className="flex justify-center m-6 mt-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
         hover:text-black hover:bg-slate-200 hover:border hover:border-black"
-        onClick={async () => {
-          setProgress(13);
-          setSaving(true);
+				onClick={async () => {
+					setProgress(13);
+					setSaving(true);
 
-          const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+					const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-          // run progress animation in parallel with save
-          const savePromise = handleSave(); // run but capture result
-          await Promise.all([
-            (async () => {
-              await wait(500);
-              setProgress(33);
-              await wait(1000);
-              setProgress(66);
-            })(),
-            savePromise,
-          ]);
+					// run progress animation in parallel with save
+					const savePromise = handleSave(); // run but capture result
+					await Promise.all([
+						(async () => {
+							await wait(500);
+							setProgress(33);
+							await wait(1000);
+							setProgress(66);
+						})(),
+						savePromise,
+					]);
 
-          const saveResult = await savePromise; // handleSave should return { success: true/false }
+					const saveResult = await savePromise; // handleSave should return { success: true/false }
 
-          if (!saveResult?.success) {
-            setSaving(false);
-            toast(saveResult.message, {
-              description: '',
-              action: {
-                label: 'Understood',
-                onClick: () => console.log('Understood'),
-              },
-            });
-            return; // only navigate if success
-          }
+					if (!saveResult?.success) {
+						setSaving(false);
+						toast(saveResult.message, {
+							description: "",
+							action: {
+								label: "Understood",
+								onClick: () => console.log("Understood"),
+							},
+						});
+						return; // only navigate if success
+					}
 
-          await wait(200);
-          setProgress(100);
-          await wait(200);
+					await wait(200);
+					setProgress(100);
+					await wait(200);
 
-          setSaving(false);
+					setSaving(false);
 
-          router.push('/host'); // only navigate if success
-        }}
-      >
-        {saving ? 'Saving…' : 'Save and Exit'}
-        <Toaster />
-      </div>
+					router.push("/host"); // only navigate if success
+				}}
+			>
+				{saving ? "Saving…" : "Save and Exit"}
+				<Toaster />
+			</div>
 
-      <Sections childSaveOnUnmount={childSaveOnUnmount} />
-    </div>
-  );
+			<Sections childSaveOnUnmount={childSaveOnUnmount} />
+		</div>
+	);
 }
 
-import { Progress } from '@/components/ui/progress';
+import { Progress } from "@/components/ui/progress";
 
 export function ProgressDemo({ progress, setProgress }) {
-  useEffect(() => {
-    const timer = setTimeout(() => setProgress(66), 500);
-    return () => clearTimeout(timer);
-  }, []);
+	useEffect(() => {
+		const timer = setTimeout(() => setProgress(66), 500);
+		return () => clearTimeout(timer);
+	}, []);
 
-  return <Progress value={progress} className="w-64" />;
+	return <Progress value={progress} className="w-64" />;
 }
