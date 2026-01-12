@@ -2,7 +2,7 @@ name: Supabase SQL Dump
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # every night at 2 AM
+    - cron: '0 2 * * *' # every night at 2 AM
   workflow_dispatch:
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
           PGPASSWORD: ${{ secrets.PGPASSWORD }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "eu-north-1"
+          AWS_DEFAULT_REGION: 'eu-north-1'
         run: |
           set -euo pipefail
           DATE=$(date +%F-%H%M%S)
@@ -61,7 +61,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "eu-north-1"
+          AWS_DEFAULT_REGION: 'eu-north-1'
         run: |
           echo "Deleting old backups..."
           aws s3 ls s3://jamspots-pg-dump/backups/ \

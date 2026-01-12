@@ -9,7 +9,7 @@ export async function GET(
   const userDate = searchParams.get('userDate')!;
   const { slug } = await context.params;
   console.log(userDate);
-   console.log(slug);
+  console.log(slug);
 
   const { data, error } = await supabaseAdmin.rpc('run_jam_query', {
     p_slug: slug,

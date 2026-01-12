@@ -3,7 +3,7 @@ name: Supabase Images Storage Backup
 on:
   workflow_dispatch: # allows manual trigger
   schedule:
-    - cron: '0 2 * * *'  # every night at 2 AM
+    - cron: '0 2 * * *' # every night at 2 AM
 
 jobs:
   backup:
@@ -27,7 +27,6 @@ jobs:
           curl -fL -o supabase.tar.gz https://github.com/supabase/cli/releases/download/v2.72.5/supabase_linux_amd64.tar.gz
           tar -xzf supabase.tar.gz
           sudo mv supabase /usr/local/bin/
-
 
       - name: Copy Supabase bucket locally
         run: |

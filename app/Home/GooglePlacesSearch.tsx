@@ -56,10 +56,10 @@ const PlaceAutocomplete = () => {
   }, [places, map]);
 
   return (
-   <input
-  ref={inputRef}
-  placeholder={initialLocation?.city || ''}
-  className="
+    <input
+      ref={inputRef}
+      placeholder={initialLocation?.city || ''}
+      className="
     w-full h-12 px-3 text-sm
     bg-tone-4/60
     text-tone-1
@@ -71,7 +71,6 @@ const PlaceAutocomplete = () => {
     focus:border-primary
     mt-0
   "
-/>
-
+    />
   );
 };

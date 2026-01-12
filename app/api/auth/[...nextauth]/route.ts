@@ -12,8 +12,6 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user }: { user: User }) {
-
-     
       if (!user.email) return false;
 
       const { data } = await supabaseAdmin
@@ -29,7 +27,6 @@ export const authOptions = {
           last_login: new Date().toISOString(),
         });
       } else {
-        
         await supabaseAdmin
           .from('profiles')
           .update({ last_login: new Date().toISOString() })
