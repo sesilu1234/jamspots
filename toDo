@@ -1,5 +1,3 @@
-
-
 - ojo a lo de las daates en general, checkear y asegurar bien la logica
 
 -probar testing , ultimos ajustes y retoques y checkeos
@@ -7,19 +5,18 @@
 -subir a vercel como jamspots.com (ver si hay algo para checkear cuanto
 visitantes tiene)
 
--ya no sera env.local, asi que quitar next_public de las keys que no hay que neviar al front
+-ya no sera env.local, asi que quitar next_public de las keys que no hay que
+neviar al front
 
-- max 3 photos, and min 3 also maybe ? 
-- a user can upload max 33 photos. if more than those, appear a message to contact me sonner
+- max 3 photos, and min 3 also maybe ?
+- a user can upload max 33 photos. if more than those, appear a message to
+  contact me sonner
 
--en user suggestins poner fecha de envio ( e intentar conseguir ip y lugar de env)
+-en user suggestins poner fecha de envio ( e intentar conseguir ip y lugar de
+env)
 
-
-
-
--modificar marker image, list de host jams tanto en portatil como en movil, algo de jam slug, y colores poner un background en alguna y tangerine modificar
-
----
+-modificar marker image, list de host jams tanto en portatil como en movil, algo
+de jam slug, y colores poner un background en alguna y tangerine modificar
 
 - ***
 
