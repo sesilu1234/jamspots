@@ -66,9 +66,9 @@ export function validateJam(input: any) {
   if (input.periodicity === 'weekly' && !daysOfWeek.includes(input.dayOfWeek))
     errors.dayOfWeek = 'You must pick a day for weekly jams';
 
-  // dates
-  if (input.periodicity === 'manual' && (!input.dates || !input.dates.length))
-    errors.dates = 'Dates required for manual jams';
+  // // dates
+  // if (input.periodicity === 'manual' && (!input.dates || !input.dates.length))
+  //   errors.dates = 'Dates required for manual jams';
 
   // images
   if (!Array.isArray(input.images) || input.images.length < 2)
