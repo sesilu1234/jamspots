@@ -73,9 +73,9 @@ export function validateJam(input: any) {
 		errors.dates = "Dates required for manual jams";
 
 	// images
-	if (!Array.isArray(input.images) || input.images.length < 2)
-		errors.images = "At least 2 images required";
-	else if (input.images.length > 4) errors.images = "Max 4 images allowed";
+	if (!Array.isArray(input.images) || input.images.length != 3)
+		errors.images = "Exactly 3 images required";
+	
 
 	// styles
 	if (!Array.isArray(input.styles) || input.styles.length < 1)

@@ -2,6 +2,8 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { NextResponse } from "next/server";
 
 export async function GET() {
+
+	try {
 	const { data, error } = await supabaseAdmin
 		.from("sessions")
 		.select(
@@ -36,4 +38,8 @@ export async function GET() {
 		.filter(Boolean); // remove nulls
 
 	return NextResponse.json(formatted);
+
+	    } catch (e) {
+		return NextResponse.json({ error: "Server error" }, { status: 500 });
+	}
 }

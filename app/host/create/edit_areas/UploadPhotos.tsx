@@ -95,7 +95,19 @@ export default function PhotoUploader({
 	}
 
 	return (
-		<div className=" p-15 pt-4 lg:pt-15 flex flex-col gap-3">
+		<div className="pt-0 px-15">
+			<div className="flex gap-4">
+		<span className="">	Upload exactly 3 photos</span> 
+
+		<div className="w-[2px] bg-black/40"></div>
+		
+		<span style={{ color: photos.length === 3 ? '' : photos.length > 3 ? 'red' : 'black' }}>
+  {photos.length} / 3
+</span>
+
+
+		</div>
+		<div className=" pt-8 lg:pt-15 pt-4 lg:pt-15 flex flex-col gap-3">
 			<DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
 				<SortableContext items={photos}>
 					<div className="flex gap-3 flex-wrap">
@@ -118,6 +130,7 @@ export default function PhotoUploader({
 					</div>
 				</SortableContext>
 			</DndContext>
+		</div>
 		</div>
 	);
 }

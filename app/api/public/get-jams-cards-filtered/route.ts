@@ -2,6 +2,8 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
+
+	try {
 	const { searchParams } = new URL(req.url);
 
 	// Parámetros
@@ -58,7 +60,7 @@ export async function GET(req: Request) {
 		weekDay = weekdays[customDate.getDay()];
 	}
 
-	let stylesArray: string[] | null = [];
+	let stylesArray: string[] | null = null;
 	if (stylesParam) {
 		try {
 			const parsed = JSON.parse(stylesParam);
@@ -108,4 +110,7 @@ export async function GET(req: Request) {
 	}
 
 	return NextResponse.json(dataRes);
+	 } catch (e) {
+		return NextResponse.json({ error: "Server error" }, { status: 500 });
+	}
 }

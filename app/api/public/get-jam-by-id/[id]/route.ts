@@ -5,6 +5,8 @@ export async function GET(
 	req: Request,
 	context: { params: Promise<{ id: string }> },
 ) {
+
+	try {
 	const { id } = await context.params; // aquí unwrap de la promesa
 
 	const { data, error } = await supabaseAdmin
@@ -19,4 +21,8 @@ export async function GET(
 		return NextResponse.json({ error: error.message }, { status: 500 });
 
 	return NextResponse.json(result);
+
+	   } catch (e) {
+		return NextResponse.json({ error: "Server error" }, { status: 500 });
+	}
 }
