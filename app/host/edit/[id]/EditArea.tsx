@@ -119,7 +119,10 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
 			);
 		}
 
-		const photos_urls = await uploadPhotos(images_files);
+		const formData = new FormData();
+		images_files.forEach((file) => formData.append("images", file));
+
+		
 		let raw_desc = "";
 		try {
 			raw_desc = convertFromRaw(form.description.description!)
@@ -135,7 +138,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
 			dayOfWeek: form.generalInfo.dates.day_of_week,
 			dates: form.generalInfo.dates.list_of_dates,
 			time_start: form.generalInfo.dates.time.from,
-			images: photos_urls,
+			images: formData,
 			styles: form.features.styles,
 			lista_canciones: form.features.song_list,
 
