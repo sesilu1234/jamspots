@@ -96,7 +96,7 @@
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(66.984% 0.00008 271.152);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
@@ -131,13 +131,13 @@
   --tone-6: oklch(98.5% 0.001 106.423); /* highest / lightest */
   --tone-5: oklch(92.3% 0.003 48.717);
   --tone-4: oklch(70.9% 0.01 56.259);
-  --tone-3: oklch(44.4% 0.011 73.639);
+  --tone-3: oklch(71.002% 0.00789 80.616);
   --tone-2: oklch(26.8% 0.007 34.298);
   --tone-1: oklch(21% 0.006 285.885);
   --tone-0: oklch(14.7% 0.004 49.25); /* lowest / darkest */
 
   --primary-1: oklch(52% 0.14 250);
-  --secondary-1: oklch(60% 0.08 220);
+  --secondary-1: oklch(80.7% 0.333 95);
   --danger: oklch(60% 0.18 30);
   --warning: oklch(65% 0.16 95);
   --success: oklch(58% 0.16 160);
@@ -148,7 +148,7 @@
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(66.984% 0.00008 271.152);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
@@ -200,7 +200,7 @@
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(66.984% 0.00008 271.152);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(52.462% 0.19365 27.139);
   --primary-foreground: oklch(0.985 0 0);
@@ -252,7 +252,7 @@
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(66.984% 0.00008 271.152);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
@@ -304,7 +304,7 @@
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(66.984% 0.00008 271.152);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
@@ -356,7 +356,7 @@
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(66.984% 0.00008 271.152);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);

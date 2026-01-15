@@ -9,13 +9,15 @@ neviar al front
 -modificar marker image, list de host jams tanto en portatil como en movil, algo
 de jam slug, y colores poner un background en alguna y tangerine modificar
 
+-filter esta feo en light mode, tambien contorno de jam card mal, boton filtro
+mal -cambir color view jam host, tambien lo del modo - ver paginas de jams,
+aunque posiblemente este bien- y mirar de poner un background guay en algun
+sitio, por ejmeplo en about poner aalgo guay, y en tangerine un bacground
+radial, y quizas en dark y en light poner estrellas o background
 
-
+-arreglar avisos (googlePlaacesAutocomplete, y hydration)
 
 ---\*\*\*
-
-
-
 
 bg-gradient-to-b from-slate-950 to-slate-900
 
