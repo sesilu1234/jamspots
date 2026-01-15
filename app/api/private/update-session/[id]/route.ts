@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../../auth/[...nextauth]/route";
 import { success, z } from "zod";
 import { validateJam } from "./serverCheck";
+import {uploadPhotos} from "@/lib/upload-photos";
 
 export async function POST(
 	req: Request,
@@ -12,9 +13,25 @@ export async function POST(
 	try {
 		const { id } = await context.params;
 
-		const body = await req.json();
+		const formData = await req.formData();
 
-		const parsed_jamData = validateJam(body);
+		const jamColumns = JSON.parse(formData.get("jamColumns") as string);
+		const images_list = formData
+	.getAll("images")
+	.filter(
+		(f): f is File =>
+			f instanceof File && f.size > 0 && f.type.startsWith("image/"),
+	);
+
+		
+		console.log(images_list);
+
+		jamColumns.images_three = images_list.length == 3 ? true : false; 
+
+		console.log(jamColumns);
+		
+
+		const parsed_jamData = validateJam(jamColumns);
 		if (!parsed_jamData.success) {
 			return NextResponse.json(
 				{
@@ -42,7 +59,7 @@ export async function POST(
 
 		const host_id = profile?.id;
 
-		const { location_coords } = body;
+		const { location_coords } = jamColumns;
 
 		// Handle geometry safely
 		let pointValue: string | null = null;
@@ -64,6 +81,9 @@ export async function POST(
 		if (authError || !joins) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 		}
+
+
+		
 
 		const { data: images, error: fetchError } = await supabaseAdmin
 			.from("sessions")
@@ -91,13 +111,25 @@ export async function POST(
 			);
 		}
 
-		delete body["raw_desc"];
+		const result = await uploadPhotos(images_list);
+
+		if ("error" in result) {
+			return NextResponse.json(
+				{ error: result.error },
+				{ status: 500 },
+			);
+		}
+
+		jamColumns.images = result.urls;
+
+		delete jamColumns["raw_desc"];
+		delete jamColumns["images_three"];
 
 		const { data, error } = await supabaseAdmin
 			.from("sessions")
 			.update([
 				{
-					...body,
+					...jamColumns,
 					location_coords: pointValue,
 				},
 			])

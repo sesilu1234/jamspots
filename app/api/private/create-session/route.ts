@@ -6,6 +6,7 @@ import { jamSchema } from "./zoddeCheck";
 import { v4 as uuidv4 } from "uuid";
 import { success, z } from "zod";
 import { validateJam } from "./serverCheck";
+import {uploadPhotos} from "@/lib/upload-photos";
 
 function generateSlug(title: string, id: string) {
 	// clean title: lowercase, remove special chars, replace spaces with hyphens
@@ -24,10 +25,19 @@ function generateSlug(title: string, id: string) {
 
 export async function POST(req: Request) {
 	try {
-		const body = await req.json();
+		const formData = await req.formData();
+
+		const jamColumns = JSON.parse(formData.get("jamColumns") as string);
+		const images_list = formData
+	.getAll("images")
+	.filter(
+		(f): f is File =>
+			f instanceof File && f.size > 0 && f.type.startsWith("image/"),
+	);
+
 
 		const id = uuidv4();
-		const slug = generateSlug(body.jam_title, id);
+		const slug = generateSlug(jamColumns.jam_title, id);
 
 		// const parsed_jamData = jamSchema.safeParse(body);
 
@@ -43,7 +53,13 @@ export async function POST(req: Request) {
 		//   );
 		// }
 
-		const parsed_jamData = validateJam(body);
+		console.log(images_list);
+
+		jamColumns.images_three = images_list.length == 3 ? true : false; 
+
+		console.log(jamColumns);
+
+		const parsed_jamData = validateJam(jamColumns);
 
 		if (!parsed_jamData.success) {
 			return NextResponse.json(
@@ -75,6 +91,20 @@ export async function POST(req: Request) {
 			return NextResponse.json({ error: "Profile not found" }, { status: 404 });
 		}
 
+
+		const result = await uploadPhotos(images_list);
+		
+		if ("error" in result) {
+			return NextResponse.json(
+				{ error: result.error },
+				{ status: 500 },
+			);
+		}
+
+		jamColumns.images = result.urls;
+
+		
+
 		const {
 			jam_title,
 			location_title,
@@ -91,7 +121,7 @@ export async function POST(req: Request) {
 			description,
 			social_links,
 			location_coords,
-		} = body;
+		} = jamColumns;
 
 		const lat = parseFloat(location_coords.lat);
 		const lng = parseFloat(location_coords.lng);

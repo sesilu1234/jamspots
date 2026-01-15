@@ -1,22 +1,16 @@
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/route";
-import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+
+export async function uploadPhotos(
+	formImages: File[],
+): Promise<{ urls: string[] } | { error: string }> {
     try {
-        const session = await getServerSession(authOptions); // App Router uses new form
 
-        if (!session?.user?.email) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
 
-        const formData = await req.formData(); // Web API method
-
-        const files = formData.getAll("images") as File[]; // array of File objects
+      
         const urls: string[] = [];
 
-        for (const file of files) {
+        for (const file of formImages) {
             const buffer = Buffer.from(await file.arrayBuffer());
             const filePath = `images/${Date.now()}-${file.name}`;
 
@@ -36,7 +30,7 @@ export async function POST(req: Request) {
             urls.push(publicUrl);
         }
 
-        return new Response(JSON.stringify({ urls }), { status: 200 });
+        return { urls };
     } catch (e) {
         return { error: "Server error" };
     }

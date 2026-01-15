@@ -70,9 +70,8 @@ export function validateJam(input: any) {
 	// if (input.periodicity === 'manual' && (!input.dates || !input.dates.length))
 	//   errors.dates = 'Dates required for manual jams';
 
-		// images
-	if (!Array.isArray(input.images) || input.images.length != 3)
-		errors.images = "Exactly 3 images required";
+	if (!input.images_three)
+			errors.images = "Exactly 3 images required";
 
 	// styles
 	if (!Array.isArray(input.styles) || input.styles.length < 1)
