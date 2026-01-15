@@ -17,6 +17,10 @@ radial, y quizas en dark y en light poner estrellas o background
 
 -arreglar avisos (googlePlaacesAutocomplete, y hydration)
 
+-en host : quitar (moificar) el skeleton , hace que se vea faatal
+
+-y el add a new jam tambien modificarlo
+
 ---\*\*\*
 
 bg-gradient-to-b from-slate-950 to-slate-900

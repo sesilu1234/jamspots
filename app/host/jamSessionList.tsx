@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
@@ -38,8 +38,8 @@ export default function JamSessionList() {
       <div className="fixed inset-0 flex items-center justify-center bg-black/40">
         {showPanelDelete && (
           <div className=" flex flex-col gap-2 bg-white p-4 rounded-md shadow-xl w-96">
-            <p className="font-bold">
-              Type <i className="font-semibold">delete</i> to confirm
+            <p className="font-seminbold">
+              Type <i className="font-medium">delete</i> to confirm
             </p>
 
             <input
@@ -59,7 +59,7 @@ export default function JamSessionList() {
                 disabled={text !== 'delete'}
                 className={
                   text === 'delete'
-                    ? 'bg-red-300 hover:bg-rose-500 px-3 py-1  rounded-md'
+                    ? 'bg-red-400 hover:bg-rose-500 px-3 py-1  rounded-md'
                     : 'opacity-50 px-3 py-1 '
                 }
               >
@@ -68,7 +68,7 @@ export default function JamSessionList() {
 
               <button
                 onClick={() => setIdToDelete(null)}
-                className="bg-gray-400 px-3 py-1 rounded-md hover:bg-gray-600"
+                className="bg-gray-400/40 px-3 py-1 rounded-md hover:bg-gray-400/70"
               >
                 Cancel
               </button>
@@ -224,46 +224,7 @@ function Jam({
           Delete
         </button>
       </div>
-      <div className="md:hidden">
-        <DropdownMenu modal={false}>
-          <DropdownMenuTrigger asChild>
-            <Button
-              size="icon"
-              aria-label="More Options"
-              className="bg-slate-800/30 h-6 rounded-lg text-black hover:border-0 border-white"
-            >
-              <MoreHorizontalIcon />
-            </Button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent align="end" className=" bg-white/40 text-black">
-            <DropdownMenuGroup>
-              <Link href={`/jam/${jam_slug}`} prefetch={false}>
-                <DropdownMenuItem className="focus:bg-black/10 focus:text-black">
-                  <Eye className="text-black/100" />
-                  View
-                </DropdownMenuItem>
-              </Link>
-
-              <Link href={`/host/edit/${id}`} prefetch={false}>
-                <DropdownMenuItem className="focus:bg-black/10 focus:text-black">
-                  <Pencil className="text-amber-600" />
-                  Edit
-                </DropdownMenuItem>
-              </Link>
-
-              <DropdownMenuItem
-                variant="default"
-                onClick={() => deleteJam(id)}
-                className="focus:bg-black/10 focus:text-black"
-              >
-                <Trash2Icon className="text-red-500" />
-                Trash
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      <MobileMenu jam_slug={jam_slug} id={id} deleteJam={deleteJam} />
     </div>
   );
 }
@@ -277,6 +238,64 @@ export function SkeletonCard() {
         <Skeleton className="h-4 " />
         <Skeleton className="h-4" />
       </div>
+    </div>
+  );
+}
+
+type MobileMenuProps = Pick<JamProps, 'jam_slug' | 'id' | 'deleteJam'>;
+
+export function MobileMenu({ jam_slug, id, deleteJam }: MobileMenuProps) {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="md:hidden relative" ref={menuRef}>
+      <button
+        aria-label="More Options"
+        className="bg-slate-800/30 hover:bg-slate-800/50 px-1 rounded-lg text-black hover:border-0 border-white flex items-center justify-center"
+        onClick={() => setOpen((o) => !o)}
+      >
+        <MoreHorizontalIcon />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 mt-2 w-28 py-1 px-1 border-1 border-black/10 bg-slate-50/80 text-black text-sm backdrop-blur-sm rounded-md shadow-lg z-50">
+          <div className="flex flex-col">
+            <Link href={`/jam/${jam_slug}`} prefetch={false}>
+              <div className="flex items-center gap-2 px-1 py-2 hover:bg-black/10 rounded-md">
+                <Eye className="text-black" /> View
+              </div>
+            </Link>
+
+            <Link href={`/host/edit/${id}`} prefetch={false}>
+              <div className="flex items-center gap-2 px-1 py-2 hover:bg-black/10 rounded-md">
+                <Pencil className="text-amber-600" /> Edit
+              </div>
+            </Link>
+
+            <button
+              onClick={() => {
+                deleteJam(id);
+                setOpen(false);
+              }}
+              className="flex items-center gap-2 px-1 py-2 hover:bg-black/10  rounded-md w-full text-left"
+            >
+              <Trash2Icon className="text-red-500" /> Trash
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
