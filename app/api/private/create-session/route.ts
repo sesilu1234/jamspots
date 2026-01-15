@@ -1,164 +1,159 @@
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/route";
-import { NextResponse } from "next/server";
-import { jamSchema } from "./zoddeCheck";
-import { v4 as uuidv4 } from "uuid";
-import { success, z } from "zod";
-import { validateJam } from "./serverCheck";
-import {uploadPhotos} from "@/lib/upload-photos";
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../../auth/[...nextauth]/route';
+import { NextResponse } from 'next/server';
+import { jamSchema } from './zoddeCheck';
+import { v4 as uuidv4 } from 'uuid';
+import { success, z } from 'zod';
+import { validateJam } from './serverCheck';
+import { uploadPhotos } from '@/lib/upload-photos';
 
 function generateSlug(title: string, id: string) {
-	// clean title: lowercase, remove special chars, replace spaces with hyphens
+  // clean title: lowercase, remove special chars, replace spaces with hyphens
 
-	const cleanTitle = title
-		.toLowerCase()
-		.replace(/[^a-z0-9\s]/g, "")
-		.trim()
-		.replace(/\s+/g, "-");
+  const cleanTitle = title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
 
-	// take first 8 chars of UUID
-	const uuidSuffix = id.replace(/-/g, "").slice(0, 8);
+  // take first 8 chars of UUID
+  const uuidSuffix = id.replace(/-/g, '').slice(0, 8);
 
-	return `${cleanTitle}-${uuidSuffix}`;
+  return `${cleanTitle}-${uuidSuffix}`;
 }
 
+const MAX_NUMBER_OF_JAMS = 10;
+
 export async function POST(req: Request) {
-	try {
-		const formData = await req.formData();
+  try {
+    const formData = await req.formData();
 
-		const jamColumns = JSON.parse(formData.get("jamColumns") as string);
-		const images_list = formData
-	.getAll("images")
-	.filter(
-		(f): f is File =>
-			f instanceof File && f.size > 0 && f.type.startsWith("image/"),
-	);
+    const jamColumns = JSON.parse(formData.get('jamColumns') as string);
+    const images_list = formData
+      .getAll('images')
+      .filter(
+        (f): f is File =>
+          f instanceof File && f.size > 0 && f.type.startsWith('image/'),
+      );
 
+    // get server session
+    const session = await getServerSession(authOptions); // App Router uses new form
 
-		const id = uuidv4();
-		const slug = generateSlug(jamColumns.jam_title, id);
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-		// const parsed_jamData = jamSchema.safeParse(body);
+    const userEmail = session.user.email;
 
-		// if (!parsed_jamData.success) {
-		//   const errorTree = z.treeifyError(parsed_jamData.error);
-		//   console.log('Zod validation failed:', JSON.stringify(errorTree, null, 2)); // logs full details
-		//   return NextResponse.json(
-		//     {
-		//       error: "Data couldn't pass Zod",
-		//       details: errorTree,
-		//     },
-		//     { status: 400 },
-		//   );
-		// }
+    // get host_id from profiles table
+    const { data: profile, error: profileError } = await supabaseAdmin
+      .from('profiles')
+      .select('id')
+      .eq('email', userEmail)
+      .single();
 
-		console.log(images_list);
+    if (profileError || !profile) {
+      return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
+    }
 
-		jamColumns.images_three = images_list.length == 3 ? true : false; 
+    const { count, error: countError } = await supabaseAdmin
+      .from('sessions')
+      .select('*', { count: 'exact', head: true })
+      .eq('host_id', profile.id);
 
-		console.log(jamColumns);
+    if (countError) {
+      return NextResponse.json({ error: 'DB error' }, { status: 500 });
+    }
 
-		const parsed_jamData = validateJam(jamColumns);
+    console.log(count);
 
-		if (!parsed_jamData.success) {
-			return NextResponse.json(
-				{
-					error: "Data couldn't pass Zod",
-					details: "",
-				},
-				{ status: 400 },
-			);
-		}
+    if ((count ?? 0) > MAX_NUMBER_OF_JAMS) {
+      return NextResponse.json(
+        { error: 'Number of jams exceeded. Contact us.' },
+        { status: 403 },
+      );
+    }
 
-		// get server session
-		const session = await getServerSession(authOptions); // App Router uses new form
+    jamColumns.images_three = images_list.length == 3 ? true : false;
 
-		if (!session?.user?.email) {
-			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-		}
+    const parsed_jamData = validateJam(jamColumns);
 
-		const userEmail = session.user.email;
+    if (!parsed_jamData.success) {
+      return NextResponse.json(
+        {
+          error: "Data couldn't pass Zod",
+          details: '',
+        },
+        { status: 400 },
+      );
+    }
 
-		// get host_id from profiles table
-		const { data: profile, error: profileError } = await supabaseAdmin
-			.from("profiles")
-			.select("id")
-			.eq("email", userEmail)
-			.single();
+    const id = uuidv4();
+    const slug = generateSlug(jamColumns.jam_title, id);
 
-		if (profileError || !profile) {
-			return NextResponse.json({ error: "Profile not found" }, { status: 404 });
-		}
+    const result = await uploadPhotos(images_list);
 
+    if ('error' in result) {
+      return NextResponse.json({ error: result.error }, { status: 500 });
+    }
 
-		const result = await uploadPhotos(images_list);
-		
-		if ("error" in result) {
-			return NextResponse.json(
-				{ error: result.error },
-				{ status: 500 },
-			);
-		}
+    jamColumns.images = result.urls;
 
-		jamColumns.images = result.urls;
+    const {
+      jam_title,
+      location_title,
+      location_address,
+      periodicity,
+      dayOfWeek,
+      dates,
+      time_start,
+      images,
+      styles,
+      lista_canciones,
+      instruments_lend,
+      drums,
+      description,
+      social_links,
+      location_coords,
+    } = jamColumns;
 
-		
+    const lat = parseFloat(location_coords.lat);
+    const lng = parseFloat(location_coords.lng);
 
-		const {
-			jam_title,
-			location_title,
-			location_address,
-			periodicity,
-			dayOfWeek,
-			dates,
-			time_start,
-			images,
-			styles,
-			lista_canciones,
-			instruments_lend,
-			drums,
-			description,
-			social_links,
-			location_coords,
-		} = jamColumns;
+    const pointValue =
+      !isNaN(lat) && !isNaN(lng) ? `SRID=4326;POINT(${lng} ${lat})` : null;
 
-		const lat = parseFloat(location_coords.lat);
-		const lng = parseFloat(location_coords.lng);
+    const { data, error } = await supabaseAdmin.from('sessions').insert([
+      {
+        id: id,
+        jam_title: jam_title, // maps jam_title → jamTitle
+        location_title: location_title,
+        periodicity: periodicity,
+        dayOfWeek: dayOfWeek,
+        dates: dates,
+        time_start: time_start,
+        images: images,
+        styles: styles,
+        lista_canciones: lista_canciones,
+        instruments_lend: instruments_lend,
+        drums: drums,
+        description: description,
+        social_links: social_links,
+        host_id: profile.id,
+        location_coords: pointValue,
 
-		const pointValue =
-			!isNaN(lat) && !isNaN(lng) ? `SRID=4326;POINT(${lng} ${lat})` : null;
+        location_address: location_address,
+        slug: slug,
+      },
+    ]);
 
-		const { data, error } = await supabaseAdmin.from("sessions").insert([
-			{
-				id: id,
-				jam_title: jam_title, // maps jam_title → jamTitle
-				location_title: location_title,
-				periodicity: periodicity,
-				dayOfWeek: dayOfWeek,
-				dates: dates,
-				time_start: time_start,
-				images: images,
-				styles: styles,
-				lista_canciones: lista_canciones,
-				instruments_lend: instruments_lend,
-				drums: drums,
-				description: description,
-				social_links: social_links,
-				host_id: profile.id,
-				location_coords: pointValue,
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
-				location_address: location_address,
-				slug: slug,
-			},
-		]);
-
-		if (error) {
-			return NextResponse.json({ error: error.message }, { status: 500 });
-		}
-
-		return NextResponse.json(data, { status: 200 });
-	} catch (e) {
-		return NextResponse.json({ error: "Server error" }, { status: 500 });
-	}
+    return NextResponse.json(data, { status: 200 });
+  } catch (e) {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
 }
