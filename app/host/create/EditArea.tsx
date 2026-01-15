@@ -128,12 +128,9 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       location_coords: form.generalInfo.coordinates,
     };
 
-    console.log(jamData);
     const parsed_jamData = validateJam(jamData);
 
     if (!parsed_jamData.success) {
-      console.log(parsed_jamData);
-
       // Get the first error message from the errors object
       let firstMsg = 'Unknown error';
 

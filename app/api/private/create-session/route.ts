@@ -66,8 +66,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'DB error' }, { status: 500 });
     }
 
-    console.log(count);
-
     if ((count ?? 0) > MAX_NUMBER_OF_JAMS) {
       return NextResponse.json(
         { error: 'Number of jams exceeded. Contact us.' },

@@ -19,8 +19,6 @@ export async function GET(req: Request) {
     const dateOptions = searchParams.get('dateOptions'); // "all", "week", "custom: 2025-12-21"
     const stylesParam = searchParams.get('styles'); // '["Blues","Hip-Hop"]'
 
-    console.log(userDate);
-
     // Helper para formatear fecha local YYYY-MM-DD
     const formatLocalDate = (d: Date) =>
       `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
@@ -49,8 +47,6 @@ export async function GET(req: Request) {
           rangeDates.push(formatLocalDate(new Date(d)));
         }
 
-        console.log(rangeDates);
-
         const [res1, res2] = await Promise.all([
           supabaseAdmin
             .from('sessions_with_coords')
@@ -68,8 +64,6 @@ export async function GET(req: Request) {
         const customDateStr = dateOptions.split('custom:')[1].trim();
         const customDate = new Date(customDateStr);
         const weekDay = weekdays[customDate.getDay()];
-
-        console.log(customDate, weekDay);
 
         const [res1, res2] = await Promise.all([
           supabaseAdmin

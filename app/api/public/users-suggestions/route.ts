@@ -9,15 +9,13 @@ export async function POST(req: Request) {
     const sender_ip = req.headers.get('x-forwarded-for')?.split(',')[0] || null;
     const user_agent = req.headers.get('user-agent') || null;
 
-    console.log(msg, email, sender_ip, user_agent);
-
     const { data, error } = await supabaseAdmin
       .from('user_suggestions')
-      .insert({ 
-        sender_email: email, 
-        message: msg, 
-        sender_ip, 
-        user_agent 
+      .insert({
+        sender_email: email,
+        message: msg,
+        sender_ip,
+        user_agent,
       })
       .select()
       .maybeSingle();
