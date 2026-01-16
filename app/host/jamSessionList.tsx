@@ -106,7 +106,7 @@ export default function JamSessionList() {
 
   if (loading)
     return (
-      <div className="flex flex-col mt-24 gap-6">
+      <div className="flex flex-col mt-8 gap-6">
         <SkeletonCard />
         <SkeletonCard />
       </div>
@@ -126,25 +126,51 @@ export default function JamSessionList() {
         />
       ))}
 
-      <div className="mt-4 mx-auto container">
+      <div className="mt-6 mx-auto container flex justify-center">
         <Link
-          href={`/host/create`}
+          href="/host/create"
           prefetch={false}
-          className="flex justify-center items-center h-24 md:h-32 bg-gray-500 rounded-lg w-[200px] md:w-[300px]"
+          className="
+      group relative flex items-center justify-center
+      h-24 md:h-24 w-3/10 min-w-[200px] max-w-[320px]
+      rounded-2xl
+      border border-zinc-300 bg-white/50 backdrop-blur-md
+      transition-all duration-500 ease-out
+      hover:border-zinc-700 hover:bg-white/80
+      hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)]
+      hover:-translate-y-1
+      active:scale-[0.98]
+    "
         >
-          <div className="flex items-center justify-between font-semibold text-white gap-2">
-            <div className="bg-black w-10 h-10 rounded-full flex items-center justify-center text-lg">
+          {/* Subtle Inner Glow */}
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/[0.03] pointer-events-none" />
+
+          <div className="flex items-center gap-4">
+            <div
+              className="
+          relative flex h-10 w-10 items-center justify-center 
+          rounded-xl bg-zinc-900/00 border-2  text-black
+          transition-all duration-500 ease-spring
+          group-hover:bg-yellow-400 group-hover:text-black group-hover:rotate-90
+        "
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                height="18px"
                 viewBox="0 -960 960 960"
-                width="18px"
-                fill="white"
+                className="w-6 h-6 fill-current"
               >
                 <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
               </svg>
             </div>
-            <span>Add a new jam</span>
+
+            <div className="flex flex-col">
+              <span className="text-sm md:text-base font-semibold tracking-tight text-zinc-900">
+                Add new jam
+              </span>
+              <span className="text-xs text-zinc-500 opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                Start a session
+              </span>
+            </div>
           </div>
         </Link>
       </div>
@@ -231,9 +257,9 @@ function Jam({
 
 export function SkeletonCard() {
   return (
-    <div className="flex items-center gap-8 py-4 mx-auto w-[1070px]">
-      <Skeleton className="w-[300px] h-32 rounded-xl" />
-      <div className="space-y-2 w-[420px] ">
+    <div className="flex items-center gap-8 py-4 mx-auto container">
+      <Skeleton className=" w-3/10 h-32 rounded-xl" />
+      <div className="space-y-2 w-4/10">
         <Skeleton className="h-4 " />
         <Skeleton className="h-4 " />
         <Skeleton className="h-4" />
