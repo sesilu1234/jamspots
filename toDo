@@ -6,11 +6,11 @@ visitantes tiene)
 -ya no sera env.local, asi que quitar next_public de las keys que no hay que
 neviar al front
 
--modificar marker image
+
 
 -arreglar avisos (googlePlaacesAutocomplete, y hydration)
 
--color ee las cards home een light mode
+
 
 ---\*\*\*
 

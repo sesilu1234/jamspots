@@ -28,8 +28,8 @@ export default function JamCarousel({
       {/* Collapse button */}
       <div
         className="p-2 flex items-center justify-center rounded-t-sm
-               bg-info/80 text-white cursor-pointer
-               hover:bg-info/95 transition-all duration-200"
+               bg-collapse-butt/80 text-white cursor-pointer 
+               hover:bg-collapse-butt/70 transition-all duration-200"
         onClick={() => setCollapsed(!collapsed)}
       >
         {!collapsed ? 'Collapse cards' : 'Show cards'}
