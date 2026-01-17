@@ -10,9 +10,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import JamSessionList from './jamSessionList';
 
 export default async function Home() {
-  console.log('asdsa');
   const session = await getServerSession(authOptions);
-  console.log(session);
+
   if (!session) redirect('/signIn');
 
   return (

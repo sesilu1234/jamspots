@@ -85,7 +85,7 @@ export default function MapMarkersCluster() {
 
   if (selectedMarker)
     return (
-      <div className="absolute top-4 right-4 z-[401] w-80 overflow-hidden rounded-2xl shadow-2xl">
+      <div className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2     lg:translate-x-0 lg:-translate-y-0      lg:top-4 lg:right-4 z-[401] w-80 overflow-hidden rounded-2xl shadow-2xl">
         {/* Transparent Header Overlay */}
         <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-end p-3">
           {/* Subtle Badge */}
@@ -185,6 +185,11 @@ export function JamCardMarker({
               src={jamData.images}
               alt={jamData.jam_title}
               fill
+              // This tells the browser:
+              // - On small screens (mobile), the image is 100% width
+              // - On tablets (768px+), it's roughly 50% width
+              // - On desktops (1024px+), it's roughly 33% width
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           ) : (
@@ -258,33 +263,37 @@ const tags = ['blues', 'rap'];
 export function CardSkeleton() {
   return (
     <Card
-      className={`flex flex-col p-4 w-70  shadow-md absolute  top-4 right-4 z-[401]   `}
+      className="flex flex-col w-80 overflow-hidden rounded-2xl bg-neutral-50 shadow-md absolute top-1/2 
+    right-1/2 translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:-translate-y-0 lg:top-4 lg:right-4 z-[401]"
     >
-      {/* Image left (desktop) / top (mobile) */}
-      <div className="relative ">
-        <Skeleton className="h-48" />
+      {/* 1. Image Container - Matches h-52 and relative for tags */}
+      <div className="relative h-52 w-full">
+        <Skeleton className="h-full w-full rounded-none" />
+
+        {/* Floating Tags Placeholder */}
+        <div className="absolute bottom-3 left-3 flex gap-1.5">
+          <Skeleton className="h-5 w-12 rounded-xs bg-white/30" />
+          <Skeleton className="h-5 w-12 rounded-xs bg-white/30" />
+        </div>
       </div>
 
-      {/* Right panel */}
-      <CardContent className="flex flex-col justify-between text-xs ">
-        <div className="flex flex-col gap-2 font-bold text-lg pt-4">
-          <Skeleton className="h-4" />
-          <Skeleton className="h-4 w-3/5 " />
+      {/* 2. Content Area - Matches p-5 */}
+      <CardContent className="p-5">
+        {/* Title Placeholder */}
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-full" />
         </div>
 
-        <div className="flex flex-col gap-2 text-xs text-gray-500 pt-4">
-          <Skeleton className="h-4 w-3/5 " />
+        {/* Location Info Placeholder */}
+        <div className="mt-4 space-y-2">
+          <Skeleton className="h-3 w-2/3" /> {/* location_title */}
+          <Skeleton className="h-3 w-1/2" /> {/* location_address */}
         </div>
 
-        {tags && (
-          <div className="flex flex-wrap gap-1 pt-8">
-            {[1, 2, 3].map((tag, i) => (
-              <span key={i} className="bg-gray-200 rounded px-0 py-0 text-xs">
-                <Skeleton className="w-12 h-6   " />
-              </span>
-            ))}
-          </div>
-        )}
+        {/* Footer Placeholder */}
+        <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-3">
+          <Skeleton className="h-3 w-20" /> {/* "View Details" text */}
+        </div>
       </CardContent>
     </Card>
   );

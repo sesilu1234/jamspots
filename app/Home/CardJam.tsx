@@ -39,6 +39,7 @@ export default function JamCard({
               src={src}
               alt={`${jamName} at ${spotName}`}
               fill
+              sizes="(max-width: 768px) 100vw, 256px" // Add this line
               className="object-cover"
             />
           )}

@@ -20,7 +20,6 @@ import type { NextRequest } from 'next/server';
 export default function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
 
-  console.log(req.cookies);
   // -------- AUTH --------
   const token = req.cookies.get('next-auth.session-token')?.value;
   if (!token && (path.startsWith('/host') || path.startsWith('/api/private'))) {

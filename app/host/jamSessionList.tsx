@@ -214,6 +214,10 @@ function Jam({
           src={jam_image_src}
           alt={jam_title}
           fill
+          // 1. On mobile/tablet, it takes up 30% of the viewport width
+          // 2. Once the 'container' hits its max-width (e.g. 1280px),
+          //    30% of that is roughly 400px.
+          sizes="(max-width: 1280px) 30vw, 400px"
           className="object-cover rounded-lg"
         />
       </div>
