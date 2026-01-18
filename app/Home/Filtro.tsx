@@ -208,8 +208,10 @@ export default function Filtro({
   };
 
   useEffect(() => {
-    setSearchType('local');
-    fetchJams('local');
+    if (locationSearch) {
+      setSearchType('local');
+      fetchJams('local');
+    }
   }, [locationSearch]);
 
   return (
