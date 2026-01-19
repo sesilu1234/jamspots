@@ -6,39 +6,32 @@ visitantes tiene)
 -ya no sera env.local, asi que quitar next_public de las keys que no hay que
 neviar al front
 
-
-
-
-
-
------hacer prueba poniendo jams por el mundo a tutiplen, ver que funciona reliable bien (y si algo falla aarreglarlo), y ya : 
+-----hacer prueba poniendo jams por el mundo a tutiplen, ver que funciona
+reliable bien (y si algo falla aarreglarlo), y ya :
 
 poner jams reales de madrid, austin, ny, london, south aamerica, australia
 
-
----poner jam online bien, con google search console y todo lujo de detalles para que se veaa bien 
+---poner jam online bien, con google search console y todo lujo de detalles para
+que se veaa bien
 
 -- ponerlo en linkedin y en algun sitio online, reddit, etc....
 
+---
 
+calendar de filtro en globals ssale mal
 
-
-
-
-
-
+ademas cambiar color de styles filter, morado no queda bien asi todo
 
 ---
 
+boton de apply quizaas abajo del todo tambien ?
 
+---
 
 - poner para location localstorage (porque aaal hechaar para atras y tal
-recalcula geo location y tarda a veces y no molaa...)
+  recalcula geo location y tarda a veces y no molaa...)
 
 poner que el localstorage solo vale por 4 horas
-
-
-
 
 ---\*\*\*
 
