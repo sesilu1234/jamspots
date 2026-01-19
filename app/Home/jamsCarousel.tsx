@@ -41,7 +41,7 @@ export default function JamCarousel({
         className={`
     card-container flex flex-col items-center bg-tone-3/45 rounded-b-xl border border-black/20 gap-6
     overflow-y-auto transition-all duration-700 ease-in-out
-    ${collapsed ? 'max-h-0 p-0 opacity-0' : 'max-h-108 p-6 pr-4 opacity-100'}
+    ${collapsed ? 'max-h-0 p-0 opacity-0' : 'max-h-108 p-6 md:pr-4 opacity-100'}
    
   `}
       >
