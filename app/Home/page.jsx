@@ -57,7 +57,7 @@ export default function Home() {
             {/* <div className="h-[1.5px] bg-foreground-1/50 w-96 mt-1 opacity-0"></div> */}
           </div>
 
-          <div className="flex items-center mb-5 mt-6 ml-3 gap-2">
+          <div className="flex flex-wrap items-center mb-5 mt-6 ml-3 gap-2 max-w-full">
             {/* <Input
               className="w-72 h-10 px-3 text-sm text-gray-500 placeholder-gray-500 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="search"
@@ -68,7 +68,7 @@ export default function Home() {
               <GooglePlacesSearch />
             </div>
 
-            <div className="w-52 ">
+            <div className=" ">
               <Filtro
                 jams={jams}
                 setJams={setJams}
