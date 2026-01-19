@@ -5,29 +5,33 @@ type JamImagesProps = {
   images: string[];
 };
 
-export function JamImagesTop({ images }: JamImagesProps) {
+export function JamImagesTop({ images }: { images: string[] }) {
+  if (!images[0]) return null;
+
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-2 w-full lg:w-1/2">
-      {/* Photo 1: col-span-2 row-span-2 */}
-      <div
-        className="col-span-2 row-span-2 relative aspect-9/5 rounded-xl overflow-hidden
-          ring-1 ring-neutral-400/20 shadow-[0_12px_24px_rgba(255,255,255,0.1)]"
-      >
-        {images[0] && (
-          <Image
-            src={images[0]}
-            alt="Photo 1"
-            fill
-            className="object-cover object-top"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
-        )}
+    <div className="relative group w-full aspect-4/3 lg:aspect-square max-h-125 flex items-center justify-center">
+      {/* Background Blur Layer - Tightened up */}
+      <div className="absolute inset-4 overflow-hidden rounded-3xl opacity-30">
+        <Image
+          src={images[0]}
+          alt=""
+          fill
+          className="object-cover blur-md scale-100" // Reduced blur and removed overflow scale
+        />
       </div>
 
-      {/* Photo 2: col-span-2 row-span-2 */}
+      {/* Sharp Main Image "Floating" */}
+      <div className="relative z-10 w-[94%] h-[94%] transition-all duration-500 ease-out scale-95 group-hover:scale-98 ">
+        <Image
+          src={images[0]}
+          alt="Jam Preview"
+          fill
+          className="object-cover rounded-xl shadow-xl border border-tone-0/10 object-top"
+        />
 
-      {/* Photo 3: col-3 row-2 */}
-      {/* Add more photos here using the same pattern */}
+        {/* Lighter Gradient Overlay - cleaner look */}
+        <div className="absolute inset-0 rounded-xl bg-linear-to-t from-tone-6/30 via-transparent to-transparent opacity-40" />
+      </div>
     </div>
   );
 }

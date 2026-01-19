@@ -106,16 +106,25 @@ export default function JamPage() {
           </div> */}
         </div>
 
-        <div className=" w-[1100px] max-w-[85%] lg:max-w-[60%] mx-auto flex flex-col-reverse lg:flex-row lg:items-end gap-8 lg:gap-12  mt-12 ">
-          <div className="lg:w-1/2">
-            <h3 className="text-3xl lg:text-4xl font-bold leading-relaxed ">
-              {jam.jam_title + ' at ' + jam.location_title}
+        <div className="max-w-6xl w-[80%] mx-auto flex flex-col-reverse lg:flex-row lg:items-center gap-10 lg:gap-20 mt-16 mb-8">
+          <div className="lg:w-1/2 space-y-4 lg:text-right">
+            {/* Small accent text adds a "pro" look */}
+            <span className="text-emerald-400 font-medium tracking-widest text-xs uppercase">
+              Featured Jam
+            </span>
+            <h3 className="text-4xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
+              {jam.jam_title}
+              <span className="block text-white/40 text-2xl lg:text-3xl mt-2">
+                at {jam.location_title}
+              </span>
             </h3>
           </div>
-          <JamImagesTop images={jam.images.slice(0, 1)} />
-        </div>
 
-        <div className="flex flex-col-reverse lg:flex-row  gap-6 w-[1300px] max-w-[90%] lg:max-w-[75%] mx-auto pt-0 lg:pt-12 py-12 mt-12">
+          <div className="lg:w-1/2 w-full">
+            <JamImagesTop images={jam.images.slice(0, 1)} />
+          </div>
+        </div>
+        <div className="flex flex-col-reverse lg:flex-row  gap-6 w-[1300px] max-w-[90%] lg:max-w-[75%] mx-auto pt-0 lg:pt-0 pb-12 mt-12">
           <div className="flex flex-col   lg:w-1/2">
             {/* Left column: JamChars */}
             <div className="rounded-xl  pt-8 pb-10 px-8 border border-white/10 bg-tone-0/5  w-full">
@@ -162,7 +171,7 @@ export default function JamPage() {
           <JamImagesBottom images={jam.images.slice(1, 3)} />
         </div>
 
-        <div className="w-[1300px] max-w-[75%] mx-auto pb-24  ">
+        <div className="w-[1300px] max-w-[85%]  lg:max-w-[75%] mx-auto pb-24 overflow-hidden ">
           <SocialLinks socialLinks={JSON.parse(jam.social_links)} />
         </div>
 
