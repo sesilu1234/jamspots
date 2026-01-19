@@ -64,7 +64,7 @@ export default function JamPage() {
       const res = await fetch(`/api/public/get-jam/${jamId}?${paramsJam}`);
       const data = await res.json();
       setJam(data);
-
+      console.log(data);
       // <-- log here, after fetch
     }
     fetchJam();
@@ -118,7 +118,7 @@ export default function JamPage() {
         <div className="flex flex-col-reverse lg:flex-row  gap-6 w-[1300px] max-w-[90%] lg:max-w-[75%] mx-auto pt-0 lg:pt-12 py-12 mt-12">
           <div className="flex flex-col   lg:w-1/2">
             {/* Left column: JamChars */}
-            <div className="rounded-xl  pt-8 pb-10 px-8 border border-white/10 bg-tone-0/5 w-full">
+            <div className="rounded-xl  pt-8 pb-10 px-8 border border-white/10 bg-tone-0/5  w-full">
               <JamChars
                 jamDetails={{
                   styles: jam.styles,
@@ -163,7 +163,7 @@ export default function JamPage() {
         </div>
 
         <div className="w-[1300px] max-w-[75%] mx-auto pb-24  ">
-          <SocialLinks socialLinks={jam.social_links} />
+          <SocialLinks socialLinks={JSON.parse(jam.social_links)} />
         </div>
 
         <div className="relative w-[1300px] max-w-[75%] mx-auto pb-24">
