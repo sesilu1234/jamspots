@@ -62,15 +62,28 @@ export async function POST(req: Request) {
       .select('*', { count: 'exact', head: true })
       .eq('host_id', profile.id);
 
+    console.log('the count is :', count);
+
     if (countError) {
       return NextResponse.json({ error: 'DB error' }, { status: 500 });
     }
 
     if ((count ?? 0) > MAX_NUMBER_OF_JAMS) {
-      return NextResponse.json(
-        { error: 'Number of jams exceeded. Contact us.' },
-        { status: 403 },
-      );
+      const { data: userPass, error: countPassError } = await supabaseAdmin
+        .from('allowed_emails')
+        .select('*')
+        .eq('email', userEmail);
+
+      if (countPassError) {
+        return NextResponse.json({ error: 'DB error' }, { status: 500 });
+      }
+
+      if (userPass.length === 0) {
+        return NextResponse.json(
+          { error: 'Number of jams exceeded. Contact us.' },
+          { status: 403 },
+        );
+      }
     }
 
     jamColumns.images_three = images_list.length == 3 ? true : false;
