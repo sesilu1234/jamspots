@@ -28,7 +28,7 @@ export default function Filtro({
 
   const [dateOptions, setDateOptions] = useState('week');
   const [order, setOrder] = useState('popular');
-  const [distance, setDistance] = useState(40);
+  const [distance, setDistance] = useState(60);
   const [styles, setStyles] = useState<string[]>([]);
 
   const [dateOptionsGlobal, setdateOptionsGlobal] = useState('all');
@@ -36,7 +36,7 @@ export default function Filtro({
 
   const dateOptionsHold = useRef('week');
   const orderHold = useRef('popular');
-  const distanceHold = useRef(40);
+  const distanceHold = useRef(60);
   const stylesHold = useRef<string[]>([]);
 
   const dateOptionsGlobalHold = useRef('all');

@@ -21,6 +21,13 @@ que se veaa bien
 -poner posiblemente info de : hay dos filtros , uno para jams locales o cercanas
 a la ciudad en el buscador, y otro para ver en el mapa jams de cualquier lugar
 
+-no esta bien o no esta acorde el dibujo cuando pone que no hay bateria o
+acustic
+
+- poner una columna de validated (en bae de datoss, y tambien simbolo debeing
+  checked o rejected....)
+- column de priority o algo asi para que algunas jamss aparezcan las primeras ?
+
 ---
 
 calendar de filtro en globals ssale mal
