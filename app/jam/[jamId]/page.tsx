@@ -9,6 +9,7 @@ import { Jam } from '../types/jam';
 import draftToHtml from 'draftjs-to-html';
 import { RawDraftContentState } from 'draft-js';
 import SocialLinks from './SocialLinks';
+import UpvoteReport from './UpvoteReport';
 import StaticMap from './LocationImageGMaps';
 import TimeAndPlace from './TimeAndPlace';
 import { JamImagesTop, JamImagesBottom } from './JamImages';
@@ -171,8 +172,9 @@ export default function JamPage() {
           <JamImagesBottom images={jam.images.slice(1, 3)} />
         </div>
 
-        <div className="w-[1300px] max-w-[85%]  lg:max-w-[75%] mx-auto pb-24 overflow-hidden ">
+        <div className="flex flex-col lg:flex-row w-[1300px] max-w-[85%]  lg:max-w-[75%] mx-auto pb-12 lg:pb-24 overflow-hidden ">
           <SocialLinks socialLinks={JSON.parse(jam.social_links)} />
+          <UpvoteReport />
         </div>
 
         <div className="relative w-[1300px] max-w-[75%] mx-auto pb-24">
