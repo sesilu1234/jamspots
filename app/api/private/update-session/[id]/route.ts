@@ -116,6 +116,7 @@ export async function POST(
         {
           ...jamColumns,
           location_coords: pointValue,
+          validated:false,
         },
       ])
       .eq('id', id)

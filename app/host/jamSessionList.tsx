@@ -11,6 +11,7 @@ interface Jam {
   location_address: string;
   image: string;
   slug: string;
+  validated: boolean;
 }
 
 type JamProps = {
@@ -19,6 +20,7 @@ type JamProps = {
   jam_adress: string;
   jam_image_src: string;
   jam_slug: string;
+  is_validated: boolean;
   deleteJam: (id: string) => void;
 };
 
@@ -93,7 +95,7 @@ export default function JamSessionList() {
         const res = await fetch('/api/private/get-user-jams');
         if (!res.ok) throw new Error('Failed to fetch jams');
         const data: Jam[] = await res.json();
-
+        
         setJams(data);
       } catch {
         console.log('Error while fetching');
@@ -122,6 +124,7 @@ export default function JamSessionList() {
           jam_adress={jam.location_address}
           jam_image_src={jam.image}
           jam_slug={jam.slug}
+          is_validated={jam.validated}
           deleteJam={setIdToDelete}
         />
       ))}
@@ -199,42 +202,66 @@ import {
 
 import { ButtonGroup } from '@/components/ui/button-group';
 
+
 function Jam({
   id,
   jam_title,
   jam_adress,
   jam_image_src,
   jam_slug,
+  is_validated, // Destructure it here
   deleteJam,
 }: JamProps) {
   return (
-    <div className="flex items-center gap-8 py-4 mx-auto container">
-      <div className=" w-3/10 h-32 relative">
+    <div className={`flex items-center gap-8 py-4 mx-auto container transition-opacity ${!is_validated ? 'opacity-75' : 'opacity-100'}`}>
+      
+      {/* IMAGE CONTAINER */}
+      <div className="w-3/10 h-32 relative">
         <Image
           src={jam_image_src}
           alt={jam_title}
           fill
-          // 1. On mobile/tablet, it takes up 30% of the viewport width
-          // 2. Once the 'container' hits its max-width (e.g. 1280px),
-          //    30% of that is roughly 400px.
           sizes="(max-width: 1280px) 30vw, 400px"
           className="object-cover rounded-lg"
         />
+        
+        {/* VALIDATION BADGE */}
+        {!is_validated && (
+          <div className="absolute top-2 left-2 bg-amber-500 text-white text-[10px] uppercase font-bold max-w-3/4 px-2 py-1 rounded shadow-md flex items-center gap-1">
+            <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+            Pending Review
+          </div>
+        )}
       </div>
 
-      <div className="flex flex-col  w-4/10 px-[20px]">
-        <h3 className="text-lg font-bold line-clamp-2">{jam_title}</h3>
+      {/* TEXT CONTENT */}
+      <div className="flex flex-col w-4/10 px-[20px]">
+        <div className="flex items-center gap-2">
+          <h3 className="text-lg font-bold line-clamp-2">{jam_title}</h3>
+          {!is_validated && (
+            <span className="text-amber-600 text-xs font-medium hidden sm:inline">
+              (In validation)
+            </span>
+          )}
+        </div>
 
         <h1 className="text-sm text-gray-600 font-semibold line-clamp-2">
           {jam_adress}
         </h1>
       </div>
 
+      {/* ACTIONS */}
       <div className="hidden md:flex flex-col md:flex-row items-start gap-4 w-3/10 text-sm md:text-lg">
+        {/* Only show View if validated, or keep it but maybe disable it? */}
         <Link
           href={`/jam/${jam_slug}`}
           prefetch={false}
-          className="px-3 py-1 rounded-sm    border-1 border-black bg-zinc-700 text-zinc-100 hover:bg-zinc-800  transition-colors"
+          className={`px-3 py-1 rounded-sm border-1 border-black transition-colors ${
+            !is_validated 
+              ? 'bg-zinc-500 opacity-80 hover:bg-zinc-600' 
+              : 'bg-zinc-700 text-zinc-100 hover:bg-zinc-800'
+          }`}
+         
         >
           View
         </Link>
@@ -248,17 +275,17 @@ function Jam({
         </Link>
 
         <button
-          className="px-3 py-1 rounded-sm bg-red-500/90 text-white  hover:bg-red-700"
+          className="px-3 py-1 rounded-sm bg-red-500/90 text-white hover:bg-red-700"
           onClick={() => deleteJam(id)}
         >
           Delete
         </button>
       </div>
+      
       <MobileMenu jam_slug={jam_slug} id={id} deleteJam={deleteJam} />
     </div>
   );
 }
-
 export function SkeletonCard() {
   return (
     <div className="flex items-center gap-8 py-4 mx-auto container">

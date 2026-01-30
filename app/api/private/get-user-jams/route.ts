@@ -26,9 +26,10 @@ export async function GET() {
 	// Fetch jams where host_id = profile id
 	const { data, error } = await supabaseAdmin
 		.from("sessions")
-		.select("id, jam_title, location_address, images, slug")
+		.select("id, jam_title, location_address, images, slug, validated")
 		.eq("host_id", dataProfiles.id);
 
+	
 	if (error) {
 		return NextResponse.json({ error: error.message }, { status: 500 });
 	}
@@ -39,6 +40,7 @@ export async function GET() {
 		location_address: j.location_address,
 		image: j.images?.[0] || null,
 		slug: j.slug,
+		validated: j.validated
 	}));
 
 	return NextResponse.json(formatted);

@@ -475,7 +475,7 @@ export function DateOptions({
   }, []);
 
   const options = [
-    { value: 'yesterday', label: 'Yesterday' },
+    // { value: 'yesterday', label: 'Yesterday' },
     { value: 'today', label: 'Today' },
     { value: 'week', label: 'This week' },
     { value: 'custom', label: 'Custom' },
@@ -483,7 +483,7 @@ export function DateOptions({
 
   return (
     <div className="flex flex-wrap  gap-3 pt-8 ml-8">
-      {options.slice(0, 3).map((opt) => (
+      {options.slice(0, 2).map((opt) => (
         <Button
           key={opt.value}
           variant={opt.value === dateOptions ? 'secondary' : undefined}

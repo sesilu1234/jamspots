@@ -30,9 +30,12 @@ export async function GET(req: Request) {
 
     if (dateOptions && userDate) {
       if (dateOptions === 'all') {
-        ({ data, error } = await supabaseAdmin
-          .from('sessions_with_coords')
-          .select('id, lat, lng'));
+       ({ data, error } = await supabaseAdmin
+  .from('sessions_with_coords')
+  .select('id, lat, lng')
+  .eq('validated', true)
+);
+
       } else if (dateOptions === 'week') {
         const startDate = new Date(userDate);
         const endDate = new Date(userDate);
@@ -48,15 +51,19 @@ export async function GET(req: Request) {
         }
 
         const [res1, res2] = await Promise.all([
-          supabaseAdmin
-            .from('sessions_with_coords')
-            .select('id, lat, lng')
-            .filter('periodicity', 'eq', 'weekly'),
-          supabaseAdmin
-            .from('sessions_with_coords')
-            .select('id, lat, lng')
-            .overlaps('dates', rangeDates),
-        ]);
+  supabaseAdmin
+    .from('sessions_with_coords')
+    .select('id, lat, lng')
+    .eq('validated', true)
+    .filter('periodicity', 'eq', 'weekly'),
+
+  supabaseAdmin
+    .from('sessions_with_coords')
+    .select('id, lat, lng')
+    .eq('validated', true)
+    .overlaps('dates', rangeDates),
+]);
+
 
         data = [...(res1.data || []), ...(res2.data || [])];
         error = res1.error || res2.error;
@@ -69,10 +76,12 @@ export async function GET(req: Request) {
           supabaseAdmin
             .from('sessions_with_coords')
             .select('id, lat, lng')
+            .eq('validated', true)
             .filter('dayOfWeek', 'eq', weekDay),
           supabaseAdmin
             .from('sessions_with_coords')
             .select('id, lat, lng')
+            .eq('validated', true)
             .overlaps('dates', [formatLocalDate(customDate)]),
         ]);
 
