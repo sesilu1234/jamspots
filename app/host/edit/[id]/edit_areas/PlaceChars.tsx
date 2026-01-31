@@ -122,19 +122,19 @@ export default function PlaceChars({
 					{filteredStyles.map((style) => {
 						const isSelected = selectedStyles.includes(style);
 						return (
-							<div
-								key={style}
-								className={`flex items-center justify-between px-4 py-2 rounded cursor-pointer whitespace-nowrap ${
-									isSelected
-										? "bg-purple-500 text-white"
-										: "bg-gray-200 hover:bg-gray-300"
-								}`}
-								onClick={() => toggleStyle(style)}
-							>
-								<span>{style}</span>
-								<span className="font-bold ml-1">{isSelected ? "×" : "+"}</span>
-							</div>
-						);
+    <div
+        key={style}
+        className={`flex items-center justify-between px-4 py-2 rounded cursor-pointer whitespace-nowrap transition-colors ${
+            isSelected
+                ? "bg-emerald-700 text-white" 
+                : "bg-gray-200 hover:bg-gray-300 text-gray-700"
+        }`}
+        onClick={() => toggleStyle(style)}
+    >
+        <span className="text-sm font-medium">{style}</span>
+        <span className="ml-2 font-bold">{isSelected ? "×" : "+"}</span>
+    </div>
+);
 					})}
 				</div>
 

@@ -3,7 +3,21 @@ import { divIcon } from "leaflet";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 
+
+
+import { useSearchParams } from "next/navigation";
+
+
+    
+
+
+
 export default function Home() {
+
+	const searchParams = useSearchParams();
+    
+    // Get the 'callbackUrl' from the URL, or default to home if it's missing
+    const callbackUrl = searchParams.get("callbackUrl") || "/";
 	return (
 		<div className="min-h-screen bg-white/85 text-black">
 			<div className="w-[1300px] max-w-[90%] mx-auto ">
@@ -45,7 +59,7 @@ export default function Home() {
 
 					<div
 						className="flex items-center font-bold px-8 py-4 mt-24 bg-white w-84 gap-8 mx-auto justify-center rounded-xl cursor-pointer border border-black hover:bg-black/10"
-						onClick={() => signIn("google", { callbackUrl: "/" })}
+						onClick={() => signIn("google", { callbackUrl })}
 					>
 						<svg
 							width="35"

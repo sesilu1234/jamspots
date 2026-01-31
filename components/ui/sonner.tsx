@@ -11,7 +11,7 @@ import { useTheme } from 'next-themes';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = 'system' } = useTheme();
+  const { theme = 'light' } = useTheme();
 
   return (
     <Sonner
@@ -24,14 +24,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         error: <OctagonXIcon className="size-4" />,
         loading: <Loader2Icon className="size-4 animate-spin" />,
       }}
-      style={
-        {
-          '--normal-bg': 'var(--tone-0)',
-          '--normal-text': 'var(--tone-6)',
-          '--normal-border': 'var(--tone-2)',
-          '--border-radius': 'var(--radius)',
-        } as React.CSSProperties
-      }
+      
       {...props}
     />
   );

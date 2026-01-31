@@ -113,9 +113,9 @@ export default function JamPage() {
             <span className="text-emerald-400 font-medium tracking-widest text-xs uppercase">
               Featured Jam
             </span>
-            <h3 className="text-4xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
+            <h3 className="text-4xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-tone-0">
               {jam.jam_title}
-              <span className="block text-white/40 text-2xl lg:text-3xl mt-2">
+              <span className="block text-tone-2/60 text-2xl lg:text-3xl mt-2">
                 at {jam.location_title}
               </span>
             </h3>
@@ -174,7 +174,7 @@ export default function JamPage() {
 
         <div className="flex flex-col lg:flex-row w-[1300px] max-w-[85%]  lg:max-w-[75%] mx-auto pb-12 lg:pb-24 overflow-hidden ">
           <SocialLinks socialLinks={JSON.parse(jam.social_links)} />
-          <UpvoteReport />
+          <UpvoteReport jamId={jam.id}/>
         </div>
 
         <div className="relative w-[1300px] max-w-[75%] mx-auto pb-24">

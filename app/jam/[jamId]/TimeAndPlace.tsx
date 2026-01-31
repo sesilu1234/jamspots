@@ -37,7 +37,7 @@ export default function TimeAndPlace({
 			day: "numeric",
 			hour: "numeric",
 			minute: "2-digit",
-			hour12: true,
+			hour12: false,
 		});
 
 		let commaCount = 0;

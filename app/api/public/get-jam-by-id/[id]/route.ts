@@ -11,7 +11,7 @@ export async function GET(
 
 	const { data, error } = await supabaseAdmin
 		.from("sessions")
-		.select("jam_title, location_title, location_address, images, styles, slug")
+		.select("id, jam_title, location_title, location_address, images, styles, slug")
 		.eq("id", id)
 		.maybeSingle();
 

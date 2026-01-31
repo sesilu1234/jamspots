@@ -610,7 +610,13 @@ export function CalendarDemo({ setDateOption, dateRef, setDate }) {
       onSelect={setDate}
       startMonth={new Date(1990, 0)}
       endMonth={new Date(2104, 11)}
-      className="rounded-md border shadow-sm absolute top-12 right-0 bg-gray-300 z-1"
+      className="
+        rounded-md border border-stone-400 shadow-xl bg-stone-200 z-[600]
+        /* Mobile: Fixed in center of screen */
+        fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+        /* Desktop: Absolute below the button */
+        md:absolute md:top-12 md:right-0 md:left-auto md:translate-x-0 md:translate-y-0
+      "
       captionLayout="dropdown"
     />
   );
@@ -692,36 +698,33 @@ export function SelectStyles({ styles, setStyles }: SelectStylesProps) {
     'Open Mic',
   ];
   return (
-    <div>
-      <div className="grid grid-flow-col grid-rows-2 auto-cols-max gap-2 mt-4 border border-black/20 p-2 rounded  overflow-x-auto">
-        {all_styles.map((style) => {
-          const isSelected = styles.includes(style);
-          return (
-            <div
-              key={style}
-              className={`flex items-center justify-between px-4 py-2 rounded cursor-pointer whitespace-nowrap ${
-                isSelected
-                  ? 'bg-purple-500 text-text-secondary'
-                  : 'bg-gray-200 hover:bg-gray-300'
-              }`}
-              onClick={() => toggleStyle(style)}
-            >
-              <span>{style}</span>
-              <span className="font-bold ml-1">{isSelected ? '×' : '+'}</span>
-            </div>
-          );
-        })}
-      </div>
-
-      {styles.length > 0 && (
-        <div className="p-4">
-          <span>Selected styles: </span>
-          <span>{styles[0]}</span>
-          {styles.slice(1).map((s) => (
-            <span key={s}>, {s}</span>
-          ))}
-        </div>
-      )}
+  <div>
+    <div className="grid grid-flow-col grid-rows-2 auto-cols-max gap-2 mt-4 border border-gray-200 p-2 rounded-md overflow-x-auto bg-white">
+      {all_styles.map((style) => {
+        const isSelected = styles.includes(style);
+        return (
+          <div
+            key={style}
+            className={`flex items-center justify-between px-4 py-2 rounded cursor-pointer whitespace-nowrap transition-colors ${
+              isSelected
+                ? 'bg-slate-700 text-white' // Replaced purple with a clean Slate
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+            }`}
+            onClick={() => toggleStyle(style)}
+          >
+            <span className="text-sm font-medium">{style}</span>
+            <span className="ml-2 opacity-70">{isSelected ? '×' : '+'}</span>
+          </div>
+        );
+      })}
     </div>
-  );
+
+    {styles.length > 0 && (
+      <div className="p-4 text-sm text-gray-600">
+        <span className="font-semibold text-gray-800">Selected styles: </span>
+        {styles.join(', ')}
+      </div>
+    )}
+  </div>
+);
 }
