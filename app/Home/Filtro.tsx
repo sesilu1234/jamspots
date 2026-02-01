@@ -31,16 +31,44 @@ export default function Filtro({
   const [distance, setDistance] = useState(60);
   const [styles, setStyles] = useState<string[]>([]);
 
+  // Default: Both are active
+  const [modality, setModality] = useState(['jam', 'open_mic']);
+
+  const toggleModality = (type) => {
+    setModality((prev) => {
+      // If clicking an active one, only remove it if the other one is still there
+      if (prev.includes(type)) {
+        return prev.length > 1 ? prev.filter((t) => t !== type) : prev;
+      }
+      // Otherwise add it
+      return [...prev, type];
+    });
+  };
+
   const [dateOptionsGlobal, setdateOptionsGlobal] = useState('all');
   const [stylesGlobal, setstylesGlobal] = useState<string[]>([]);
+  const [modalityGlobal, setModalityGlobal] = useState(['jam', 'open_mic']);
+
+  const toggleModalityGlobal = (type) => {
+    setModalityGlobal((prev) => {
+      // If clicking an active one, only remove it if the other one is still there
+      if (prev.includes(type)) {
+        return prev.length > 1 ? prev.filter((t) => t !== type) : prev;
+      }
+      // Otherwise add it
+      return [...prev, type];
+    });
+  };
 
   const dateOptionsHold = useRef('week');
   const orderHold = useRef('popular');
   const distanceHold = useRef(60);
   const stylesHold = useRef<string[]>([]);
+  const modalityHold = useRef<string[]>(['jam', 'open_mic']);
 
   const dateOptionsGlobalHold = useRef('all');
   const stylesGlobalHold = useRef<string[]>([]);
+  const modalityGlobalHold = useRef<string[]>(['jam', 'open_mic']);
 
   const dateOptionsRef = useRef(dateOptions);
   dateOptionsRef.current = dateOptions;
@@ -54,11 +82,17 @@ export default function Filtro({
   const stylesRef = useRef(styles);
   stylesRef.current = styles;
 
+  const modalityRef = useRef(modality);
+  modalityRef.current = modality;
+
   const dateOptionsRefGlobal = useRef(dateOptionsGlobal);
   dateOptionsRefGlobal.current = dateOptionsGlobal;
 
   const stylesRefGlobal = useRef(stylesGlobal);
   stylesRefGlobal.current = stylesGlobal;
+
+  const modalityGlobalRef = useRef(modalityGlobal);
+  modalityGlobalRef.current = modalityGlobal;
 
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
 
@@ -84,9 +118,11 @@ export default function Filtro({
         setOrder(orderHold.current);
         setDistance(distanceHold.current);
         setStyles([...stylesHold.current]);
+        setModality([...modalityHold.current]);
 
         setdateOptionsGlobal(dateOptionsGlobalHold.current);
         setstylesGlobal([...stylesGlobalHold.current]);
+        setModalityGlobal([...modalityGlobalHold.current]);
         setOpen(false);
       }
     };
@@ -97,9 +133,11 @@ export default function Filtro({
         setOrder(orderHold.current);
         setDistance(distanceHold.current);
         setStyles([...stylesHold.current]);
+        setModality([...modalityHold.current]);
 
         setdateOptionsGlobal(dateOptionsGlobalHold.current);
         setstylesGlobal([...stylesGlobalHold.current]);
+        setModalityGlobal([...modalityGlobalHold.current]);
         setOpen(false);
       }
     };
@@ -123,6 +161,7 @@ export default function Filtro({
       orderHold.current = order;
       distanceHold.current = distance;
       stylesHold.current = [...styles];
+      modalityHold.current = [...modality];
 
       map!.flyTo(
         [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
@@ -133,6 +172,7 @@ export default function Filtro({
       // sync state → refs
       dateOptionsGlobalHold.current = dateOptionsGlobal;
       stylesGlobalHold.current = [...stylesGlobal];
+      modalityGlobalHold.current = [...modalityGlobal];
 
       map!.flyTo(
         [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
@@ -163,6 +203,7 @@ export default function Filtro({
           lng: String(locationSearch?.coordinates.lng),
           distance: String(distanceRef.current),
           styles: JSON.stringify(stylesRef.current),
+          modality: JSON.stringify(modalityRef.current),
         });
 
         const cardsFetch = await fetch(
@@ -188,6 +229,7 @@ export default function Filtro({
           userDate: localDateLocal,
           dateOptions: dateOptionsRefGlobal.current,
           styles: JSON.stringify(stylesRefGlobal.current),
+          modality: JSON.stringify(modalityGlobalRef.current),
         });
 
         const markersFetch = await fetch(
@@ -299,7 +341,10 @@ export default function Filtro({
                 </div>
                 <div className="flex flex-col gap-12 md:pl-4">
                   <div className="flex flex-col ">
-                    <h1 className="text-2xl md:text-3xl font-semibold">When</h1>
+                    <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-0">
+                      When
+                    </p>
+
                     <DateOptions
                       dateOptions={dateOptions}
                       setDateOption={setDateOptions}
@@ -309,10 +354,47 @@ export default function Filtro({
                       setDate={setDate}
                     />
                   </div>
+                  {/* SECTION: MODALITY (The New Filter) */}
                   <div className="flex flex-col">
-                    <h1 className="text-2xl md:text-3xl  font-semibold">
+                    <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-8">
+                      Select Modality
+                    </p>
+                    <div className="flex gap-2 ml-8">
+                      {[
+                        { id: 'jam', label: 'Jam Sessions' },
+                        { id: 'open_mic', label: 'Open Mics' },
+                      ].map((item) => {
+                        const isActive = modality.includes(item.id);
+                        return (
+                          <button
+                            key={item.id}
+                            onClick={() => toggleModality(item.id)}
+                            className={`
+            relative flex items-center justify-center
+            px-5 py-3 rounded-lg text-xs font-bold uppercase tracking-wider
+            transition-all duration-200 border
+
+            bg-white border-stone-300 text-black shadow-[0_8px_20px_rgba(0,0,0,0.1)] -translate-y-0.5 
+            ${isActive ? ' ' : 'opacity-40 border-stone-300'}
+          `}
+                          >
+                            {item.label}
+                            {/* Subtle dot indicator */}
+                            {isActive && (
+                              <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-0">
                       Sort
-                    </h1>
+                    </p>
                     <div className="flex flex-col pt-8 gap-4 ml-8">
                       <label className="flex items-center space-x-2 cursor-pointer">
                         <input
@@ -376,9 +458,9 @@ export default function Filtro({
                     </div>
                   </div>
                   <div className="flex flex-col">
-                    <h1 className="text-2xl md:text-3xl  font-semibold">
+                    <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-4">
                       Styles
-                    </h1>
+                    </p>
                     <div className="flex flex-col gap-4 ml-8">
                       <label>
                         <SelectStyles styles={styles} setStyles={setStyles} />
@@ -415,9 +497,9 @@ export default function Filtro({
                 </div>
                 <div className="flex flex-col gap-12 md:pl-4">
                   <div className="flex flex-col ">
-                    <h1 className="text-2xl md:text-3xl  font-semibold">
+                    <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-0">
                       When
-                    </h1>
+                    </p>
                     <DateOptionsGlobal
                       dateOptions={dateOptionsGlobal}
                       setDateOption={setdateOptionsGlobal}
@@ -427,11 +509,48 @@ export default function Filtro({
                       setDate={setdateGlobal}
                     />
                   </div>
+                  {/* SECTION: MODALITY (The New Filter) */}
+                  <div className="flex flex-col">
+                    <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-8">
+                      Select Modality
+                    </p>
+                    <div className="flex gap-2 ml-8">
+                      {[
+                        { id: 'jam', label: 'Jam Sessions' },
+                        { id: 'open_mic', label: 'Open Mics' },
+                      ].map((item) => {
+                        const isActive = modalityGlobal.includes(item.id);
+                        return (
+                          <button
+                            key={item.id}
+                            onClick={() => toggleModalityGlobal(item.id)}
+                            className={`
+            relative flex items-center justify-center
+            px-5 py-3 rounded-lg text-xs font-bold uppercase tracking-wider
+            transition-all duration-200 border
+
+            bg-white border-stone-300 text-black shadow-[0_8px_20px_rgba(0,0,0,0.1)] -translate-y-0.5 
+            ${isActive ? ' ' : 'opacity-40 border-stone-300'}
+          `}
+                          >
+                            {item.label}
+                            {/* Subtle dot indicator */}
+                            {isActive && (
+                              <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
 
                   <div className="flex flex-col">
-                    <h1 className="text-2xl md:text-3xl  font-semibold">
+                    <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-gray-700 mb-4">
                       Styles
-                    </h1>
+                    </p>
                     <div className="flex flex-col gap-4 ml-8">
                       <label>
                         <SelectStyles
@@ -636,7 +755,10 @@ export function SliderDemo({
   return (
     <>
       <div className="flex gap-16 md:gap-32 items-end mb-4 ">
-        <h1 className="text-2xl md:text-3xl  font-semibold pb-4">Distance</h1>
+        <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-4">
+          Distance
+        </p>
+
         <span className="pb-5 md:pb-1">{distance} km</span>
       </div>
 
@@ -698,33 +820,33 @@ export function SelectStyles({ styles, setStyles }: SelectStylesProps) {
     'Open Mic',
   ];
   return (
-  <div>
-    <div className="grid grid-flow-col grid-rows-2 auto-cols-max gap-2 mt-4 border border-gray-200 p-2 rounded-md overflow-x-auto bg-white">
-      {all_styles.map((style) => {
-        const isSelected = styles.includes(style);
-        return (
-          <div
-            key={style}
-            className={`flex items-center justify-between px-4 py-2 rounded cursor-pointer whitespace-nowrap transition-colors ${
-              isSelected
-                ? 'bg-slate-700 text-white' // Replaced purple with a clean Slate
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-            }`}
-            onClick={() => toggleStyle(style)}
-          >
-            <span className="text-sm font-medium">{style}</span>
-            <span className="ml-2 opacity-70">{isSelected ? '×' : '+'}</span>
-          </div>
-        );
-      })}
-    </div>
-
-    {styles.length > 0 && (
-      <div className="p-4 text-sm text-gray-600">
-        <span className="font-semibold text-gray-800">Selected styles: </span>
-        {styles.join(', ')}
+    <div>
+      <div className="grid grid-flow-col grid-rows-2 auto-cols-max gap-2 mt-4 border border-gray-200 p-2 rounded-md overflow-x-auto bg-white">
+        {all_styles.map((style) => {
+          const isSelected = styles.includes(style);
+          return (
+            <div
+              key={style}
+              className={`flex items-center justify-between px-4 py-2 rounded cursor-pointer whitespace-nowrap transition-colors ${
+                isSelected
+                  ? 'bg-slate-700 text-white' // Replaced purple with a clean Slate
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+              }`}
+              onClick={() => toggleStyle(style)}
+            >
+              <span className="text-sm font-medium">{style}</span>
+              <span className="ml-2 opacity-70">{isSelected ? '×' : '+'}</span>
+            </div>
+          );
+        })}
       </div>
-    )}
-  </div>
-);
+
+      {styles.length > 0 && (
+        <div className="p-4 text-sm text-gray-600">
+          <span className="font-semibold text-gray-800">Selected styles: </span>
+          {styles.join(', ')}
+        </div>
+      )}
+    </div>
+  );
 }

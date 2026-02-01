@@ -52,6 +52,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
           },
           photos: { images: data.images },
           features: {
+            modality: data.modality,
             styles: data.styles,
             song_list: data.lista_canciones,
             intruments_lend: data.instruments_lend,
@@ -122,6 +123,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       dates: form.generalInfo.dates.list_of_dates,
       time_start: form.generalInfo.dates.time.from,
       images_three: images_files.length == 3 ? true : false,
+      modality: form.features.modality,
       styles: form.features.styles,
       lista_canciones: form.features.song_list,
 

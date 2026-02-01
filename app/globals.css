@@ -82,6 +82,11 @@
   --color-tone-6: var(--tone-6);
   --color-card-jams: var(--card-jams);
   --color-collapse-butt: var(--collapse-butt);
+
+  --color-modality-jam: var(--text-tone-modality-jam);
+  --color-modality-open-mic: var(--text-tone-modality-open-mic);
+  /* Vibrant Emerald */
+
   --color-primary-1: var(--primary-1);
   --color-secondary-1: var(--secondary-1);
   --color-danger: var(--danger);
@@ -141,6 +146,15 @@
   --card-jams: oklch(100% 0.00011 271.152);
   --collapse-butt: #413d3d;
 
+  --text-tone-modality-jam: oklch(55% 0.18 150);
+
+  /* Royal Amethyst - Rich, sophisticated purple */
+  --text-tone-modality-open-mic: oklch(50% 0.2 300);
+
+  /* In Light mode, we use a subtle soft shadow instead of a "neon" glow */
+  --neon-glow-jam: 0 1px 2px oklch(55% 0.18 150 / 0.2);
+  --neon-glow-mic: 0 1px 2px oklch(50% 0.2 300 / 0.2);
+
   --primary-1: oklch(52% 0.14 250);
   --secondary-1: oklch(80.7% 0.333 95);
   --danger: oklch(60% 0.18 30);
@@ -195,6 +209,9 @@
 
   --card-jams: oklch(24% 0.007 218);
   --collapse-butt: #1e293b;
+
+  --text-tone-modality-jam: oklch(80% 0.12 150); /* Bright Mint Glow */
+  --text-tone-modality-open-mic: oklch(85% 0.01 200); /* Moonlight Silver */
 
   --primary-1: oklch(58% 0.1 235); /* soft steel blue */
   --secondary-1: oklch(70% 0.06 210);
@@ -251,6 +268,9 @@
   --card-jams: oklch(24% 0.012 55);
   --collapse-butt: #3b3529;
 
+  --text-tone-modality-jam: oklch(80% 0.12 150); /* Bright Mint Glow */
+  --text-tone-modality-open-mic: oklch(85% 0.01 200); /* Moonlight Silver */
+
   --primary-1: oklch(62% 0.09 60); /* soft peach */
   --secondary-1: oklch(72% 0.06 85); /* warm off-white */
   --danger: oklch(60% 0.16 30);
@@ -305,6 +325,9 @@
 
   --card-jams: oklch(20% 0.03 245);
   --collapse-butt: #41556d;
+
+  --text-tone-modality-jam: oklch(80% 0.12 150); /* Bright Mint Glow */
+  --text-tone-modality-open-mic: oklch(85% 0.01 200); /* Moonlight Silver */
 
   --primary-1: oklch(65% 0.18 235);
   --secondary-1: oklch(75% 0.12 200);
@@ -361,6 +384,16 @@
   --card-jams: oklch(24% 0.007 218);
   --collapse-butt: #1e293b;
 
+  --text-tone-modality-jam: oklch(85% 0.22 155);
+  --neon-glow-jam:
+    0 0 8px oklch(85% 0.22 155 / 0.7), 0 0 16px oklch(85% 0.22 155 / 0.2);
+
+  /* Electric Electric Violet - The Open Mic Vibe */
+  /* This feels like a spotlight/stage light */
+  --text-tone-modality-open-mic: oklch(80% 0.18 300);
+  --neon-glow-mic:
+    0 0 8px oklch(80% 0.18 300 / 0.7), 0 0 16px oklch(80% 0.18 300 / 0.2);
+
   --primary-1: oklch(0.76 0.2 279);
   --secondary-1: oklch(80.7% 0.333 95);
   --danger: oklch(65% 0.18 30);
@@ -415,6 +448,9 @@
 
   --card-jams: oklch(20% 0.02 145);
   --collapse-butt: #472f2d;
+
+  --text-tone-modality-jam: oklch(80% 0.12 150); /* Bright Mint Glow */
+  --text-tone-modality-open-mic: oklch(85% 0.01 200); /* Moonlight Silver */
 
   --primary-1: oklch(65% 0.16 135);
   --secondary-1: oklch(72% 0.12 105);

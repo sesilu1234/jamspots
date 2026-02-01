@@ -47,6 +47,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       },
       photos: { images: [] },
       features: {
+        modality: 'jam',
         styles: [],
         song_list: false,
         intruments_lend: true,
@@ -117,6 +118,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       dates: form.generalInfo.dates.list_of_dates,
       time_start: form.generalInfo.dates.time.from,
       images_three: images_files.length == 3 ? true : false,
+      modality: form.features.modality,
       styles: form.features.styles,
       lista_canciones: form.features.song_list,
       raw_desc: raw_desc,

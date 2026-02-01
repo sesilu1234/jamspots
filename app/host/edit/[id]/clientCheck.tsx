@@ -75,6 +75,17 @@ export function validateJam(input: any) {
   // images
   if (!input.images_three) errors.images = 'Exactly 3 images required';
 
+  const modalityOptions = ['jam', 'open_mic'];
+
+  // ... dentro de tu función de validación:
+
+  // Modality check
+  if (!input.modality) {
+    errors.modality = 'Modality is required';
+  } else if (!modalityOptions.includes(input.modality)) {
+    errors.modality = 'Invalid modality selected';
+  }
+
   // styles
   if (!Array.isArray(input.styles) || input.styles.length < 1)
     errors.styles = 'Select at least one style';

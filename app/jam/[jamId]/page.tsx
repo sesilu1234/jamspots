@@ -66,6 +66,7 @@ export default function JamPage() {
       const data = await res.json();
       setJam(data);
       console.log(data);
+      console.log(data);
       // <-- log here, after fetch
     }
     fetchJam();
@@ -109,13 +110,26 @@ export default function JamPage() {
 
         <div className="max-w-6xl w-[80%] mx-auto flex flex-col-reverse lg:flex-row lg:items-center gap-10 lg:gap-20 mt-16 mb-8">
           <div className="lg:w-1/2 space-y-4 lg:text-right">
-            {/* Small accent text adds a "pro" look */}
-            <span className="text-emerald-400 font-medium tracking-widest text-xs uppercase">
-              Featured Jam
+            {/* The "Glowing" Accent Text */}
+            <span
+              className="font-black tracking-[0.25em] text-xs uppercase transition-all duration-700"
+              style={{
+                color:
+                  jam.modality === 'open_mic'
+                    ? 'var(--text-tone-modality-open-mic)'
+                    : 'var(--text-tone-modality-jam)',
+                textShadow:
+                  jam.modality === 'open_mic'
+                    ? 'var(--neon-glow-mic)'
+                    : 'var(--neon-glow-jam)',
+              }}
+            >
+              {jam.modality === 'open_mic' ? 'Open Mic' : 'Featured Jam'}
             </span>
+
             <h3 className="text-4xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-tone-0">
               {jam.jam_title}
-              <span className="block text-tone-2/60 text-2xl lg:text-3xl mt-2">
+              <span className="block text-tone-2/60 text-2xl lg:text-3xl mt-2 font-medium">
                 at {jam.location_title}
               </span>
             </h3>
