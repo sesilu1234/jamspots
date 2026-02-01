@@ -49,7 +49,6 @@ export default function UpvoteReport({ jamId }: UpvoteReportProps) {
       try {
         const response = await fetch(`/api/public/get-likes-jam/${jamId}`);
         const data = await response.json();
-        console.log(data);
 
         setIsUpvoted(data.hasLiked);
 
@@ -164,6 +163,8 @@ export default function UpvoteReport({ jamId }: UpvoteReportProps) {
             handleLikeSubmit(newStatus); // Programar el envío
           }
         }}
+        className={`flex items-center gap-1.5 group transition-all px-3
+          ${isUpvoted ? 'text-emerald-400' : 'text-tone-1 hover:text-emerald-400'}`}
       >
         <div
           className={`p-1.5 rounded-lg transition-colors 
