@@ -16,9 +16,8 @@ que se veaa bien
 
 -- title jam aparece mal en light mode, y tambien lo de jamsspotss
 
--- quitar yesterday, no tiene sentido lol xd
-
--- poner horas como 21:00 en vez e 9 pm
+-poner que siempre enseñe por orden cornologico por defecto, y que cercania
+ordene por cercania, y popularidad por priority_score
 
 -poner posiblemente info de : hay dos filtros , uno para jams locales o cercanas
 a la ciudad en el buscador, y otro para ver en el mapa jams de cualquier lugar
@@ -26,27 +25,24 @@ a la ciudad en el buscador, y otro para ver en el mapa jams de cualquier lugar
 -no esta bien o no esta acorde el dibujo cuando pone que no hay bateria o
 acustic
 
-- poner una columna de validated (en bae de datoss, y tambien simbolo debeing
-  checked o rejected....)
-- column de priority o algo asi para que algunas jamss aparezcan las primeras ?
+- en vez de featured jam : poner que si en tags aparece open mic poner en vez de
+  featured jam (quizas lo puedo poner en amarillo / gold), ponerlo en gris guay
+  . ( y pensar quizas si esconder mas los open mics que las jams...) if the
+  first 5 events are open mics , then the user things : oh, this is another
+  shitty event caldenar app , meh, hahahah
 
-- en vez de featured jam : poner que si en tags aparece open mic poner en vez de featured jam (quizas lo puedo poner en amarillo / gold), ponerlo en gris guay . ( y pensar quizas si esconder mas los open mics que las jams...) 
-if the first 5 events are open mics , then the user things : oh, this is another shitty event caldenar app , meh, hahahah
+- ademas de las jams ser mas bato, mas grande, la gente viaja mas (open mic es
+  mas local, oscuro, cerrado, mal)
 
-ademas de las jams ser mas bato, mas grande, la gente viaja mas (open mic es mas local, oscuro, cerrado, mal)
+- posiblemente incluso reclamarlo al crear jam...
 
-posiblemente incluso reclamarlo al crear jam...
+- preguntar y ver con chat gpt si necessito algun tipo de copyright para la web
+  ? y que me diga que mas hacer obligatorio y cuales son los essentials
 
 ---
 
-poner boton de votar positivamente manita arriba (logeao need) y reportar jam
-(tambien need logeo)
-
-calendar de filtro en globals ssale mal
-
-ademas cambiar color de styles filter, morado no queda bien asi todo
-
-poner en descripcion que tambien es para open mics (ponerlo de los primeros styles al create, para que se vea)
+poner en descripcion que tambien es para open mics (ponerlo de los primeros
+styles al create, para que se vea)
 
 y en robots o sites.txt ponerlo tambien , o en description head html
 

@@ -48,7 +48,7 @@ const HtmlReadOnly = ({ rawContent }: HtmlReadOnlyProps) => {
 
 export default function JamPage() {
   const params = useParams();
-  const jamId = params.jamId;
+  const jamSlug = params.jamId;
 
   const [jam, setJam] = useState<Jam | null>(null);
 
@@ -62,14 +62,14 @@ export default function JamPage() {
       userDate: localDateLocal,
     }).toString();
     async function fetchJam() {
-      const res = await fetch(`/api/public/get-jam/${jamId}?${paramsJam}`);
+      const res = await fetch(`/api/public/get-jam/${jamSlug}?${paramsJam}`);
       const data = await res.json();
       setJam(data);
       console.log(data);
       // <-- log here, after fetch
     }
     fetchJam();
-  }, [jamId]);
+  }, [jamSlug]);
 
   if (!jam) return null;
 
@@ -174,7 +174,7 @@ export default function JamPage() {
 
         <div className="flex flex-col lg:flex-row w-[1300px] max-w-[85%]  lg:max-w-[75%] mx-auto pb-12 lg:pb-24 overflow-hidden ">
           <SocialLinks socialLinks={JSON.parse(jam.social_links)} />
-          <UpvoteReport jamId={jam.id}/>
+          <UpvoteReport jamId={jam.id} />
         </div>
 
         <div className="relative w-[1300px] max-w-[75%] mx-auto pb-24">
