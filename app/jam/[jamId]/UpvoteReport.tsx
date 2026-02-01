@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { ThumbsUp, Flag } from 'lucide-react';
 import { toast } from 'sonner';
@@ -64,9 +64,8 @@ export default function UpvoteReport({ jamId }: UpvoteReportProps) {
       }
     };
 
-    // 2. Call it immediately
     fetchLikes();
-  }, [jamId]); // Added jamId here so it re-runs if the ID changes!
+  }, [jamId]);
 
   type JamAction = 'upvote' | 'report a jam';
 
@@ -84,6 +83,40 @@ export default function UpvoteReport({ jamId }: UpvoteReportProps) {
       return false;
     }
     return true;
+  };
+
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleLikeSubmit = (currentStatus: boolean) => {
+    // 1. Limpiamos el temporizador previo
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    // 2. Programamos la ejecución
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        const response = await fetch(`/api/private/jam-like/${jamId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ isUpvoted: currentStatus }),
+        });
+
+        if (!response.ok) {
+          throw new Error('API Error');
+        }
+      } catch (error) {
+        // Revertimos el estado si la API falla
+        setIsUpvoted(!currentStatus);
+        toast.error('Error', {
+          description: 'Could not submit like. Try again.',
+        });
+      } finally {
+        debounceTimer.current = null;
+      }
+    }, 500);
   };
 
   const handleReportSubmit = async () => {
@@ -126,11 +159,11 @@ export default function UpvoteReport({ jamId }: UpvoteReportProps) {
       <button
         onClick={() => {
           if (ensureAuth('upvote')) {
-            setIsUpvoted(!isUpvoted);
+            const newStatus = !isUpvoted;
+            setIsUpvoted(newStatus); // Cambio visual instantáneo (Optimistic UI)
+            handleLikeSubmit(newStatus); // Programar el envío
           }
         }}
-        className={`flex items-center gap-1.5 group transition-all px-3
-          ${isUpvoted ? 'text-emerald-400' : 'text-tone-1 hover:text-emerald-400'}`}
       >
         <div
           className={`p-1.5 rounded-lg transition-colors 
