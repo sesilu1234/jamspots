@@ -62,8 +62,6 @@ export async function POST(req: Request) {
       .select('*', { count: 'exact', head: true })
       .eq('host_id', profile.id);
 
-    console.log('the count is :', count);
-
     if (countError) {
       return NextResponse.json({ error: 'DB error' }, { status: 500 });
     }

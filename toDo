@@ -1,24 +1,10 @@
-
-
 -poner posiblemente info de : hay dos filtros , uno para jams locales o cercanas
 a la ciudad en el buscador, y otro para ver en el mapa jams de cualquier lugar
 
 -no esta bien o no esta acorde el dibujo cuando pone que no hay bateria o
 acustic
 
-
 poner en descripcion que tambien es para open mics (ponerlo de los primeros
 styles al create, para que se vea)
 
-
 ---
-
-
-
----
-
-- poner para location localstorage (porque aaal hechaar para atras y tal
-  recalcula geo location y tarda a veces y no molaa...)
-
-poner que el localstorage solo vale por 4 horas
-

@@ -65,8 +65,7 @@ export default function JamPage() {
       const res = await fetch(`/api/public/get-jam/${jamSlug}?${paramsJam}`);
       const data = await res.json();
       setJam(data);
-      console.log(data);
-      console.log(data);
+
       // <-- log here, after fetch
     }
     fetchJam();

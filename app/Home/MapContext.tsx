@@ -50,55 +50,85 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const setPosition = (lat: number, lng: number) => {
     setLocationSearch({ coordinates: { lat, lng } });
     if (map) {
-      map.flyTo([lat, lng], 12, { duration: 1.5 });
+      map.flyTo([lat, lng], 11, { duration: 1.5 });
     }
   };
 
+  const CACHE_KEY = 'user_location';
+  const CACHE_TTL = 8 * 60 * 60 * 1000; // 8h
+
   useEffect(() => {
+    const cached = localStorage.getItem(CACHE_KEY);
+
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (Date.now() - parsed.timestamp < CACHE_TTL) {
+        setPosition(parsed.latitude, parsed.longitude);
+        setInitialLocation(parsed);
+        return;
+      }
+    }
+
     if (!navigator.geolocation) {
-      setPosition(-33.8688, 151.2093); // fallback → Sydney
-      setInitialLocation({
-        latitude: -33.8688,
-        longitude: 151.2093,
-        city: 'Sidney',
-      });
+      const fallback = {
+        latitude: 40.4168,
+        longitude: -3.7038,
+        city: 'Madrid, Spain',
+      };
+      setPosition(fallback.latitude, fallback.longitude);
+      setInitialLocation(fallback);
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      async (pos) => {
         const { latitude, longitude } = pos.coords;
-
         setPosition(latitude, longitude);
 
-        fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            const city =
-              data.address.city ||
-              data.address.town ||
-              data.address.county ||
-              data.address.state;
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
+          );
+          const data = await res.json();
 
-            setInitialLocation({ latitude, longitude, city });
-          })
-          .catch((err) => console.error(err));
+          const baseCity =
+            data.address.city ??
+            data.address.town ??
+            data.address.village ??
+            data.address.state ??
+            'Unknown';
+
+          const city = data.address.country
+            ? `${baseCity}, ${data.address.country}`
+            : baseCity;
+
+          const payload = {
+            latitude,
+            longitude,
+            city,
+            timestamp: Date.now(),
+          };
+
+          localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+
+          setInitialLocation({ latitude, longitude, city });
+        } catch {
+          // keep coords even if reverse fails
+          setInitialLocation({
+            latitude,
+            longitude,
+            city: 'Unknown',
+          });
+        }
       },
       () => {
-        // setInitialLocation({
-        //   latitude: -33.815,
-        //   longitude: 151.001,
-        //   city: 'Madrid, Spain',
-        // });
-        // setPosition(-33.815, 151.001);
-        setInitialLocation({
+        const fallback = {
           latitude: 40.4168,
           longitude: -3.7038,
           city: 'Madrid, Spain',
-        });
-        setPosition(40.4168, -3.7038);
+        };
+        setPosition(fallback.latitude, fallback.longitude);
+        setInitialLocation(fallback);
       },
     );
   }, [map]);
