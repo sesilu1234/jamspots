@@ -4,7 +4,7 @@ y en robots o sites.txt ponerlo tambien , o en description head html que es para
 
 
 
-boton de apply quizaas abajo del todo tambien ?
+
 
 
 - preguntar y ver con chat gpt si necessito algun tipo de copyright para la web
