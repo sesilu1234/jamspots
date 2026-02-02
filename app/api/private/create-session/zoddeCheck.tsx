@@ -39,8 +39,7 @@ const all_styles = [
 	"Latin",
 
 	// Moods / vibes
-	"Improvisation",
-	"Open Mic",
+	"Improvisation"
 ];
 
 export const jamSchema = z.object({

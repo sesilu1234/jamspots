@@ -816,8 +816,7 @@ export function SelectStyles({ styles, setStyles }: SelectStylesProps) {
     'Latin',
 
     // Moods / vibes
-    'Improvisation',
-    'Open Mic',
+    'Improvisation'
   ];
   return (
     <div>

@@ -36,8 +36,7 @@ const stylesList = [
   'Afro',
   'Fusion',
   'Latin',
-  'Improvisation',
-  'Open Mic',
+  'Improvisation'
 ] as const;
 
 export function validateJam(input: any) {

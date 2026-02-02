@@ -38,8 +38,7 @@ const styles = [
 	"Afro",
 	"Fusion",
 	"Latin",
-	"Improvisation",
-	"Open Mic",
+	"Improvisation"
 ] as const;
 
 /* ---------- helpers ---------- */
