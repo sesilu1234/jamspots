@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     const stylesParam = searchParams.get('styles');
     const modalityParam = searchParams.get('modality');
 
-    console.log(modalityParam);
+
 
     // Función auxiliar para formatear fecha
     const formatLocalDate = (d: Date) =>
@@ -96,14 +96,20 @@ export async function GET(req: Request) {
       },
     );
 
+
+
     if (error)
       return NextResponse.json({ error: error.message }, { status: 500 });
+
+
+
 
     type Jam = {
       id: string;
       jam_title: string;
       distance: number;
       images?: string[];
+      priority_score:number;
       // otros campos que uses...
     };
 
@@ -114,10 +120,13 @@ export async function GET(req: Request) {
       })) || [];
 
     if (order === 'closeness') {
-      dataRes.sort((a: Jam, b: Jam) => a.distance - b.distance);
-    } else if (order === 'popular') {
-      dataRes = dataRes.sort(() => Math.random() - 0.5);
-    }
+  dataRes.sort((a: Jam, b: Jam) => a.distance - b.distance);
+} else if (order === 'popular') {
+  dataRes.sort((a: Jam, b: Jam) => b.priority_score - a.priority_score);
+}
+
+
+
 
     return NextResponse.json(dataRes);
   } catch (e) {

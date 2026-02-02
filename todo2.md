@@ -1,7 +1,6 @@
-poner en descripcion que tambien es para open mics (ponerlo de los primeros
-styles al create, para que se vea)
 
-y en robots o sites.txt ponerlo tambien , o en description head html
+
+y en robots o sites.txt ponerlo tambien , o en description head html que es para open mics tambien
 
 ---
 
