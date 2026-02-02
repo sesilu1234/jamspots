@@ -2,10 +2,6 @@
 
 y en robots o sites.txt ponerlo tambien , o en description head html que es para open mics tambien
 
----
-
--poner que siempre enseñe por orden cornologico por defecto, y que cercania
-ordene por cercania, y popularidad por priority_score
 
 
 boton de apply quizaas abajo del todo tambien ?

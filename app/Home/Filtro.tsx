@@ -324,22 +324,36 @@ export default function Filtro({
             {cardFiltersOpen ? (
               <div
                 ref={panelRef_2}
-                className="relative bg-white text-black  p-6 rounded-md shadow-lg overflow-y-scroll h-[70vh] "
+                className="relative bg-white text-black  p-6 pt-0 rounded-md shadow-lg overflow-y-scroll h-[70vh] "
               >
+                
                 <div className="flex justify-center items-center gap-24  mb-5 mt-5">
-                  <h2 className="text-4xl font-bold text-center  text-text-secondary">
-                    Local
-                  </h2>
-                  <button
-                    onClick={() => handleAccept('local')}
-                    className="absolute right-5 md:right-10 top-5 rounded-md border border-black/20 px-4 py-2
-            bg-secondary-1 hover:bg-secondary-1/75 hover:border-black/80 text-black font-semibold 
-             transition-colors cursor-pointer"
-                  >
-                    Apply
-                  </button>
+                  <div className="flex flex-col items-center pt-4 px-8 border-b border-stone-100">
+  <h2 className="text-3xl font-medium text-stone-800 tracking-tight ">
+    Local
+  </h2>
+  <p className="text-stone-400 text-sm mt-1">Adjust the cards</p>
+</div>
+                 
                 </div>
-                <div className="flex flex-col gap-12 md:pl-4">
+                <div className="relative flex flex-col gap-12 md:pl-4">
+                   <div className="absolute -right-2 -top-25 h-full w-16 flex flex-col items-center pointer-events-none">
+    <button
+      onClick={() => handleAccept('local')}
+      className="sticky top-5 px-5 py-2.5 rounded-lg
+                 bg-gradient-to-br from-blue-500 to-blue-600
+                 hover:from-blue-600 hover:to-blue-700
+                 text-white font-medium text-sm
+                 shadow-sm hover:shadow-md
+                 border border-blue-600/20
+                 transition-all duration-200 ease-out
+                 active:scale-[0.98]
+                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                 pointer-events-auto z-[620]"
+    >
+      Apply
+    </button>
+  </div>
                   <div className="flex flex-col ">
                     <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-0">
                       When
@@ -359,7 +373,7 @@ export default function Filtro({
                     <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-8">
                       Select Modality
                     </p>
-                    <div className="flex gap-2 ml-8">
+                    <div className="flex gap-2 ml-4">
                       {[
                         { id: 'jam', label: 'Jam Sessions' },
                         { id: 'open_mic', label: 'Open Mics' },
@@ -380,12 +394,7 @@ export default function Filtro({
                           >
                             {item.label}
                             {/* Subtle dot indicator */}
-                            {isActive && (
-                              <span className="absolute -top-1 -right-1 flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-                              </span>
-                            )}
+                            
                           </button>
                         );
                       })}
@@ -395,7 +404,7 @@ export default function Filtro({
                     <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-0">
                       Sort
                     </p>
-                    <div className="flex flex-col pt-8 gap-4 ml-8">
+                    <div className="flex flex-col pt-8 gap-4 ml-4">
                       <label className="flex items-center space-x-2 cursor-pointer">
                         <input
                           type="radio"
@@ -461,7 +470,7 @@ export default function Filtro({
                     <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-4">
                       Styles
                     </p>
-                    <div className="flex flex-col gap-4 ml-8">
+                    <div className="flex flex-col gap-4 ml-4">
                       <label>
                         <SelectStyles styles={styles} setStyles={setStyles} />
                       </label>
@@ -480,22 +489,35 @@ export default function Filtro({
             ) : (
               <div
                 ref={panelRef_3}
-                className="relative bg-white text-black   p-6 rounded-md shadow-lg h-[70vh] overflow-y-scroll"
+                className="relative bg-white text-black   p-6 pt-0 rounded-md shadow-lg h-[70vh] overflow-y-scroll"
               >
                 <div className="flex justify-center items-center gap-24 mb-5 mt-5">
-                  <h2 className="text-4xl font-bold  text-text-secondary  text-center">
-                    Global
-                  </h2>
-                  <button
-                    onClick={() => handleAccept('global')}
-                    className="absolute right-5 md:right-10  top-5 rounded-md border border-black/20 px-4 py-2
-            bg-secondary-1 hover:bg-secondary-1/75  hover:border-black/80 text-black  font-semibold 
-             transition-colors cursor-pointer"
-                  >
-                    Apply
-                  </button>
+                 <div className="flex flex-col items-center pt-4 px-8 border-b border-stone-100">
+  <h2 className="text-3xl font-medium text-stone-800 tracking-tight ">
+    Global
+  </h2>
+  <p className="text-stone-400 text-sm mt-1">Adjust the map</p>
+</div>
+               
                 </div>
-                <div className="flex flex-col gap-12 md:pl-4">
+                <div className="relative flex flex-col gap-12 md:pl-4">
+                   <div className="absolute -right-2 -top-25 h-full w-16 flex flex-col items-center pointer-events-none">
+    <button
+      onClick={() => handleAccept('global')}
+      className="sticky top-5 px-5 py-2.5 rounded-lg
+                 bg-gradient-to-br from-blue-500 to-blue-600
+                 hover:from-blue-600 hover:to-blue-700
+                 text-white font-medium text-sm
+                 shadow-sm hover:shadow-md
+                 border border-blue-600/20
+                 transition-all duration-200 ease-out
+                 active:scale-[0.98]
+                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                 pointer-events-auto z-[620]"
+    >
+      Apply
+    </button>
+  </div>
                   <div className="flex flex-col ">
                     <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-0">
                       When
@@ -514,7 +536,7 @@ export default function Filtro({
                     <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-8">
                       Select Modality
                     </p>
-                    <div className="flex gap-2 ml-8">
+                    <div className="flex gap-2 ml-4">
                       {[
                         { id: 'jam', label: 'Jam Sessions' },
                         { id: 'open_mic', label: 'Open Mics' },
@@ -551,7 +573,7 @@ export default function Filtro({
                     <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-gray-700 mb-4">
                       Styles
                     </p>
-                    <div className="flex flex-col gap-4 ml-8">
+                    <div className="flex flex-col gap-4 ml-4">
                       <label>
                         <SelectStyles
                           styles={stylesGlobal}
@@ -601,13 +623,13 @@ export function DateOptions({
   ];
 
   return (
-    <div className="flex flex-wrap  gap-3 pt-8 ml-8">
+    <div className="flex flex-wrap  gap-3 pt-8 ml-4">
       {options.slice(0, 2).map((opt) => (
         <Button
           key={opt.value}
           variant={opt.value === dateOptions ? 'secondary' : undefined}
-          className={`text-lg ${
-            opt.value === dateOptions ? 'hover:bg-black hover:text-white' : ''
+          className={`text-md ${
+            opt.value === dateOptions ? 'bg-stone-700 ' : 'opacity-70'
           }`}
           onClick={() => setDateOption(opt.value)}
         >
@@ -617,10 +639,10 @@ export function DateOptions({
 
       <div className="relative" ref={calRef}>
         <Button
-          className={`text-lg ${
+          className={`text-md ${
             dateOptions.startsWith('custom')
               ? 'hover:bg-black hover:text-white'
-              : ''
+              : 'opacity-70'
           }`}
           variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
@@ -667,14 +689,14 @@ export function DateOptionsGlobal({
   ];
 
   return (
-    <div className="flex flex-wrap  gap-3 pt-8 ml-8">
+    <div className="flex flex-wrap  gap-3 pt-8 ml-4">
       {options.map((opt) => (
         <Button
           key={opt.value}
           variant={opt.value === dateOptions ? 'secondary' : undefined}
           onClick={() => setDateOption(opt.value)}
-          className={`text-lg ${
-            opt.value === dateOptions ? 'hover:bg-black hover:text-white' : ''
+          className={`text-md ${
+            opt.value === dateOptions ? 'bg-stone-700 ' : 'opacity-70'
           }`}
         >
           {opt.label}
@@ -683,12 +705,12 @@ export function DateOptionsGlobal({
 
       <div className="relative" ref={calRef}>
         <Button
-          variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
+          variant={dateOptions.startsWith('custom') ? '' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
-          className={`text-lg ${
+          className={`text-md ${
             dateOptions.startsWith('custom')
               ? 'hover:bg-black hover:text-white'
-              : ''
+              : 'opacity-70'
           }`}
         >
           {dateOptions.startsWith('custom')
