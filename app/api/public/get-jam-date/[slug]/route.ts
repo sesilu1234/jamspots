@@ -16,7 +16,7 @@ export async function GET(
     p_date: userDate,
   });
 
-  console.log(error);
+
 
   if (error)
     return NextResponse.json({ error: error.message }, { status: 500 });
