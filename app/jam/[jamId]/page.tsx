@@ -1,240 +1,66 @@
-'use client';
+// app/jam/[slug]/page.tsx
+import { getJam } from '@/lib/getJam'
+import JamComponent from './JamComponent'
+import { Metadata } from 'next'
 
-import Image from 'next/image';
-
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
-import { useEffect, useState, useRef } from 'react';
-import { useParams } from 'next/navigation';
-import { Jam } from '../types/jam';
-import draftToHtml from 'draftjs-to-html';
-import { RawDraftContentState } from 'draft-js';
-import SocialLinks from './SocialLinks';
-import UpvoteReport from './UpvoteReport';
-import StaticMap from './LocationImageGMaps';
-import TimeAndPlace from './TimeAndPlace';
-import { JamImagesTop, JamImagesBottom } from './JamImages';
-import JamChars from './JamChars';
-import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
-
-import { Space_Grotesk } from 'next/font/google';
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-});
-
-interface HtmlReadOnlyProps {
-  rawContent: RawDraftContentState;
+type Props = {
+  params: Promise<{ jamId: string }>
 }
 
-const HtmlReadOnly = ({ rawContent }: HtmlReadOnlyProps) => {
-  const html = draftToHtml(rawContent);
-  return (
-    <div
-      className="
-     
-    text-lg
-    leading-relaxed
-    tracking-wide
-    space-y-5
-    text-pretty
-    max-w-prose
-  "
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
-};
+// 1. Dynamic SEO Metadata Generation
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { jamId } = await params
+  const jam = await getJam(jamId)
 
-export default function JamPage() {
-  const params = useParams();
-  const jamSlug = params.jamId;
 
-  const [jam, setJam] = useState<Jam | null>(null);
 
-  useEffect(() => {
-    const clientDate = new Date();
-    const year = clientDate.getFullYear();
-    const month = String(clientDate.getMonth() + 1).padStart(2, '0');
-    const day = String(clientDate.getDate()).padStart(2, '0');
-    const localDateLocal = `${year}-${month}-${day}`;
-    const paramsJam = new URLSearchParams({
-      userDate: localDateLocal,
-    }).toString();
-    async function fetchJam() {
-      const res = await fetch(`/api/public/get-jam/${jamSlug}?${paramsJam}`);
-      const data = await res.json();
-      setJam(data);
+  if (!jam) return { title: 'Jam Not Found' }
 
-      // <-- log here, after fetch
-    }
-    fetchJam();
-  }, [jamSlug]);
+// 1. Logic for Styles
+// 1. Style & Modality Logic (Avoids "jam jam")
+// 1. Style & Modality Logic
+const styleArray = Array.isArray(jam.styles) 
+  ? jam.styles 
+  : (jam.styles || '').split(',').map((s: string) => s.trim());
 
-  if (!jam) return null;
+const firstRealStyle = styleArray.find((s: string) => s.toLowerCase() !== 'all styles');
+const displayModality = jam.modality === 'open_mic' ? 'Open Mic' : 'Jam';
 
-  return (
-    <div
-      className={`${spaceGrotesk.className} min-h-screen bg-tone-5 text-tone-0`}
-    >
-      <div className=" ">
-        <div className="flex justify-between w-[1300px] max-w-[90%] mx-auto p-0">
-          <Link href="/" className="mx-auto lg:ml-3 flex gap-2 items-end">
-            <div
-              className="ml-0 flex justify-end gap-2 items-end lg:w-118 lg:h-24 p-4 pb-2 pt-2 rounded-b-3xl
-  shadow-[5px_0_6px_-1px_rgba(255,255,255,0.1),_-5px_0_6px_-1px_rgba(255,255,255,0.1),0_6px_6px_-1px_rgba(255,255,255,0.1)]"
-            >
-              <img
-                src="/jamspots_icon.png"
-                alt="Jamspots icon"
-                className="h-16"
-              />
+const eventType = firstRealStyle 
+  ? `${firstRealStyle} ${displayModality}` 
+  : displayModality;
 
-              <p className="hidden lg:block text-xs py-4 text-text-2 font-semibold">
-                Find the next spot where music happens.
-              </p>
-            </div>
-          </Link>
+// 2. Location Logic
+const addressParts = jam.location_address.split(',').map((s: string) => s.trim());
 
-          {/* <div className="w-16 h-16 ">
-            <Avatar className="">
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                className="rounded-full"
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </div> */}
-        </div>
+// Fallbacks in case the address string is short or malformed
+const country = addressParts.length > 0 ? addressParts[addressParts.length - 1] : '';
+const rawCity = addressParts.length > 1 ? addressParts[addressParts.length - 2] : '';
 
-        <div className="max-w-6xl w-[80%] mx-auto flex flex-col-reverse lg:flex-row lg:items-center gap-10 lg:gap-20 mt-16 mb-8">
-          <div className="lg:w-1/2 space-y-4 lg:text-right">
-            {/* The "Glowing" Accent Text */}
-            <span
-              className="font-black tracking-[0.25em] text-xs uppercase transition-all duration-700"
-              style={{
-                color:
-                  jam.modality === 'open_mic'
-                    ? 'var(--text-tone-modality-open-mic)'
-                    : 'var(--text-tone-modality-jam)',
-                textShadow:
-                  jam.modality === 'open_mic'
-                    ? 'var(--neon-glow-mic)'
-                    : 'var(--neon-glow-jam)',
-              }}
-            >
-              {jam.modality === 'open_mic' ? 'Open Mic' : 'Featured Jam'}
-            </span>
+// 3. Final strings
+const title = `${jam.jam_title} – ${jam.location_title}, ${rawCity}`
+const description = `Check out the ${eventType} at ${jam.location_title} in ${rawCity}, ${country}.`
 
-            <h3 className="text-4xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-tone-0">
-              {jam.jam_title}
-              <span className="block text-tone-2/60 text-2xl lg:text-3xl mt-2 font-medium">
-                at {jam.location_title}
-              </span>
-            </h3>
-          </div>
+console.log(title);
+console.log(description);
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: ['/jamspots_icon.png'],
+    },
+  }
+}
 
-          <div className="lg:w-1/2 w-full">
-            <JamImagesTop images={jam.images.slice(0, 1)} />
-          </div>
-        </div>
-        <div className="flex flex-col-reverse lg:flex-row  gap-6 w-[1300px] max-w-[90%] lg:max-w-[75%] mx-auto pt-0 lg:pt-0 pb-12 mt-12">
-          <div className="flex flex-col   lg:w-1/2">
-            {/* Left column: JamChars */}
-            <div className="rounded-xl  pt-8 pb-10 px-8 border border-white/10 bg-tone-0/5  w-full">
-              <JamChars
-                jamDetails={{
-                  styles: jam.styles,
-                  drums: jam.drums,
-                  lista_canciones: jam.lista_canciones,
-                  instruments_lend: jam.instruments_lend,
-                }}
-              />
-            </div>
+// 2. The Page Component
+export default async function JamPage({ params }: Props) {
+  const { jamId } = await params;
 
-            <div className="flex flex-col gap-4  rounded-lg  pt-18 lg:pt-24 pb-10 px-8">
-              <h3 className="text-sm font-semibold"></h3>
+   
+  const jam = await getJam(jamId);
+    console.log(jam);
 
-              <div>
-                <HtmlReadOnly rawContent={jam.description} />
-              </div>
-            </div>
-            <StaticMap
-              address={jam.location_address}
-              fallbackLat={jam.lat}
-              fallbackLng={jam.lng}
-              apiKey="AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE"
-            />
-          </div>
-
-          {/* Right column: TimeAndPlace sticky */}
-
-          <div className="lg:sticky top-24 rounded-xl lg:w-1/2 flex flex-col pt-8 pb-10 px-8 border border-white/10 mx-auto self-start bg-tone-0/5">
-            <TimeAndPlace
-              location_title={jam.location_title}
-              address={jam.location_address}
-              fallbackLat={jam.lat}
-              fallbackLng={jam.lng}
-              date={jam.f_next_date}
-              time={jam.time_start}
-            />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-12 w-[1300px] max-w-[85%]  lg:max-w-[75%] mx-auto pb-12 ">
-          <JamImagesBottom images={jam.images.slice(1, 3)} />
-        </div>
-
-        <div className="flex flex-col lg:flex-row w-[1300px] max-w-[85%]  lg:max-w-[75%] mx-auto pb-12 lg:pb-24 overflow-hidden ">
-          <SocialLinks socialLinks={JSON.parse(jam.social_links)} />
-          <UpvoteReport jamId={jam.id} />
-        </div>
-
-        <div className="relative w-[1300px] max-w-[75%] mx-auto pb-24">
-          <span className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-3xl text-tone-0/75">
-            Disabled
-          </span>
-
-          <div className="flex flex-col gap-2 lg:gap-8  bg-[rgb(170_170_170/0.5)] lg:bg-[rgb(170_170_170/0.6)]  p-6  rounded-lg opacity-30">
-            <h3 className="text-xl lg:text-2xl">Questions</h3>
-            <p className="opacity-70  text-xs  lg:text-md">
-              Ask any question you want to the jam´s host
-            </p>
-          </div>
-        </div>
-
-        <footer className="w-full bg-bg/0 pb-12 mt-0 flex-1 ">
-          <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">
-            {/* Navigation Links */}
-            <div className="flex flex-col text-tone-1/95 items-between justify-between gap-8 ">
-              <Link
-                href="/contact"
-                className="hover:text-tone-0  cursor-pointer"
-              >
-                CONTACT
-              </Link>
-              <Link href="/help" className="hover:text-tone-0  cursor-pointer">
-                HELP
-              </Link>
-              <Link href="/about" className="hover:text-tone-0  cursor-pointer">
-                ABOUT
-              </Link>
-            </div>
-
-            {/* Branding / Tagline */}
-            <div className="flex flex-col sm:flex-row items-end justify-center gap-2 ">
-              <img
-                src="/jamspots_icon.png"
-                alt="Jamspots icon"
-                className="h-16"
-              />
-              <p className="text-sm  text-center font-medium sm:text-left pb-3">
-                Find the next spot where music happens.
-              </p>
-            </div>
-          </div>
-        </footer>
-      </div>
-    </div>
-  );
+ return <JamComponent jam={jam} />
 }
