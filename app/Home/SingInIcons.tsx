@@ -42,7 +42,7 @@ export default function SessionMenu() {
                        hover:-translate-y-1 cursor-pointer"
             onClick={() => router.push('/signIn')}
           >
-            + Añadir sitio
+            + Add spot
           </button>
 
           <DropdownMenuNotSignedIn />
