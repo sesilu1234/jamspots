@@ -9,6 +9,7 @@ import { uploadPhotos } from '@/lib/upload-photos';
 import { find as geoTz } from 'geo-tz';
 
 import { DateTime } from 'luxon';
+import { AlignVerticalJustifyEndIcon } from 'lucide-react';
 
 export async function POST(
   req: Request,
@@ -141,7 +142,7 @@ export async function POST(
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-
+ if (jamColumns.periodicity === 'manual') {
 
     const now = DateTime.now().toMillis();
 
@@ -169,6 +170,29 @@ export async function POST(
           console.log('Update jam dates error:', jamDatesError);
           return NextResponse.json({ error: jamDatesError.message }, { status: 500 });
         }
+
+      }
+
+
+      else if (jamColumns.periodicity === 'weekly') {
+
+        hacer una api para hacer los 6 meses siguientes, simplemente insertar los siguientes 6 meses, y si tiene mas de 200 borrar lo mas AlignVerticalJustifyEndIcon
+        
+
+
+        "ver que pasa si cambio jam de manual a weekly, o al contrario de weekly a manual"
+
+
+
+
+        al crear : meter 6 meses de jams weekly ,  cogiendo 6 meses de hora local y pasandolas map a utc  , e insertar   
+
+        al update : borrar todo lo futuro, y poner 6 meses de jams. si el count total fuera de mas de 200 jamSchema, borrar lo mas viejo
+
+
+
+
+      }
 
    
     return NextResponse.json({ success: true, data }, { status: 200 });

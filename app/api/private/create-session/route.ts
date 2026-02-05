@@ -166,6 +166,8 @@ export async function POST(req: Request) {
     ]);
 
 
+    if (jamColumns.periodicity === 'manual') {
+
     
      const now = DateTime.now().toMillis();
 
@@ -195,7 +197,18 @@ export async function POST(req: Request) {
         }
 
 
+      }
 
+
+      else if (jamColumns.periodicity === 'weekly') {
+
+
+
+
+      }
+
+
+    
 
 
     if (error) {
