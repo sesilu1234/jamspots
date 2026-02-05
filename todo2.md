@@ -37,3 +37,11 @@ visitantes tiene)
 
 -ya no sera env.local, asi que quitar next_public de las keys que no hay que
 neviar al front
+
+-----------
+
+hacer el JSON-LD event cards
+
+favicon
+
+google cloud console y google analytics

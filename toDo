@@ -8,3 +8,78 @@ poner en descripcion que tambien es para open mics (ponerlo de los primeros
 styles al create, para que se vea)
 
 ---
+
+
+
+
+
+
+
+
+
+poner en columna de todas la timezone como nueva columna
+
+poner que se haga en server con lag,lng en server api (con checkeo zod de que ha ido bien no es null)
+
+
+
+actualizar jam pages para ya no conseguir next date en useeffect sino simplemente cuando se hace request de page, calcular hora del sitio de la jam y ver la sigueine jam cuanod es
+(hacerlo con un grace period, asi que coger las que son date + time >= que la hora del timezone -3 hours)
+
+
+jam in place A starts at time x, so anybody requedsting the api in place B ( for example a bot or computer in place B ) does :
+
+
+
+
+
+transform his time to what time it is in place A using the library you told me did it fine(dynamic, taking into account time changes across the year for daylight saving )
+
+
+
+
+
+
+
+then to this time y i do new_y = y-4
+
+
+
+and then finally filter for x >= new_y
+
+
+
+
+--------------------
+
+y quizas para la home page tambien, para las cards  :  haces un alocation (lng,lat), coges las que esten a la distancia del filtro, coges la hora x del sitio su timezone y ves x-4 > dates y la minima
+
+
+------
+
+
+hay que cambiarlo todo : nada de guardar separada date y time, hay que guardar todas las dates como :
+
+jam_title	            start_time_utc (Timestamp)	          timezone
+THE FUCKIN JAM	         2026-02-05 23:15:00	             Europe/Madrid
+
+
+so for filtering, the utc. then when showing in UI i show the local time
+
+
+
+okay so manual dates are fine form beggining, but on the contrary , weekday just are computed on the fly 
+
+
+
+
+
+---------------
+
+
+no funciona bien gthub actions, en particular para las images
+
+
+
+
+
