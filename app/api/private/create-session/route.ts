@@ -7,6 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { success, z } from 'zod';
 import { validateJam } from './serverCheck';
 import { uploadPhotos } from '@/lib/upload-photos';
+import { find as geoTz } from 'geo-tz';
+
+import { DateTime } from 'luxon';
 
 function generateSlug(title: string, id: string) {
   // clean title: lowercase, remove special chars, replace spaces with hyphens
@@ -134,6 +137,8 @@ export async function POST(req: Request) {
     const pointValue =
       !isNaN(lat) && !isNaN(lng) ? `SRID=4326;POINT(${lng} ${lat})` : null;
 
+    const tz = geoTz(location_coords.lat, location_coords.lng)[0]; // geo-tz returns an array
+
     const { data, error } = await supabaseAdmin.from('sessions').insert([
       {
         id: id,
@@ -156,8 +161,42 @@ export async function POST(req: Request) {
 
         location_address: location_address,
         slug: slug,
+        timezone: tz
       },
     ]);
+
+
+    
+     const now = DateTime.now().toMillis();
+
+    // 1. Map and Filter in one go
+    const insert_jam_dates = jamColumns.dates
+      .map((dateString: string) => {
+        const dt = DateTime.fromISO(`${dateString}T${jamColumns.time_start}`, { zone: tz }).toUTC();
+        return {
+          utc_datetime: dt.toISO() as string,
+          jam_timezone: tz,
+          millis: dt.toMillis()
+        };
+      })
+      .filter((d: { millis: number }) => d.millis > now) // Fixes "d: any"
+      .map(({ millis, ...cleanRow }: { millis: number; utc_datetime: string; jam_timezone: string }) => cleanRow); // Fixes "millis: any"
+
+    // 2. The RPC call stays the same
+    const { error: jamDatesError } = await supabaseAdmin.rpc('sync_jam_dates', {
+      target_jam_id: id,
+      new_dates: insert_jam_dates 
+    });
+
+
+        if (jamDatesError) {
+          console.log('Update jam dates error:', jamDatesError);
+          return NextResponse.json({ error: jamDatesError.message }, { status: 500 });
+        }
+
+
+
+
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -165,6 +204,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(data, { status: 200 });
   } catch (e) {
+     console.log(e);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }

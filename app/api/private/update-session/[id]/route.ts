@@ -6,6 +6,10 @@ import { success, z } from 'zod';
 import { validateJam } from './serverCheck';
 import { uploadPhotos } from '@/lib/upload-photos';
 
+import { find as geoTz } from 'geo-tz';
+
+import { DateTime } from 'luxon';
+
 export async function POST(
   req: Request,
   context: { params: Promise<{ id: string }> },
@@ -64,6 +68,11 @@ export async function POST(
         pointValue = `SRID=4326;POINT(${lng} ${lat})`;
       }
     }
+    
+    const tz = geoTz(location_coords.lat, location_coords.lng)[0]; // geo-tz returns an array
+
+
+    
 
     const { data: joins, error: authError } = await supabaseAdmin
       .from('profiles')
@@ -110,12 +119,15 @@ export async function POST(
     delete jamColumns['raw_desc'];
     delete jamColumns['images_three'];
 
+  
+
     const { data, error } = await supabaseAdmin
       .from('sessions')
       .update([
         {
           ...jamColumns,
           location_coords: pointValue,
+          timezone: tz,
           validated:false,
         },
       ])
@@ -124,13 +136,44 @@ export async function POST(
       .select()
       .maybeSingle(); // return the updated row
 
-    if (error) {
+       if (error) {
       console.log('Update error:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+
+
+    const now = DateTime.now().toMillis();
+
+    // 1. Map and Filter in one go
+    const insert_jam_dates = jamColumns.dates
+      .map((dateString: string) => {
+        const dt = DateTime.fromISO(`${dateString}T${jamColumns.time_start}`, { zone: tz }).toUTC();
+        return {
+          utc_datetime: dt.toISO() as string,
+          jam_timezone: tz,
+          millis: dt.toMillis()
+        };
+      })
+      .filter((d: { millis: number }) => d.millis > now) // Fixes "d: any"
+      .map(({ millis, ...cleanRow }: { millis: number; utc_datetime: string; jam_timezone: string }) => cleanRow); // Fixes "millis: any"
+
+    // 2. The RPC call stays the same
+    const { error: jamDatesError } = await supabaseAdmin.rpc('sync_jam_dates', {
+      target_jam_id: id,
+      new_dates: insert_jam_dates 
+    });
+
+
+        if (jamDatesError) {
+          console.log('Update jam dates error:', jamDatesError);
+          return NextResponse.json({ error: jamDatesError.message }, { status: 500 });
+        }
+
+   
     return NextResponse.json({ success: true, data }, { status: 200 });
   } catch (e) {
+    console.log(e);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
