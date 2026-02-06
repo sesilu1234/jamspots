@@ -37,3 +37,11 @@ visitantes tiene)
 
 -ya no sera env.local, asi que quitar next_public de las keys que no hay que
 neviar al front
+
+-----------
+
+activar las apis cron : 
+
+calculate priority each day
+calculate weekly dates each week
+
