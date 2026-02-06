@@ -45,3 +45,13 @@ activar las apis cron :
 calculate priority each day
 calculate weekly dates each week
 
+-----------
+
+
+gemini ai telling :  Would you like me to show you how to set up the GIST index on location_coords to make the spatial part of this query lightning fast?
+
+
+
+-----
+
+update las de manual para que se llene sus dates en jam_dates

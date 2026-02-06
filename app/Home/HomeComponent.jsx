@@ -14,7 +14,7 @@ import Filtro from './Filtro';
 
 const MapRender = dynamic(() => import('./MapRender'), { ssr: false });
 
-export default function Home() {
+export default function HomeComponent() {
   const [showSignIn, setShowSignIn] = useState(false);
   const menuRef = useRef(null);
 
