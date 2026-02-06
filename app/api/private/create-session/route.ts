@@ -205,6 +205,84 @@ export async function POST(req: Request) {
 
 
 
+
+// Define the types for our function
+const getWeeklyDatesUTC = (geo_tz: string, targetDay: number, startTime: string): string[] => {
+  const schedule: string[] = [];
+
+  
+  // 1. Get "now" in the specific timezone
+  const now = DateTime.now().setZone(geo_tz);
+ 
+
+  // 2. Logic to find the FIRST occurrence
+  let currentPointer;
+
+  if (now.weekday <= targetDay) {
+    // If today is Mon, Tue, Wed, Thu: stay in this week
+    currentPointer = now.set({ weekday: targetDay });
+  } else {
+    // If today is Fri, Sat, Sun: jump to next week's Thursday
+    currentPointer = now.plus({ weeks: 1 }).set({ weekday: targetDay });
+  }
+
+  // 3. Loop until 15 items OR 3 months pass
+  while (schedule.length < 15) {
+    const dateStr = currentPointer.toISODate(); // "2026-02-12"
+    
+    // Combine date + time, keeping it in the local zone first
+    const eventTime = DateTime.fromISO(`${dateStr}T${startTime}`, { zone: geo_tz });
+
+    // Only add if the event is in the future (avoids adding today if it already happened)
+    if (eventTime >= now) {
+      schedule.push(eventTime.toUTC().toISO()!);
+    }
+
+    // Move to the next week
+    currentPointer = currentPointer.plus({ weeks: 1 });
+  }
+
+  return schedule;
+};
+
+        // 1. Define the map with a clear type
+        const weekdayMap = { 
+          monday: 1, tuesday: 2, wednesday: 3, thursday: 4, 
+          friday: 5, saturday: 6, sunday: 7 
+        } as const; // 'as const' makes the values strictly numbers 1-7
+
+        // 2. Cast the input string to be a key of that map
+        const dayKey = jamColumns.dayOfWeek.toLowerCase() as keyof typeof weekdayMap;
+
+        // 3. Now you can safely index it
+        const targetDayNumber = weekdayMap[dayKey];
+
+        const insert_jam_dates = getWeeklyDatesUTC(
+          tz, 
+          targetDayNumber, 
+          jamColumns.time_start
+        ).map((utcString) => ({
+          utc_datetime: utcString,
+          jam_timezone: tz
+        }));
+
+
+        const { error: jamDatesError } = await supabaseAdmin.rpc('sync_jam_dates_weekly', {
+              target_jam_id: id,
+              new_dates: insert_jam_dates 
+            });
+
+
+        if (jamDatesError) {
+          console.log('Update jam dates error:', jamDatesError);
+          return NextResponse.json({ error: jamDatesError.message }, { status: 500 });
+        }
+
+
+
+
+
+
       }
 
 
