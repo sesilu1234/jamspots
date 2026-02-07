@@ -16,7 +16,7 @@ export const getHomeCards = async (searchParams: { [key: string]: string | strin
       order
     } = searchParams;
 
-    
+    const dateOptionsInput = (searchParams.dateOptions as string) ?? 'today';
 
     // 1. Determine the timezone of the search location
     const latitude = parseFloat(lat as string);
@@ -30,44 +30,49 @@ export const getHomeCards = async (searchParams: { [key: string]: string | strin
 
     
 
-    switch (dateOptions) {
-      case 'today':
+  
+      if (dateOptionsInput === 'today') {
         /** * TODAY: [Now - 2h] until [Midnight + 2h]
          * This covers Jams that just started and late-night finishers.
          */
         gte = localNow.minus({ hours: 2 }).toUTC().toISO()!;
         lte = localNow.endOf('day').plus({ hours: 2 }).toUTC().toISO()!;
-        break;
+     
+      }
 
-      case 'week':
+      else if (dateOptionsInput === 'week') {
         /** * THIS WEEK: [Now] until [7 days from now + 4h]
          * A rolling 7-day window with a 4h buffer for the final night.
          */
         gte = localNow.toUTC().toISO()!;
         lte = localNow.plus({ days: 7 }).endOf('day').plus({ hours: 2 }).toUTC().toISO()!;
-        break;
+        
 
-      case 'custom':
+        }
+
+       else if (dateOptionsInput.startsWith('custom:')) {
         /** * CUSTOM: [Start Date 00:00] until [End Date + 1 day 02:00]
          * Interprets the user's selected days in the local timezone of the Jam.
          */
+
+        const dateStr = dateOptionsInput.split(':')[1];
+  const customDate = DateTime.fromISO(dateStr);
         if (!customDate) throw new Error("Missing custom date range");
         
         gte = DateTime.fromISO(customDate as string, { zone: tz })
-          .startOf('day')
           .toUTC()
           .toISO()!;
         
         lte = DateTime.fromISO(customDate as string, { zone: tz })
-          .endOf('day')
-          .plus({ hours: 2 }) // Buffer for the final night of the custom range
           .toUTC()
           .toISO()!;
-        break;
+     
 
-      default:
+      }
+
+      else {
         // "Don't send incomplete info heh"
-        throw new Error(`Invalid or missing dateOptions: ${dateOptions}`);
+        throw new Error(`Invalid or missing dateOptions`);
     }
 
     // 3. Parse arrays for Postgres (safely handle JSON strings from URL)

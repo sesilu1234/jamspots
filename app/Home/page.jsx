@@ -8,15 +8,15 @@ export default async function HomePage() {
   // 1. Get location from Vercel headers
   const userLocation = {
     city: headerList.get('x-vercel-ip-city') ?? 'Madrid (Local Dev)', 
-    lat: headerList.get('x-vercel-ip-latitude') ?? '40.4168',
-    lng: headerList.get('x-vercel-ip-longitude') ?? '-3.7038',
+    latitude: headerList.get('x-vercel-ip-latitude') ?? '40.4168',
+    longitude: headerList.get('x-vercel-ip-longitude') ?? '-3.7038',
   };
 
   // 2. Prepare params (60km radius)
   const paramsCards = {
     dateOptions: 'week',
-    lat: userLocation.lat,
-    lng: userLocation.lng,
+    lat: userLocation.latitude,
+    lng: userLocation.longitude,
     distance: '60', // Just the number of KM
     styles: JSON.stringify([]),
     modality: JSON.stringify(['jam', 'open_mic']),

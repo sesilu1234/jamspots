@@ -13,18 +13,6 @@ export default function SessionMenu() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-  // // Close dropdown when clicking outside
-  // useEffect(() => {
-  //   function handleClickOutside(event: MouseEvent) {
-  //     if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-  //       setShowSignIn(false);
-  //     }
-  //   }
-  //   document.addEventListener('mousedown', handleClickOutside);
-  //   return () => document.removeEventListener('mousedown', handleClickOutside);
-  // }, []);
 
   return (
     <div className="absolute    top-10 right-4  md:top-16 md:right-6   flex items-center gap-2 ">

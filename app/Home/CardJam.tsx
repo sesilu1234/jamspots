@@ -26,7 +26,7 @@ export default function JamCard({
   classname,
 }) {
 
-  console.log(display_date);
+
   return (
     <Card
       className={`flex flex-col p-4    w-64  shadow-md  bg-card-jams/85
