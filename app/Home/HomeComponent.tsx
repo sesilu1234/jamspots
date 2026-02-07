@@ -12,26 +12,26 @@ import Link from 'next/link';
 import SignInIcons from './SingInIcons';
 import Filtro from './Filtro';
 
+
+import { JamCard, UserLocation } from '@/types/jam';
+
+interface HomeComponentProps {
+  cards: JamCard[];
+  userLocation: UserLocation;
+}
+
+
+
+
 const MapRender = dynamic(() => import('./MapRender'), { ssr: false });
 
-export default function HomeComponent() {
-  const [showSignIn, setShowSignIn] = useState(false);
-  const menuRef = useRef(null);
+export default function HomeComponent({ cards, userLocation }: HomeComponentProps) {
 
-  const [jams, setJams] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  const [jams, setJams] = useState(cards);
+  const [loading, setLoading] = useState(false);
   const [searchType, setSearchType] = useState('local');
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (!menuRef.current?.contains(e.target)) {
-        setShowSignIn(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   return (
     <div className="flex flex-col min-h-screen ">

@@ -249,12 +249,12 @@ export default function Filtro({
     }
   };
 
-  useEffect(() => {
-    if (locationSearch) {
-      setSearchType('local');
-      fetchJams('local');
-    }
-  }, [locationSearch]);
+  // useEffect(() => {
+  //   if (locationSearch) {
+  //     setSearchType('local');
+  //     fetchJams('local');
+  //   }
+  // }, [locationSearch]);
 
   return (
     <>

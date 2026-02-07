@@ -2,6 +2,7 @@ import 'server-only';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { DateTime } from 'luxon';
 import { find as geoTz } from 'geo-tz';
+import { JamCard } from '@/types/jam'; // Adjust path as needed
 
 export const getHomeCards = async (searchParams: { [key: string]: string | string[] | undefined }) => {
   try {
@@ -12,8 +13,10 @@ export const getHomeCards = async (searchParams: { [key: string]: string | strin
       distance, 
       styles, 
       modality,
-      customDate
+      order
     } = searchParams;
+
+    
 
     // 1. Determine the timezone of the search location
     const latitude = parseFloat(lat as string);
@@ -25,7 +28,7 @@ export const getHomeCards = async (searchParams: { [key: string]: string | strin
     let gte: string;
     let lte: string;
 
-
+    
 
     switch (dateOptions) {
       case 'today':
@@ -36,7 +39,7 @@ export const getHomeCards = async (searchParams: { [key: string]: string | strin
         lte = localNow.endOf('day').plus({ hours: 2 }).toUTC().toISO()!;
         break;
 
-      case 'this_week':
+      case 'week':
         /** * THIS WEEK: [Now] until [7 days from now + 4h]
          * A rolling 7-day window with a 4h buffer for the final night.
          */
@@ -71,6 +74,16 @@ export const getHomeCards = async (searchParams: { [key: string]: string | strin
     const stylesArray = styles ? JSON.parse(styles as string) : null;
     const modalityArray = modality ? JSON.parse(modality as string) : null;
 
+    console.log({
+      p_lat: latitude,
+      p_lng: longitude,
+      p_distance_meters: parseFloat(distance as string || '60') * 1000, // km to meters
+      p_start_utc: gte,
+      p_end_utc: lte,
+      p_filter_styles: stylesArray && stylesArray.length > 0 ? stylesArray : null,
+      p_filter_modalities: modalityArray && modalityArray.length > 0 ? modalityArray : null
+    });
+
     // 4. Call the optimized RPC function
     const { data, error } = await supabaseAdmin.rpc('get_jams_filtered_v2', {
       p_lat: latitude,
@@ -82,13 +95,38 @@ export const getHomeCards = async (searchParams: { [key: string]: string | strin
       p_filter_modalities: modalityArray && modalityArray.length > 0 ? modalityArray : null
     });
 
+
+
+
+
+
+
+let dataRes = (data as JamCard[] | null)?.map((jam: JamCard) => {
+  // 1. Parse the UTC string
+  // 2. Shift the perspective to the jam's timezone
+  const localTime = jam.next_date 
+    ? DateTime.fromISO(jam.next_date, { zone: 'utc' }).setZone(jam.jam_timezone)
+    : null;
+
+  return {
+    ...jam,
+    image: jam.images?.[0] || null,
+    // Format it for the UI (e.g., "2026-02-07T20:00:00")
+    // Or use .toFormat('ccc dd LLL, HH:mm') for "Sat 07 Feb, 20:00"
+    next_date_local: localTime ? localTime.toISO() : null,
+    display_date: localTime ? localTime.toFormat('ccc d LLL, HH:mm') : 'Date TBD'
+  };
+}) || [];
+
     if (error) {
       console.error('Supabase RPC Error:', error.message);
       throw error;
     }
 
+    console.log(dataRes);
+
     // Map the flat SQL response to a clean object if needed
-    return data;
+    return dataRes;
 
   } catch (error: any) {
     console.error('getHomeCards failure:', error.message);

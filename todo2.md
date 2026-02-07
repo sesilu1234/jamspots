@@ -55,3 +55,20 @@ gemini ai telling :  Would you like me to show you how to set up the GIST index 
 -----
 
 update las de manual para que se llene sus dates en jam_dates
+
+
+
+------------
+
+
+
+cambiar a 
+import tzLookup from 'tz-lookup'
+
+en vez de  import { find as geoTz } from 'geo-tz';
+
+funciona mejor y siempre 
+
+
+
+

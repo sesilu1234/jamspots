@@ -19,13 +19,14 @@ export default function JamCard({
   jamName,
   spotName,
   address,
-  date,
-  time,
+  display_date,
   tags,
   src,
   slug,
   classname,
 }) {
+
+  console.log(display_date);
   return (
     <Card
       className={`flex flex-col p-4    w-64  shadow-md  bg-card-jams/85
@@ -57,14 +58,8 @@ export default function JamCard({
           <div className="text-xs text-tone-0/70 truncate">{address}</div>
 
           <div className="text-sm text-tone-0/90">
-            {new Date(`${date}T${time}`).toLocaleString('en-GB', {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-            })}
+          {display_date}
+           
           </div>
           {tags && (
             <div className="flex flex-wrap gap-1 mt-3 text-font-6">
