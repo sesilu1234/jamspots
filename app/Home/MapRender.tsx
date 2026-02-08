@@ -42,7 +42,7 @@ export default function MapComponent() {
 		>
 			<SetMap />
 
-			<MapTileSwitcher selectedIndex={-2} />
+			<MapTileSwitcher selectedIndex={0} />
 
 			<MapMarkersCluster />
 		</MapContainer>

@@ -14,22 +14,12 @@ const tileLayers = [
 		name: "Carto Voyager",
 	},
 	{
-		url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-		attribution:
-			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
-		name: "Carto Light",
-	},
-	{
-		url: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-		attribution: "Tiles &copy; Esri &mdash; Source: Esri, USGS, NOAA",
-		name: "Esri Dark Gray",
-	},
-	{
 		url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
 		attribution:
 			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
 		name: "Carto Dark Matter",
 	},
+	
 ];
 
 export default function MapTileSwitcher({
