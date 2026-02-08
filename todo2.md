@@ -57,6 +57,9 @@ gemini ai telling :  Would you like me to show you how to set up the GIST index 
 update las de manual para que se llene sus dates en jam_dates
 
 
+poner el OLD JSON ese para google events cards
+
+
 
 ------------
 

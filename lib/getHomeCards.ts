@@ -79,15 +79,7 @@ export const getHomeCards = async (searchParams: { [key: string]: string | strin
     const stylesArray = styles ? JSON.parse(styles as string) : null;
     const modalityArray = modality ? JSON.parse(modality as string) : null;
 
-    console.log({
-      p_lat: latitude,
-      p_lng: longitude,
-      p_distance_meters: parseFloat(distance as string || '60') * 1000, // km to meters
-      p_start_utc: gte,
-      p_end_utc: lte,
-      p_filter_styles: stylesArray && stylesArray.length > 0 ? stylesArray : null,
-      p_filter_modalities: modalityArray && modalityArray.length > 0 ? modalityArray : null
-    });
+  
 
     // 4. Call the optimized RPC function
     const { data, error } = await supabaseAdmin.rpc('get_jams_filtered_v2', {
@@ -128,7 +120,7 @@ let dataRes = (data as JamCard[] | null)?.map((jam: JamCard) => {
       throw error;
     }
 
-    console.log(dataRes);
+
 
     // Map the flat SQL response to a clean object if needed
     return dataRes;

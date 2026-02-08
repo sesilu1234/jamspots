@@ -15,8 +15,6 @@ import { NextResponse } from 'next/server';
 
     
 
-    console.log(searchParams);
-
     const weekdays = [
       'Sunday',
       'Monday',
@@ -57,12 +55,15 @@ import { NextResponse } from 'next/server';
           .select('id, lat, lng')
           .eq('validated', true);
 
-        if (Array.isArray(stylesParam) && stylesParam.length > 0) {
-          query = query.overlaps('styles', stylesParam);
+     
+
+        if (Array.isArray(stylesArray) && stylesArray.length > 0) {
+
+          query = query.overlaps('styles', stylesArray);
         }
 
-        if (Array.isArray(modalityParam) && modalityParam.length > 0) {
-          query = query.in('modality', modalityParam);
+        if (Array.isArray(modalityArray) && modalityArray.length > 0) {
+          query = query.in('modality', modalityArray);
         }
 
         ({ data: dataMarkers, error } = await query);
@@ -109,15 +110,15 @@ import { NextResponse } from 'next/server';
           .overlaps('dates', [formattedDate]);
 
         // 3. Apply Styles filter to BOTH
-        if (Array.isArray(stylesParam) && stylesParam.length > 0) {
-          query1 = query1.overlaps('styles', stylesParam);
-          query2 = query2.overlaps('styles', stylesParam);
+        if (Array.isArray(stylesArray) && stylesArray.length > 0) {
+          query1 = query1.overlaps('styles', stylesArray);
+          query2 = query2.overlaps('styles', stylesArray);
         }
 
         // 4. Apply Modality filter to BOTH
-        if (Array.isArray(modalityParam) && modalityParam.length > 0) {
-          query1 = query1.in('modality', modalityParam);
-          query2 = query2.in('modality', modalityParam);
+        if (Array.isArray(modalityArray) && modalityArray.length > 0) {
+          query1 = query1.in('modality', modalityArray);
+          query2 = query2.in('modality', modalityArray);
         }
 
         // Execute both queries in parallel

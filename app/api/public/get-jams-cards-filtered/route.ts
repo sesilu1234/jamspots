@@ -10,7 +10,7 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
 
-    console.log(searchParams);
+   
 
     const dateOptions = searchParams.get('dateOptions')!;
     const order = searchParams.get('order')!; // 'closeness' o 'popular'
@@ -35,7 +35,7 @@ export async function GET(req: Request) {
       }
     }
 
-    console.log(tz);
+
 
     // 2. Calculate UTC Bounds using local search time
     const localNow = DateTime.now().setZone(tz);

@@ -182,7 +182,7 @@ export default function Filtro({
 
       map!.flyTo(
         [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
-        6,
+        4,
         { duration: 1.5 },
       );
     }
