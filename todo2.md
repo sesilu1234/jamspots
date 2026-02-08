@@ -55,7 +55,6 @@ poner el OLD JSON ese para google events cards
 
 ------------
 
-opcion de cambiar mapa ? o cambiar mapa directamentre a otro?
 
 
 
