@@ -16,12 +16,7 @@ que se veaa bien
 
 
 
------------------
------------------
--
-------------------
--
-------------------
+
 
 
 -----hacer prueba poniendo jams por el mundo a tutiplen, ver que funciona
@@ -47,14 +42,6 @@ calculate weekly dates each week
 
 -----------
 
-
-gemini ai telling :  Would you like me to show you how to set up the GIST index on location_coords to make the spatial part of this query lightning fast?
-
-
-
------
-
-update las de manual para que se llene sus dates en jam_dates
 
 
 poner el OLD JSON ese para google events cards

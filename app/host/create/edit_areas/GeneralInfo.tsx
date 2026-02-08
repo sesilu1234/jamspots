@@ -106,7 +106,12 @@ export default function EditArea({
 			</div>
 
 			<div className="mx-auto lg:w-3/4 p-4 ">
-				<h3 className="font-bold text-2xl mb-4">Schedule</h3>
+<h3 className="font-bold text-2xl mb-4">
+  Schedule
+  <span className="block pt-0 font-medium text-xs text-stone-600/60 leading-tight">
+    weekly sessions or choose dates on the calendar
+  </span>
+</h3>
 				<div className="flex flex-wrap gap-8 items-end max-w-screen">
 					<div className="flex flex-col sm:flex-row gap-4">
 						<Select
