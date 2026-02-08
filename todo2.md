@@ -37,6 +37,9 @@ neviar al front
 
 activar las apis cron : 
 
+
+y quizas incluso hacer apis desde vercel en vez de desde github ?mas centralizado, y quizas llamo a api desde nextjs (node) y mejor....o igual en bash mejor ? 
+
 calculate priority each day
 calculate weekly dates each week
 
