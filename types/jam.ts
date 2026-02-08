@@ -19,8 +19,8 @@ export interface JamCard {
 }
 
 export interface UserLocation {
-  city?: string;
-  lat: string;
-  lng: string;
+  city: string;
+  latitude: number;
+  longitude: number;
 }
 

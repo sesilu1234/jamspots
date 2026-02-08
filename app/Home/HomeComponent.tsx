@@ -35,7 +35,7 @@ export default function HomeComponent({ cards, userLocation }: HomeComponentProp
 
   return (
     <div className="flex flex-col min-h-screen ">
-      <MapProvider>
+      <MapProvider initialUserLocation={userLocation} resCards={cards}>
         <div className="relative flex flex-col  w-[1300px] max-w-[90%] mx-auto p-0 ">
           <SignInIcons />
 

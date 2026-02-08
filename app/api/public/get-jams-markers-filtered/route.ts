@@ -1,9 +1,21 @@
+import 'server-only';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { DateTime } from 'luxon';
+
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request) {
+
+
+    export async function GET(req: Request) {
   try {
+    
+    
+
     const { searchParams } = new URL(req.url);
+
+    
+
+    console.log(searchParams);
 
     const weekdays = [
       'Sunday',
@@ -15,31 +27,31 @@ export async function GET(req: Request) {
       'Saturday',
     ];
 
-    const userDate = searchParams.get('userDate'); // "2025-12-09"
-    const dateOptions = searchParams.get('dateOptions'); // "all", "week", "custom: 2025-12-21"
-    const safeParse = (param: any) => {
-      if (typeof param !== 'string') return [];
-      try {
-        const parsed = JSON.parse(param);
-        return Array.isArray(parsed) ? parsed : [parsed];
-      } catch {
-        return [];
-      }
-    };
-
-    const stylesParam = safeParse(searchParams.get('styles'));
-    const modalityParam = safeParse(searchParams.get('modality'));
 
     const formatLocalDate = (d: Date) =>
       `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
         d.getDate(),
       ).padStart(2, '0')}`;
 
-    // Date filtering
-    let data, error;
+ 
+    const dateOptions = searchParams.get('dateOptions')!;
+    const stylesParam = searchParams.get('styles');
+    const modalityParam = searchParams.get('modality');
 
-    if (dateOptions && userDate) {
-      if (dateOptions === 'all') {
+
+    const dateOptionsInput = (dateOptions as string) ?? 'today';
+    const stylesArray = stylesParam ? JSON.parse(stylesParam as string) : null;
+    const modalityArray = modalityParam ? JSON.parse(modalityParam as string) : null;
+
+    const utcNow = DateTime.utc();
+
+    let gte: string;
+    let lte: string;
+
+    
+      let dataMarkers, error;
+  
+      if (dateOptionsInput === 'all') {
         let query = supabaseAdmin
           .from('sessions_with_coords')
           .select('id, lat, lng')
@@ -53,51 +65,30 @@ export async function GET(req: Request) {
           query = query.in('modality', modalityParam);
         }
 
-        ({ data, error } = await query);
-      } else if (dateOptions === 'week') {
-        const startDate = new Date(userDate);
-        const endDate = new Date(userDate);
-        endDate.setDate(endDate.getDate() + 7);
+        ({ data: dataMarkers, error } = await query);
+       
+     
+      }
 
-        const rangeDates: string[] = [];
-        for (
-          let d = new Date(startDate);
-          d <= endDate;
-          d.setDate(d.getDate() + 1)
-        ) {
-          rangeDates.push(formatLocalDate(new Date(d)));
+      else if (dateOptionsInput === 'week') {
+        /** * THIS WEEK: [Now] until [7 days from now + 4h]
+         * A rolling 7-day window with a 4h buffer for the final night.
+         */
+        gte = utcNow.toISO()!;
+        lte = utcNow.plus({ days: 7 }).endOf('day').plus({ hours: 2 }).toISO()!;
+
+            ( { data: dataMarkers, error } = await supabaseAdmin.rpc('get_markers_filtered_week_v2', {
+      p_start_utc: gte,
+      p_end_utc: lte,
+      p_filter_styles: stylesArray && stylesArray.length > 0 ? stylesArray : null,
+      p_filter_modalities: modalityArray && modalityArray.length > 0 ? modalityArray : null
+    }));
+
+        
+
         }
 
-        // Define your base queries
-        let query1 = supabaseAdmin
-          .from('sessions_with_coords')
-          .select('id, lat, lng')
-          .eq('validated', true)
-          .eq('periodicity', 'weekly'); // .filter('periodicity', 'eq', 'weekly') can be simplified to .eq()
-
-        let query2 = supabaseAdmin
-          .from('sessions_with_coords')
-          .select('id, lat, lng')
-          .eq('validated', true)
-          .overlaps('dates', rangeDates);
-
-        // Apply Styles filter to BOTH queries
-        if (Array.isArray(stylesParam) && stylesParam.length > 0) {
-          query1 = query1.overlaps('styles', stylesParam);
-          query2 = query2.overlaps('styles', stylesParam);
-        }
-
-        // Apply Modality filter to BOTH queries
-        if (Array.isArray(modalityParam) && modalityParam.length > 0) {
-          query1 = query1.in('modality', modalityParam);
-          query2 = query2.in('modality', modalityParam);
-        }
-
-        const [res1, res2] = await Promise.all([query1, query2]);
-
-        data = [...(res1.data || []), ...(res2.data || [])];
-        error = res1.error || res2.error;
-      } else if (dateOptions.startsWith('custom:')) {
+        else if (dateOptions.startsWith('custom:')) {
         const customDateStr = dateOptions.split('custom:')[1].trim();
         const customDate = new Date(customDateStr);
         const weekDay = weekdays[customDate.getDay()];
@@ -132,14 +123,35 @@ export async function GET(req: Request) {
         // Execute both queries in parallel
         const [res1, res2] = await Promise.all([query1, query2]);
 
-        data = [...(res1.data || []), ...(res2.data || [])];
+        dataMarkers = [...(res1.data || []), ...(res2.data || [])];
         error = res1.error || res2.error;
       }
+
+      else {
+        // "Don't send incomplete info heh"
+        throw new Error(`Invalid or missing dateOptions`);
     }
 
-    if (error) return NextResponse.json({ error }, { status: 500 });
-    return NextResponse.json(data);
-  } catch (e) {
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+
+
+
+
+
+
+
+
+    if (error) {
+      console.error('Supabase RPC Error:', error.message);
+      throw error;
+    }
+  
+    
+
+    return NextResponse.json(dataMarkers);
+    
+
+  } catch (error: any) {
+    console.error('getHomeCards failure:', error.message);
+    return null;
   }
-}
+};

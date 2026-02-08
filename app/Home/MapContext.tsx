@@ -12,22 +12,36 @@ export type LocationSearch = {
   coordinates: { lat: number; lng: number };
 };
 
+
+export type InitialLocation = {
+  city: string;
+  latitude: number;
+  longitude: number;
+};
+
+
 type MapContextType = {
   map: LeafletMap | null;
   setMap: React.Dispatch<React.SetStateAction<LeafletMap | null>>;
   locationSearch: LocationSearch | null;
+  initialLocation: InitialLocation | null;
   setLocationSearch: React.Dispatch<
     React.SetStateAction<LocationSearch | null>
+  >;
+  markersData:Marker[] ; 
+        setMarkersData: React.Dispatch<
+    React.SetStateAction<Marker[]>
   >;
 };
 
 interface MapProviderProps {
   children: React.ReactNode;
   initialUserLocation: {
-    lat: string;
-    lng: string;
+    latitude: number;
+    longitude: number;
     city: string;
   };
+  resCards: JamCard[];
 }
 
 type Marker = {
@@ -35,6 +49,8 @@ type Marker = {
   lat: number;
   lng: number;
 };
+
+import { JamCard } from '@/types/jam';
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
 
@@ -46,17 +62,21 @@ export const useMapContext = () => {
 
 
 
-export const MapProvider = ({ children, initialUserLocation }: MapProviderProps) => {
+export const MapProvider = ({ children, initialUserLocation, resCards }: MapProviderProps) => {
   const [map, setMap] = useState<LeafletMap | null>(null);
   const [locationSearch, setLocationSearch] = useState<LocationSearch | null>({
     coordinates: { 
-      lat: parseFloat(initialUserLocation.lat), 
-      lng: parseFloat(initialUserLocation.lng) 
+      lat: initialUserLocation.latitude, 
+      lng: initialUserLocation.longitude 
     }
   });
   const [initialLocation, setInitialLocation] = useState(initialUserLocation);
 
-  const [markersData, setMarkersData] = useState<Marker[]>([]);
+  const [markersData, setMarkersData] = useState<Marker[]>(resCards?.map((jam: JamCard) => ({
+            id: jam.id,
+            lat: jam.lat,
+            lng: jam.lng,
+          })));
 
   // const setPosition = (lat: number, lng: number) => {
   //   setLocationSearch({ coordinates: { lat, lng } });
@@ -68,7 +88,7 @@ export const MapProvider = ({ children, initialUserLocation }: MapProviderProps)
 
   useEffect(() => {
     if (map && initialUserLocation) {
-      map.setView([parseFloat(initialUserLocation.lat), parseFloat(initialUserLocation.lng)], 11);
+      map.flyTo([initialUserLocation.latitude, initialUserLocation.longitude], 12,  { duration: 1.5 });
     }
   }, [map]); // Only runs when the map engine is ready
   const CACHE_KEY = 'user_location';

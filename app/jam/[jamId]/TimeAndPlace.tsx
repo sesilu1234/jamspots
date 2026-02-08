@@ -28,32 +28,11 @@ export default function TimeAndPlace({
 
 
 
-	function getFormattedJamDate(date: string | undefined | null, time: string | undefined | null): string {
-  if (!date || !time) return "No upcoming jam";
-
-  const dateObj = new Date(`${date}T${time}`);
-
-  const parts = new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(dateObj);
-
-  // We use a specific type for 'type' to match what formatToParts provides
-  const getVal = (type: Intl.DateTimeFormatPartTypes): string => {
-    const part = parts.find((p) => p.type === type);
-    return part ? part.value : ""; // Returns empty string instead of crashing if undefined
-  };
-
-  return `${getVal("weekday")} ${getVal("month")} ${getVal("day")} – ${getVal("hour")}:${getVal("minute")}`;
-}
+	
 	
 
 
-	 const [formattedDate, setFormattedDate] = useState<string | null>(null);
+
 
   useEffect(() => {
     const clientDate = new Date();
@@ -68,7 +47,7 @@ export default function TimeAndPlace({
       const res = await fetch(`/api/public/get-jam-date/${slug}?${paramsJam}`);
       const data = await res.json();
 	  
-      setFormattedDate(getFormattedJamDate(data.f_next_date, time));
+    
 
       // <-- log here, after fetch
     }
@@ -91,7 +70,7 @@ export default function TimeAndPlace({
 					/>
 				</svg>
 
-				<h1 className="text-2xl font-medium">{formattedDate}</h1>
+				<h1 className="text-2xl font-medium">{time}</h1>
 			</div>
 
 			<div className="h-[1.5px] bg-gray-300/20 w-3/5 mx-auto"></div>

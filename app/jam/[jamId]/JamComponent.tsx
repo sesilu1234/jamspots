@@ -159,7 +159,7 @@ export default function JamComponent({ jam }: { jam: Jam }) {
               fallbackLat={jam.lat}
               fallbackLng={jam.lng}
               slug={jam.slug}
-              time={jam.time_start}
+              time={jam.display_date}
             />
           </div>
         </div>

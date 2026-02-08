@@ -1,12 +1,14 @@
 import JamCardShadcn from './CardJam';
 import { useState, useEffect, useRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { JamCard } from '@/types/jam';
+
 
 export default function JamCarousel({
   jams,
-  setJams,
+
   loading,
-  setLoading,
+
   searchType,
 }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -59,7 +61,7 @@ export default function JamCarousel({
             <div className="p-2  text-center  w-64">No jams found</div>
           )
         ) : (
-          jams.map((jam, index) => (
+          jams.map((jam: JamCard, index: number) => (
             <JamCardShadcn
               key={index}
               classname="cursor-pointer border-2 border-tone-0/75"

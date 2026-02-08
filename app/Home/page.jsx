@@ -6,11 +6,11 @@ export default async function HomePage() {
   const headerList = await headers();
 
   // 1. Get location from Vercel headers
-  const userLocation = {
-    city: headerList.get('x-vercel-ip-city') ?? 'Madrid (Local Dev)', 
-    latitude: headerList.get('x-vercel-ip-latitude') ?? '40.4168',
-    longitude: headerList.get('x-vercel-ip-longitude') ?? '-3.7038',
-  };
+const userLocation = {
+  city: headerList.get('x-vercel-ip-city') ?? 'Madrid (Local Dev)',
+  latitude: Number(headerList.get('x-vercel-ip-latitude')) || 40.4168,
+  longitude: Number(headerList.get('x-vercel-ip-longitude')) || -3.7038,
+};
 
   // 2. Prepare params (60km radius)
   const paramsCards = {

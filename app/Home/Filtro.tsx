@@ -10,6 +10,12 @@ import { useMapContext } from './MapContext';
 
 import L from 'leaflet';
 
+type Marker = {
+  id: string;
+  lat: number;
+  lng: number;
+};
+
 type SliderProps = React.ComponentProps<typeof Slider>;
 
 export default function Filtro({
@@ -184,19 +190,16 @@ export default function Filtro({
     setOpen(false);
   };
 
-  const fetchJams = async (searchType) => {
+  const fetchJams = async (searchType : 'local'|'global') => {
     try {
-      const clientDate = new Date();
-      const year = clientDate.getFullYear();
-      const month = String(clientDate.getMonth() + 1).padStart(2, '0');
-      const day = String(clientDate.getDate()).padStart(2, '0');
-      const localDateLocal = `${year}-${month}-${day}`;
+     
 
       if (searchType === 'local') {
+
+        console.log('9ew843dsuadshhdsa');
         setLoading(true);
 
         const paramsCards = new URLSearchParams({
-          userDate: localDateLocal,
           dateOptions: dateOptionsRef.current,
           order: String(orderRef.current),
           lat: String(locationSearch?.coordinates.lat),
@@ -214,8 +217,11 @@ export default function Filtro({
 
         const resCards = await cardsFetch.json();
 
+
+      
+
         setMarkersData(
-          resCards?.map((jam) => ({
+          resCards?.map((jam: Marker) => ({
             id: jam.id,
             lat: jam.lat,
             lng: jam.lng,
@@ -226,7 +232,6 @@ export default function Filtro({
 
       if (searchType === 'global') {
         const paramsMarkers = new URLSearchParams({
-          userDate: localDateLocal,
           dateOptions: dateOptionsRefGlobal.current,
           styles: JSON.stringify(stylesRefGlobal.current),
           modality: JSON.stringify(modalityGlobalRef.current),
@@ -249,12 +254,19 @@ export default function Filtro({
     }
   };
 
-  // useEffect(() => {
-  //   if (locationSearch) {
-  //     setSearchType('local');
-  //     fetchJams('local');
-  //   }
-  // }, [locationSearch]);
+ const isFirstRun = useRef(true);
+
+useEffect(() => {
+  if (isFirstRun.current) {
+    isFirstRun.current = false;
+    return; // Exit early on first mount
+  }
+
+  if (locationSearch) {
+    setSearchType('local');
+    fetchJams('local');
+  }
+}, [locationSearch]);
 
   return (
     <>

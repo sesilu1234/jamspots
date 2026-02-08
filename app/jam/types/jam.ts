@@ -37,6 +37,7 @@ export type Jam = {
   slug: string;
   lng: number;
   lat: number;
+  display_date: string;
 };
 
 
