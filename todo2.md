@@ -39,6 +39,8 @@ activar las apis cron :
 
 
 y quizas incluso hacer apis desde vercel en vez de desde github ?mas centralizado, y quizas llamo a api desde nextjs (node) y mejor....o igual en bash mejor ? 
+api especifica , no de psql dump como tal ( que eso con hacerlo 1 evz al dia pero quedarse con solo las ultimas 5 )
+y otro dump especifico de select total de sessions, profiles, likes, allowed emails, reports, suggestions
 
 calculate priority each day
 calculate weekly dates each week
