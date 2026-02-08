@@ -3,6 +3,8 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { cache } from 'react';
 import { DateTime } from 'luxon';
 
+import { Jam } from '../types/jam';
+
 type JamSessionResult = {
   id: string;
   slug: string;
@@ -21,6 +23,18 @@ type JamSessionResult = {
   social_links: any;
   next_date: string | null;
   next_date_timezone: string | null;
+  periodicity: string;
+  dayOfWeek: string;
+    created_at: string;
+
+
+dates: string[];
+ location_coords: string;
+  host_id: string;
+   time_start: string;
+    f_next_date: string;
+
+
 };
 
 export const getJam = cache(async (slug: string) => {
@@ -49,5 +63,8 @@ export const getJam = cache(async (slug: string) => {
     display_date: localTime && localTime.isValid
       ? localTime.toFormat('ccc d LLL, HH:mm') 
       : 'Date TBD',
+       iso_date: localTime && localTime.isValid
+    ? localTime.toISO() // for JSON-LD / Google
+    : null,
   };
 });

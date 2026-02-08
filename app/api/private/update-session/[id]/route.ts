@@ -7,6 +7,7 @@ import { validateJam } from './serverCheck';
 import { uploadPhotos } from '@/lib/upload-photos';
 
 import { find as geoTz } from 'geo-tz';
+import tzlookup from 'tz-lookup';
 
 import { DateTime } from 'luxon';
 import { AlignVerticalJustifyEndIcon } from 'lucide-react';
@@ -69,8 +70,19 @@ export async function POST(
         pointValue = `SRID=4326;POINT(${lng} ${lat})`;
       }
     }
+
+
     
-    const tz = geoTz(location_coords.lat, location_coords.lng)[0]; // geo-tz returns an array
+       const tz = (() => {
+      if (!location_coords.lat || ! location_coords.lng) return 'UTC'; // fallback if no coords
+
+      try {
+        return geoTz(location_coords.lat,  location_coords.lng)[0] || 'UTC';
+      } catch (e) {
+        console.warn('geoTz failed, falling back to tz-lookup');
+        return tzlookup(location_coords.lat,  location_coords.lng) || 'UTC';
+      }
+    })();
 
 
     

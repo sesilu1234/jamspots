@@ -59,13 +59,3 @@ opcion de cambiar mapa ? o cambiar mapa directamentre a otro?
 
 
 
-cambiar a 
-import tzLookup from 'tz-lookup'
-
-en vez de  import { find as geoTz } from 'geo-tz';
-
-funciona mejor y siempre 
-
-
-
-

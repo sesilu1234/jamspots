@@ -8,6 +8,8 @@ import { success, z } from 'zod';
 import { validateJam } from './serverCheck';
 import { uploadPhotos } from '@/lib/upload-photos';
 import { find as geoTz } from 'geo-tz';
+import tzlookup from 'tz-lookup';
+
 
 import { DateTime } from 'luxon';
 
@@ -137,7 +139,19 @@ export async function POST(req: Request) {
     const pointValue =
       !isNaN(lat) && !isNaN(lng) ? `SRID=4326;POINT(${lng} ${lat})` : null;
 
-    const tz = geoTz(location_coords.lat, location_coords.lng)[0]; // geo-tz returns an array
+
+       const tz = (() => {
+      if (!lat || !lng) return 'UTC'; // fallback if no coords
+
+      try {
+        return geoTz(lat, lng)[0] || 'UTC';
+      } catch (e) {
+        console.warn('geoTz failed, falling back to tz-lookup');
+        return tzlookup(lat, lng) || 'UTC';
+      }
+    })();
+
+
 
     const { data, error } = await supabaseAdmin.from('sessions').insert([
       {

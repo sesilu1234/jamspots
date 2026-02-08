@@ -2,6 +2,7 @@ import 'server-only';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { DateTime } from 'luxon';
 import { find as geoTz } from 'geo-tz';
+import tzlookup from 'tz-lookup';
 import { JamCard } from '@/types/jam'; // Adjust path as needed
 
 export const getHomeCards = async (searchParams: { [key: string]: string | string[] | undefined }) => {
@@ -21,7 +22,19 @@ export const getHomeCards = async (searchParams: { [key: string]: string | strin
     // 1. Determine the timezone of the search location
     const latitude = parseFloat(lat as string);
     const longitude = parseFloat(lng as string);
-    const tz = (latitude && longitude) ? (geoTz(latitude, longitude)[0] || 'UTC') : 'UTC';
+
+
+    const tz = (() => {
+      if (!latitude || !longitude) return 'UTC'; // fallback if no coords
+
+      try {
+        return geoTz(latitude, longitude)[0] || 'UTC';
+      } catch (e) {
+        console.warn('geoTz failed, falling back to tz-lookup');
+        return tzlookup(latitude, longitude) || 'UTC';
+      }
+    })();
+
 
     // 2. Calculate UTC Bounds using local search time
     const localNow = DateTime.now().setZone(tz);
