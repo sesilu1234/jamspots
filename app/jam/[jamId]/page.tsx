@@ -3,7 +3,7 @@ import { getJam } from '@/lib/getJam';
 import JamComponent from './JamComponent';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Head from 'next/head';
+
 import { Jam } from '../types/jam';
 
 type Props = {
@@ -63,7 +63,7 @@ export default async function JamPage({ params }: Props) {
     const styleArray = Array.isArray(jam.styles) 
     ? jam.styles 
     : (jam.styles || '').split(',').map((s: string) => s.trim());
-  const firstRealStyle = styleArray.find((s: string) => s.toLowerCase() !== 'all styles');
+  const firstRealStyle = styleArray.find((s: string) => s.toLowerCase() !== 'all styles') || 'All styles';
   const displayModality = jam.modality === 'open_mic' ? 'Open Mic' : 'Jam';
   const eventType = firstRealStyle ? `${firstRealStyle} ${displayModality}` : displayModality;
 
@@ -90,12 +90,13 @@ export default async function JamPage({ params }: Props) {
   return (
     <>
       {/* JSON-LD Script for Google Rich Snippets */}
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </Head>
+      {/* ⚠️ ELIMINAMOS <Head>. 
+       En App Router, inyectamos el script directamente. 
+    */}
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
 
      <JamComponent jam={jam as unknown as Jam} />
 
