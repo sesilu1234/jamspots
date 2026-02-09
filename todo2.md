@@ -35,22 +35,7 @@ neviar al front
 
 -----------
 
-activar las apis cron : 
-
-
-y quizas incluso hacer apis desde vercel en vez de desde github ?mas centralizado, y quizas llamo a api desde nextjs (node) y mejor....o igual en bash mejor ? 
-api especifica , no de psql dump como tal ( que eso con hacerlo 1 evz al dia pero quedarse con solo las ultimas 5 )
-y otro dump especifico de select total de sessions, profiles, likes, allowed emails, reports, suggestions
-
-calculate priority each day
-calculate weekly dates each week
-
-
-
-ah okay so i dont run it as an api in my web app but a node js script hehe
-
-
-cambiar color de clusters y markers a negro, o deep purple, con border blanco
+para los githubs actions, cambiar url de ngrok a jamspots.xyz
 
 
 ------------
@@ -62,3 +47,8 @@ y algunos nombres estan mal porque tienen JAM JAM en nombre creo
 --------
 
 ha desaparecido las fotos de fuckin jam honky tonk  ( por que¿ para lagun sitio mas ha ocurrido o puedo ocurri? pagar supabase mejor ? )
+
+-----------
+
+
+poner que se puede ordenar por fecha o por popularidad

@@ -50,6 +50,9 @@ export const getJam = cache(async (slug: string) => {
   // Cast through 'unknown' to safely tell TS this is our JamSessionResult
   const jam = data as unknown as JamSessionResult;
 
+  console.log('sadsadsad');
+  console.log(jam);
+
   if (!jam) return null;
 
   const localTime = (jam.next_date && jam.next_date_timezone)

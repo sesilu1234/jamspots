@@ -26,11 +26,11 @@ const weekdayMap = {
 
 export async function POST(req: Request) {
   try {
-    // --- SECURITY: Vercel Cron Secret Check ---
-    // const authHeader = req.headers.get('authorization');
-    // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    //   return new Response('Unauthorized', { status: 401 });
-    // }
+  
+    const authHeader = req.headers.get('authorization');
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return new Response('Unauthorized', { status: 401 });
+    }
 
     // 2. Fetch all weekly sessions
     const { data: weeklyJams, error: profileError } = await supabaseAdmin
@@ -95,12 +95,14 @@ export async function POST(req: Request) {
       if (jamDatesError) {
         console.error(`Error updating jam ${weeklyJam.id}:`, jamDatesError);
         // Continue to next jam even if one fails
-      } else {
-        console.log(`Updated jam: ${weeklyJam.id}:`);
-      }
+      } 
     }
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Weekly jams maintenance completed successfully',
+      timestamp: new Date().toISOString() 
+    }, { status: 200 });
   } catch (e: any) {
     console.error('Server error:', e);
     return NextResponse.json(
