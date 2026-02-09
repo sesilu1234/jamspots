@@ -43,19 +43,17 @@ jobs:
 
       - name: Keep only last 3 backups
         run: |
-          # Get all files, filter out empty lines/folders
-          all_files=$(aws s3 ls $S3_DEST/ | awk '{print $4}' | grep .)
+          # 1. Get the list. '|| true' stops the -e flag from crashing the script if grep/head find nothing.
+          all_files=$(aws s3 ls $S3_DEST/ | awk '{print $4}' | grep . || true)
           
           echo "Found files:"
           echo "$all_files"
           
-          # Identify files to delete (everything except the last 3)
-          files_to_delete=$(echo "$all_files" | sort | head -n -3)
+          # 2. Get the deletion list.
+          files_to_delete=$(echo "$all_files" | sort | head -n -3 || true)
       
-          if [ -z "$files_to_delete" ]; then
-            echo "---"
-            echo "Count is 3 or less. Keeping all files."
-          else
+          # 3. Use [[ -n ]] for a more robust string check in Bash
+          if [[ -n "$files_to_delete" ]]; then
             echo "---"
             echo "The following files will be deleted:"
             echo "$files_to_delete"
@@ -63,4 +61,7 @@ jobs:
             for file in $files_to_delete; do
               aws s3 rm "$S3_DEST/$file"
             done
+          else
+            echo "---"
+            echo "3 or fewer backups found. Nothing to delete."
           fi
