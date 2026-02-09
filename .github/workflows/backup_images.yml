@@ -41,27 +41,31 @@ jobs:
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
           aws s3 cp ./supabase/images $S3_DEST/$TIMESTAMP --recursive
 
-      - name: Keep only last 3 backups
+      - name: Keep only last 3 backup folders
         run: |
-          # 1. Get the list. '|| true' stops the -e flag from crashing the script if grep/head find nothing.
-          all_files=$(aws s3 ls $S3_DEST/ | awk '{print $4}' | grep . || true)
-          
-          echo "Found files:"
-          echo "$all_files"
-          
-          # 2. Get the deletion list.
-          files_to_delete=$(echo "$all_files" | sort | head -n -3 || true)
+          # 1. Grab only lines starting with PRE, then take the folder name from the 2nd column
+          # We use 'tr -d /' to remove the trailing slash for easier sorting/processing
+          all_folders=$(aws s3 ls $S3_DEST/ | grep PRE | awk '{print $2}' | tr -d '/' | sort)
       
-          # 3. Use [[ -n ]] for a more robust string check in Bash
-          if [[ -n "$files_to_delete" ]]; then
+          echo "Found folders:"
+          echo "$all_folders"
+      
+          # Count how many folders we have
+          folder_count=$(echo "$all_folders" | wc -w)
+      
+          if [ "$folder_count" -gt 3 ]; then
+            # Get the oldest folders (all but the last 3)
+            folders_to_delete=$(echo "$all_folders" | head -n -3)
+      
             echo "---"
-            echo "The following files will be deleted:"
-            echo "$files_to_delete"
-            
-            for file in $files_to_delete; do
-              aws s3 rm "$S3_DEST/$file"
+            echo "Deleting these backup folders:"
+            echo "$folders_to_delete"
+      
+            for folder in $folders_to_delete; do
+              # IMPORTANT: Use --recursive to delete a folder and everything inside it
+              aws s3 rm "$S3_DEST/$folder/" --recursive
             done
           else
             echo "---"
-            echo "3 or fewer backups found. Nothing to delete."
+            echo "Found $folder_count folders. Nothing to delete."
           fi
