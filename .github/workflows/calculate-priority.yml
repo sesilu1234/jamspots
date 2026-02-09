@@ -2,8 +2,8 @@ name: Calculate Jam Priority Scores
 
 on:
   schedule:
-    - cron: '0 2 * * 2' # Tuesdays at 2AM UTC
-  workflow_dispatch:   # Manual trigger button
+    - cron: '0 2 * * 2'
+  workflow_dispatch:
 
 jobs:
   run-priority-update:
@@ -12,14 +12,10 @@ jobs:
       - name: Call API and Print Result
         run: |
           echo "Calling calculate-priority..."
-          response=$(curl -s -X POST "https://subumbelliferous-geraldine-pactional.ngrok-free.dev/api/public/calculate-priority" \
-          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-          -H "Content-Type: application/json")
           
-          echo "Server Response: $response"
+          # -f makes the step fail immediately on 4xx or 5xx errors
+          curl -f -s -X POST "https://subumbelliferous-geraldine-pactional.ngrok-free.dev/api/public/calculate-priority" \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+          -H "Content-Type: application/json"
 
-          # Check if the response contains success:true
-          if [[ "$response" != *'"success":true'* ]]; then
-            echo "Error: API reported a failure or unexpected response."
-            exit 1
-          fi
+          echo "Priority calculation finished successfully"
