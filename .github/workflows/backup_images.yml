@@ -41,4 +41,9 @@ jobs:
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
           aws s3 cp ./supabase/images $S3_DEST/$TIMESTAMP --recursive
 
-      
+      - name: Keep only last 3 backups
+        run: |
+          aws s3 ls $S3_DEST/ | awk '{print $4}' | sort | head -n -3 | while read file; do
+            aws s3 rm $S3_DEST/$file --recursive
+          done
+
