@@ -43,7 +43,24 @@ jobs:
 
       - name: Keep only last 3 backups
         run: |
-          aws s3 ls $S3_DEST/ | awk '{print $4}' | sort | head -n -3 | while read file; do
-            aws s3 rm $S3_DEST/$file --recursive
-          done
-
+          # Get all files, filter out empty lines/folders
+          all_files=$(aws s3 ls $S3_DEST/ | awk '{print $4}' | grep .)
+          
+          echo "Found files:"
+          echo "$all_files"
+          
+          # Identify files to delete (everything except the last 3)
+          files_to_delete=$(echo "$all_files" | sort | head -n -3)
+      
+          if [ -z "$files_to_delete" ]; then
+            echo "---"
+            echo "Count is 3 or less. Keeping all files."
+          else
+            echo "---"
+            echo "The following files will be deleted:"
+            echo "$files_to_delete"
+            
+            for file in $files_to_delete; do
+              aws s3 rm "$S3_DEST/$file"
+            done
+          fi
