@@ -1,0 +1,21 @@
+name: Weekly Jams Maintenance
+
+on:
+  schedule:
+    - cron: '0 2 * * 2'
+  workflow_dispatch: 
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Maintenance API
+        run: |
+          echo "Calling maintenance endpoint..."
+          # Using -f to make curl fail on HTTP errors (4xx/5xx)
+          response=$(curl -f -s -X POST "https://https://subumbelliferous-geraldine-pactional.ngrok-free.dev/api/public/weekday-jams-dates-mantainance" \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+          -H "Content-Type: application/json")
+          
+          echo "Success! Response received:"
+          echo "$response"
