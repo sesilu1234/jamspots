@@ -33,7 +33,7 @@ export default function Filtro({
   const calendarRef = useRef<HTMLDivElement | null>(null);
 
   const [dateOptions, setDateOptions] = useState('week');
-  const [order, setOrder] = useState('popular');
+  const [order, setOrder] = useState('soonest');
   const [distance, setDistance] = useState(60);
   const [styles, setStyles] = useState<string[]>([]);
 
@@ -67,7 +67,7 @@ export default function Filtro({
   };
 
   const dateOptionsHold = useRef('week');
-  const orderHold = useRef('popular');
+  const orderHold = useRef('soonest');
   const distanceHold = useRef(60);
   const stylesHold = useRef<string[]>([]);
   const modalityHold = useRef<string[]>(['jam', 'open_mic']);
@@ -190,12 +190,9 @@ export default function Filtro({
     setOpen(false);
   };
 
-  const fetchJams = async (searchType : 'local'|'global') => {
+  const fetchJams = async (searchType: 'local' | 'global') => {
     try {
-     
-
       if (searchType === 'local') {
-
         console.log('9ew843dsuadshhdsa');
         setLoading(true);
 
@@ -216,9 +213,6 @@ export default function Filtro({
         if (!cardsFetch.ok) throw new Error('Failed to fetch jams');
 
         const resCards = await cardsFetch.json();
-
-
-      
 
         setMarkersData(
           resCards?.map((jam: Marker) => ({
@@ -254,19 +248,19 @@ export default function Filtro({
     }
   };
 
- const isFirstRun = useRef(true);
+  const isFirstRun = useRef(true);
 
-useEffect(() => {
-  if (isFirstRun.current) {
-    isFirstRun.current = false;
-    return; // Exit early on first mount
-  }
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return; // Exit early on first mount
+    }
 
-  if (locationSearch) {
-    setSearchType('local');
-    fetchJams('local');
-  }
-}, [locationSearch]);
+    if (locationSearch) {
+      setSearchType('local');
+      fetchJams('local');
+    }
+  }, [locationSearch]);
 
   return (
     <>
@@ -338,21 +332,21 @@ useEffect(() => {
                 ref={panelRef_2}
                 className="relative bg-white text-black  p-6 pt-0 rounded-md shadow-lg overflow-y-scroll h-[70vh] "
               >
-                
                 <div className="flex justify-center items-center gap-24  mb-5 mt-5">
                   <div className="flex flex-col items-center pt-4 px-8 border-b border-stone-100">
-  <h2 className="text-3xl font-medium text-stone-800 tracking-tight ">
-    Local
-  </h2>
-  <p className="text-stone-400 text-sm mt-1">Adjust the cards</p>
-</div>
-                 
+                    <h2 className="text-3xl font-medium text-stone-800 tracking-tight ">
+                      Local
+                    </h2>
+                    <p className="text-stone-400 text-sm mt-1">
+                      Adjust the cards
+                    </p>
+                  </div>
                 </div>
                 <div className="relative flex flex-col gap-12 md:pl-4">
-                   <div className="absolute -right-2 -top-25 h-full w-16 flex flex-col items-center pointer-events-none">
-    <button
-      onClick={() => handleAccept('local')}
-      className="sticky top-5 px-5 py-2.5 rounded-lg
+                  <div className="absolute -right-2 -top-25 h-full w-16 flex flex-col items-center pointer-events-none">
+                    <button
+                      onClick={() => handleAccept('local')}
+                      className="sticky top-5 px-5 py-2.5 rounded-lg
                  bg-gradient-to-br from-blue-500 to-blue-600
                  hover:from-blue-600 hover:to-blue-700
                  text-white font-medium text-sm
@@ -362,10 +356,10 @@ useEffect(() => {
                  active:scale-[0.98]
                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
                  pointer-events-auto z-[620]"
-    >
-      Apply
-    </button>
-  </div>
+                    >
+                      Apply
+                    </button>
+                  </div>
                   <div className="flex flex-col ">
                     <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-0">
                       When
@@ -406,7 +400,6 @@ useEffect(() => {
                           >
                             {item.label}
                             {/* Subtle dot indicator */}
-                            
                           </button>
                         );
                       })}
@@ -422,8 +415,8 @@ useEffect(() => {
                           type="radio"
                           name="order"
                           className="hidden peer"
-                          checked={order === 'popular'}
-                          onChange={() => setOrder('popular')}
+                          checked={order === 'soonest'}
+                          onChange={() => setOrder('soonest')}
                         />
                         <div
                           className="w-5 h-5 border-2 border-tone-2 rounded-md flex-shrink-0 
@@ -439,7 +432,7 @@ useEffect(() => {
                             <path d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <span className="select-none">Most popular</span>
+                        <span className="select-none">Most soon</span>
                       </label>
 
                       <label className="flex items-center space-x-2 cursor-pointer">
@@ -447,8 +440,8 @@ useEffect(() => {
                           type="radio"
                           name="order"
                           className="hidden peer"
-                          checked={order === 'closeness'}
-                          onChange={() => setOrder('closeness')}
+                          checked={order === 'popular'}
+                          onChange={() => setOrder('popular')}
                         />
                         <div
                           className="w-5 h-5 border-2 border-tone-2 rounded-md flex-shrink-0 
@@ -464,7 +457,7 @@ useEffect(() => {
                             <path d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <span className="select-none">Closest</span>
+                        <span className="select-none">Most popular</span>
                       </label>
                     </div>
                   </div>
@@ -504,19 +497,20 @@ useEffect(() => {
                 className="relative bg-white text-black   p-6 pt-0 rounded-md shadow-lg h-[70vh] overflow-y-scroll"
               >
                 <div className="flex justify-center items-center gap-24 mb-5 mt-5">
-                 <div className="flex flex-col items-center pt-4 px-8 border-b border-stone-100">
-  <h2 className="text-3xl font-medium text-stone-800 tracking-tight ">
-    Global
-  </h2>
-  <p className="text-stone-400 text-sm mt-1">Adjust the map</p>
-</div>
-               
+                  <div className="flex flex-col items-center pt-4 px-8 border-b border-stone-100">
+                    <h2 className="text-3xl font-medium text-stone-800 tracking-tight ">
+                      Global
+                    </h2>
+                    <p className="text-stone-400 text-sm mt-1">
+                      Adjust the map
+                    </p>
+                  </div>
                 </div>
                 <div className="relative flex flex-col gap-12 md:pl-4">
-                   <div className="absolute -right-2 -top-25 h-full w-16 flex flex-col items-center pointer-events-none">
-    <button
-      onClick={() => handleAccept('global')}
-      className="sticky top-5 px-5 py-2.5 rounded-lg
+                  <div className="absolute -right-2 -top-25 h-full w-16 flex flex-col items-center pointer-events-none">
+                    <button
+                      onClick={() => handleAccept('global')}
+                      className="sticky top-5 px-5 py-2.5 rounded-lg
                  bg-gradient-to-br from-blue-500 to-blue-600
                  hover:from-blue-600 hover:to-blue-700
                  text-white font-medium text-sm
@@ -526,10 +520,10 @@ useEffect(() => {
                  active:scale-[0.98]
                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
                  pointer-events-auto z-[620]"
-    >
-      Apply
-    </button>
-  </div>
+                    >
+                      Apply
+                    </button>
+                  </div>
                   <div className="flex flex-col ">
                     <p className="text-[14px] font-bold uppercase tracking-[0.2em] text-neutral-700 mb-0">
                       When
@@ -630,7 +624,7 @@ export function DateOptions({
   const options = [
     // { value: 'yesterday', label: 'Yesterday' },
     { value: 'today', label: 'Today' },
-    { value: 'week', label: 'This week' },
+    { value: 'week', label: 'Next 7 Days' },
     { value: 'custom', label: 'Custom' },
   ];
 
@@ -697,7 +691,7 @@ export function DateOptionsGlobal({
 
   const options = [
     { value: 'all', label: 'Show all' },
-    { value: 'week', label: 'This week' },
+    { value: 'week', label: 'Next 7 Days' },
   ];
 
   return (
@@ -850,7 +844,7 @@ export function SelectStyles({ styles, setStyles }: SelectStylesProps) {
     'Latin',
 
     // Moods / vibes
-    'Improvisation'
+    'Improvisation',
   ];
   return (
     <div>

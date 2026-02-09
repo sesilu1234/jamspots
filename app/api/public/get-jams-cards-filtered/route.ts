@@ -10,8 +10,6 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
 
-   
-
     const dateOptions = searchParams.get('dateOptions')!;
     const order = searchParams.get('order')!; // 'closeness' o 'popular'
     const lat = parseFloat(searchParams.get('lat')!);
@@ -34,8 +32,6 @@ export async function GET(req: Request) {
         tz = 'UTC';
       }
     }
-
-
 
     // 2. Calculate UTC Bounds using local search time
     const localNow = DateTime.now().setZone(tz);
@@ -99,36 +95,48 @@ export async function GET(req: Request) {
         modalityArray && modalityArray.length > 0 ? modalityArray : null,
     });
 
-    let dataRes =
-      (data as JamCard[] | null)?.map((jam: JamCard) => {
-        // 1. Parse the UTC string
-        // 2. Shift the perspective to the jam's timezone
-        const localTime = jam.next_date
-          ? DateTime.fromISO(jam.next_date, { zone: 'utc' }).setZone(
-              jam.jam_timezone,
-            )
-          : null;
+    type SortOrder = 'soonest' | 'popular';
+    console.log(order);
 
-        return {
-          ...jam,
-          image: jam.images?.[0] || null,
-          // Format it for the UI (e.g., "2026-02-07T20:00:00")
-          // Or use .toFormat('ccc dd LLL, HH:mm') for "Sat 07 Feb, 20:00"
-          next_date_local: localTime ? localTime.toISO() : null,
-          display_date: localTime
-            ? localTime.toFormat('ccc d LLL, HH:mm')
-            : 'Date TBD',
-        };
-      }) || [];
+    const sortData = (data: JamCard[], order: SortOrder) => {
+      const sorters: Record<SortOrder, (a: JamCard, b: JamCard) => number> = {
+        // 1. Soonest: Compare ISO strings directly (fastest)
+        soonest: (a, b) => {
+          const dateA = a.next_date || '9999-12-31'; // Push nulls to the end
+          const dateB = b.next_date || '9999-12-31';
+          return dateA.localeCompare(dateB);
+        },
+        // 2. Popular: Simple numeric subtraction
+        popular: (a, b) => (b.priority_score || 0) - (a.priority_score || 0),
+      };
+
+      return [...data].sort(sorters[order]);
+    };
+
+    // --- Implementation ---
+    const orderedData = sortData(data || [], order).map((jam) => {
+      const localTime = jam.next_date
+        ? DateTime.fromISO(jam.next_date, { zone: 'utc' }).setZone(
+            jam.jam_timezone,
+          )
+        : null;
+
+      return {
+        ...jam,
+        image: jam.images?.[0] || null,
+        next_date_local: localTime?.toISO() || null,
+        display_date: localTime
+          ? localTime.toFormat('ccc d LLL, HH:mm')
+          : 'Date TBD',
+      };
+    });
 
     if (error) {
       console.error('Supabase RPC Error:', error.message);
       throw error;
     }
 
-    console.log('Resultados de DB:', dataRes?.map((j, i) => ({ index: i, exists: !!j, slug: j?.slug })));
-
-    return NextResponse.json(dataRes);
+    return NextResponse.json(orderedData);
   } catch (error: any) {
     console.error('getHomeCards failure:', error.message);
     return null;
