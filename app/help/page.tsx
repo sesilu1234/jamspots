@@ -18,6 +18,14 @@ export default function Help() {
       q: 'Normas básicas',
       a: 'Respeta los turnos, no interrumpas a otros músicos y respeta la decisión de quien lleva la jam, incluso aunque creas que se equivoca.',
     },
+    {
+      q: '¿Qué es un Open Mic?',
+      a: 'Un Open Mic es un evento donde cualquier persona puede subir al escenario a tocar, cantar o recitar, normalmente sin necesidad de inscribirse previamente. Es ideal para probar canciones nuevas, presentarte ante público y conocer a otros músicos.',
+    },
+    {
+      q: 'Consejos para participar en un Open Mic',
+      a: 'Llega con antelación, prepara un par de canciones cortas, respeta los turnos y disfruta la experiencia. No importa tu nivel: la idea es compartir y aprender.',
+    },
   ];
 
   return (

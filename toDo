@@ -1,24 +1,78 @@
--poner posiblemente info de : hay dos filtros , uno para jams locales o cercanas
-a la ciudad en el buscador, y otro para ver en el mapa jams de cualquier lugar
-
 -no esta bien o no esta acorde el dibujo cuando pone que no hay bateria o
 acustic
 
-poner en descripcion que tambien es para open mics (ponerlo de los primeros
-styles al create, para que se vea)
-
-
 opcion de cambiar mapa ? o cambiar mapa directamentre a otro?
 
+---
 
------------------
-----------------
+---
 
+ojo lo de las quotas, quizas teakear mejor o usar tarjeta temporal ? google
+cloud quotas y api restrictions
 
-ojo lo de las quotas, quizas teakear mejor o usar tarjeta temporal  ? google cloud quotas y api restrictions
+gemini ai telling : Would you like me to show you how to set up the GIST index
+on location_coords to make the spatial part of this query lightning fast?
 
+---
 
+---
 
-gemini ai telling :  Would you like me to show you how to set up the GIST index on location_coords to make the spatial part of this query lightning fast?
+poner jam online bien, con google search console y todo lujo de detalles para
+que se veaa bien
 
+--hacer prueba poniendo jams por el mundo a tutiplen, ver que funciona reliable
+bien (y si algo falla aarreglarlo), y ya
 
+poner jams reales de madrid, austin, ny, london, south aamerica, australia
+
+-probar testing , ultimos ajustes y retoques y checkeos y estetica
+
+-subir a vercel como jamspots.com (ver si hay algo para checkear cuanto
+visitantes tiene)
+
+-ya no sera env.local, asi que quitar next_public de las keys que no hay que
+neviar al front
+
+---
+
+favicon
+
+---
+
+para los githubs actions, cambiar url de ngrok a jamspots.xyz
+
+---
+
+muhcos titles adresses the jams estan en español, cuando no son de españa.... y
+algunos nombres estan mal porque tienen JAM JAM en nombre creo
+
+---
+
+ha desaparecido las fotos de fuckin jam honky tonk ( por que¿ para lagun sitio
+mas ha ocurrido o puedo ocurri? pagar supabase mejor ? )
+
+---
+
+poner que se puede ordenar por fecha o por popularidad
+
+en vez de this week, escribir "Next 7 Days"
+
+(por ahora ordenar por week default, pero en el futuro si hay bastantes jams
+pues today mejor quizas)
+
+ordenar puramente por daate order, y por popularidad ( no doble key) y por
+default por tiempo
+
+---
+
+4. Un detalle visual para el Mapa + Lista Como dices que ya tienen el mapa para
+   ver la ubicación, un truco de UX muy bueno es:
+
+Cuando el usuario haga clic en una jam de la Lista, el Mapa se mueva (centrarse)
+hacia ese local.
+
+Cuando haga clic en un pin del Mapa, la Lista haga scroll automático hasta esa
+jam.
+
+Esto hace que la falta de un filtro de "distancia" no importe, porque la
+conexión visual mapa-lista es instantánea.

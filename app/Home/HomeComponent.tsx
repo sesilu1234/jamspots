@@ -12,7 +12,6 @@ import Link from 'next/link';
 import SignInIcons from './SingInIcons';
 import Filtro from './Filtro';
 
-
 import { JamCard, UserLocation } from '@/types/jam';
 
 interface HomeComponentProps {
@@ -20,18 +19,15 @@ interface HomeComponentProps {
   userLocation: UserLocation;
 }
 
-
-
-
 const MapRender = dynamic(() => import('./MapRender'), { ssr: false });
 
-export default function HomeComponent({ cards, userLocation }: HomeComponentProps) {
-
-
+export default function HomeComponent({
+  cards,
+  userLocation,
+}: HomeComponentProps) {
   const [jams, setJams] = useState(cards);
   const [loading, setLoading] = useState(false);
   const [searchType, setSearchType] = useState('local');
-
 
   return (
     <div className="flex flex-col min-h-screen ">
@@ -152,31 +148,53 @@ export default function HomeComponent({ cards, userLocation }: HomeComponentProp
         </div>
       </div>
 
-      <footer className="w-full pb-12 mt-0 flex-1 ">
-        <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">
-          {/* Navigation Links */}
-          <div className="flex flex-col text-tone-1/95 items-between justify-between gap-8 ">
-            <Link href="/contact" className="hover:text-tone-0  cursor-pointer">
-              CONTACT
-            </Link>
-            <Link href="/help" className="hover:text-tone-0  cursor-pointer">
-              HELP
-            </Link>
-            <Link href="/about" className="hover:text-tone-0  cursor-pointer">
-              ABOUT
-            </Link>
+      <footer className="w-full pb-12 mt-0 flex-1">
+        <div className="flex flex-col items-center justify-center max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">
+          {/* Contenedor Principal (Links + Branding) */}
+          <div className="flex items-center justify-center gap-12 w-full mb-8">
+            {/* Navigation Links */}
+            <div className="flex flex-col text-tone-1/95 items-between justify-between gap-4">
+              <Link
+                href="/contact"
+                className="hover:text-tone-0 cursor-pointer"
+              >
+                CONTACT
+              </Link>
+              <Link href="/help" className="hover:text-tone-0 cursor-pointer">
+                HELP
+              </Link>
+              <Link href="/about" className="hover:text-tone-0 cursor-pointer">
+                ABOUT
+              </Link>
+            </div>
+
+            {/* Branding / Tagline */}
+            <div className="flex flex-col sm:flex-row items-end justify-center gap-2">
+              <img
+                src="/jamspots_icon.png"
+                alt="Jamspots icon"
+                className="h-16"
+              />
+              <p className="text-sm text-center font-medium sm:text-left pb-3">
+                Find the next spot where music happens.
+              </p>
+            </div>
           </div>
 
-          {/* Branding / Tagline */}
-          <div className="flex flex-col sm:flex-row items-end justify-center gap-2 ">
-            <img
-              src="/jamspots_icon.png"
-              alt="Jamspots icon"
-              className="h-16"
-            />
-            <p className="text-sm  text-center font-medium sm:text-left pb-3">
-              Find the next spot where music happens.
+          {/* SECCIÓN DE COPYRIGHT Y LEGAL */}
+          <div className="w-full flex flex-col items-center border-t border-tone-1/10 pt-6 text-xs text-tone-1/60 gap-2">
+            <p>
+              © {new Date().getFullYear()}{' '}
+              <span className="font-bold">Jamspots</span>. All rights reserved.
             </p>
+            <div className="flex gap-4">
+              <Link
+                href="/privacy"
+                className="hover:underline hover:text-tone-0"
+              >
+                Privacy Policy
+              </Link>
+            </div>
           </div>
         </div>
       </footer>
