@@ -17,3 +17,9 @@ jobs:
           -H "Content-Type: application/json")
           
           echo "Server Response: $response"
+
+          # Check if the response contains success:true
+          if [[ "$response" != *'"success":true'* ]]; then
+            echo "Error: API reported a failure or unexpected response."
+            exit 1
+          fi
