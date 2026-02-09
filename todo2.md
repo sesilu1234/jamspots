@@ -45,16 +45,20 @@ y otro dump especifico de select total de sessions, profiles, likes, allowed ema
 calculate priority each day
 calculate weekly dates each week
 
------------
 
 
+ah okay so i dont run it as an api in my web app but a node js script hehe
 
-poner el OLD JSON ese para google events cards
 
+cambiar color de clusters y markers a negro, o deep purple, con border blanco
 
 
 ------------
 
+muhcos titles adresses the jams estan en español, cuando no son de españa....
+y algunos nombres estan mal porque tienen JAM JAM en nombre creo 
 
 
+--------
 
+ha desaparecido las fotos de fuckin jam honky tonk  ( por que¿ para lagun sitio mas ha ocurrido o puedo ocurri? pagar supabase mejor ? )

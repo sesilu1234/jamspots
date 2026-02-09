@@ -5,7 +5,9 @@ import { find as geoTz } from 'geo-tz';
 import tzlookup from 'tz-lookup';
 import { JamCard } from '@/types/jam'; // Adjust path as needed
 
-export const getHomeCards = async (searchParams: { [key: string]: string | string[] | undefined }) => {
+export const getHomeCards = async (searchParams: { 
+  [key: string]: string | string[] | number | undefined 
+}) => {
   try {
     const { 
       dateOptions, 

@@ -25,45 +25,53 @@ const userLocation = {
   };
 
   // 3. Fetch data using the optimized RPC + LATERAL JOIN
-const homeCards = []
+const homeCards = await getHomeCards(paramsCards);
 
 
-  // 1. Construimos el JSON-LD tipo ItemList con Events genéricos
-  // const jsonLd = {
-  //   "@context": "https://schema.org",
-  //   "@type": "ItemList",
-  //   "itemListElement": homeCards?.map((jam: any, index: number) => ({
-  //     "@type": "ListItem",
-  //     "position": index + 1,
-  //     "item": {
-  //       "@type": "Event",
-  //       "name": jam.jam_title,
-  //       "startDate": jam.next_date_local, // Formato esperado: ISO 8601 (ej. 2026-02-15T20:00:00)
-  //       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-  //       "eventStatus": "https://schema.org/EventScheduled",
-  //       "location": {
-  //         "@type": "Place",
-  //         "name": jam.location_title,
-  //         "address": jam.location_address, // String plano es aceptado por Google
-  //       },
-  //       "url": `https://jamspots.xyz/jam/${jam.slug}`,
-  //     },
-  //   })) || [],
-  // };
+ const validJams = homeCards?.slice(0, 20).filter((jam: any) => jam.slug && jam.jam_title) || [];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Upcoming Jam Sessions",
+  "description": "Discover the best open mics and jam sessions worldwide.",
+  "itemListElement": validJams.map((jam: any, index: number) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "url": `https://jamspots.xyz/jam/${jam.slug}`, // URL en el nivel de lista
+    "item": {
+      "@type": "Event",
+      "name": jam.jam_title,
+      "startDate": jam.next_date_local, // iso_date es mejor por el offset (+01:00)
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "location": {
+        "@type": "Place",
+        "name": jam.location_title || "Venue",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": jam.location_address || ""
+        }
+      },
+      "image": jam.images?.[0] || "https://jamspots.xyz/jamspots_icon.png",
+      "description": `Join the ${jam.jam_title} at ${jam.location_title}. Open stage for musicians.`
+    },
+  })),
+};
 
 
  return (
     <>
-      {/* 2. Inyección directa del script (Sin <Head>) */}
-      {/* {homeCards?.length! > 0 && (
+
+      {homeCards?.length! > 0 && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      )} */}
+      )}
 
       {/* 3. Tu UI */}
-      <HomeComponent cards={ []} userLocation={userLocation} />
+      <HomeComponent cards={homeCards || []} userLocation={userLocation} />
     </>
   );
  

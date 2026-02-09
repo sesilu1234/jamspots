@@ -9,6 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useMapContext } from './MapContext';
 import { Card, CardContent } from '@/components/ui/card';
+import './markersStyle.css'
 
 type Marker = {
   id: string;
@@ -67,13 +68,54 @@ export default function MapMarkersCluster() {
     if (!map || markersData.length === 0) return;
 
     // @ts-expect-error makerExists
-    const clusterGroup = L.markerClusterGroup();
+    const clusterGroup = L.markerClusterGroup({
+  iconCreateFunction: (cluster: any) => {
+    const count = cluster.getChildCount();
+
+    // Example: make color based on count
+    let color = '#2563eb'; // default
+    if (count > 10) color = '#facc15'; // yellow
+    if (count > 50) color = '#dc2626'; // red
+
+    // Return a divIcon with custom HTML
+    return L.divIcon({
+      html: `
+        <div class="custom-cluster" style="
+          background-color: ${color};
+        ">
+          ${count}
+        </div>
+      `,
+      className: '', // important to prevent default styles
+      iconSize: [40, 40],
+    });
+  },
+});
+
+    
+
+    // markersData.forEach((m) => {
+    //   const marker = L.marker([m.lat, m.lng]);
+    //   marker.on('click', () => onClickMarker(m.id));
+    //   clusterGroup.addLayer(marker);
+    // });
+
+
+const markerIcon = L.divIcon({
+  html: `<img src="/markerLeaf.svg" class="marker-svg" />`,
+  className: '',
+  iconSize: [26, 42],
+  iconAnchor: [13, 42],
+});
+
 
     markersData.forEach((m) => {
-      const marker = L.marker([m.lat, m.lng]);
+      const marker = L.marker([m.lat, m.lng], { icon: markerIcon });
+
       marker.on('click', () => onClickMarker(m.id));
       clusterGroup.addLayer(marker);
     });
+
 
     map.addLayer(clusterGroup);
 

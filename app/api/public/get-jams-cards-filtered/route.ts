@@ -126,6 +126,8 @@ export async function GET(req: Request) {
       throw error;
     }
 
+    console.log('Resultados de DB:', dataRes?.map((j, i) => ({ index: i, exists: !!j, slug: j?.slug })));
+
     return NextResponse.json(dataRes);
   } catch (error: any) {
     console.error('getHomeCards failure:', error.message);
