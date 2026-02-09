@@ -13,9 +13,21 @@ jobs:
         run: |
           echo "Calling calculate-priority..."
           
-          # -f makes the step fail immediately on 4xx or 5xx errors
-          curl -f -s -X POST "https://subumbelliferous-geraldine-pactional.ngrok-free.dev/api/public/calculate-priority" \
-          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-          -H "Content-Type: application/json"
+          # Capture the status code and the response body separately
+          RESPONSE=$(curl -s -w "%{http_code}" \
+            -X POST "https://subumbelliferous-geraldine-pactional.ngrok-free.dev/api/public/calculate-priority" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json")
 
-          echo "Priority calculation finished successfully"
+          # Extract status code (last 3 characters) and body (everything before)
+          HTTP_STATUS=${RESPONSE: -3}
+          HTTP_BODY=${RESPONSE:0:${#RESPONSE}-3}
+
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "Success: $HTTP_BODY"
+            echo "Priority calculation finished successfully"
+          else
+            echo "::error::API request failed with status $HTTP_STATUS"
+            echo "Error Details: $HTTP_BODY"
+            exit 1
+          fi
