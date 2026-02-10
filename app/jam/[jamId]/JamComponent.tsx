@@ -30,6 +30,7 @@ interface HtmlReadOnlyProps {
 
 const HtmlReadOnly = ({ rawContent }: HtmlReadOnlyProps) => {
   const html = draftToHtml(rawContent);
+
   return (
     <div
       className="
@@ -47,13 +48,6 @@ const HtmlReadOnly = ({ rawContent }: HtmlReadOnlyProps) => {
 };
 
 export default function JamComponent({ jam }: { jam: Jam }) {
-
-
-
-
- 
-  
-
   if (!jam) return null;
 
   return (
@@ -135,11 +129,11 @@ export default function JamComponent({ jam }: { jam: Jam }) {
               />
             </div>
 
-            <div className="flex flex-col gap-4  rounded-lg  pt-18 lg:pt-24 pb-10 px-8">
+            <div className="flex flex-col gap-4  rounded-lg  pt-18  pb-18 px-8">
               <h3 className="text-sm font-semibold"></h3>
 
               <div>
-                <HtmlReadOnly rawContent={jam.description} />
+                <HtmlReadOnly rawContent={JSON.parse(jam.description)} />
               </div>
             </div>
             <StaticMap
