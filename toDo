@@ -35,9 +35,7 @@ neviar al front
 
 ---
 
-favicon
-
----
+en automatico al crear jam se te pone "jam de kingston miles...", eso esta mal porque esta en español
 
 ## google analytics
 
@@ -60,15 +58,6 @@ mas ha ocurrido o puedo ocurri? pagar supabase mejor ? )
 
 ---
 
-poner que se puede ordenar por fecha o por popularidad
-
-en vez de this week, escribir "Next 7 Days"
-
-(por ahora ordenar por week default, pero en el futuro si hay bastantes jams
-pues today mejor quizas)
-
-ordenar puramente por daate order, y por popularidad ( no doble key) y por
-default por tiempo
 
 ---
 
