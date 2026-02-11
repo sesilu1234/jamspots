@@ -47,7 +47,8 @@ import { NextResponse } from 'next/server';
     let lte: string;
 
     
-      let dataMarkers, error;
+      let dataMarkers: any[] = [];
+      let error;
   
       if (dateOptionsInput === 'all') {
         let query = supabaseAdmin
@@ -66,7 +67,9 @@ import { NextResponse } from 'next/server';
           query = query.in('modality', modalityArray);
         }
 
-        ({ data: dataMarkers, error } = await query);
+       const { data, error: queryError } = await query;
+        dataMarkers = data ?? []; // If data is null, use an empty array
+        error = queryError;
        
      
       }
