@@ -17,7 +17,7 @@ export default function GooglePlacesSearch() {
     return <div className="w-full h-12 bg-tone-4/20 rounded animate-pulse" />;
 
   return (
-    <APIProvider apiKey={API_KEY}>
+    <APIProvider apiKey={API_KEY} language="en">
       <PlaceAutocomplete />
     </APIProvider>
   );

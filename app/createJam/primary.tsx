@@ -54,7 +54,7 @@ export default function Primary({
 			window.open(
 				"/createJam/selectOnMap",
 				"createJam",
-				"width=400,height=300",
+				"width=600,height=500",
 			);
 		};
 

@@ -1,29 +1,23 @@
--no esta bien o no esta acorde el dibujo cuando pone que no hay bateria o
+<!-- -no esta bien o no esta acorde el dibujo cuando pone que no hay bateria o
 acustic
 
 opcion de cambiar mapa ? o cambiar mapa directamentre a otro?
 
 ---
 
----
+--- -->
 
 ojo lo de las quotas, quizas teakear mejor o usar tarjeta temporal ? google
-cloud quotas y api restrictions
-
+cloud quotas y api restrictions. y cambiar api sign in a jamspots xyz y lo de limit google api maps
+<!-- 
 gemini ai telling : Would you like me to show you how to set up the GIST index
-on location_coords to make the spatial part of this query lightning fast?
+on location_coords to make the spatial part of this query lightning fast? -->
 
 ---
 
 ---
 
-poner jam online bien, con google search console y todo lujo de detalles para
-que se veaa bien
 
---hacer prueba poniendo jams por el mundo a tutiplen, ver que funciona reliable
-bien (y si algo falla aarreglarlo), y ya
-
-poner jams reales de madrid, austin, ny, london, south aamerica, australia
 
 -probar testing , ultimos ajustes y retoques y checkeos y estetica
 
@@ -34,30 +28,15 @@ visitantes tiene)
 neviar al front
 
 
-## google analytics
+## google analytics, google console
 
-limpiar codigo, poner console errors logs, quitar los innecesaraios, typescript
-bien facil
+<!-- limpiar codigo, poner console errors logs, quitar los innecesaraios, typescript
+bien facil -->
 
----
-
-para los githubs actions, cambiar url de ngrok a jamspots.xyz
 
 ---
 
-muhcos titles adresses the jams estan en español, cuando no son de españa.... y
-algunos nombres estan mal porque tienen JAM JAM en nombre creo
-
----
-
-ha desaparecido las fotos de fuckin jam honky tonk ( por que¿ para lagun sitio
-mas ha ocurrido o puedo ocurri? pagar supabase mejor ? )
-
----
-
----
-
-4. Un detalle visual para el Mapa + Lista Como dices que ya tienen el mapa para
+<!-- 4. Un detalle visual para el Mapa + Lista Como dices que ya tienen el mapa para
    ver la ubicación, un truco de UX muy bueno es:
 
 Cuando el usuario haga clic en una jam de la Lista, el Mapa se mueva (centrarse)
@@ -67,4 +46,4 @@ Cuando haga clic en un pin del Mapa, la Lista haga scroll automático hasta esa
 jam.
 
 Esto hace que la falta de un filtro de "distancia" no importe, porque la
-conexión visual mapa-lista es instantánea.
+conexión visual mapa-lista es instantánea. -->

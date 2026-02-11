@@ -10,7 +10,7 @@ export default function Home() {
 		<MapProvider>
 			<div className="flex flex-col items-center justify-center w-full h-screen">
 				{/* Map centered horizontally */}
-				<div className="w-[1100px] h-90 max-w-8/10  mt-4">
+				<div className="w-[1100px] h-120 max-w-8/10  mt-4">
 					<MapRender />
 				</div>
 				<Button className="my-15" />

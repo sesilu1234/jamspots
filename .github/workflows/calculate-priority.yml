@@ -15,7 +15,7 @@ jobs:
           
           # Capture the status code and the response body separately
           RESPONSE=$(curl -s -w "%{http_code}" \
-            -X POST "https://subumbelliferous-geraldine-pactional.ngrok-free.dev/api/public/calculate-priority" \
+            -X POST "https://jamspots.xyz/api/public/calculate-priority" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
             -H "Content-Type: application/json")
 

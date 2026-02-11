@@ -34,7 +34,7 @@ export default function MapRender() {
 	}, []);
 
 	return (
-		<APIProvider apiKey={API_KEY}>
+		<APIProvider apiKey={API_KEY} language="en">
 			<Map mapId="da37f3254c6a6d1c" defaultZoom={13} defaultCenter={markerPos}>
 				<MapProviderInside />
 
