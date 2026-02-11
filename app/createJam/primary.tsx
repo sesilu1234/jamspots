@@ -40,7 +40,7 @@ export default function Primary({
 			const channel = new BroadcastChannel("location_broadcast");
 			channel.onmessage = (event) => {
 				setdataLocation((prev) => ({
-					jam_name: prev.jam_name || `Jam de ${event.data.name}`,
+					jam_name: prev.jam_name ,
 					location_name: prev.location_name || `${event.data.name}`,
 					address: event.data.address,
 					coordinates: event.data.coordinates,

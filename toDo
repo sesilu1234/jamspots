@@ -33,10 +33,6 @@ visitantes tiene)
 -ya no sera env.local, asi que quitar next_public de las keys que no hay que
 neviar al front
 
----
-
-en automatico al crear jam se te pone "jam de kingston miles...", eso esta mal
-porque esta en español mapa de select on map muy equeñito, un poco mas grande..
 
 ## google analytics
 
