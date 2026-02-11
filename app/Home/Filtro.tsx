@@ -16,15 +16,19 @@ type Marker = {
   lng: number;
 };
 
-type SliderProps = React.ComponentProps<typeof Slider>;
+import { Dispatch, SetStateAction } from 'react';
+
+type FiltroProps = {
+  setJams: Dispatch<SetStateAction<any>>; // replace `any` with your Jam[] type
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  setSearchType: Dispatch<SetStateAction<string>>;
+};
 
 export default function Filtro({
-  jams,
   setJams,
-  loading,
   setLoading,
   setSearchType,
-}) {
+}: FiltroProps) {
   const [open, setOpen] = useState(false);
   const panelRef_1 = useRef<HTMLDivElement | null>(null);
   const panelRef_2 = useRef<HTMLDivElement | null>(null);

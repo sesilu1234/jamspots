@@ -15,6 +15,17 @@ import { Label } from '@/components/ui/label';
 
 import Image from 'next/image';
 
+type JamCardProps = {
+  jamName: string;
+  spotName: string;
+  address: string;
+  display_date: string;
+  tags?: string[];
+  src?: string;
+  slug?: string;
+  classname?: string;
+};
+
 export default function JamCard({
   jamName,
   spotName,
@@ -24,10 +35,7 @@ export default function JamCard({
   src,
   slug,
   classname,
-}) {
-
-  
-
+}: JamCardProps) {
   return (
     <Card
       className={`flex flex-col p-4    w-64  shadow-md  bg-card-jams/85
@@ -58,10 +66,7 @@ export default function JamCard({
 
           <div className="text-xs text-tone-0/70 truncate">{address}</div>
 
-          <div className="text-sm text-tone-0/90">
-          {display_date}
-           
-          </div>
+          <div className="text-sm text-tone-0/90">{display_date}</div>
           {tags && (
             <div className="flex flex-wrap gap-1 mt-3 text-font-6">
               {tags.map((tag, i) => (
