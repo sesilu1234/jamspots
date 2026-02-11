@@ -5,7 +5,6 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
-import { clusterGroup } from './MarkerCluster';
 import { useMapContext } from './MapContext';
 
 import L from 'leaflet';
