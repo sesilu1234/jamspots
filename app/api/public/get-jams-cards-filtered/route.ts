@@ -138,7 +138,11 @@ export async function GET(req: Request) {
 
     return NextResponse.json(orderedData);
   } catch (error: any) {
-    console.error('getHomeCards failure:', error.message);
-    return null;
-  }
+  console.error('getHomeCards failure:', error.message);
+  return NextResponse.json(
+    { error: 'Failed to fetch jams', details: error.message },
+    { status: 500 }
+  );
+}
+
 }
