@@ -163,7 +163,7 @@ import { NextResponse } from 'next/server';
   
     
 
-    return NextResponse.json(dataMarkers);
+    return NextResponse.json(dataMarkers ? dataMarkers : []);
     
 
   } catch (error: any) {
@@ -173,4 +173,4 @@ import { NextResponse } from 'next/server';
     { status: 500 }
   );
 }
-};
+}
