@@ -1,24 +1,15 @@
+import { NextRequest, NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/lib/supabaseAdmin';
-import { DateTime } from 'luxon';
+// 1. Removed 'server-only'
+// 2. Used NextRequest instead of Request
 
-import { NextResponse } from 'next/server';
-
-
-
-    export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
-    
-    
-
-    return NextResponse.json({ error: 'Invalid mode' }, { status: 400 });
-    
-
+    return NextResponse.json({ message: "Test Success" });
   } catch (error: any) {
-  console.error('getHomeMarkers failure:', error.message);
-  return NextResponse.json(
-    { error: 'Failed to fetch jams', details: error.message },
-    { status: 500 }
-  );
-}
+    return NextResponse.json(
+      { error: 'Failed', details: error.message },
+      { status: 500 }
+    );
+  }
 }
