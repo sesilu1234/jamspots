@@ -133,7 +133,9 @@ export default function JamComponent({ jam }: { jam: Jam }) {
               <h3 className="text-sm font-semibold"></h3>
 
               <div>
-                <HtmlReadOnly rawContent={JSON.parse(jam.description)} />
+                <HtmlReadOnly
+                  rawContent={JSON.parse(jam.description as unknown as string)}
+                />
               </div>
             </div>
             <StaticMap
