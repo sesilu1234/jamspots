@@ -17,8 +17,10 @@ type Marker = {
 
 import { Dispatch, SetStateAction } from 'react';
 
+import { JamCard } from '@/types/jam';
+
 type FiltroProps = {
-  setJams: Dispatch<SetStateAction<any>>; // replace `any` with your Jam[] type
+  setJams: Dispatch<SetStateAction<JamCard[]>>; // replace `any` with your Jam[] type
   setLoading: Dispatch<SetStateAction<boolean>>;
   setSearchType: Dispatch<SetStateAction<string>>;
 };
@@ -43,7 +45,7 @@ export default function Filtro({
   // Default: Both are active
   const [modality, setModality] = useState(['jam', 'open_mic']);
 
-  const toggleModality = (type) => {
+  const toggleModality = (type: string) => {
     setModality((prev) => {
       // If clicking an active one, only remove it if the other one is still there
       if (prev.includes(type)) {
@@ -58,7 +60,7 @@ export default function Filtro({
   const [stylesGlobal, setstylesGlobal] = useState<string[]>([]);
   const [modalityGlobal, setModalityGlobal] = useState(['jam', 'open_mic']);
 
-  const toggleModalityGlobal = (type) => {
+  const toggleModalityGlobal = (type: string) => {
     setModalityGlobal((prev) => {
       // If clicking an active one, only remove it if the other one is still there
       if (prev.includes(type)) {
@@ -160,7 +162,7 @@ export default function Filtro({
     };
   }, []);
 
-  const handleAccept = (searchType: string) => {
+  const handleAccept = (searchType: 'local' | 'global') => {
     setSearchType(searchType);
     fetchJams(searchType);
 
@@ -173,7 +175,7 @@ export default function Filtro({
       modalityHold.current = [...modality];
 
       map!.flyTo(
-        [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
+        [locationSearch!.coordinates.lat, locationSearch!.coordinates.lng],
         12,
         { duration: 1.5 },
       );
@@ -184,7 +186,7 @@ export default function Filtro({
       modalityGlobalHold.current = [...modalityGlobal];
 
       map!.flyTo(
-        [locationSearch?.coordinates.lat, locationSearch?.coordinates.lng],
+        [locationSearch!.coordinates.lat, locationSearch!.coordinates.lng],
         4,
         { duration: 1.5 },
       );
@@ -244,8 +246,8 @@ export default function Filtro({
         setMarkersData(resMarkers);
         setJams([]);
       }
-    } catch (err: any) {
-      console.log(err.message);
+    } catch (e) {
+      console.log('error fetching jams');
     } finally {
       setLoading(false);
     }
@@ -605,6 +607,17 @@ export default function Filtro({
   );
 }
 
+import { RefObject } from 'react';
+
+type DateOptionsProps = {
+  dateOptions: string; // or a more specific type if you have one
+  setDateOption: Dispatch<SetStateAction<string>>;
+  showCalendar: boolean;
+  setShowCalendar: Dispatch<SetStateAction<boolean>>;
+  dateRef: Date | undefined; // adjust if it's another element
+  setDate: Dispatch<SetStateAction<Date | undefined>>; // adjust if needed
+};
+
 export function DateOptions({
   dateOptions,
   setDateOption,
@@ -612,14 +625,16 @@ export function DateOptions({
   setShowCalendar,
   dateRef,
   setDate,
-}) {
-  const calRef = useRef(null);
+}: DateOptionsProps) {
+  const calRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    function handle(e) {
-      if (calRef.current && !calRef.current.contains(e.target))
+    function handle(e: MouseEvent) {
+      if (calRef.current && !calRef.current.contains(e.target as Node)) {
         setShowCalendar(false);
+      }
     }
+
     document.addEventListener('mousedown', handle);
     return () => document.removeEventListener('mousedown', handle);
   }, []);
@@ -680,12 +695,12 @@ export function DateOptionsGlobal({
   setShowCalendar,
   dateRef,
   setDate,
-}) {
-  const calRef = useRef(null);
+}: DateOptionsProps) {
+  const calRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    function handle(e) {
-      if (calRef.current && !calRef.current.contains(e.target))
+    function handle(e: MouseEvent) {
+      if (calRef.current && !calRef.current.contains(e.target as Node))
         setShowCalendar(false);
     }
     document.addEventListener('mousedown', handle);
@@ -714,7 +729,6 @@ export function DateOptionsGlobal({
 
       <div className="relative" ref={calRef}>
         <Button
-          variant={dateOptions.startsWith('custom') ? '' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
           className={`text-md ${
             dateOptions.startsWith('custom')
@@ -739,7 +753,17 @@ export function DateOptionsGlobal({
   );
 }
 
-export function CalendarDemo({ setDateOption, dateRef, setDate }) {
+type CalendarDemoProps = {
+  setDateOption: Dispatch<SetStateAction<string>>; // or your union type
+  dateRef: Date | undefined;
+  setDate: Dispatch<SetStateAction<Date | undefined>>;
+};
+
+export function CalendarDemo({
+  setDateOption,
+  dateRef,
+  setDate,
+}: CalendarDemoProps) {
   useEffect(() => {
     if (dateRef) {
       const localDate =
