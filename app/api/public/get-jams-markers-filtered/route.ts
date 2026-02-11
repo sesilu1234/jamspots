@@ -152,7 +152,10 @@ import { NextResponse } from 'next/server';
     
 
   } catch (error: any) {
-    console.error('getHomeCards failure:', error.message);
-    return null;
-  }
+  console.error('getHomeMarkers failure:', error.message);
+  return NextResponse.json(
+    { error: 'Failed to fetch jams', details: error.message },
+    { status: 500 }
+  );
+}
 };
