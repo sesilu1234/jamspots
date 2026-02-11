@@ -88,20 +88,6 @@ import { NextResponse } from 'next/server';
 
     dataMarkers = data ?? []; // This guarantees it stays an array
     error = rpcError;
-}else if (dateOptionsInput === 'week') {
-    gte = utcNow.toISO()!;
-    lte = utcNow.plus({ days: 7 }).endOf('day').plus({ hours: 2 }).toISO()!;
-
-    // Change this line:
-    const { data, error: rpcError } = await supabaseAdmin.rpc('get_markers_filtered_week_v2', {
-        p_start_utc: gte,
-        p_end_utc: lte,
-        p_filter_styles: stylesArray && stylesArray.length > 0 ? stylesArray : null,
-        p_filter_modalities: modalityArray && modalityArray.length > 0 ? modalityArray : null
-    });
-
-    dataMarkers = data ?? []; // This guarantees it stays an array
-    error = rpcError;
 }
 
         else if (dateOptions.startsWith('custom:')) {
@@ -144,9 +130,8 @@ import { NextResponse } from 'next/server';
       }
 
       else {
-        // "Don't send incomplete info heh"
-        throw new Error(`Invalid or missing dateOptions`);
-    }
+  return NextResponse.json({ error: 'Invalid dateOptions' }, { status: 400 });
+}
 
 
 
