@@ -60,8 +60,10 @@ export async function GET(req: Request) {
        * Interprets the user's selected days in the local timezone of the Jam.
        */
 
-      const dateStr = dateOptionsInput.split(':')[1];
+      const dateStr = dateOptionsInput.split(': ')[1];
+
       const customDate = DateTime.fromISO(dateStr);
+
       if (!customDate) throw new Error('Missing custom date range');
 
       gte = DateTime.fromISO(customDate as string, { zone: tz })
@@ -96,7 +98,6 @@ export async function GET(req: Request) {
     });
 
     type SortOrder = 'soonest' | 'popular';
-    console.log(order);
 
     const sortData = (data: JamCard[], order: SortOrder) => {
       const sorters: Record<SortOrder, (a: JamCard, b: JamCard) => number> = {
@@ -138,11 +139,10 @@ export async function GET(req: Request) {
 
     return NextResponse.json(orderedData);
   } catch (error: any) {
-  console.error('getHomeCards failure:', error.message);
-  return NextResponse.json(
-    { error: 'Failed to fetch jams', details: error.message },
-    { status: 500 }
-  );
-}
-
+    console.error('getHomeCards failure:', error.message);
+    return NextResponse.json(
+      { error: 'Failed to fetch jams', details: error.message },
+      { status: 500 },
+    );
+  }
 }

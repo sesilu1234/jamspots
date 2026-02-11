@@ -8,8 +8,10 @@ opcion de cambiar mapa ? o cambiar mapa directamentre a otro?
 --- -->
 
 ojo lo de las quotas, quizas teakear mejor o usar tarjeta temporal ? google
-cloud quotas y api restrictions. y cambiar api sign in a jamspots xyz y lo de limit google api maps
-<!-- 
+cloud quotas y api restrictions. y cambiar api sign in a jamspots xyz y lo de
+limit google api maps
+
+<!--
 gemini ai telling : Would you like me to show you how to set up the GIST index
 on location_coords to make the spatial part of this query lightning fast? -->
 
@@ -17,7 +19,9 @@ on location_coords to make the spatial part of this query lightning fast? -->
 
 ---
 
+---
 
+--------fix custom date;
 
 -probar testing , ultimos ajustes y retoques y checkeos y estetica
 
@@ -27,12 +31,10 @@ visitantes tiene)
 -ya no sera env.local, asi que quitar next_public de las keys que no hay que
 neviar al front
 
-
 ## google analytics, google console
 
 <!-- limpiar codigo, poner console errors logs, quitar los innecesaraios, typescript
 bien facil -->
-
 
 ---
 

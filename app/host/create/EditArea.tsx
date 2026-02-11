@@ -60,7 +60,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
         siteWeb: '',
       },
     });
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     setLoading(false);
   }, []);
   // ✅ solo se ejecuta cuando cambia id
@@ -161,7 +161,8 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
     return { success: true };
   };
 
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState<number>(0);
+
   const [saving, setSaving] = useState(false);
 
   if (loading) return null;
@@ -227,7 +228,12 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
 
 import { Progress } from '@/components/ui/progress';
 
-export function ProgressDemo({ progress, setProgress }) {
+type ProgressDemoProps = {
+  progress: number;
+  setProgress: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export function ProgressDemo({ progress, setProgress }: ProgressDemoProps) {
   useEffect(() => {
     const timer = setTimeout(() => setProgress(66), 500);
     return () => clearTimeout(timer);

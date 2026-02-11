@@ -1,287 +1,287 @@
-"use client";
-import { useState, useEffect, useRef } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Primary from "@/app/createJam/primary";
-import { GeneralInfoProps } from "./types/types";
+'use client';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import Primary from '@/app/createJam/primary';
+import { GeneralInfoProps } from './types/types';
 import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectLabel,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
-import * as React from "react";
+import * as React from 'react';
 
-import { Calendar } from "@/components/ui/calendar";
+import { Calendar } from '@/components/ui/calendar';
 
-import { useAtom } from "jotai";
-import { formAtom } from "../store/jotai";
+import { useAtom } from 'jotai';
+import { formAtom } from '../store/jotai';
 
-import { useFormStore } from "../store/formStore"; // path a tu store
+import { useFormStore } from '../store/formStore'; // path a tu store
 
 export default function EditArea({
-	data,
-	childSaveOnUnmount,
+  data,
+  childSaveOnUnmount,
 }: GeneralInfoProps) {
-	const setForm = useFormStore((state) => state.setForm);
+  const setForm = useFormStore((state) => state.setForm);
 
-	const [period, setPeriod] = useState<"manual" | "weekly" | string>(
-		data.dates.period,
-	);
-	const [weekDay, setWeekDay] = useState<string | null>(data.dates.day_of_week);
-	const [dates, setDates] = React.useState<Date[]>(
-		data.dates.list_of_dates.map((d: string) => new Date(d)),
-	);
+  const [period, setPeriod] = useState<'manual' | 'weekly' | string>(
+    data.dates.period,
+  );
+  const [weekDay, setWeekDay] = useState<string | null>(data.dates.day_of_week);
+  const [dates, setDates] = React.useState<Date[]>(
+    data.dates.list_of_dates.map((d: string) => new Date(d)),
+  );
 
-	const [fromTime, setFromTime] = useState(data.dates.time.from);
-	const [toTime, setToTime] = useState(data.dates.time.to);
+  const [fromTime, setFromTime] = useState(data.dates.time.from);
+  const [toTime, setToTime] = useState(data.dates.time.to);
 
-	const daysOfWeek = [
-		"Monday",
-		"Tuesday",
-		"Wednesday",
-		"Thursday",
-		"Friday",
-		"Saturday",
-		"Sunday",
-	];
+  const daysOfWeek = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
 
-	const jamTitleRef = useRef(data.jam_title);
-	const locationTitleRef = useRef(data.location_title);
-	const locationAddressRef = useRef(data.location_address);
-	const coordinatesRef = useRef(data.coordinates);
-	const datesRef = useRef(data.dates);
+  const jamTitleRef = useRef(data.jam_title);
+  const locationTitleRef = useRef(data.location_title);
+  const locationAddressRef = useRef(data.location_address);
+  const coordinatesRef = useRef(data.coordinates);
+  const datesRef = useRef(data.dates);
 
-	datesRef.current = {
-		period: period,
-		day_of_week: weekDay,
-		time: { from: fromTime, to: toTime },
-		list_of_dates: dates.map((d) => {
-			const year = d.getFullYear();
-			const month = String(d.getMonth() + 1).padStart(2, "0"); // month +1 because 0-based
-			const day = String(d.getDate()).padStart(2, "0");
-			return `${year}-${month}-${day}`; // "YYYY-MM-DD" local
-		}),
-	};
+  datesRef.current = {
+    period: period,
+    day_of_week: weekDay,
+    time: { from: fromTime, to: toTime },
+    list_of_dates: dates.map((d) => {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0'); // month +1 because 0-based
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`; // "YYYY-MM-DD" local
+    }),
+  };
 
-	function updateDataRef() {
-		if (datesRef.current.period === "weekly") {
-			datesRef.current.list_of_dates = [];
-		}
+  function updateDataRef() {
+    if (datesRef.current.period === 'weekly') {
+      datesRef.current.list_of_dates = [];
+    }
 
-		setForm((prev) => ({
-			...prev,
-			generalInfo: {
-				jam_title: jamTitleRef.current,
-				location_title: locationTitleRef.current,
-				location_address: locationAddressRef.current,
-				coordinates: coordinatesRef.current,
-				dates: datesRef.current,
-			},
-		}));
-	}
+    setForm((prev) => ({
+      ...prev,
+      generalInfo: {
+        jam_title: jamTitleRef.current,
+        location_title: locationTitleRef.current,
+        location_address: locationAddressRef.current,
+        coordinates: coordinatesRef.current,
+        dates: datesRef.current,
+      },
+    }));
+  }
 
-	useEffect(() => {
-		childSaveOnUnmount.current = updateDataRef;
+  useEffect(() => {
+    childSaveOnUnmount.current = updateDataRef;
 
-		return () => {
-			childSaveOnUnmount.current = () => Promise.resolve();
-		};
-	}, []);
+    return () => {
+      childSaveOnUnmount.current = () => Promise.resolve();
+    };
+  }, []);
 
-	return (
-		<div className="lg:p-15">
-			<div className="mx-auto lg:w-3/4">
-				<Primary
-					jamTitleRef={jamTitleRef}
-					locationTitleRef={locationTitleRef}
-					locationAddressRef={locationAddressRef}
-					coordinatesRef={coordinatesRef}
-				/>
-			</div>
+  return (
+    <div className="lg:p-15">
+      <div className="mx-auto lg:w-3/4">
+        <Primary
+          jamTitleRef={jamTitleRef}
+          locationTitleRef={locationTitleRef}
+          locationAddressRef={locationAddressRef}
+          coordinatesRef={coordinatesRef}
+        />
+      </div>
 
-			<div className="mx-auto lg:w-3/4 p-4 ">
-<h3 className="font-bold text-2xl mb-4">
-  Schedule
-  <span className="block pt-0 font-medium text-xs text-stone-600/60 leading-tight">
-    weekly sessions or choose dates on the calendar
-  </span>
-</h3>
-				<div className="flex flex-wrap gap-8 items-end max-w-screen">
-					<div className="flex flex-col sm:flex-row gap-4">
-						<Select
-							defaultValue={period}
-							onValueChange={(value) => setPeriod(value as "manual" | "weekly")}
-						>
-							<SelectTrigger className="w-[180px]">
-								<SelectValue placeholder="Select a period" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-									<SelectLabel>Period</SelectLabel>
-									<SelectItem value="manual">
-										Select manually on calendar
-									</SelectItem>
-									<SelectItem value="weekly">Weekly</SelectItem>
-								</SelectGroup>
-							</SelectContent>
-						</Select>
+      <div className="mx-auto lg:w-3/4 p-4 ">
+        <h3 className="font-bold text-2xl mb-4">
+          Schedule
+          <span className="block pt-0 font-medium text-xs text-stone-600/60 leading-tight">
+            weekly sessions or choose dates on the calendar
+          </span>
+        </h3>
+        <div className="flex flex-wrap gap-8 items-end max-w-screen">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Select
+              defaultValue={period}
+              onValueChange={(value) => setPeriod(value as 'manual' | 'weekly')}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select a period" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Period</SelectLabel>
+                  <SelectItem value="manual">
+                    Select manually on calendar
+                  </SelectItem>
+                  <SelectItem value="weekly">Weekly</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
 
-						{/* Second select */}
-						{period === "weekly" ? (
-							<Select
-								defaultValue={
-									period === "weekly"
-										? weekDay
-											? weekDay
-											: undefined
-										: undefined
-								}
-								onValueChange={setWeekDay}
-							>
-								<SelectTrigger className="w-[120px] lg:w-[180px]">
-									<SelectValue placeholder="Select day of week" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectGroup>
-										<SelectLabel>Day</SelectLabel>
-										{daysOfWeek.map((day) => (
-											<SelectItem key={day} value={day}>
-												{day}
-											</SelectItem>
-										))}
-									</SelectGroup>
-								</SelectContent>
-							</Select>
-						) : (
-							<Select disabled>
-								<SelectTrigger className="w-[120px] lg:w-[180px]">
-									<SelectValue placeholder="N/A" />
-								</SelectTrigger>
-							</Select>
-						)}
-					</div>
-					<div className="flex gap-4">
-						<div className="flex flex-col gap-3">
-							<Label htmlFor="time-from" className="px-1">
-								Starting Time
-							</Label>
-							<div className="flex justify-center">
-								<Input
-									type="time"
-									id="time-from"
-									step="60"
-									value={fromTime}
-									onChange={(e) => setFromTime(e.target.value)}
-									className="bg-background appearance-none text-center "
-								/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="flex flex-col gap-4 md:gap-0 sm:flex-row justify-between py-6 mt-6">
-					<h1 className="">
-						Or select manually (dates keep the time inputed):
-					</h1>
-					<button
-						className="p-2 bg-amber-300 rounded-lg self-end"
-						onClick={() => setDates([])}
-					>
-						Clear dates
-					</button>
-				</div>
+            {/* Second select */}
+            {period === 'weekly' ? (
+              <Select
+                defaultValue={
+                  period === 'weekly'
+                    ? weekDay
+                      ? weekDay
+                      : undefined
+                    : undefined
+                }
+                onValueChange={setWeekDay}
+              >
+                <SelectTrigger className="w-[120px] lg:w-[180px]">
+                  <SelectValue placeholder="Select day of week" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Day</SelectLabel>
+                    {daysOfWeek.map((day) => (
+                      <SelectItem key={day} value={day}>
+                        {day}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            ) : (
+              <Select disabled>
+                <SelectTrigger className="w-[120px] lg:w-[180px]">
+                  <SelectValue placeholder="N/A" />
+                </SelectTrigger>
+              </Select>
+            )}
+          </div>
+          <div className="flex gap-4">
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="time-from" className="px-1">
+                Starting Time
+              </Label>
+              <div className="flex justify-center">
+                <Input
+                  type="time"
+                  id="time-from"
+                  step="60"
+                  value={fromTime}
+                  onChange={(e) => setFromTime(e.target.value)}
+                  className="bg-background appearance-none text-center "
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 md:gap-0 sm:flex-row justify-between py-6 mt-6">
+          <h1 className="">
+            Or select manually (dates keep the time inputed):
+          </h1>
+          <button
+            className="p-2 bg-amber-300 rounded-lg self-end"
+            onClick={() => setDates([])}
+          >
+            Clear dates
+          </button>
+        </div>
 
-				<Calendar03
-					period={period}
-					weekDay={weekDay}
-					dates={dates}
-					datesSetter={setDates}
-				/>
-				<div className="mt-4">
-					<h2>Selected dates:</h2>
-					<div className="mt-4 flex gap-2 items-center">
-						{dates.slice(0, 3).map((date, i) => (
-							<span key={i} className="px-2 py-1 bg-gray-200 rounded">
-								{date.toLocaleDateString()} {fromTime}{" "}
-								{/* use state directly */}
-							</span>
-						))}
-						{dates.length > 3 && <span className="px-2 py-1">...</span>}
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+        <Calendar03
+          period={period}
+          weekDay={weekDay}
+          dates={dates}
+          datesSetter={setDates}
+        />
+        <div className="mt-4">
+          <h2>Selected dates:</h2>
+          <div className="mt-4 flex gap-2 items-center">
+            {dates.slice(0, 3).map((date, i) => (
+              <span key={i} className="px-2 py-1 bg-gray-200 rounded">
+                {date.toLocaleDateString()} {fromTime}{' '}
+                {/* use state directly */}
+              </span>
+            ))}
+            {dates.length > 3 && <span className="px-2 py-1">...</span>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 interface Calendar03Props {
-	period?: "manual" | "weekly" | string;
-	weekDay?: string | null;
-	dates?: Date[];
-	datesSetter?: (dates: Date[]) => void;
+  period?: 'manual' | 'weekly' | string;
+  weekDay?: string | null;
+  dates?: Date[];
+  datesSetter?: (dates: Date[]) => void;
 }
 
 export function Calendar03({
-	period,
-	weekDay,
-	dates,
-	datesSetter = () => {},
+  period,
+  weekDay,
+  dates,
+  datesSetter = () => {},
 }: Calendar03Props) {
-	const [numMonths, setNumMonths] = useState(2);
+  const [numMonths, setNumMonths] = useState(2);
 
-	useEffect(() => {
-		const handleResize = () => setNumMonths(window.innerWidth >= 1024 ? 2 : 1); // lg breakpoint = 1024px
-		handleResize();
-		window.addEventListener("resize", handleResize);
-		return () => window.removeEventListener("resize", handleResize);
-	}, []);
+  useEffect(() => {
+    const handleResize = () => setNumMonths(window.innerWidth >= 1024 ? 2 : 1); // lg breakpoint = 1024px
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-	useEffect(() => {
-		if (period === "weekly" && weekDay) {
-			const dayIndex = [
-				"Sunday",
-				"Monday",
-				"Tuesday",
-				"Wednesday",
-				"Thursday",
-				"Friday",
-				"Saturday",
-			].indexOf(weekDay);
-			if (dayIndex === -1) return;
+  useEffect(() => {
+    if (period === 'weekly' && weekDay) {
+      const dayIndex = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ].indexOf(weekDay);
+      if (dayIndex === -1) return;
 
-			const today = new Date();
-			const newDates: Date[] = [];
+      const today = new Date();
+      const newDates: Date[] = [];
 
-			// fill next 3 months with that weekday
-			for (let monthOffset = 0; monthOffset < 3; monthOffset++) {
-				const year = today.getFullYear();
-				const month = today.getMonth() + monthOffset;
-				const firstDay = new Date(year, month, 1);
-				const lastDay = new Date(year, month + 1, 0);
+      // fill next 3 months with that weekday
+      for (let monthOffset = 0; monthOffset < 3; monthOffset++) {
+        const year = today.getFullYear();
+        const month = today.getMonth() + monthOffset;
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
 
-				for (let d = firstDay.getDate(); d <= lastDay.getDate(); d++) {
-					const date = new Date(year, month, d);
-					if (date.getDay() === dayIndex) newDates.push(date);
-				}
-			}
+        for (let d = firstDay.getDate(); d <= lastDay.getDate(); d++) {
+          const date = new Date(year, month, d);
+          if (date.getDay() === dayIndex) newDates.push(date);
+        }
+      }
 
-			datesSetter(newDates);
-		}
-	}, [period, weekDay]);
+      datesSetter(newDates);
+    }
+  }, [period, weekDay]);
 
-	return (
-		<Calendar
-			mode="multiple"
-			numberOfMonths={numMonths}
-			required
-			selected={dates}
-			onSelect={datesSetter}
-			className="rounded-lg border shadow-sm mt-0 mx-auto"
-		/>
-	);
+  return (
+    <Calendar
+      mode="multiple"
+      numberOfMonths={numMonths}
+      required
+      selected={dates}
+      onSelect={datesSetter}
+      className="rounded-lg border shadow-sm mt-0 mx-auto"
+    />
+  );
 }

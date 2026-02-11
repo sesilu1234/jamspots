@@ -36,11 +36,11 @@ const stylesList = [
   'Afro',
   'Fusion',
   'Latin',
-  'Improvisation'
+  'Improvisation',
 ] as const;
 
-export function validateJam(input: any) {
-  const errors: any = {};
+export function validateJam(input: Record<string, string>) {
+  const errors: Record<string, string> = {};
 
   // jam_title
   if (!input.jam_title || input.jam_title.trim().length === 0)
@@ -104,7 +104,6 @@ export function validateJam(input: any) {
 
   // social_links
   if (input.social_links) {
-    const socialErrors: any = {};
     ['facebook', 'instagram', 'web'].forEach((k) => {
       if (input.social_links[k] && input.social_links[k].length > 150)
         errors.social_links = 'Max 150 characters for links url';
@@ -115,7 +114,6 @@ export function validateJam(input: any) {
   if (!input.location_coords) {
     errors.location_coords = 'Coordinates required. Click on map';
   } else {
-    const coordErrors: any = {};
     const { lat, lng } = input.location_coords;
     if (typeof lat !== 'number' || typeof lng !== 'number')
       errors.coo = 'Coordinates must be a number';
