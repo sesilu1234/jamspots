@@ -75,22 +75,34 @@ import { NextResponse } from 'next/server';
       }
 
       else if (dateOptionsInput === 'week') {
-        /** * THIS WEEK: [Now] until [7 days from now + 4h]
-         * A rolling 7-day window with a 4h buffer for the final night.
-         */
-        gte = utcNow.toISO()!;
-        lte = utcNow.plus({ days: 7 }).endOf('day').plus({ hours: 2 }).toISO()!;
+    gte = utcNow.toISO()!;
+    lte = utcNow.plus({ days: 7 }).endOf('day').plus({ hours: 2 }).toISO()!;
 
-            ( { data: dataMarkers, error } = await supabaseAdmin.rpc('get_markers_filtered_week_v2', {
-      p_start_utc: gte,
-      p_end_utc: lte,
-      p_filter_styles: stylesArray && stylesArray.length > 0 ? stylesArray : null,
-      p_filter_modalities: modalityArray && modalityArray.length > 0 ? modalityArray : null
-    }));
+    // Change this line:
+    const { data, error: rpcError } = await supabaseAdmin.rpc('get_markers_filtered_week_v2', {
+        p_start_utc: gte,
+        p_end_utc: lte,
+        p_filter_styles: stylesArray && stylesArray.length > 0 ? stylesArray : null,
+        p_filter_modalities: modalityArray && modalityArray.length > 0 ? modalityArray : null
+    });
 
-        
+    dataMarkers = data ?? []; // This guarantees it stays an array
+    error = rpcError;
+}else if (dateOptionsInput === 'week') {
+    gte = utcNow.toISO()!;
+    lte = utcNow.plus({ days: 7 }).endOf('day').plus({ hours: 2 }).toISO()!;
 
-        }
+    // Change this line:
+    const { data, error: rpcError } = await supabaseAdmin.rpc('get_markers_filtered_week_v2', {
+        p_start_utc: gte,
+        p_end_utc: lte,
+        p_filter_styles: stylesArray && stylesArray.length > 0 ? stylesArray : null,
+        p_filter_modalities: modalityArray && modalityArray.length > 0 ? modalityArray : null
+    });
+
+    dataMarkers = data ?? []; // This guarantees it stays an array
+    error = rpcError;
+}
 
         else if (dateOptions.startsWith('custom:')) {
         const customDateStr = dateOptions.split('custom:')[1].trim();
