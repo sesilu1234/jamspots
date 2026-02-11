@@ -22,7 +22,7 @@ import { JamCard } from '@/types/jam';
 type FiltroProps = {
   setJams: Dispatch<SetStateAction<JamCard[]>>; // replace `any` with your Jam[] type
   setLoading: Dispatch<SetStateAction<boolean>>;
-  setSearchType: Dispatch<SetStateAction<string>>;
+  setSearchType: Dispatch<SetStateAction<'local' | 'global'>>;
 };
 
 export default function Filtro({
@@ -729,6 +729,7 @@ export function DateOptionsGlobal({
 
       <div className="relative" ref={calRef}>
         <Button
+          variant={dateOptions.startsWith('custom') ? 'secondary' : undefined}
           onClick={() => setShowCalendar((prev) => !prev)}
           className={`text-md ${
             dateOptions.startsWith('custom')

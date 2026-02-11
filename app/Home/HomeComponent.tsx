@@ -27,7 +27,7 @@ export default function HomeComponent({
 }: HomeComponentProps) {
   const [jams, setJams] = useState(cards);
   const [loading, setLoading] = useState(false);
-  const [searchType, setSearchType] = useState('local');
+  const [searchType, setSearchType] = useState<'local' | 'global'>('local');
 
   return (
     <div className="flex flex-col min-h-screen ">
@@ -66,9 +66,7 @@ export default function HomeComponent({
 
             <div className=" ">
               <Filtro
-                jams={jams}
                 setJams={setJams}
-                loading={loading}
                 setLoading={setLoading}
                 setSearchType={setSearchType}
               />
@@ -95,9 +93,7 @@ export default function HomeComponent({
             <MapRender />
             <JamCarousel
               jams={jams}
-              setJams={setJams}
               loading={loading}
-              setLoading={setLoading}
               searchType={searchType}
             />
           </div>

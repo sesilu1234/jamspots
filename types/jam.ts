@@ -40,8 +40,6 @@ export type Jam = {
   display_date: string;
 };
 
-
-
 export interface JamCard {
   id: string;
   jam_title: string;
@@ -57,6 +55,8 @@ export interface JamCard {
   lng: number;
   priority_score: number;
   distance_meters: number;
+  display_date: string;
+  image: string;
 }
 
 export interface UserLocation {
@@ -64,4 +64,3 @@ export interface UserLocation {
   latitude: number;
   longitude: number;
 }
-

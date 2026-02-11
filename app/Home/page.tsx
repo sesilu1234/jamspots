@@ -1,6 +1,7 @@
 import { headers } from 'next/headers';
 import { getHomeCards } from '@/lib/getHomeCards';
 import HomeComponent from './HomeComponent'; // Import your UI component
+import { JamCard } from '@/types/jam';
 
 export default async function HomePage() {
   const headerList = await headers();
@@ -27,15 +28,14 @@ export default async function HomePage() {
   const homeCards = await getHomeCards(paramsCards);
 
   const validJams =
-    homeCards?.slice(0, 20).filter((jam: any) => jam.slug && jam.jam_title) ||
-    [];
+    homeCards?.slice(0, 20).filter((jam) => jam.slug && jam.jam_title) || [];
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: 'Upcoming Jam Sessions',
     description: 'Discover the best open mics and jam sessions worldwide.',
-    itemListElement: validJams.map((jam: any, index: number) => ({
+    itemListElement: validJams.map((jam, index: number) => ({
       '@type': 'ListItem',
       position: index + 1,
       url: `https://jamspots.xyz/jam/${jam.slug}`, // URL en el nivel de lista
@@ -61,7 +61,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {homeCards?.length! > 0 && (
+      {homeCards!.length! > 0 && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -69,7 +69,10 @@ export default async function HomePage() {
       )}
 
       {/* 3. Tu UI */}
-      <HomeComponent cards={homeCards || []} userLocation={userLocation} />
+      <HomeComponent
+        cards={(homeCards || []) as JamCard[]}
+        userLocation={userLocation}
+      />
     </>
   );
 }

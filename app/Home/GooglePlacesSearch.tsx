@@ -9,6 +9,7 @@ const API_KEY = 'AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE';
 export default function GooglePlacesSearch() {
   const [mounted, setMounted] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setMounted(true);
   }, []);

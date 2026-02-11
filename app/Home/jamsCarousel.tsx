@@ -3,20 +3,26 @@ import { useState, useEffect, useRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { JamCard } from '@/types/jam';
 
+type JamCarouselProps = {
+  jams: JamCard[];
+  loading: boolean;
+  searchType: 'local' | 'global';
+};
 
 export default function JamCarousel({
   jams,
-
   loading,
-
   searchType,
-}) {
+}: JamCarouselProps) {
+  // ...rest of your component
+
   const [collapsed, setCollapsed] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     searchType === 'local' ? setCollapsed(false) : setCollapsed(true);
   }, [searchType]);
