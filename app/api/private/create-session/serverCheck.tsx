@@ -37,70 +37,93 @@ const stylesList = [
   'Improvisation',
 ] as const;
 
-export function validateJam(input: any) {
-  const errors: any = {};
+type DayOfWeek = (typeof daysOfWeek)[number];
+type Style = (typeof stylesList)[number];
+
+interface JamInput {
+  jam_title: string;
+  location_title: string;
+  location_address: string;
+  periodicity: 'manual' | 'weekly';
+  dayOfWeek?: DayOfWeek;
+  dates: string[];
+  images_three: boolean;
+  modality: 'jam' | 'open_mic';
+  styles: Style[];
+  lista_canciones: boolean;
+  instruments_lend: boolean;
+  drums: boolean;
+  time_start: string;
+  raw_desc: string;
+  description: unknown;
+  social_links?: {
+    facebook?: string;
+    instagram?: string;
+    web?: string;
+  };
+  location_coords: {
+    lat: number;
+    lng: number;
+  };
+}
+
+type ValidationErrors = Partial<Record<keyof JamInput | string, string>>;
+
+export function validateJam(input: JamInput) {
+  const errors: ValidationErrors = {};
 
   // jam_title
-  if (!input.jam_title || input.jam_title.trim().length === 0)
-    errors.jam_title = 'Jam name cannot be empty';
+  if (!input.jam_title?.trim()) errors.jam_title = 'Jam name cannot be empty';
   else if (input.jam_title.length > 50) errors.jam_title = 'Jam name too long';
 
   // location_title
-  if (!input.location_title || input.location_title.trim().length === 0)
+  if (!input.location_title?.trim())
     errors.location_title = 'Location name cannot be empty';
   else if (input.location_title.length > 50)
     errors.location_title = 'Location name too long';
 
   // location_address
-  if (!input.location_address || input.location_address.trim().length === 0)
+  if (!input.location_address?.trim())
     errors.location_address = 'Address cannot be empty';
   else if (input.location_address.length > 150)
     errors.location_address = 'Address too long';
 
   // periodicity
-  if (!['manual', 'weekly'].includes(input.periodicity))
+  if (input.periodicity !== 'manual' && input.periodicity !== 'weekly')
     errors.periodicity = 'Choose periodicity';
 
   // dayOfWeek
-  if (input.periodicity === 'weekly' && !daysOfWeek.includes(input.dayOfWeek))
+  if (
+    input.periodicity === 'weekly' &&
+    (!input.dayOfWeek || !daysOfWeek.includes(input.dayOfWeek))
+  )
     errors.dayOfWeek = 'You must pick a day for weekly jams';
 
   // dates
   if (input.periodicity === 'manual' && input.dates.length > 1000)
-    errors.dates = 'Whoa! That’s a lot of dates. Please select up to 1000.';
+    errors.dates = 'Select up to 1000 dates';
 
-  if (!input.images_three) errors.images = 'Exactly 3 images required';
+  if (!input.images_three) errors.images_three = 'Exactly 3 images required';
 
-  const modalityOptions = ['jam', 'open_mic'];
-
-  // ... dentro de tu función de validación:
-
-  // Modality check
-  if (!input.modality) {
-    errors.modality = 'Modality is required';
-  } else if (!modalityOptions.includes(input.modality)) {
-    errors.modality = 'Invalid modality selected';
-  }
+  // modality (already typed, just ensure exists)
+  if (!input.modality) errors.modality = 'Modality is required';
 
   // styles
   if (!Array.isArray(input.styles) || input.styles.length < 1)
     errors.styles = 'Select at least one style';
   else if (input.styles.length > 3) errors.styles = 'Max 3 styles allowed';
-  else if (
-    !input.styles.every((s: string) =>
-      (stylesList as readonly string[]).includes(s),
-    )
-  )
+  else if (!input.styles.every((s) => stylesList.includes(s)))
     errors.styles = 'Invalid style selected';
 
   // boolean fields
-  ['lista_canciones', 'instruments_lend', 'drums'].forEach((field) => {
-    if (typeof input[field] !== 'boolean') {
-      errors[field] = 'Must be true or false';
-    }
-  });
+  (['lista_canciones', 'instruments_lend', 'drums'] as const).forEach(
+    (field) => {
+      if (typeof input[field] !== 'boolean')
+        errors[field] = 'Must be true or false';
+    },
+  );
 
-  // time_start validation
+  // time_start (HH:MM)
   if (typeof input.time_start !== 'string') {
     errors.time_start = 'Invalid time format (expected HH:MM)';
   } else {
@@ -117,25 +140,20 @@ export function validateJam(input: any) {
     }
   }
 
-  // description (Draft.js raw → string)
-  let descriptionText = '';
-  if (input.description) {
-    try {
-      descriptionText = input.raw_desc;
-    } catch {}
-  }
+  // description length (using raw_desc)
+  const descriptionText = input.raw_desc ?? '';
 
   if (descriptionText.length < 20)
-    errors.description = 'Description too short, add at least 20 characters';
+    errors.description = 'Description too short (min 20 chars)';
   else if (descriptionText.length > 1400)
     errors.description = 'Description too long';
 
   // social_links
   if (input.social_links) {
-    const socialErrors: any = {};
-    ['facebook', 'instagram', 'web'].forEach((k) => {
-      if (input.social_links[k] && input.social_links[k].length > 150)
-        errors.social_links = 'Max 150 characters for links url';
+    (['facebook', 'instagram', 'web'] as const).forEach((k) => {
+      const value = input.social_links?.[k];
+      if (value && value.length > 150)
+        errors.social_links = 'Max 150 characters per link';
     });
   }
 
@@ -143,16 +161,15 @@ export function validateJam(input: any) {
   if (!input.location_coords) {
     errors.location_coords = 'Coordinates required';
   } else {
-    const coordErrors: any = {};
     const { lat, lng } = input.location_coords;
     if (typeof lat !== 'number' || typeof lng !== 'number')
-      errors.coo = 'Coordinates must be a number';
+      errors.location_coords = 'Coordinates must be numbers';
     else if (lat < -90 || lat > 90 || lng < -180 || lng > 180)
-      errors.coorange = 'Latitude out of range';
+      errors.location_coords = 'Coordinates out of range';
   }
 
   return {
     success: Object.keys(errors).length === 0,
-    errors: errors,
+    errors,
   };
 }
