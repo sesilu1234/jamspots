@@ -1,7 +1,7 @@
 import { Metadata } from 'next'; // Add this import
-import "./globals.css";
-import SessionWrapper from "./SessionWrapper";
-import { ThemeProvider } from "./ThemeProvider";
+import './globals.css';
+import SessionWrapper from './SessionWrapper';
+import { ThemeProvider } from './ThemeProvider';
 
 // ADD THIS BLOCK
 export const metadata: Metadata = {
@@ -23,25 +23,25 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Jamspots',
-    description:
-      'Jam sessions, open mics, and bars where people hang out.',
+    description: 'Jam sessions, open mics, and bars where people hang out.',
   },
 };
 
-
-
 export default function RootLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <html lang="en" className="dark">
-            <body className="antialiased min-h-screen bg-tone-5 text-tone-0">
-                <ThemeProvider defaultTheme="dark">
-                    <SessionWrapper>{children}</SessionWrapper>
-                </ThemeProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en" className="dark">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
+      <body className="antialiased min-h-screen bg-tone-5 text-tone-0">
+        <ThemeProvider defaultTheme="dark">
+          <SessionWrapper>{children}</SessionWrapper>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
 }
