@@ -74,17 +74,17 @@ export default function Home() {
           </DialogContent>
         </Dialog>
 
-        <div className="lg:hidden">
+        {/* <div className="lg:hidden">
           <EditSections_phone childSaveOnUnmount={childSaveOnUnmount} />
         </div>
         <div className="hidden lg:block">
           <EditSections_desktop childSaveOnUnmount={childSaveOnUnmount} />
-        </div>
+        </div> */}
       </div>
 
-      <div className="min-h-screen  bg-white">
+      {/* <div className="min-h-screen  bg-white">
         <EditArea childSaveOnUnmount={childSaveOnUnmount} />
-      </div>
+      </div> */}
     </div>
   );
 }
