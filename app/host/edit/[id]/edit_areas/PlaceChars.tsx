@@ -89,7 +89,7 @@ export default function PlaceChars({
     setForm((prev) => ({
       ...prev,
       features: {
-        modality: modalityRef.current,
+        modality: modalityRef.current as 'open_mic' | 'jam',
         styles: stylesRef.current,
         song_list: songRef.current,
         intruments_lend: instrumentsRef.current,

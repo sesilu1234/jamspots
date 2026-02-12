@@ -43,6 +43,8 @@ import { Jam } from './typeCheck';
 
 type JamErrors = {
   [key in keyof Jam | 'coo' | 'coorange']?: string;
+} & {
+  [key: string]: string;
 };
 
 export function validateJam(input: Partial<Jam>): {

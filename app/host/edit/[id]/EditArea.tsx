@@ -5,6 +5,7 @@ import Sections from './sections';
 import { useRouter } from 'next/navigation';
 
 import { validateJam } from './clientCheck';
+import { Jam } from './typeCheck';
 import { convertFromRaw } from 'draft-js';
 
 import { toast } from 'sonner';
@@ -135,7 +136,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       location_coords: form.generalInfo.coordinates,
     };
 
-    const parsed_jamData = validateJam(jamData);
+    const parsed_jamData = validateJam(jamData as unknown as Partial<Jam>);
 
     if (!parsed_jamData.success) {
       // Get the first error message from the errors object
@@ -228,7 +229,12 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
 
 import { Progress } from '@/components/ui/progress';
 
-export function ProgressDemo({ progress, setProgress }) {
+type ProgressDemoProps = {
+  progress: number;
+  setProgress: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export function ProgressDemo({ progress, setProgress }: ProgressDemoProps) {
   useEffect(() => {
     const timer = setTimeout(() => setProgress(66), 500);
     return () => clearTimeout(timer);
