@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { validateJam } from './clientCheck';
 import { convertFromRaw } from 'draft-js';
 
+import { Jam } from './typeCheck';
+
 import { useParams } from 'next/navigation';
 
 import { toast } from 'sonner';
@@ -130,7 +132,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
       location_coords: form.generalInfo.coordinates,
     };
 
-    const parsed_jamData = validateJam(jamData);
+    const parsed_jamData = validateJam(jamData as unknown as Partial<Jam>);
 
     if (!parsed_jamData.success) {
       // Get the first error message from the errors object
