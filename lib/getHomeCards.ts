@@ -107,7 +107,7 @@ export const getHomeCards = async (searchParams: {
     };
 
     // --- Implementation ---
-    const orderedData = sortData(data || [], order).map((jam) => {
+    const orderedData = sortData(data || [], order as SortOrder).map((jam) => {
       const localTime = jam.next_date
         ? DateTime.fromISO(jam.next_date, { zone: 'utc' }).setZone(
             jam.jam_timezone,
@@ -130,8 +130,11 @@ export const getHomeCards = async (searchParams: {
 
     // Map the flat SQL response to a clean object if needed
     return orderedData;
-  } catch (error: any) {
-    console.error('getHomeCards failure:', error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+
+    console.error('getHomeCards failure:', message);
+
     return null;
   }
 };
