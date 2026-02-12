@@ -34,7 +34,7 @@ const stylesList = [
   'Afro',
   'Fusion',
   'Latin',
-  'Improvisation'
+  'Improvisation',
 ] as const;
 
 export function validateJam(input: any) {
@@ -86,7 +86,11 @@ export function validateJam(input: any) {
   if (!Array.isArray(input.styles) || input.styles.length < 1)
     errors.styles = 'Select at least one style';
   else if (input.styles.length > 3) errors.styles = 'Max 3 styles allowed';
-  else if (!input.styles.every((s: string) => stylesList.includes(s)))
+  else if (
+    !input.styles.every((s: string) =>
+      (stylesList as readonly string[]).includes(s),
+    )
+  )
     errors.styles = 'Invalid style selected';
 
   // boolean fields
