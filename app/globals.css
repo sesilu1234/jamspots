@@ -488,16 +488,19 @@
 }
 /* Para Chrome, Edge, Safari */
 /* Desktop-only custom scrollbars */
-@media (min-width: 768px) {
-  /* Chrome, Edge, Safari */
-  .card-container::-webkit-scrollbar {
-    width: 12px; /* normal, not huge */
-  }
+.card-container {
+  overflow-x: hidden; /* prevent horizontal scroll everywhere */
+  overflow-y: auto; /* vertical scroll if needed */
+}
 
+/* Desktop: keep custom scrollbar */
+@media (min-width: 768px) {
+  .card-container::-webkit-scrollbar {
+    width: 12px;
+  }
   .card-container::-webkit-scrollbar-track {
     background: transparent;
   }
-
   .card-container::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 3px;
@@ -507,6 +510,17 @@
   .card-container {
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  }
+}
+
+/* Mobile: hide scrollbar but allow vertical scroll naturally */
+@media (max-width: 767px) {
+  .card-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  .card-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
 

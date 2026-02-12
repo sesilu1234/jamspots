@@ -19,7 +19,26 @@ on location_coords to make the spatial part of this query lightning fast? -->
 
 ---
 
----
+quitaar lo de madrid dev al principio, que coge lat y city de vercel header
+
+mejorar lo de movil e la mama que no se vea raro a ser posible en ningun sitio
+(aunque funcione bien normalmente), y que el hamburguer para dropdown esta mas
+abajo ( o hacer logo mas pequeño)
+
+contact page sale mal en movil
+
+poner 80km iniciales incluso diria yo , y que se vea bien en mapa la distance
+the fly, que sea justo eso, 11 o 12 o 13
+
+habilitar en contact en el dropdown the user
+
+y pagina contact, en ocean o forest no se ve muy bien
+
+checkear que los procesos de github actions funcionen bien
+
+pensar en paagar supabase, y quizas vercel en futuro, si mejora algo
+
+## global filters y locaal, para date esta mal
 
 --------fix custom date para Filtro;
 
@@ -49,3 +68,17 @@ jam.
 
 Esto hace que la falta de un filtro de "distancia" no importe, porque la
 conexión visual mapa-lista es instantánea. -->
+
+¡Esa idea del "rectangulito" o "uña" es muy ingeniosa! Es básicamente crear una
+"zona de agarre" (grab handle) específica para el scroll. Es una solución muy de
+"diseño de guerrilla" que funciona de maravilla porque respeta la ergonomía del
+pulgar.Aquí te doy un par de ideas de cómo pulir esa "uñita" para que no estorbe
+pero sea súper útil:1. El "Scroll Pad" (La zona de anclaje)En lugar de que sea
+solo un botón, puedes poner una pequeña franja vertical u horizontal en una
+esquina (abajo a la izquierda, como dices, es la "zona de oro" para el pulgar
+derecho o el alcance natural del izquierdo).Visual: Un rectángulo pequeño, con
+bordes redondeados y quizás un icono de doble flecha hacia arriba/abajo
+($\updownarrow$).Comportamiento: Cuando el usuario pone el dedo ahí y arrastra,
+el mapa se ignora y la página hace scroll.El "Check" de quitar: Puedes poner una
+"X" diminuta en la esquina de la uña. Si el usuario siente que ya sabe navegar o
+le molesta, la cierra y el mapa recupera el 100% de su área.
