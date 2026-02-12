@@ -115,7 +115,7 @@ export async function GET(req: Request) {
     };
 
     // --- Implementation ---
-    const orderedData = sortData(data || [], order).map((jam) => {
+    const orderedData = sortData(data || [], order as SortOrder).map((jam) => {
       const localTime = jam.next_date
         ? DateTime.fromISO(jam.next_date, { zone: 'utc' }).setZone(
             jam.jam_timezone,
@@ -138,10 +138,13 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json(orderedData);
-  } catch (error: any) {
-    console.error('getHomeCards failure:', error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+
+    console.error('getHomeCards failure:', message);
+
     return NextResponse.json(
-      { error: 'Failed to fetch jams', details: error.message },
+      { error: 'Failed to fetch jams', details: message },
       { status: 500 },
     );
   }

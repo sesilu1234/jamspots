@@ -4,6 +4,12 @@ import { DateTime } from 'luxon';
 
 import { NextResponse } from 'next/server';
 
+type Marker = {
+  id: string;
+  lat: number;
+  lng: number;
+};
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -38,7 +44,7 @@ export async function GET(req: Request) {
     let gte: string;
     let lte: string;
 
-    let dataMarkers: any[] = [];
+    let dataMarkers: Marker[] = [];
     let error;
 
     if (dateOptionsInput === 'all') {
@@ -127,10 +133,13 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json(dataMarkers ? dataMarkers : []);
-  } catch (error: any) {
-    console.error('getHomeMarkers failure:', error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+
+    console.error('getHomeCards failure:', message);
+
     return NextResponse.json(
-      { error: 'Failed to fetch jams', details: error.message },
+      { error: 'Failed to fetch jams', details: message },
       { status: 500 },
     );
   }
