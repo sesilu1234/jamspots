@@ -487,23 +487,27 @@
   font-family: 'Space Grotesk', sans-serif;
 }
 /* Para Chrome, Edge, Safari */
-.card-container::-webkit-scrollbar {
-  width: 120px; /* grosor */
-}
+/* Desktop-only custom scrollbars */
+@media (min-width: 768px) {
+  /* Chrome, Edge, Safari */
+  .card-container::-webkit-scrollbar {
+    width: 12px; /* normal, not huge */
+  }
 
-.card-container::-webkit-scrollbar-track {
-  background: transparent; /* fondo del track */
-}
+  .card-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-.card-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3); /* color del thumb */
-  border-radius: 3px; /* esquinas redondeadas */
-}
+  .card-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+  }
 
-/* Para Firefox */
-.card-container {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  /* Firefox */
+  .card-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  }
 }
 
 .newspaper {
