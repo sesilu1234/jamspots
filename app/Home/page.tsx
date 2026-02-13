@@ -22,7 +22,7 @@ export default async function HomePage() {
         longitude: Number(lonHeader),
       }
     : {
-        city: 'Madrid, Spain FALLBACK',
+        city: 'Madrid, Spain',
         latitude: 40.4168,
         longitude: -3.7038,
       };
