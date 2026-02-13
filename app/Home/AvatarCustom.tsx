@@ -16,6 +16,8 @@ type AvatarCustomProps = {
   session: Session | null;
 };
 
+import { useSession } from 'next-auth/react';
+
 import Image from 'next/image';
 
 function AvatarCustom({ session }: AvatarCustomProps) {
@@ -74,6 +76,11 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
   });
 };
 
+
+
+
+
+
 const [email, setEmail] = useState('');
 const [message, setMessage] = useState('');
 
@@ -86,6 +93,12 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     
     // Optional: setShowShareDialog(false);
 };
+
+useEffect(() => {
+  if (session?.user?.email) {
+    setEmail(session.user.email);
+  }
+}, [session]);
 
   return (
     <>
