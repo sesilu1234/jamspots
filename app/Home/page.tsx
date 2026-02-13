@@ -7,11 +7,25 @@ export default async function HomePage() {
   const headerList = await headers();
 
   // 1. Get location from Vercel headers
-  const userLocation = {
-    city: headerList.get('x-vercel-ip-city') ?? 'Madrid (Local Dev)',
-    latitude: Number(headerList.get('x-vercel-ip-latitude')) || 40.4168,
-    longitude: Number(headerList.get('x-vercel-ip-longitude')) || -3.7038,
-  };
+  
+
+  const cityHeader = headerList.get('x-vercel-ip-city');
+  const latHeader = headerList.get('x-vercel-ip-latitude');
+  const lonHeader = headerList.get('x-vercel-ip-longitude');
+
+  // Logic: Only use Vercel's coordinates IF we also have a City.
+  // Otherwise, we default everything to Madrid to keep it consistent.
+  const userLocation = (cityHeader && latHeader && lonHeader) 
+    ? {
+        city: decodeURIComponent(cityHeader),
+        latitude: Number(latHeader),
+        longitude: Number(lonHeader),
+      }
+    : {
+        city: 'Madrid, Spain FALLBACK',
+        latitude: 40.4168,
+        longitude: -3.7038,
+      };
 
   // 2. Prepare params (60km radius)
   const paramsCards = {

@@ -2,6 +2,7 @@ import 'server-only';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { DateTime } from 'luxon';
 import tzlookup from 'tz-lookup';
+import { find as geoTz } from 'geo-tz';
 
 import { JamCard } from '@/types/jam'; // Adjust path as needed
 import { NextResponse } from 'next/server';
@@ -24,14 +25,16 @@ export async function GET(req: Request) {
     const latitude = lat;
     const longitude = lng;
 
-    let tz = 'UTC';
-    if (latitude != null && longitude != null) {
+    const tz = (() => {
+      if (!lat || !lng) return 'UTC'; // fallback if no coords
+
       try {
-        tz = tzlookup(latitude, longitude);
-      } catch {
-        tz = 'UTC';
+        return geoTz(lat, lng)[0] || 'UTC';
+      } catch (e) {
+        console.warn('geoTz failed, falling back to tz-lookup');
+        return tzlookup(lat, lng) || 'UTC';
       }
-    }
+    })();
 
     // 2. Calculate UTC Bounds using local search time
     const localNow = DateTime.now().setZone(tz);
@@ -56,24 +59,14 @@ export async function GET(req: Request) {
         .toUTC()
         .toISO()!;
     } else if (dateOptionsInput.startsWith('custom:')) {
-      /** * CUSTOM: [Start Date 00:00] until [End Date + 1 day 02:00]
-       * Interprets the user's selected days in the local timezone of the Jam.
-       */
+  const dateStr = dateOptionsInput.split(': ')[1]; // "1980-01-01"
 
-      const dateStr = dateOptionsInput.split(': ')[1];
+  const customDate = DateTime.fromISO(dateStr, { zone: tz });
 
-      const customDate = DateTime.fromISO(dateStr);
-
-      if (!customDate) throw new Error('Missing custom date range');
-
-      gte = DateTime.fromISO(customDate as string, { zone: tz })
-        .toUTC()
-        .toISO()!;
-
-      lte = DateTime.fromISO(customDate as string, { zone: tz })
-        .toUTC()
-        .toISO()!;
-    } else {
+  gte = customDate.startOf('day').toUTC().toISO(); // 00:00 of that day in tz → UTC
+  lte = customDate.endOf('day').toUTC().toISO();   // 23:59:59.999 of same day in tz → UTC
+}
+ else {
       // "Don't send incomplete info heh"
       throw new Error(`Invalid or missing dateOptions`);
     }
