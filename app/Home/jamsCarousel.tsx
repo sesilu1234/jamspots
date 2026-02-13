@@ -31,7 +31,7 @@ export default function JamCarousel({
 
   return (
     <div
-      className={`flex flex-col max-w-[95%] absolute top-8 left-1/2 -translate-x-1/2 md:top-8 md:left-18 md:translate-x-0 z-[500] gap-1`}
+      className={`flex flex-col max-w-[95%] absolute top-8 left-1/2 -translate-x-1/2 md:top-8 md:left-18 md:translate-x-0 z-[50] gap-1`}
     >
       {/* Collapse button */}
       <div
