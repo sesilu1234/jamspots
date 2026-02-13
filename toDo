@@ -15,24 +15,25 @@ limit google api maps
 gemini ai telling : Would you like me to show you how to set up the GIST index
 on location_coords to make the spatial part of this query lightning fast? -->
 
----
 
 ---
 
-quitaar lo de madrid dev al principio, que coge lat y city de vercel header
+---
+
+
+
 
 mejorar lo de movil e la mama que no se vea raro a ser posible en ningun sitio
 (aunque funcione bien normalmente), y que el hamburguer para dropdown esta mas
 abajo ( o hacer logo mas pequeño)
 
-contact page sale mal en movil
+
 
 poner 80km iniciales incluso diria yo , y que se vea bien en mapa la distance
 the fly, que sea justo eso, 11 o 12 o 13
 
 habilitar en contact en el dropdown the user
 
-y pagina contact, en ocean o forest no se ve muy bien
 
 checkear que los procesos de github actions funcionen bien
 
