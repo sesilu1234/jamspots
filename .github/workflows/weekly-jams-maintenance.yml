@@ -13,7 +13,7 @@ jobs:
         run: |
           echo "Calling maintenance endpoint..."
           # Using -f to make curl fail on HTTP errors (4xx/5xx)
-          response=$(curl -f -s -X POST "https://jamspots.xyz/api/public/weekday-jams-dates-mantainance" \
+          response=$(curl -f -s -X POST "https://www.jamspots.xyz/api/public/weekday-jams-dates-mantainance" \
           -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
           -H "Content-Type: application/json")
           
