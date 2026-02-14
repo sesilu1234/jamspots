@@ -52,7 +52,7 @@ const PlaceAutocomplete = () => {
         setInputValue(place.name || '');
 
         if (map) {
-          map.flyTo([lat, lng], 12, { duration: 1.5 });
+          map.flyTo([lat, lng], 11, { duration: 1.5 });
         }
       }
     });

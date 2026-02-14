@@ -88,7 +88,7 @@ export const MapProvider = ({ children, initialUserLocation, resCards }: MapProv
 
   useEffect(() => {
     if (map && initialUserLocation) {
-      map.flyTo([initialUserLocation.latitude, initialUserLocation.longitude], 12,  { duration: 1.5 });
+      map.flyTo([initialUserLocation.latitude, initialUserLocation.longitude], 11,  { duration: 1.5 });
     }
   }, [map]); // Only runs when the map engine is ready
   const CACHE_KEY = 'user_location';
