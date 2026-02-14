@@ -31,5 +31,3 @@ jobs:
             echo "Error Details: $HTTP_BODY"
             exit 1
           fi
-
-asdsad
