@@ -29,19 +29,21 @@ abajo ( o hacer logo mas pequeño)
 
 
 
-poner 80km iniciales incluso diria yo , y que se vea bien en mapa la distance
-the fly, que sea justo eso, 11 o 12 o 13
-
-habilitar en contact en el dropdown the user
+## google analytics, google console
 
 
 checkear que los procesos de github actions funcionen bien
 
-pensar en paagar supabase, y quizas vercel en futuro, si mejora algo
+
+
+hacer zona de comunidad / comentarios / propuestas de cancion o tocar con gente / preguntas a host / pinned message de el host , etccccccc
+quizas usando disqus
+
+<!-- pensar en paagar supabase, y quizas vercel en futuro, si mejora algo -->
 
 
 
-## google analytics, google console
+
 
 
 <!-- limpiar codigo, poner console errors logs, quitar los innecesaraios, typescript

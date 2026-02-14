@@ -176,7 +176,7 @@ export default function Filtro({
 
       map!.flyTo(
         [locationSearch!.coordinates.lat, locationSearch!.coordinates.lng],
-        12,
+        11,
         { duration: 1.5 },
       );
     } else {
