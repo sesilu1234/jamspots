@@ -16,7 +16,7 @@ import { JamImagesTop, JamImagesBottom } from './JamImages';
 import JamChars from './JamChars';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
-import JamComments from './JamComments';
+
 import CommentSection from './CommentSection';
 
 import { Space_Grotesk } from 'next/font/google';
