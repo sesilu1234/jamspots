@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function CommentSection() {
   const [replyingTo, setReplyingTo] = useState<null | number>(null);
@@ -35,7 +35,7 @@ interface Comment extends Reply {
           deleted_at : null
         },
         {
-          id: 102,
+          id: 10455,
           user: 'Host_Admin',
           time: '1m ago',
           text: "That's actually the Strymon Timeline! Running it into a slightly overdriven tube amp.",
@@ -115,6 +115,7 @@ interface Comment extends Reply {
   const deleteCommentOrReply = (parentId: number, replyId: number | null = null) => {
   const now = new Date().toISOString();
 
+
   setCommentsState((prev) =>
     prev.map((comment) => {
       // 1. Handle top-level comment deletion
@@ -139,6 +140,44 @@ interface Comment extends Reply {
     })
   );
 };
+
+
+
+ const restoreCommentOrReply = (parentId: number, replyId: number | null = null) => {
+  const now = new Date().toISOString();
+
+
+
+  setCommentsState((prev) =>
+    prev.map((comment) => {
+      // 1. Handle top-level comment deletion
+      if (replyId === null) {
+        if (comment.id === parentId) {
+          return { ...comment, deleted_at: null };
+        }
+        return comment;
+      }
+
+      // 2. Handle reply deletion inside a specific parent
+      if (comment.id === parentId) {
+        return {
+          ...comment,
+          replies: comment.replies.map((reply) =>
+            reply.id === replyId ? { ...reply, deleted_at: null } : reply
+          ),
+        };
+      }
+
+      return comment;
+    })
+  );
+
+ 
+};
+
+
+
+
 
   const [message, setMessage] = useState('');
   const [messageReply, setMessageReply] = useState('');
@@ -210,7 +249,7 @@ interface Comment extends Reply {
                 </div>
                 
  <div className="absolute top-2 right-2 z-10 opacity-0 group-hover/commentbox:opacity-100 transition-opacity">
-                    <CommentOptions onDelete={() =>{deleteCommentOrReply(comment.id)}}  isDeleted={comment.deleted_at} />
+                    <CommentOptions onDelete={() =>{deleteCommentOrReply(comment.id)}}  isDeleted={!!comment.deleted_at} onRestore={() => restoreCommentOrReply((comment.id))}/>
                       </div>
 
 
@@ -289,6 +328,11 @@ interface Comment extends Reply {
                           <span className="font-bold text-[10px] text-purple-300/80 truncate">
                            {reply.deleted_at ? "[deleted]" : reply.user}
                           </span>
+                          {reply.user === 'Host_Admin' && (
+                    <span className="bg-purple-500/20 text-purple-300 text-[7px] px-1.5 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
+                      Host
+                    </span>
+                  )}
                           <span className="text-[8px] opacity-30 uppercase whitespace-nowrap">
                             {reply.time}
                           </span>
@@ -305,7 +349,13 @@ interface Comment extends Reply {
 
                       {/* This will now trigger because the parent has group/reply */}
                       <div className="absolute top-2 right-2 z-10 opacity-0 group-hover/reply:opacity-100 transition-opacity">
-                        <CommentOptions onDelete={() =>{deleteCommentOrReply(comment.id, reply.id)}} isDeleted={reply.deleted_at}/>
+                            <CommentOptions
+                              onDelete={() => deleteCommentOrReply(comment.id, reply.id)}
+                              isDeleted={!!reply.deleted_at}
+                              onRestore={() => {
+                                restoreCommentOrReply(comment.id, reply.id);
+                              }}
+                            />
                       </div>
                     </div>
                   ))}
@@ -321,12 +371,12 @@ interface Comment extends Reply {
 
 interface CommentOptionsProps {
   onDelete: () => void;
-  // onRestore: () => void; // New prop for reviving
+  onRestore: () => void; // New prop for reviving
   // onEdit: () => void;
   isDeleted: boolean;    // Pass (deleted_at !== null) here
 }
 
-export function CommentOptions({ onDelete, isDeleted }: CommentOptionsProps) {
+export function CommentOptions({ onDelete, onRestore, isDeleted }: CommentOptionsProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -364,7 +414,7 @@ export function CommentOptions({ onDelete, isDeleted }: CommentOptionsProps) {
             {/* TOGGLE: Delete vs Restore */}
             {isDeleted ? (
               <button
-                onClick={() => { setIsOpen(false); }}
+                onClick={() => { setIsOpen(false); onRestore(); }}
                 className="w-full text-left px-4 py-2 text-xs text-green-400 hover:bg-green-500/10 rounded-sm transition-colors flex items-center gap-2"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
