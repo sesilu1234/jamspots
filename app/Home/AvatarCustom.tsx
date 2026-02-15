@@ -87,7 +87,7 @@ const [message, setMessage] = useState('');
 const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevents page reload
     
-    console.log(email, message);
+
     sendData(email, message);
 	setShowShareDialog(false);
     

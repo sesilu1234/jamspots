@@ -16,6 +16,8 @@ import { JamImagesTop, JamImagesBottom } from './JamImages';
 import JamChars from './JamChars';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import JamComments from './JamComments';
+import CommentSection from './CommentSection';
 
 import { Space_Grotesk } from 'next/font/google';
 
@@ -169,18 +171,8 @@ export default function JamComponent({ jam }: { jam: Jam }) {
           <UpvoteReport jamId={jam.id} />
         </div>
 
-        <div className="relative w-[1300px] max-w-[75%] mx-auto pb-24">
-          <span className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-3xl text-tone-0/75">
-            Disabled
-          </span>
-
-          <div className="flex flex-col gap-2 lg:gap-8  bg-[rgb(170_170_170/0.5)] lg:bg-[rgb(170_170_170/0.6)]  p-6  rounded-lg opacity-30">
-            <h3 className="text-xl lg:text-2xl">Questions</h3>
-            <p className="opacity-70  text-xs  lg:text-md">
-              Ask any question you want to the jam´s host
-            </p>
-          </div>
-        </div>
+        {/* <JamComments/> */}
+        <CommentSection/>
 
         <footer className="w-full bg-bg/0 pb-12 mt-0 flex-1 ">
           <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">
