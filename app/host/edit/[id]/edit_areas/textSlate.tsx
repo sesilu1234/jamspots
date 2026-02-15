@@ -30,7 +30,7 @@ interface DraftEditorProps {
 }
 
 const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
-  console.log(data.description);
+
   const setForm = useFormStore((state) => state.setForm);
 
   const [editorState, setEditorState] = useState(

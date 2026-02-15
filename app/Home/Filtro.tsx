@@ -198,7 +198,7 @@ export default function Filtro({
   const fetchJams = async (searchType: 'local' | 'global') => {
     try {
       if (searchType === 'local') {
-        console.log('9ew843dsuadshhdsa');
+   
         setLoading(true);
 
         const paramsCards = new URLSearchParams({

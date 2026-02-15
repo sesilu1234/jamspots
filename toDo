@@ -32,12 +32,23 @@ abajo ( o hacer logo mas pequeño)
 ## google analytics, google console
 
 
-checkear que los procesos de github actions funcionen bien
+---------------
+hacer zona de comunidad / comentarios :
+
+solo puedes deletear tus propios mensajes
+tambien puedes restore tus mensajes borrados  (los mensajes con borrado, que es fecha deleted at, te llegan al cliente vacios (vaciados en el servidor), excepto los tuyos, para que si pulsas restaurar se te restauren enseguida)
+
+al deletear y restaurar se envia a la api
+al crear mensaje o reply tambien
+
+nunca se borra de database mensaje borrado, asi que en el server se hace : si todo un thread de mensajes son borrados, no aparece : es decir si es un meensaje principal borrado sin replies, o mesanje borrado y todas replies borradas
 
 
 
-hacer zona de comunidad / comentarios / propuestas de cancion o tocar con gente / preguntas a host / pinned message de el host , etccccccc
-quizas usando disqus
+------
+
+
+quizas poner links ocultos para madrid, londres, dublin , sydney, nashivle, dallas, chicago : para que google los pinche y vaya e indexe seo esos. pero asegurar no vaya a ser malo porque google me pille y se enfade
 
 <!-- pensar en paagar supabase, y quizas vercel en futuro, si mejora algo -->
 

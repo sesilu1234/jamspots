@@ -38,6 +38,7 @@ export type Jam = {
   lng: number;
   lat: number;
   display_date: string;
+  
 };
 
 

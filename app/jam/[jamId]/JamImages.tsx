@@ -16,6 +16,7 @@ export function JamImagesTop({ images }: { images: string[] }) {
           src={images[0]}
           alt=""
           fill
+          priority
           className="object-cover blur-md scale-100" // Reduced blur and removed overflow scale
         />
       </div>
@@ -66,6 +67,7 @@ export function JamImagesBottom({ images }: JamImagesProps) {
             src={images[1]}
             alt="Photo 1"
             fill
+            priority
             className="object-cover"
             sizes="50vw"
           />
