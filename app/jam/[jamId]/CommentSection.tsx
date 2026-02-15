@@ -1,118 +1,153 @@
 import { useEffect, useState } from 'react';
+import { createComment } from '@/lib/comments/actions'; //
+interface CommentSectionProps {
+  jamId: string; 
+  comments: any;
+}
 
-export default function CommentSection() {
-  const [replyingTo, setReplyingTo] = useState<null | number>(null);
-  const [expandedThreads, setExpandedThreads] = useState([1]); // ID 1 open by default
+// 2. Destructure the props correctly
+export default function CommentSection({ jamId, comments }: CommentSectionProps) {
+  const [replyingTo, setReplyingTo] = useState<null | string>(null);
+  const [expandedThreads, setExpandedThreads] = useState<string[]>(
+  comments?.[0]?.comment_id ? [comments[0].comment_id] : []
+);
 
   interface Reply {
-  id: number;
-  user: string;
+  comment_id: string;
+  display_name: string;
   time: string;
-  text: string;
+  content: string;
   avatar: string;
   deleted_at: boolean | string | null;
+  host:  boolean;
+  is_querying_user: boolean;
 }
 
 interface Comment extends Reply {
   replies: Reply[]; // Only top-level comments have this
 }
 
-  const initialComments: Comment[] = [
-    {
-      id: 1,
-      user: 'Alex_Synth',
-      time: '2m ago',
-      text: 'What delay pedal are you using for that lead tone? It sounds incredible! 🎸 sda sad sa dsa dsa dsa dsa dsa dsa dsa sad dsa dsa dsadsa  a dsa dsa dsa asd sa dsad sa dsdsa  dsa',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
-      deleted_at : null,
-      replies: [
-        {
-          id: 101,
-          user: 'Host_Admin',
-          time: '1m ago',
-          text: "That's actually the Strymon Timeline! Running it into a slightly overdriven tube amsssssssssssssssssssssssssssssp sd s dasd a dsa dsa dssa dsa  dsa dsa dsaads  dsa.",
-          avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
-          deleted_at : null
-        },
-        {
-          id: 10455,
-          user: 'Host_Admin',
-          time: '1m ago',
-          text: "That's actually the Strymon Timeline! Running it into a slightly overdriven tube amp.",
-          avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
-          deleted_at : null
-        },
-      ],
-    },
-    {
-      id: 102,
-      user: 'Host_Admin',
-      time: '1m ago',
-      text: "That's actually the Strymon Timeline! Running it into a slightly overdriven tube amp.",
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
-      deleted_at : null,
-      replies: [],
-    },
-    {
-      id: 2,
-      user: 'JordanMix',
-      time: '10m ago',
-      text: 'Can you show the MIDI routing for the drum rack again? I missed that part.',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan',
-      deleted_at : null,
-      replies: [],
-    },
-  ];
+
+
+      const initialComments: Comment[] = comments
 
   const [commentsState, setCommentsState] = useState<Comment[]>(initialComments);
 
-  const toggleThread = (id: number) => {
+  const toggleThread = (id: string) => {
     setExpandedThreads((prev) =>
       prev.includes(id) ? prev.filter((tid) => tid !== id) : [...prev, id],
     );
   };
 
-  const postMessage = () => {
+  const postMessage = async () => {
     if (!message.trim()) return;
 
+    const contentToSave = message;
+
     const newMessage = {
-      id: Date.now(), // simple unique id
-      user: 'JordanMix',
+      comment_id: Date.now().toString(), // now it’s a string
+      display_name: 'You',
       time: 'now',
-      text: message,
+      content: contentToSave,
       avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan',
       deleted_at : null,
+      is_querying_user: true,
+      host: false,
       replies: [],
+      
     };
 
     setCommentsState((prev) => [newMessage, ...prev]);
     setMessage('');
+
+
+      try {
+    // 5. Send to Server Action
+    await createComment(jamId, contentToSave);
+  } catch (error) {
+    // 6. Handle Error (Optional: Roll back the UI state if it fails)
+    console.error("Reply failed:", error);
+    alert("Could not save reply.");
+    setMessage(contentToSave);
+  }
+    
   };
 
-  const postReply = (id: number) => {
-    if (!messageReply.trim()) return;
 
-    const newReply = {
-      id: Date.now(),
-      user: 'JordanMix',
-      time: 'now',
-      text: messageReply,
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan',
-      deleted_at : null
-    };
+  
 
-    setCommentsState((prev) =>
-      prev.map((comment) =>
-        comment.id === id
-          ? { ...comment, replies: [...comment.replies, newReply] }
-          : comment,
-      ),
-    );
 
-    setMessageReply('');
+
+
+
+
+// 1. Mark as async
+const postReply = async (parentId: string) => { // Ensure commentId is a string/UUID
+  if (!messageReply.trim()) return;
+
+  // 2. Capture the message before clearing the input
+  const contentToSave = messageReply;
+  
+  // 3. Update UI Optimistically
+  const tempReply = {
+    comment_id: Date.now().toString(), // now it’s a string
+    display_name: 'You', 
+    time: 'Just now',
+    content: contentToSave,
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan',
+    deleted_at: null,
+    host: false,
+    is_querying_user: false
   };
 
-  const deleteCommentOrReply = (parentId: number, replyId: number | null = null) => {
+  setCommentsState((prev) =>
+    prev.map((comment) =>
+      comment.comment_id === parentId
+        ? { ...comment, replies: [...(comment.replies || []), tempReply] }
+        : comment
+    )
+  );
+
+  // 4. Clear input immediately for better UX
+  setMessageReply('');
+  setReplyingTo(null);
+
+  try {
+    // 5. Send to Server Action
+    await createComment(jamId, contentToSave, parentId);
+  } catch (error) {
+    // 6. Handle Error (Optional: Roll back the UI state if it fails)
+    console.error("Reply failed:", error);
+    alert("Could not save reply.");
+    setMessageReply(contentToSave);
+  }
+
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const deleteCommentOrReply = (parentId: string, replyId: string | null = null) => {
   const now = new Date().toISOString();
 
 
@@ -120,18 +155,18 @@ interface Comment extends Reply {
     prev.map((comment) => {
       // 1. Handle top-level comment deletion
       if (replyId === null) {
-        if (comment.id === parentId) {
+        if (comment.comment_id === parentId) {
           return { ...comment, deleted_at: now };
         }
         return comment;
       }
 
       // 2. Handle reply deletion inside a specific parent
-      if (comment.id === parentId) {
+      if (comment.comment_id === parentId) {
         return {
           ...comment,
           replies: comment.replies.map((reply) =>
-            reply.id === replyId ? { ...reply, deleted_at: now } : reply
+            reply.comment_id === replyId ? { ...reply, deleted_at: now } : reply
           ),
         };
       }
@@ -143,7 +178,7 @@ interface Comment extends Reply {
 
 
 
- const restoreCommentOrReply = (parentId: number, replyId: number | null = null) => {
+ const restoreCommentOrReply = (parentId: string, replyId: string | null = null) => {
   const now = new Date().toISOString();
 
 
@@ -152,18 +187,18 @@ interface Comment extends Reply {
     prev.map((comment) => {
       // 1. Handle top-level comment deletion
       if (replyId === null) {
-        if (comment.id === parentId) {
+        if (comment.comment_id === parentId) {
           return { ...comment, deleted_at: null };
         }
         return comment;
       }
 
       // 2. Handle reply deletion inside a specific parent
-      if (comment.id === parentId) {
+      if (comment.comment_id === parentId) {
         return {
           ...comment,
           replies: comment.replies.map((reply) =>
-            reply.id === replyId ? { ...reply, deleted_at: null } : reply
+            reply.comment_id === replyId ? { ...reply, deleted_at: null } : reply
           ),
         };
       }
@@ -218,7 +253,7 @@ interface Comment extends Reply {
       {/* Comments List */}
       <div className="space-y-4">
         {commentsState.map((comment) => (
-          <div key={comment.id} className="group/comment ">
+          <div key={comment.comment_id} className="group/comment ">
             {/* Parent Comment */}
             <div className="relative flex gap-4 p-4 rounded-xl hover:bg-white/5 transition-all group/commentbox border border-transparent hover:border-white/5">
 
@@ -231,9 +266,9 @@ interface Comment extends Reply {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                    <span className="font-bold text-sm text-purple-400">
-                    {comment.deleted_at ? "[deleted]" : comment.user}
+                    {comment.deleted_at ? "[deleted]" : comment.display_name}
                   </span>
-                  {comment.user === 'Host_Admin' && (
+                  {comment.host && (
                     <span className="bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
                       Host
                     </span>
@@ -245,11 +280,11 @@ interface Comment extends Reply {
                 <div className="text-sm leading-relaxed opacity-90 mb-3 max-w-[80%]">
                   {comment.deleted_at ? (
                     <em className="text-gray-500 italic">[This message was deleted]</em>
-                  ) : comment.text}
+                  ) : comment.content}
                 </div>
                 
  <div className="absolute top-2 right-2 z-10 opacity-0 group-hover/commentbox:opacity-100 transition-opacity">
-                    <CommentOptions onDelete={() =>{deleteCommentOrReply(comment.id)}}  isDeleted={!!comment.deleted_at} onRestore={() => restoreCommentOrReply((comment.id))}/>
+                    <CommentOptions onDelete={() =>{deleteCommentOrReply(comment.comment_id)}}  isDeleted={!!comment.deleted_at} onRestore={() => restoreCommentOrReply((comment.comment_id))}/>
                       </div>
 
 
@@ -258,20 +293,20 @@ interface Comment extends Reply {
                   <button
                     onClick={() =>
                       setReplyingTo(
-                        replyingTo === comment.id ? null : comment.id,
+                        replyingTo === comment.comment_id ? null : comment.comment_id,
                       )
                     }
                     className="text-[11px] font-bold opacity-40 hover:opacity-100 hover:text-purple-400 transition-all uppercase tracking-tighter"
                   >
-                    {replyingTo === comment.id ? 'Cancel' : 'Reply'}
+                    {replyingTo === comment.comment_id ? 'Cancel' : 'Reply'}
                   </button>
 
                   {comment.replies.length > 0 && (
                     <button
-                      onClick={() => toggleThread(comment.id)}
+                      onClick={() => toggleThread(comment.comment_id)}
                       className="text-[11px] font-bold opacity-40 hover:opacity-100 transition-all uppercase tracking-tighter"
                     >
-                      {expandedThreads.includes(comment.id)
+                      {expandedThreads.includes(comment.comment_id)
                         ? 'Hide Thread'
                         : `View ${comment.replies.length} Replies`}
                     </button>
@@ -281,13 +316,13 @@ interface Comment extends Reply {
             </div>
 
             {/* Reply Input (The "Dropdown") */}
-            {replyingTo === comment.id && (
+            {replyingTo === comment.comment_id && (
               <div className="ml-14 mt-2 mb-4 flex gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
                 <div className="w-8 h-8 rounded-full bg-white/10 shrink-0" />
                 <div className="flex-1 flex flex-col gap-2">
                   <input
                     autoFocus
-                    placeholder={`Reply to ${comment.user}...`}
+                    placeholder={`Reply to ${comment.display_name}...`}
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-xs focus:outline-none focus:border-purple-500/50 transition-all"
                     value={messageReply}
                     onChange={(e) => setMessageReply(e.target.value)}
@@ -295,7 +330,7 @@ interface Comment extends Reply {
                   <div className="flex justify-end">
                     <button
                       className="bg-purple-600/80 hover:bg-purple-600 px-4 py-1.5 rounded-md text-[11px] font-bold transition-all"
-                      onClick={() => postReply(comment.id)}
+                      onClick={() => postReply(comment.comment_id)}
                     >
                       Reply
                     </button>
@@ -305,14 +340,14 @@ interface Comment extends Reply {
             )}
 
             {/* Threaded Replies */}
-            {expandedThreads.includes(comment.id) &&
+            {expandedThreads.includes(comment.comment_id) &&
               comment.replies.length > 0 && (
                 /* Reduced margin-left and padding to save horizontal space */
                 <div className="ml-16 mt-3 mb-8 space-y-3 border-l border-white/10 pl-4">
                   {comment.replies.map((reply) => (
                     // ADDED: "group/reply" to the className below
                     <div
-                      key={reply.id}
+                      key={reply.comment_id}
                       className="group/reply relative flex gap-2 p-1.5 rounded-lg hover:bg-white/[0.02] transition-colors max-w-[70%]"
                     >
 
@@ -326,9 +361,9 @@ interface Comment extends Reply {
                         <div className="flex items-center gap-2 mb-0.5">
                           
                           <span className="font-bold text-[10px] text-purple-300/80 truncate">
-                           {reply.deleted_at ? "[deleted]" : reply.user}
+                           {reply.deleted_at ? "[deleted]" : reply.display_name}
                           </span>
-                          {reply.user === 'Host_Admin' && (
+                          {reply.host && (
                     <span className="bg-purple-500/20 text-purple-300 text-[7px] px-1.5 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
                       Host
                     </span>
@@ -341,7 +376,7 @@ interface Comment extends Reply {
                          <div className="text-[12px] leading-snug opacity-70  break-words pr-8">
                   {reply.deleted_at ? (
                     <em className="text-gray-500 italic">[This message was deleted]</em>
-                  ) : reply.text}
+                  ) : reply.content}
                 </div>
 
                       
@@ -350,10 +385,10 @@ interface Comment extends Reply {
                       {/* This will now trigger because the parent has group/reply */}
                       <div className="absolute top-2 right-2 z-10 opacity-0 group-hover/reply:opacity-100 transition-opacity">
                             <CommentOptions
-                              onDelete={() => deleteCommentOrReply(comment.id, reply.id)}
+                              onDelete={() => deleteCommentOrReply(comment.comment_id, reply.comment_id)}
                               isDeleted={!!reply.deleted_at}
                               onRestore={() => {
-                                restoreCommentOrReply(comment.id, reply.id);
+                                restoreCommentOrReply(comment.comment_id, reply.comment_id);
                               }}
                             />
                       </div>

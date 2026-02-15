@@ -1,23 +1,47 @@
 "use server";
 
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
-import { revalidatePath } from 'next/cache';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../../app/api/auth/[...nextauth]/route';
 
-/**
- * CREATE A COMMENT
- */
-export async function createComment(jamId: string, content: string, slug: string) {
+export async function createComment(
+  jamId: string, 
+  content: string, 
+  parentId: string | null = null // Default values must be at the end
+) {
 
 
-  const { error } = await supabaseAdmin
-    .from('comments')
-    .insert([{ jam_id: jamId, content: content }]);
 
-  if (error) throw new Error(error.message);
+  
+  const session = await getServerSession(authOptions);
 
-  // Tell Next.js to refresh the data for this specific Jam page
-  revalidatePath(`/jams/${slug}`);
+  if (!session?.user?.email) {
+    return { error: 'Unauthorized', status: 401 };
+  }
+
+
+  
+
+  const userEmail = session.user.email;
+
+
+  console.log(userEmail,jamId, parentId, content);
+
+  const { error } = await supabaseAdmin.rpc('insert_comment', {
+    p_jam_id: jamId,
+    p_content: content,
+    p_parent_id: parentId,
+    p_email: userEmail,
+  });
+
+
+  console.log(error);
+
+  if (error) return { error: error.message, status: 500 };
+
+  return { success: true };
 }
+
 
 /**
  * EDIT A COMMENT
@@ -32,7 +56,6 @@ export async function editComment(commentId: string, newContent: string, slug: s
 
   if (error) throw new Error(error.message);
 
-  revalidatePath(`/jams/${slug}`);
 }
 
 /**
@@ -48,7 +71,6 @@ export async function deleteComment(commentId: string, slug: string) {
 
   if (error) throw new Error(error.message);
 
-  revalidatePath(`/jams/${slug}`);
 }
 
 /**
