@@ -63,27 +63,37 @@ export const getJam = cache(async (slug: string) => {
   }
 
 const formattedComments = (commentsData || []).map((comment: any) => {
-  // 1. Force the locale to English ('en')
   const createdDate = DateTime.fromISO(comment.created_at).setLocale('en');
-  
-  // 2. Generate the relative time (e.g., "5 minutes ago")
   const timeSince = createdDate.toRelative() || 'just now';
 
-  // 3. Apply the same logic to replies
-  const safeReplies = (comment.replies ?? []).map((reply: any) => ({
-    ...reply,
-    replies: reply.replies ?? [],
-    time: DateTime.fromISO(reply.created_at).setLocale('en').toRelative() || 'just now'
-  }));
+  const safeReplies = (comment.replies ?? []).map((reply: any) => {
+    const replyCreated = DateTime.fromISO(reply.created_at).setLocale('en');
+    const hideContent = reply.deleted_at !== null && !reply.is_querying_user;
+
+    return {
+      ...reply,
+      replies: reply.replies ?? [],
+      time: replyCreated.toRelative() || 'just now',
+      content: hideContent ? '' : reply.content,
+      display_name: hideContent ? '' : reply.display_name,
+      user_id: hideContent ? '' : reply.user_id
+    };
+  });
+
+  const hideContent = comment.deleted_at !== null && !comment.is_querying_user;
 
   return {
     ...comment,
     time: timeSince,
     replies: safeReplies,
+    content: hideContent ? '' : comment.content,
+    display_name: hideContent ? '' : comment.display_name,
+    user_id: hideContent ? '' : comment.user_id
   };
 });
 
-  console.log(formattedComments);
+
+
 
   // Cast through 'unknown' to safely tell TS this is our JamSessionResult
   const jam = jamData as unknown as JamSessionResult;

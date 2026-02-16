@@ -25,7 +25,7 @@ export async function createComment(
   const userEmail = session.user.email;
 
 
-  console.log(userEmail,jamId, parentId, content);
+
 
   const { error } = await supabaseAdmin.rpc('insert_comment', {
     p_jam_id: jamId,
@@ -35,9 +35,14 @@ export async function createComment(
   });
 
 
-  console.log(error);
+  
 
-  if (error) return { error: error.message, status: 500 };
+  if (error) {
+    
+    console.log(error);
+    return { error: error.message, status: 500 };
+
+  }
 
   return { success: true };
 }
@@ -47,6 +52,9 @@ export async function createComment(
  * EDIT A COMMENT
  */
 export async function editComment(commentId: string, newContent: string, slug: string) {
+
+
+  
 
 
   const { error } = await supabaseAdmin
@@ -61,30 +69,95 @@ export async function editComment(commentId: string, newContent: string, slug: s
 /**
  * DELETE A COMMENT
  */
-export async function deleteComment(commentId: string, slug: string) {
+export async function deleteComment(commentId: string, jamId: string) {
+  const session = await getServerSession(authOptions);
 
+  if (!session?.user?.email) {
+    return { error: 'Unauthorized', status: 401 };
+  }
 
-  const { error } = await supabaseAdmin
-    .from('comments')
-    .delete()
-    .eq('id', commentId);
+  const userEmail = session.user.email;
 
-  if (error) throw new Error(error.message);
+  const { error } = await supabaseAdmin.rpc('delete_user_comment', {
+    p_comment_id: commentId,
+    p_jam_id: jamId,
+    p_email: userEmail,
+  });
 
+  if (error) {
+    console.log(error);
+    return { error: error.message, status: 500 };
+  }
+
+  return { success: true };
 }
+
+
+export async function restoreComment(commentId: string, jamId: string) {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.email) {
+    return { error: 'Unauthorized', status: 401 };
+  }
+
+  const userEmail = session.user.email;
+
+  const { error } = await supabaseAdmin.rpc('restore_user_comment', {
+    p_comment_id: commentId,
+    p_jam_id: jamId,
+    p_email: userEmail,
+  });
+
+  if (error) {
+    console.log(error);
+    return { error: error.message, status: 500 };
+  }
+
+  return { success: true };
+}
+
 
 /**
  * REPORT A COMMENT
  */
-export async function reportComment(commentId: string, reason: string) {
+export async function reportComment(commentId: string, jamId: string) {
 
-
-  // Assuming you have a 'reports' table to track flags
-  const { error } = await supabaseAdmin
-    .from('reports')
-    .insert([{ comment_id: commentId, reason: reason }]);
-
-  if (error) throw new Error(error.message);
   
-  // No revalidatePath needed usually, unless the UI changes after reporting
+
+const session = await getServerSession(authOptions);
+
+  if (!session?.user?.email) {
+    return { error: 'Unauthorized', status: 401 };
+  }
+
+  const userEmail = session.user.email;
+
+
+
+
+  const { error } = await supabaseAdmin.rpc('report_user_comment', {
+    p_comment_id: commentId,
+    p_jam_id: jamId,
+    p_email: userEmail,
+  });
+
+  if (error) {
+    console.log(error);
+    return { error: error.message, status: 500 };
+  }
+
+
+
+  return { success: true };
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -1,12 +1,30 @@
+
+'use client'
+
 import { useEffect, useState } from 'react';
-import { createComment } from '@/lib/comments/actions'; //
+import { createComment, deleteComment, restoreComment, reportComment } from '@/lib/comments/actions'; //
+import { Avatar, AvatarSelf } from './Avatar';
+import { toast } from 'sonner';
+import { Toaster } from '@/components/ui/sonner';
+import { useRouter, usePathname } from 'next/navigation';
 interface CommentSectionProps {
   jamId: string; 
   comments: any;
 }
 
+import { useSession } from "next-auth/react";
+
+ 
+
+
 // 2. Destructure the props correctly
 export default function CommentSection({ jamId, comments }: CommentSectionProps) {
+
+const { data: session, status } = useSession();
+const router = useRouter();
+const pathname = usePathname();
+
+
   const [replyingTo, setReplyingTo] = useState<null | string>(null);
   const [expandedThreads, setExpandedThreads] = useState<string[]>(
   comments?.[0]?.comment_id ? [comments[0].comment_id] : []
@@ -30,8 +48,13 @@ interface Comment extends Reply {
 
 
       const initialComments: Comment[] = comments
+const [commentsState, setCommentsState] = useState<Comment[]>(
+  initialComments.map(comment => ({
+    ...comment,
+    avatar: '/user_icons/tiger.png'
+  }))
+);
 
-  const [commentsState, setCommentsState] = useState<Comment[]>(initialComments);
 
   const toggleThread = (id: string) => {
     setExpandedThreads((prev) =>
@@ -40,13 +63,29 @@ interface Comment extends Reply {
   };
 
   const postMessage = async () => {
-    if (!message.trim()) return;
+ 
+    
+
+    if (!session) {
+      toast('Login required', {
+        description: `You need to be logged in to post comment.`,
+
+        action: {
+          label: 'Login',
+          onClick: () =>
+            router.push(`/signIn?callbackUrl=${encodeURIComponent(pathname)}`),
+        },
+      });
+      return false;
+    }
+
+       if (!message.trim()) return;
 
     const contentToSave = message;
 
     const newMessage = {
       comment_id: Date.now().toString(), // now it’s a string
-      display_name: 'You',
+      display_name: session?.user?.display_name || 'You',
       time: 'now',
       content: contentToSave,
       avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan',
@@ -83,7 +122,22 @@ interface Comment extends Reply {
 
 // 1. Mark as async
 const postReply = async (parentId: string) => { // Ensure commentId is a string/UUID
-  if (!messageReply.trim()) return;
+  
+
+  if (!session) {
+      toast('Login required', {
+        description: `You need to be logged in to post reply.`,
+
+        action: {
+          label: 'Login',
+          onClick: () =>
+            router.push(`/signIn?callbackUrl=${encodeURIComponent(pathname)}`),
+        },
+      });
+      return false;
+    }
+
+    if (!messageReply.trim()) return;
 
   // 2. Capture the message before clearing the input
   const contentToSave = messageReply;
@@ -91,7 +145,7 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
   // 3. Update UI Optimistically
   const tempReply = {
     comment_id: Date.now().toString(), // now it’s a string
-    display_name: 'You', 
+    display_name: session?.user?.display_name || 'You', 
     time: 'Just now',
     content: contentToSave,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan',
@@ -147,7 +201,7 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
 
 
 
-  const deleteCommentOrReply = (parentId: string, replyId: string | null = null) => {
+  const deleteCommentOrReply = async (parentId: string, replyId: string | null = null) => {
   const now = new Date().toISOString();
 
 
@@ -174,11 +228,15 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
       return comment;
     })
   );
+
+
+    await deleteComment(replyId ? replyId : parentId, jamId);
+
 };
 
 
 
- const restoreCommentOrReply = (parentId: string, replyId: string | null = null) => {
+ const restoreCommentOrReply = async (parentId: string, replyId: string | null = null) => {
   const now = new Date().toISOString();
 
 
@@ -207,7 +265,44 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
     })
   );
 
- 
+    await restoreComment(replyId ? replyId : parentId, jamId);
+};
+
+
+
+
+
+
+
+ const reportCommentOrReply = async (parentId: string, replyId: string | null = null) => {
+    if (!session) {
+      toast('Login required', {
+        description: `You need to be logged in to report comment.`,
+
+        action: {
+          label: 'Login',
+          onClick: () =>
+            router.push(`/signIn?callbackUrl=${encodeURIComponent(pathname)}`),
+        },
+      });
+      return false;
+    }
+
+
+    await reportComment(replyId ? replyId : parentId, jamId);
+
+   toast('Report Submitted', {
+  description: 'We appreciate your feedback!',
+  action: {
+    label: 'Got it',
+    onClick: () => {
+      // Optional action when user clicks
+    },
+  },
+});
+
+      return false;
+
 };
 
 
@@ -229,7 +324,12 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
       {/* Main Input Area */}
       <div className="mb-12">
         <div className="flex gap-4 items-start">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 shrink-0 shadow-lg shadow-purple-500/20" />
+          
+         {status === "loading" ? (
+      <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse" />
+    ) : (
+      <AvatarSelf display_name={session?.user?.display_name || "Guest"} />
+    )}
           <div className="flex-1">
             <textarea
               placeholder="Ask a question or leave a comment..."
@@ -260,31 +360,46 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
             {comment.deleted_at ? (
   <div className="w-10 h-10 rounded-full border border-white/5 bg-gradient-to-b from-white/[0.02] to-transparent shrink-0" />
 ) : (
-  <img src={comment.avatar} className="w-10 h-10 rounded-full bg-white/10" alt="avatar" />
+  <Avatar display_name={comment.display_name} />
+
+
 )}
              
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                   <span className="font-bold text-sm text-purple-400">
-                    {comment.deleted_at ? "[deleted]" : comment.display_name}
-                  </span>
-                  {comment.host && (
-                    <span className="bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
-                      Host
-                    </span>
-                  )}
-                  <span className="text-[10px] opacity-40 uppercase tracking-widest">
-                    {comment.time}
-                  </span>
-                </div>
-                <div className="text-sm leading-relaxed opacity-90 mb-3 max-w-[80%]">
-                  {comment.deleted_at ? (
-                    <em className="text-gray-500 italic">[This message was deleted]</em>
-                  ) : comment.content}
-                </div>
+               <div className="flex items-center gap-2 mb-1">
+  <span className="font-bold text-sm text-purple-400">
+    {comment.deleted_at ? "[deleted]" : comment.display_name}
+  </span>
+
+  {/* Existing Host Badge */}
+  {comment.host && (
+    <span className="bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
+      Host
+    </span>
+  )}
+
+  {/* New "You" Badge */}
+  {comment.is_querying_user && (
+    <span className="bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/30 font-bold uppercase tracking-wider">
+      You
+    </span>
+  )}
+
+  <span className="text-[10px] opacity-40 uppercase tracking-widest">
+    {comment.time}
+  </span>
+</div>
+
+<div className="text-sm leading-relaxed opacity-90 mb-3 max-w-[80%]">
+  {comment.deleted_at ? (
+    <em className="text-gray-500 italic">[This message was deleted]</em>
+  ) : (
+    comment.content
+  )}
+</div>
                 
  <div className="absolute top-2 right-2 z-10 opacity-0 group-hover/commentbox:opacity-100 transition-opacity">
-                    <CommentOptions onDelete={() =>{deleteCommentOrReply(comment.comment_id)}}  isDeleted={!!comment.deleted_at} onRestore={() => restoreCommentOrReply((comment.comment_id))}/>
+                    <CommentOptions comment={comment} onDelete={() =>{deleteCommentOrReply(comment.comment_id)}}  isDeleted={!!comment.deleted_at} onRestore={() => restoreCommentOrReply((comment.comment_id))} onReport={() =>{reportCommentOrReply(comment.comment_id)}} />
                       </div>
 
 
@@ -318,7 +433,11 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
             {/* Reply Input (The "Dropdown") */}
             {replyingTo === comment.comment_id && (
               <div className="ml-14 mt-2 mb-4 flex gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                <div className="w-8 h-8 rounded-full bg-white/10 shrink-0" />
+                 {status === "loading" ? (
+      <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+    ) : (
+      <Avatar display_name={session?.user?.display_name || "Guest"} size="w-8 h-8" />
+    )}
                 <div className="flex-1 flex flex-col gap-2">
                   <input
                     autoFocus
@@ -354,7 +473,8 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
                        {reply.deleted_at ? (
   <div className="w-6 h-6  rounded-full border border-white/5 bg-gradient-to-b from-white/[0.02] to-transparent shrink-0" />
 ) : (
-  <img src={reply.avatar} className="w-6 h-6 rounded-full bg-white/10 shrink-0" alt="avatar" />
+<Avatar display_name={reply.display_name} size="w-6 h-6" />
+
 )}
                      
                       <div className="min-w-0 ">
@@ -368,6 +488,11 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
                       Host
                     </span>
                   )}
+                   {reply.is_querying_user && (
+    <span className="bg-blue-500/20 text-blue-300 text-[7px] px-1.5 py-0.5 rounded-full border border-blue-500/30 font-bold uppercase tracking-wider">
+      You
+    </span>
+  )}
                           <span className="text-[8px] opacity-30 uppercase whitespace-nowrap">
                             {reply.time}
                           </span>
@@ -385,11 +510,13 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
                       {/* This will now trigger because the parent has group/reply */}
                       <div className="absolute top-2 right-2 z-10 opacity-0 group-hover/reply:opacity-100 transition-opacity">
                             <CommentOptions
+                            comment={reply}
                               onDelete={() => deleteCommentOrReply(comment.comment_id, reply.comment_id)}
                               isDeleted={!!reply.deleted_at}
                               onRestore={() => {
                                 restoreCommentOrReply(comment.comment_id, reply.comment_id);
                               }}
+                              onReport={() =>{reportCommentOrReply(comment.comment_id, reply.comment_id)}}
                             />
                       </div>
                     </div>
@@ -405,13 +532,15 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
 
 
 interface CommentOptionsProps {
+  comment: any;
   onDelete: () => void;
   onRestore: () => void; // New prop for reviving
+  onReport: () => void; // New prop for reviving
   // onEdit: () => void;
   isDeleted: boolean;    // Pass (deleted_at !== null) here
 }
 
-export function CommentOptions({ onDelete, onRestore, isDeleted }: CommentOptionsProps) {
+export function CommentOptions({ comment, onDelete, onRestore, onReport, isDeleted }: CommentOptionsProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -431,53 +560,85 @@ export function CommentOptions({ onDelete, onRestore, isDeleted }: CommentOption
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
           
-          <div className="absolute right-0 mt-1 w-40 bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl py-1 px-1 overflow-hidden z-50">
-            
-            {/* Only show Edit if NOT deleted */}
-            {!isDeleted && (
-              <button
-                onClick={() => { setIsOpen(false); }}
-                className="w-full text-left px-4 py-2 text-xs text-white/80 hover:bg-white/10 rounded-sm transition-colors flex items-center gap-2"
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-                </svg>
-                Edit
-              </button>
-            )}
+         <div className="absolute right-0 mt-1 w-40 bg-[#121212] border border-white/10 rounded-xl shadow-2xl py-1.5 px-1.5 overflow-hidden z-50 backdrop-blur-sm">
+  {comment.is_querying_user ? (
+    <div className="flex flex-col gap-0.5">
+      {/* OWNER ACTIONS */}
+      {!isDeleted && (
+        <button
+          onClick={() => { setIsOpen(false); }}
+          className="w-full text-left px-3 py-2 text-[11px] font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-md transition-all flex items-center gap-2.5"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+          </svg>
+          Edit
+        </button>
+      )}
 
-            {/* TOGGLE: Delete vs Restore */}
-            {isDeleted ? (
-              <button
-                onClick={() => { setIsOpen(false); onRestore(); }}
-                className="w-full text-left px-4 py-2 text-xs text-green-400 hover:bg-green-500/10 rounded-sm transition-colors flex items-center gap-2"
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                  <path d="M3 3v5h5" />
-                </svg>
-                Restore
-              </button>
-            ) : (
-              <button
-                onClick={() => { setIsOpen(false); onDelete(); }}
-                className="w-full text-left px-4 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-sm transition-colors flex items-center gap-2"
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                </svg>
-                Delete
-              </button>
-            )}
-            
-            <div className="h-[1px] w-[90%] mx-auto bg-white/5 my-1" />
-            
-            <button className="w-full text-left px-4 py-2 text-xs text-white/40 hover:bg-white/5 rounded-sm transition-colors">
-              Report
-            </button>
-          </div>
+      {isDeleted ? (
+        <button
+    onClick={() => { setIsOpen(false); onRestore(); }}
+    /* Removed hover:bg-emerald-500/10 - now just text and icon transition */
+    className="w-full text-left px-3 py-2 text-[11px] font-medium text-emerald-400/80 hover:text-emerald-400 transition-colors flex items-center gap-2.5 group"
+  >
+    <svg 
+      width="12" 
+      height="12" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2.5" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+      /* Icon starts very dim, lights up on hover */
+      className="opacity-30 group-hover:opacity-100 transition-opacity"
+    >
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+    </svg>
+    Restore
+  </button>
+      ) : (
+        <button
+          onClick={() => { setIsOpen(false); onDelete(); }}
+          className="w-full text-left px-3 py-2 text-[11px] font-medium text-red-400/80 hover:text-red-400 hover:bg-red-500/10 rounded-md transition-all flex items-center gap-2.5"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+          </svg>
+          Delete
+        </button>
+      )}
+    </div>
+  ) : (
+    /* REPORT BUTTON: No background fill on hover */
+    <button 
+      onClick={() => { setIsOpen(false); onReport();}}
+      className="w-full text-left px-3 py-2 text-[11px] font-semibold text-white/30 hover:text-orange-400/80 transition-colors flex items-center gap-2.5 group"
+    >
+      <svg 
+        width="12" 
+        height="12" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="2.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+        className="opacity-40 group-hover:opacity-100 transition-opacity"
+      >
+        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+        <line x1="4" y1="22" x2="4" y2="15" />
+      </svg>
+      Report Content
+    </button>
+  )}
+</div>
         </>
       )}
+       <Toaster />
     </div>
   );
 }
+
