@@ -4,6 +4,9 @@ import JamComponent from './JamComponent';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Jam } from '../types/jam';
+export type JamWithComments = Jam & {
+  comments: any;
+};
 
 type Props = {
   params: Promise<{ jamId: string }>;
@@ -113,13 +116,15 @@ const simpleDescription = `${eventType} at ${jam.location_title}, ${city}. Open 
     }
   };
 
+  
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <JamComponent jam={jam as unknown as Jam} />
+      <JamComponent jam={jam as unknown as JamWithComments} />
     </>
   );
 }

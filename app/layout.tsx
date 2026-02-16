@@ -2,6 +2,8 @@ import { Metadata } from 'next'; // Add this import
 import './globals.css';
 import SessionWrapper from './SessionWrapper';
 import { ThemeProvider } from './ThemeProvider';
+import { getServerSession } from "next-auth"; // Add this
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // P
 
 // ADD THIS BLOCK
 export const metadata: Metadata = {
@@ -27,11 +29,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="en" className="dark">
       <head>
@@ -39,7 +44,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased min-h-screen bg-tone-5 text-tone-0">
         <ThemeProvider defaultTheme="dark">
-          <SessionWrapper>{children}</SessionWrapper>
+          <SessionWrapper session={session}>{children}</SessionWrapper>
         </ThemeProvider>
       </body>
     </html>
