@@ -10,6 +10,7 @@ import { useRouter, usePathname } from 'next/navigation';
 interface CommentSectionProps {
   jamId: string; 
   comments: any;
+  host_name: string;
 }
 
 import { useSession } from "next-auth/react";
@@ -18,7 +19,8 @@ import { useSession } from "next-auth/react";
 
 
 // 2. Destructure the props correctly
-export default function CommentSection({ jamId, comments }: CommentSectionProps) {
+export default function CommentSection({ jamId, comments, host_name }: CommentSectionProps) {
+
 
 const { data: session, status } = useSession();
 const router = useRouter();
@@ -91,7 +93,7 @@ const [commentsState, setCommentsState] = useState<Comment[]>(
       avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan',
       deleted_at : null,
       is_querying_user: true,
-      host: false,
+      host: session?.user?.display_name === host_name,
       replies: [],
       
     };
@@ -150,8 +152,8 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
     content: contentToSave,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan',
     deleted_at: null,
-    host: false,
-    is_querying_user: false
+    host: session?.user?.display_name === host_name,
+    is_querying_user: true
   };
 
   setCommentsState((prev) =>
