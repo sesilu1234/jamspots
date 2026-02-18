@@ -2,7 +2,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { createComment, deleteComment, restoreComment, reportComment } from '@/lib/comments/actions'; //
+import { createComment, deleteComment, restoreComment, reportComment, editComment } from '@/lib/comments/actions'; //
 import { Avatar, AvatarSelf } from './Avatar';
 import { toast } from 'sonner';
 import { Toaster } from '@/components/ui/sonner';
@@ -31,6 +31,8 @@ const pathname = usePathname();
   const [expandedThreads, setExpandedThreads] = useState<string[]>(
   comments?.[0]?.comment_id ? [comments[0].comment_id] : []
 );
+
+
 
   interface Reply {
   comment_id: string;
@@ -311,8 +313,61 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
 
 
 
+  const editCommentOrReply = async (parentId: string, replyId: string | null = null) => {
+  
+    
+     if (!editValue.trim()) return;
+
+    const contentToEdit = editValue;
+
+
+  setCommentsState((prev) =>
+    prev.map((comment) => {
+      // 1. Handle top-level comment deletion
+      if (replyId === null) {
+        if (comment.comment_id === parentId) {
+          return { ...comment, content: editValue };
+        }
+        return comment;
+      }
+
+      // 2. Handle reply deletion inside a specific parent
+      if (comment.comment_id === parentId) {
+        return {
+          ...comment,
+          replies: comment.replies.map((reply) =>
+            reply.comment_id === replyId ? { ...reply, content: editValue } : reply
+          ),
+        };
+      }
+
+      return comment;
+    })
+  );
+  setEditingId(null);
+
+
+    await editComment(replyId ? replyId : parentId, contentToEdit,  jamId);
+
+};
+
+
+
+
+
+
   const [message, setMessage] = useState('');
   const [messageReply, setMessageReply] = useState('');
+
+
+
+const [editingId, setEditingId] = useState<string | null>(null);
+const [editValue, setEditValue] = useState('');
+
+
+
+
+
 
   return (
     <div className="w-[1300px] max-w-[95%] mx-auto py-12 px-6   border-t border-white/5 text-tone-0">
@@ -330,7 +385,7 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
          {status === "loading" ? (
       <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse" />
     ) : (
-      <AvatarSelf display_name={session?.user?.display_name || "Guest"} />
+      <AvatarSelf display_name={session?.user?.display_name || null} />
     )}
           <div className="flex-1">
             <textarea
@@ -362,46 +417,78 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
             {comment.deleted_at ? (
   <div className="w-10 h-10 rounded-full border border-white/5 bg-gradient-to-b from-white/[0.02] to-transparent shrink-0" />
 ) : (
-  <Avatar display_name={comment.display_name} />
+  <Avatar display_name={comment.display_name || null} />
 
 
 )}
              
               <div className="flex-1">
-               <div className="flex items-center gap-2 mb-1">
-  <span className="font-bold text-sm text-purple-400">
-    {comment.deleted_at ? "[deleted]" : comment.display_name}
-  </span>
+              <div className="flex items-start gap-2 mb-1"> {/* Changed to items-start for better alignment */}
+    <div className='flex flex-col lg:flex-row lg:items-center lg:gap-2'>
+      <span className="font-bold text-sm text-purple-400">
+        {comment.deleted_at ? "[deleted]" : comment.display_name}
+      </span>
 
-  {/* Existing Host Badge */}
-  {comment.host && (
-    <span className="bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
-      Host
+      {/* Grouping badges in their own flex row to keep them side-by-side even on mobile */}
+      <div className="flex flex-wrap gap-1 mt-1 lg:mt-0">
+        {comment.host && (
+          <span className="w-fit bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
+            Host
+          </span>
+        )}
+
+        {comment.is_querying_user && (
+          <span className="w-fit bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/30 font-bold uppercase tracking-wider">
+            You
+          </span>
+        )}
+      </div>
+    </div>
+
+    <span className="text-[10px] opacity-40 uppercase tracking-widest mt-1">
+      {comment.time}
     </span>
-  )}
-
-  {/* New "You" Badge */}
-  {comment.is_querying_user && (
-    <span className="bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/30 font-bold uppercase tracking-wider">
-      You
-    </span>
-  )}
-
-  <span className="text-[10px] opacity-40 uppercase tracking-widest">
-    {comment.time}
-  </span>
-</div>
+  </div>
 
 <div className="text-sm leading-relaxed opacity-90 mb-3 max-w-[80%]">
   {comment.deleted_at ? (
     <em className="text-gray-500 italic">[This message was deleted]</em>
   ) : (
+    
+editingId === comment.comment_id ? (
+    /* EDIT MODE */
+    <div className="flex flex-col gap-2 mt-4">
+      <textarea
+        autoFocus
+        className="w-full bg-white/5 border border-purple-500/50 rounded-lg p-2 text-sm focus:outline-none min-h-[3.5rem] text-[12px]"
+        value={editValue}
+        onChange={(e) => setEditValue(e.target.value)}
+      />
+      <div className="flex gap-2 justify-end">
+        <button 
+          onClick={() => setEditingId(null)}
+          className="text-[10px] uppercase opacity-50 hover:opacity-100"
+        >
+          Cancel
+        </button>
+        <button 
+          onClick={() => editCommentOrReply(comment.comment_id)} // For replies, pass parentId too
+          className="text-[10px] uppercase text-amber-500 opacity-80 hover:opacity-100 font-bold"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  ) : (
+    /* NORMAL MODE */
     comment.content
+  )
+
   )}
 </div>
                 
- <div className="absolute top-2 right-2 z-10 opacity-0 group-hover/commentbox:opacity-100 transition-opacity">
-                    <CommentOptions comment={comment} onDelete={() =>{deleteCommentOrReply(comment.comment_id)}}  isDeleted={!!comment.deleted_at} onRestore={() => restoreCommentOrReply((comment.comment_id))} onReport={() =>{reportCommentOrReply(comment.comment_id)}} />
+ <div className="absolute top-2 right-2 z-10 lg:opacity-0 group-hover/commentbox:opacity-100 transition-opacity">
+                    <CommentOptions comment={comment} onDelete={() =>{deleteCommentOrReply(comment.comment_id)}}  isDeleted={!!comment.deleted_at} onRestore={() => restoreCommentOrReply((comment.comment_id))} onReport={() =>{reportCommentOrReply(comment.comment_id)}} onEdit={() =>{setEditValue(comment.content);setEditingId(comment.comment_id)}} />
                       </div>
 
 
@@ -409,9 +496,10 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
                 <div className="flex gap-4 items-center">
                   <button
                     onClick={() =>
+                      {setMessageReply('');
                       setReplyingTo(
                         replyingTo === comment.comment_id ? null : comment.comment_id,
-                      )
+                      )}
                     }
                     className="text-[11px] font-bold opacity-40 hover:opacity-100 hover:text-purple-400 transition-all uppercase tracking-tighter"
                   >
@@ -438,7 +526,7 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
                  {status === "loading" ? (
       <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
     ) : (
-      <Avatar display_name={session?.user?.display_name || "Guest"} size="w-8 h-8" />
+      <Avatar display_name={session?.user?.display_name || null} size="w-8 h-8" />
     )}
                 <div className="flex-1 flex flex-col gap-2">
                   <input
@@ -475,42 +563,127 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
                        {reply.deleted_at ? (
   <div className="w-6 h-6  rounded-full border border-white/5 bg-gradient-to-b from-white/[0.02] to-transparent shrink-0" />
 ) : (
-<Avatar display_name={reply.display_name} size="w-6 h-6" />
+<Avatar display_name={reply.display_name || null} size="w-6 h-6" />
 
 )}
                      
                       <div className="min-w-0 ">
-                        <div className="flex items-center gap-2 mb-0.5">
-                          
-                          <span className="font-bold text-[10px] text-purple-300/80 truncate">
-                           {reply.deleted_at ? "[deleted]" : reply.display_name}
-                          </span>
-                          {reply.host && (
-                    <span className="bg-purple-500/20 text-purple-300 text-[7px] px-1.5 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
-                      Host
-                    </span>
-                  )}
-                   {reply.is_querying_user && (
-    <span className="bg-blue-500/20 text-blue-300 text-[7px] px-1.5 py-0.5 rounded-full border border-blue-500/30 font-bold uppercase tracking-wider">
-      You
+                       <div className="flex items-start gap-2 mb-1"> {/* Changed to items-start for better alignment */}
+    <div className='flex flex-col lg:flex-row lg:items-center lg:gap-2'>
+      <span className="font-bold text-sm text-purple-400">
+        {reply.deleted_at ? "[deleted]" : reply.display_name}
+      </span>
+
+      {/* Grouping badges in their own flex row to keep them side-by-side even on mobile */}
+      <div className="flex flex-wrap gap-1 mt-1 lg:mt-0">
+        {reply.host && (
+          <span className="w-fit bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
+            Host
+          </span>
+        )}
+
+        {reply.is_querying_user && (
+          <span className="w-fit bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/30 font-bold uppercase tracking-wider">
+            You
+          </span>
+        )}
+      </div>
+    </div>
+
+    <span className="text-[10px] opacity-40 uppercase tracking-widest mt-1">
+      {reply.time}
     </span>
-  )}
-                          <span className="text-[8px] opacity-30 uppercase whitespace-nowrap">
-                            {reply.time}
-                          </span>
-                        </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
 
                          <div className="text-[12px] leading-snug opacity-70  break-words pr-8">
                   {reply.deleted_at ? (
                     <em className="text-gray-500 italic">[This message was deleted]</em>
-                  ) : reply.content}
+                  ) : 
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+
+
+
+
+
+editingId === reply.comment_id ? (
+    /* EDIT MODE */
+    <div className="flex flex-col gap-2 mt-4">
+      <textarea
+        autoFocus
+        className="w-full bg-white/5 border border-purple-500/50 rounded-lg p-2 text-[12px]  focus:outline-none min-h-[2.5rem]"
+        value={editValue}
+        onChange={(e) => setEditValue(e.target.value)}
+      />
+      <div className="flex gap-2 justify-end">
+        <button 
+          onClick={() => setEditingId(null)}
+          className="text-[10px] uppercase opacity-50 hover:opacity-100"
+        >
+          Cancel
+        </button>
+        <button 
+          onClick={() => editCommentOrReply(comment.comment_id, reply.comment_id)} // For replies, pass parentId too
+          className="text-[10px] uppercase text-amber-500 opacity-80 hover:opacity-100 font-bold"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  ) : (
+    /* NORMAL MODE */
+    reply.content
+  )
+
+
+
+
+
+
+
+
+
+
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  }
                 </div>
 
                       
                       </div>
 
                       {/* This will now trigger because the parent has group/reply */}
-                      <div className="absolute top-2 right-2 z-10 opacity-0 group-hover/reply:opacity-100 transition-opacity">
+                      <div className="absolute top-2 right-2 z-10 lg:opacity-0 group-hover/reply:opacity-100 transition-opacity">
                             <CommentOptions
                             comment={reply}
                               onDelete={() => deleteCommentOrReply(comment.comment_id, reply.comment_id)}
@@ -519,6 +692,10 @@ const postReply = async (parentId: string) => { // Ensure commentId is a string/
                                 restoreCommentOrReply(comment.comment_id, reply.comment_id);
                               }}
                               onReport={() =>{reportCommentOrReply(comment.comment_id, reply.comment_id)}}
+                              onEdit={() =>{setEditValue(reply.content);setEditingId(reply.comment_id)}}
+
+
+                              
                             />
                       </div>
                     </div>
@@ -538,11 +715,11 @@ interface CommentOptionsProps {
   onDelete: () => void;
   onRestore: () => void; // New prop for reviving
   onReport: () => void; // New prop for reviving
-  // onEdit: () => void;
+   onEdit: () => void;
   isDeleted: boolean;    // Pass (deleted_at !== null) here
 }
 
-export function CommentOptions({ comment, onDelete, onRestore, onReport, isDeleted }: CommentOptionsProps) {
+export function CommentOptions({ comment, onDelete, onRestore, onReport, onEdit, isDeleted }: CommentOptionsProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -562,13 +739,13 @@ export function CommentOptions({ comment, onDelete, onRestore, onReport, isDelet
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
           
-         <div className="absolute right-0 mt-1 w-40 bg-[#121212] border border-white/10 rounded-xl shadow-2xl py-1.5 px-1.5 overflow-hidden z-50 backdrop-blur-sm">
+         <div className="absolute right-0 mt-1 w-36 bg-[#121212] border border-white/10 rounded-md shadow-2xl py-1.5 px-1.5 overflow-hidden z-50 backdrop-blur-sm">
   {comment.is_querying_user ? (
     <div className="flex flex-col gap-0.5">
       {/* OWNER ACTIONS */}
       {!isDeleted && (
         <button
-          onClick={() => { setIsOpen(false); }}
+          onClick={() => { setIsOpen(false); onEdit(); }}
           className="w-full text-left px-3 py-2 text-[11px] font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-md transition-all flex items-center gap-2.5"
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">

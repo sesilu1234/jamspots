@@ -1,5 +1,5 @@
 type AvatarProps = {
-  display_name: string;
+  display_name: string | null;
 
   size?: string;  // optional tailwind size, default w-10 h-10
 };
@@ -94,6 +94,17 @@ const getAnimalImage = (username: string) => {
 
 
 export function Avatar({ display_name, size = 'w-10 h-10' }: AvatarProps) {
+  if (!display_name) {
+    return (
+      <div
+        className={`${size} rounded-full bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-500
+          shadow-[0_0_12px_rgba(236,72,153,0.7),0_0_24px_rgba(139,92,246,0.6)]
+          animate-[pulse_2s_ease-in-out_infinite]
+          flex items-center justify-center`}
+      />
+    );
+  }
+
   const bgColor = getColorForUsername(display_name);
   const avatar = getAnimalImage(display_name);
 
@@ -109,15 +120,25 @@ export function Avatar({ display_name, size = 'w-10 h-10' }: AvatarProps) {
 }
 
 export function AvatarSelf({ display_name, size = 'w-10 h-10' }: AvatarProps) {
+  if (!display_name) {
+    return (
+      <div
+        className={`${size} rounded-full bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-500
+          shadow-[0_0_5px_rgba(236,72,153,0.8),0_0_15px_rgba(139,92,246,0.7)]
+          animate-[pulse_4s_ease-in-out_infinite]
+          flex items-center justify-center`}
+      />
+    );
+  }
+
   const bgColor = getColorForUsername(display_name);
   const avatar = getAnimalImage(display_name);
 
   return (
     <div
       className={`${size} ${bgColor} rounded-full p-0.5 flex items-center justify-center
-        shadow-[0_0_18px_rgba(59,130,246,0.9)]    
-        animate-[pulse_4s_cubic-bezier(0.4,0,0.2,1)_infinite]
-        brightness-110`}
+        shadow-[0_0_5px_rgba(236,72,153,0.8),0_0_15px_rgba(139,92,246,0.7)]
+        animate-[pulse_4s_ease-in-out_infinite]`}
     >
       <img
         src={avatar}
