@@ -423,14 +423,14 @@ const [editValue, setEditValue] = useState('');
 )}
              
               <div className="flex-1">
-              <div className="flex items-start gap-2 mb-1"> {/* Changed to items-start for better alignment */}
-    <div className='flex flex-col lg:flex-row lg:items-center lg:gap-2'>
+              <div className="flex items-center  gap- mb-1"> {/* Changed to items-start for better alignment */}
+    <div className='flex flex-col-reverse lg:flex-row items-center gap-2'>
       <span className="font-bold text-sm text-purple-400">
         {comment.deleted_at ? "[deleted]" : comment.display_name}
       </span>
 
       {/* Grouping badges in their own flex row to keep them side-by-side even on mobile */}
-      <div className="flex flex-wrap gap-1 mt-1 lg:mt-0">
+      <div className="flex flex-wrap gap-1  lg:mt-0">
         {comment.host && (
           <span className="w-fit bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
             Host
@@ -445,7 +445,7 @@ const [editValue, setEditValue] = useState('');
       </div>
     </div>
 
-    <span className="text-[10px] opacity-40 uppercase tracking-widest mt-1">
+    <span className="text-[10px] opacity-40 uppercase tracking-widest mt-0">
       {comment.time}
     </span>
   </div>
