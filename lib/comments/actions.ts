@@ -51,7 +51,7 @@ export async function createComment(
 /**
  * EDIT A COMMENT
  */
-export async function editComment(commentId: string, newContent: string, slug: string) {
+export async function editComment(commentId: string, newContent: string, jamId: string) {
 
 
   
@@ -60,6 +60,7 @@ export async function editComment(commentId: string, newContent: string, slug: s
   const { error } = await supabaseAdmin
     .from('comments')
     .update({ content: newContent, updated_at: new Date().toISOString() })
+    .eq('jam_id', jamId)
     .eq('id', commentId);
 
   if (error) throw new Error(error.message);

@@ -51,6 +51,7 @@ const HtmlReadOnly = ({ rawContent }: HtmlReadOnlyProps) => {
 
 export type JamWithComments = Jam & {
   comments: any;
+  host_name: string;
 };
 
 // Use it in your component
@@ -177,7 +178,7 @@ export default function JamComponent({ jam }: { jam: JamWithComments }) {
         </div>
 
         {/* <JamComments/> */}
-        <CommentSection jamId={jam.id} comments={jam.comments}/>
+        <CommentSection jamId={jam.id} comments={jam.comments} host_name={jam.host_name}/>
 
         <footer className="w-full bg-bg/0 pb-12 mt-0 flex-1 ">
           <div className="flex items-center justify-center gap-12 max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">
