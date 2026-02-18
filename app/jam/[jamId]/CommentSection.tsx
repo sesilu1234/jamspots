@@ -423,32 +423,34 @@ const [editValue, setEditValue] = useState('');
 )}
              
               <div className="flex-1">
-              <div className="flex items-center  gap- mb-1"> {/* Changed to items-start for better alignment */}
-    <div className='flex flex-col-reverse lg:flex-row items-center gap-2'>
-      <span className="font-bold text-sm text-purple-400">
-        {comment.deleted_at ? "[deleted]" : comment.display_name}
-      </span>
+             <div className="flex items-center gap-2 mb-1">
+                
+  <span className="font-bold text-sm text-purple-400">
+    {comment.deleted_at ? "[deleted]" : comment.display_name}
+  </span>
 
-      {/* Grouping badges in their own flex row to keep them side-by-side even on mobile */}
-      <div className="flex flex-wrap gap-1  lg:mt-0">
-        {comment.host && (
-          <span className="w-fit bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
-            Host
-          </span>
-        )}
-
-        {comment.is_querying_user && (
-          <span className="w-fit bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/30 font-bold uppercase tracking-wider">
-            You
-          </span>
-        )}
-      </div>
-    </div>
-
-    <span className="text-[10px] opacity-40 uppercase tracking-widest mt-0">
-      {comment.time}
+  {/* Existing Host Badge */}
+  {comment.host && (
+    <span className="bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
+      Host
     </span>
-  </div>
+  )}
+
+  {/* New "You" Badge */}
+  {comment.is_querying_user && (
+    <span className="bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/30 font-bold uppercase tracking-wider">
+      You
+    </span>
+  )}
+
+  <span className="text-[10px] opacity-40 uppercase tracking-widest">
+    {comment.time}
+  </span>
+</div>
+
+
+    
+
 
 <div className="text-sm leading-relaxed opacity-90 mb-3 max-w-[80%]">
   {comment.deleted_at ? (
@@ -568,32 +570,25 @@ editingId === comment.comment_id ? (
 )}
                      
                       <div className="min-w-0 ">
-                       <div className="flex items-start gap-2 mb-1"> {/* Changed to items-start for better alignment */}
-    <div className='flex flex-col lg:flex-row lg:items-center lg:gap-2'>
-      <span className="font-bold text-sm text-purple-400">
-        {reply.deleted_at ? "[deleted]" : reply.display_name}
-      </span>
-
-      {/* Grouping badges in their own flex row to keep them side-by-side even on mobile */}
-      <div className="flex flex-wrap gap-1 mt-1 lg:mt-0">
-        {reply.host && (
-          <span className="w-fit bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
-            Host
-          </span>
-        )}
-
-        {reply.is_querying_user && (
-          <span className="w-fit bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/30 font-bold uppercase tracking-wider">
-            You
-          </span>
-        )}
-      </div>
-    </div>
-
-    <span className="text-[10px] opacity-40 uppercase tracking-widest mt-1">
-      {reply.time}
+                        <div className="flex items-center gap-2 mb-0.5">
+                          
+                          <span className="font-bold text-[10px] text-purple-300/80 truncate">
+                           {reply.deleted_at ? "[deleted]" : reply.display_name}
+                          </span>
+                          {reply.host && (
+                    <span className="bg-purple-500/20 text-purple-300 text-[7px] px-1.5 py-0.5 rounded-full border border-purple-500/30 font-bold uppercase tracking-wider">
+                      Host
+                    </span>
+                  )}
+                   {reply.is_querying_user && (
+    <span className="bg-blue-500/20 text-blue-300 text-[7px] px-1.5 py-0.5 rounded-full border border-blue-500/30 font-bold uppercase tracking-wider">
+      You
     </span>
-  </div>
+  )}
+                          <span className="text-[8px] opacity-30 uppercase whitespace-nowrap">
+                            {reply.time}
+                          </span>
+                        </div>
 
 
 
