@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { Jam } from '../types/jam';
 export type JamWithComments = Jam & {
   comments: any;
+    host_name: string;
 };
 
 type Props = {
