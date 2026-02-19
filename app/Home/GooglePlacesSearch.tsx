@@ -25,7 +25,8 @@ export default function GooglePlacesSearch() {
 }
 
 const PlaceAutocomplete = () => {
-  const { initialLocation, setLocationSearch, map } = useMapContext();
+  const { initialLocation, setInitialLocation, setLocationSearch, map } =
+    useMapContext();
   const inputRef = useRef<HTMLInputElement>(null);
   const places = useMapsLibrary('places');
 
@@ -47,6 +48,15 @@ const PlaceAutocomplete = () => {
 
         // Update context
         setLocationSearch({ coordinates: { lat, lng } });
+
+        const cookieData = {
+          city: place.name,
+          latitude: lat,
+          longitude: lng,
+          timestamp: Date.now(),
+        };
+
+        document.cookie = `user_location=${encodeURIComponent(JSON.stringify(cookieData))}; path=/; max-age=14400; SameSite=Lax`;
 
         // Update local state so 'X' shows up if name exists
         setInputValue(place.name || '');
@@ -77,7 +87,7 @@ const PlaceAutocomplete = () => {
 
       <input
         ref={inputRef}
-        defaultValue={initialLocation?.city || ''}
+        defaultValue={inputValue || ''}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="Search a location..."
         className="

@@ -29,9 +29,6 @@ export default function MapRender() {
 		lng: 151.213108,
 	});
 
-	useEffect(() => {
-		// setLocations(initialLocations);
-	}, []);
 
 	return (
 		<APIProvider apiKey={API_KEY} language="en">

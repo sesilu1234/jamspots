@@ -46,17 +46,6 @@ lo del local storage, ara que al prev page siga en el mismo sitio
 ## google analytics, google console
 
 
----------------
-hacer zona de comunidad / comentarios :
-
-solo puedes deletear tus propios mensajes
-tambien puedes restore tus mensajes borrados  (los mensajes con borrado, que es fecha deleted at, te llegan al cliente vacios (vaciados en el servidor), excepto los tuyos, para que si pulsas restaurar se te restauren enseguida)
-
-al deletear y restaurar se envia a la api
-al crear mensaje o reply tambien
-
-nunca se borra de database mensaje borrado, asi que en el server se hace : si todo un thread de mensajes son borrados, no aparece : es decir si es un meensaje principal borrado sin replies, o mesanje borrado y todas replies borradas
-
 
 
 ------
