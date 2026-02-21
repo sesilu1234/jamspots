@@ -1,3 +1,6 @@
+
+
+
 import { headers, cookies } from 'next/headers';
 import { getHomeCards } from '@/lib/getHomeCards';
 import HomeComponent from './HomeComponent'; // Import your UI component
@@ -13,10 +16,6 @@ const cookieStore = await cookies();
 
 
 const locationCookie = cookieStore.get('user_location');
-
-console.log(cookieStore);
-
-console.log(locationCookie);
 
 let userLocation;
 
@@ -72,6 +71,7 @@ if (!userLocation) {
 
   // 3. Fetch data using the optimized RPC + LATERAL JOIN
   const homeCards = await getHomeCards(paramsCards);
+  
 
   const validJams =
     homeCards?.slice(0, 20).filter((jam) => jam.slug && jam.jam_title) || [];
@@ -104,6 +104,7 @@ if (!userLocation) {
       },
     })),
   };
+
 
   return (
     <>

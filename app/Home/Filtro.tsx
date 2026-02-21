@@ -211,6 +211,8 @@ export default function Filtro({
           modality: JSON.stringify(modalityRef.current),
         });
 
+      
+
         const cardsFetch = await fetch(
           `/api/public/get-jams-cards-filtered?${paramsCards}`,
         );

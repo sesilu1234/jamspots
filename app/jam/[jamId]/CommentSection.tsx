@@ -27,6 +27,7 @@ export default function CommentSection({
   host_name,
 }: CommentSectionProps) {
   const { data: session, status } = useSession();
+
   const router = useRouter();
   const pathname = usePathname();
 

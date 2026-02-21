@@ -8,33 +8,26 @@ import React, {
 } from 'react';
 import { Map as LeafletMap } from 'leaflet';
 
+import Cookies from 'js-cookie';
+const FOUR_HOURS = 4 * 60 * 60 * 1000;
+
 export type LocationSearch = {
   coordinates: { lat: number; lng: number };
 };
 
-
-export type InitialLocation = {
-  city: string;
-  latitude: number;
-  longitude: number;
-};
-
+export type SearchLocation = string;
 
 type MapContextType = {
   map: LeafletMap | null;
   setMap: React.Dispatch<React.SetStateAction<LeafletMap | null>>;
   locationSearch: LocationSearch | null;
-  initialLocation: InitialLocation | null;
-  setInitialLocation:  React.Dispatch<
-    React.SetStateAction<InitialLocation>
-  >;
+  googleSearchLocation: SearchLocation | null;
+  setGoogleSearchLocation: React.Dispatch<React.SetStateAction<SearchLocation>>;
   setLocationSearch: React.Dispatch<
     React.SetStateAction<LocationSearch | null>
   >;
-  markersData:Marker[] ; 
-        setMarkersData: React.Dispatch<
-    React.SetStateAction<Marker[]>
-  >;
+  markersData: Marker[];
+  setMarkersData: React.Dispatch<React.SetStateAction<Marker[]>>;
 };
 
 interface MapProviderProps {
@@ -63,40 +56,81 @@ export const useMapContext = () => {
   return ctx;
 };
 
-
-
-export const MapProvider = ({ children, initialUserLocation, resCards }: MapProviderProps) => {
+export const MapProvider = ({
+  children,
+  initialUserLocation,
+  resCards,
+}: MapProviderProps) => {
   const [map, setMap] = useState<LeafletMap | null>(null);
   const [locationSearch, setLocationSearch] = useState<LocationSearch | null>({
-    coordinates: { 
-      lat: initialUserLocation.latitude, 
-      lng: initialUserLocation.longitude 
-    }
+    coordinates: {
+      lat: initialUserLocation.latitude,
+      lng: initialUserLocation.longitude,
+    },
   });
-  const [initialLocation, setInitialLocation] = useState(initialUserLocation);
+  const [googleSearchLocation, setGoogleSearchLocation] = useState(
+    initialUserLocation.city || '',
+  );
 
-  const [markersData, setMarkersData] = useState<Marker[]>(resCards?.map((jam: JamCard) => ({
-            id: jam.id,
-            lat: jam.lat,
-            lng: jam.lng,
-          })));
-
-  // const setPosition = (lat: number, lng: number) => {
-  //   setLocationSearch({ coordinates: { lat, lng } });
-  //   if (map) {
-  //     map.flyTo([lat, lng], 11, { duration: 1.5 });
-  //   }
-  // };
-
+  const [markersData, setMarkersData] = useState<Marker[]>(
+    resCards?.map((jam: JamCard) => ({
+      id: jam.id,
+      lat: jam.lat,
+      lng: jam.lng,
+    })),
+  );
 
   useEffect(() => {
-    if (map && initialUserLocation) {
-      map.flyTo([initialUserLocation.latitude, initialUserLocation.longitude], 11,  { duration: 1.5 });
-    }
-  }, [map]); // Only runs when the map engine is ready
-  const CACHE_KEY = 'user_location';
-  const CACHE_TTL = 8 * 60 * 60 * 1000; // 8h
+    if (!map) return; // wait for map to be ready
 
+    const raw = Cookies.get('user_location');
+
+    try {
+      if (raw) {
+        const parsed = JSON.parse(decodeURIComponent(raw));
+
+        // Only update if timestamp is fresh and location differs
+        const isFresh = Date.now() - parsed.timestamp < FOUR_HOURS;
+        const hasChanged =
+          !initialUserLocation ||
+          initialUserLocation.latitude !== parsed.latitude ||
+          initialUserLocation.longitude !== parsed.longitude;
+
+        if (isFresh && hasChanged) {
+          const newLocation = {
+            city: parsed.city,
+            latitude: parsed.latitude,
+            longitude: parsed.longitude,
+          };
+
+          setGoogleSearchLocation(parsed.city || '');
+
+          setLocationSearch({
+            coordinates: {
+              lat: parsed.latitude,
+              lng: parsed.longitude,
+            },
+          });
+
+          map.flyTo([parsed.latitude, parsed.longitude], 11, { duration: 1.5 });
+          return; // done
+        }
+      }
+    } catch {
+      // ignore malformed cookie
+    }
+
+    // fallback: fly to initial user location if cookie is missing or invalid
+    if (initialUserLocation) {
+      map.flyTo(
+        [initialUserLocation.latitude, initialUserLocation.longitude],
+        11,
+        {
+          duration: 1.5,
+        },
+      );
+    }
+  }, [map]);
 
   return (
     <MapContext.Provider
@@ -105,8 +139,8 @@ export const MapProvider = ({ children, initialUserLocation, resCards }: MapProv
         setMap,
         locationSearch,
         setLocationSearch,
-        initialLocation,
-        setInitialLocation,
+        googleSearchLocation,
+        setGoogleSearchLocation,
         markersData,
         setMarkersData,
       }}

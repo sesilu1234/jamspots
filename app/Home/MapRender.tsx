@@ -6,8 +6,8 @@ import L from "leaflet";
 import { useEffect } from "react";
 import { useMapContext } from "./MapContext";
 import MapMarkersCluster from "./MarkerCluster";
-
 import MapTileSwitcher from "./MapTileSwitcher";
+import MapLockControl from "./MapLock";
 
 // Fix default marker icons in TypeScript
 const DefaultIcon = L.icon({
@@ -41,6 +41,8 @@ export default function MapComponent() {
 			style={{ height: "100%", width: "100%" }}
 		>
 			<SetMap />
+
+			<MapLockControl />
 
 			<MapTileSwitcher selectedIndex={0} />
 

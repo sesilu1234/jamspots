@@ -25,13 +25,13 @@ export default function GooglePlacesSearch() {
 }
 
 const PlaceAutocomplete = () => {
-  const { initialLocation, setInitialLocation, setLocationSearch, map } =
+  const { googleSearchLocation, setGoogleSearchLocation, setLocationSearch, map } =
     useMapContext();
   const inputRef = useRef<HTMLInputElement>(null);
   const places = useMapsLibrary('places');
 
   // Track value locally just to show/hide the 'X' button
-  const [inputValue, setInputValue] = useState(initialLocation?.city || '');
+
 
   useEffect(() => {
     if (!places || !inputRef.current) return;
@@ -59,7 +59,7 @@ const PlaceAutocomplete = () => {
         document.cookie = `user_location=${encodeURIComponent(JSON.stringify(cookieData))}; path=/; max-age=14400; SameSite=Lax`;
 
         // Update local state so 'X' shows up if name exists
-        setInputValue(place.name || '');
+        setGoogleSearchLocation(place.name || '');
 
         if (map) {
           map.flyTo([lat, lng], 11, { duration: 1.5 });
@@ -71,7 +71,7 @@ const PlaceAutocomplete = () => {
   }, [places, map, setLocationSearch]);
 
   const handleClear = () => {
-    setInputValue('');
+    setGoogleSearchLocation('');
     if (inputRef.current) {
       inputRef.current.value = '';
       inputRef.current.focus();
@@ -87,8 +87,8 @@ const PlaceAutocomplete = () => {
 
       <input
         ref={inputRef}
-        defaultValue={inputValue || ''}
-        onChange={(e) => setInputValue(e.target.value)}
+        value={googleSearchLocation || ''}
+        onChange={(e) => setGoogleSearchLocation(e.target.value)}
         placeholder="Search a location..."
         className="
           w-full h-12 pl-10 pr-10 text-sm
@@ -100,7 +100,7 @@ const PlaceAutocomplete = () => {
       />
 
       {/* Clear Button */}
-      {inputValue && (
+      {googleSearchLocation && (
         <button
           onClick={handleClear}
           className="absolute inset-y-0 right-0 flex items-center pr-3 text-tone-1/40 hover:text-tone-1 transition-colors"

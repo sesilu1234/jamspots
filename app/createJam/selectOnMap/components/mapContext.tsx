@@ -36,9 +36,6 @@ export const MapProvider = ({ children }: MapProviderProps) => {
 	const [map, setMap] = useState<google.maps.Map | null>(null);
 	const [locationData, setLocation] = useState<LocationData | null>(null);
 
-	useEffect(() => {
-		console.log(locationData);
-	}, [locationData]);
 
 	return (
 		<MapContext.Provider value={{ map, setMap, locationData, setLocation }}>
