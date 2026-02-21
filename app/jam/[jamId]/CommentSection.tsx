@@ -423,7 +423,7 @@ export default function CommentSection({
                   )}
                 </div>
 
-                <div className="absolute top-2 right-2 z-10 lg:opacity-0 group-hover/commentbox:opacity-100 transition-opacity">
+                <div className="absolute top-2 right-2 z-10 lg:opacity-100 group-hover/commentbox:opacity-100 transition-opacity">
                   <CommentOptions
                     comment={comment}
                     onDelete={() => {

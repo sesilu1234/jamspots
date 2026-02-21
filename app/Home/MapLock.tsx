@@ -5,7 +5,11 @@ import { Lock, Unlock } from "lucide-react";
 
 export default function MapLockControl() {
   const map = useMap();
-  const [isLocked, setIsLocked] = useState(true);
+   const [isLocked, setIsLocked] = useState(() => {
+    if (typeof window === "undefined") return false; // server-side
+    return window.innerWidth < 768; // true on mobile
+  });
+
 
   useEffect(() => {
     if (isLocked) {
