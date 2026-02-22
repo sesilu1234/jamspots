@@ -15,7 +15,7 @@ export default function SessionMenu() {
 
 
   return (
-    <div className="absolute    top-10 right-4  md:top-16 md:right-6   flex items-center gap-2 ">
+    <div className="flex items-center gap-2 ">
       {session ? (
         <DropdownMenuAvatar session={session} />
       ) : (
