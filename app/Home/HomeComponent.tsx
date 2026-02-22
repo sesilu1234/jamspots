@@ -33,27 +33,31 @@ export default function HomeComponent({
     <div className="flex flex-col min-h-screen ">
       <MapProvider initialUserLocation={userLocation} resCards={cards}>
         <div className="relative flex flex-col  w-[1300px] max-w-[90%] mx-auto p-0 ">
-          <SignInIcons />
+         
 
-          <div className="flex ">
+          <div className="flex justify-between items-center">
             <div
               className="flex flex-col  justify-start  items-start pt-3 pb-4 pl-6 md:flex-row  md:gap-2  md:items-end  md:h-24 px-4 md:py-2 rounded-b-3xl
-             shadow-[5px_0_6px_-1px_var(--tone-3),_-5px_0_6px_-1px_var(--tone-3),0_6px_6px_-1px_var(--tone-3)]"
+             "
             >
               <img
                 src="jamspots_icon.png"
                 alt="Jamspots icon"
                 className="h-16"
               />
-              <p className="text-xs  md:py-4 text-text-2 font-semibold">
+              <p className=" hidden sm:block text-xs  md:py-4 text-text-2 font-semibold">
                 Find the next spot where music happens.
               </p>
             </div>
 
+            <div className='pb-2 sm:pb-0'>
+             <SignInIcons />
+             </div>
+
             {/* <div className="h-[1.5px] bg-foreground-1/50 w-96 mt-1 opacity-0"></div> */}
           </div>
 
-          <div className="flex flex-wrap items-center mb-5 mt-6 ml-3 gap-2 max-w-full">
+          <div className="flex flex-wrap items-center mb-5 sm:mt-4 ml-3 gap-2 max-w-full">
             {/* <Input
               className="w-72 h-10 px-3 text-sm text-gray-500 placeholder-gray-500 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="search"

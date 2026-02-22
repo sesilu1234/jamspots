@@ -24,38 +24,21 @@ a la mama en su movil le pone que no admite conexion segura https
 continue with google sign in no se ve bien en movil de la mama. ademas no deja pulsar facil
 para replies no puedo ver el edit/delete de mis comments
 
-en marker card poner tambien proxima fecha/hora
-
-en movil no se ven los 3 puntitos de edit o report
 
 
 mejorar lo de movil e la mama que no se vea raro a ser posible en ningun sitio
 (aunque funcione bien normalmente), y que el hamburguer para dropdown esta mas
-abajo ( o hacer logo mas pequeño)
+abajo ( o hacer logo mas pequeño), y se vea scroll bar (no?)
 
 
 
-jampsots logo en light mode no esta con borde
 
 
-
-lo del local storage, ara que al prev page siga en el mismo sitio
 
 
 
 ## google analytics, google console
 
-
----------------
-hacer zona de comunidad / comentarios :
-
-solo puedes deletear tus propios mensajes
-tambien puedes restore tus mensajes borrados  (los mensajes con borrado, que es fecha deleted at, te llegan al cliente vacios (vaciados en el servidor), excepto los tuyos, para que si pulsas restaurar se te restauren enseguida)
-
-al deletear y restaurar se envia a la api
-al crear mensaje o reply tambien
-
-nunca se borra de database mensaje borrado, asi que en el server se hace : si todo un thread de mensajes son borrados, no aparece : es decir si es un meensaje principal borrado sin replies, o mesanje borrado y todas replies borradas
 
 
 
@@ -87,19 +70,3 @@ jam.
 
 Esto hace que la falta de un filtro de "distancia" no importe, porque la
 conexión visual mapa-lista es instantánea. -->
-
-¡Esa idea del "rectangulito" o "uña" es muy ingeniosa! Es básicamente crear una
-"zona de agarre" (grab handle) específica para el scroll. Es una solución muy de
-"diseño de guerrilla" que funciona de maravilla porque respeta la ergonomía del
-pulgar.Aquí te doy un par de ideas de cómo pulir esa "uñita" para que no estorbe
-pero sea súper útil:1. El "Scroll Pad" (La zona de anclaje)En lugar de que sea
-solo un botón, puedes poner una pequeña franja vertical u horizontal en una
-esquina (abajo a la izquierda, como dices, es la "zona de oro" para el pulgar
-derecho o el alcance natural del izquierdo).Visual: Un rectángulo pequeño, con
-bordes redondeados y quizás un icono de doble flecha hacia arriba/abajo
-($\updownarrow$).Comportamiento: Cuando el usuario pone el dedo ahí y arrastra,
-el mapa se ignora y la página hace scroll.El "Check" de quitar: Puedes poner una
-"X" diminuta en la esquina de la uña. Si el usuario siente que ya sabe navegar o
-le molesta, la cierra y el mapa recupera el 100% de su área.
-
-uña

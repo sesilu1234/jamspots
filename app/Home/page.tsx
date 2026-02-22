@@ -1,31 +1,62 @@
-import { headers } from 'next/headers';
+
+
+
+import { headers, cookies } from 'next/headers';
 import { getHomeCards } from '@/lib/getHomeCards';
 import HomeComponent from './HomeComponent'; // Import your UI component
 import { JamCard } from '@/types/jam';
 
+const FOUR_HOURS = 4 * 60 * 60 * 1000;
+
+
 export default async function HomePage() {
-  const headerList = await headers();
+// Ensure this is inside an async function (like an RSC or Server Action)
+const headerList = await headers(); 
+const cookieStore = await cookies();
 
-  // 1. Get location from Vercel headers
-  
 
+const locationCookie = cookieStore.get('user_location');
+
+let userLocation;
+
+if (locationCookie) {
+  try {
+    const decodedValue = decodeURIComponent(locationCookie.value);
+    const parsed = JSON.parse(decodedValue);
+    
+    if (Date.now() - parsed.timestamp < FOUR_HOURS) {
+      userLocation = {
+        city: parsed.city,
+        latitude: parsed.latitude,
+        longitude: parsed.longitude,
+      };
+    }
+  } catch (e) {
+    console.error("Failed to parse location cookie", e);
+  }
+}
+
+// 2️⃣ If no valid cookie → use Vercel headers
+if (!userLocation) {
   const cityHeader = headerList.get('x-vercel-ip-city');
   const latHeader = headerList.get('x-vercel-ip-latitude');
   const lonHeader = headerList.get('x-vercel-ip-longitude');
 
-  // Logic: Only use Vercel's coordinates IF we also have a City.
-  // Otherwise, we default everything to Madrid to keep it consistent.
-  const userLocation = (cityHeader && latHeader && lonHeader) 
-    ? {
-        city: decodeURIComponent(cityHeader),
-        latitude: Number(latHeader),
-        longitude: Number(lonHeader),
-      }
-    : {
-        city: 'Madrid, Spain',
-        latitude: 40.4168,
-        longitude: -3.7038,
-      };
+  userLocation =
+    cityHeader && latHeader && lonHeader
+      ? {
+          city: decodeURIComponent(cityHeader),
+          latitude: Number(latHeader),
+          longitude: Number(lonHeader),
+        }
+      : {
+          city: 'Madrid, Spain',
+          latitude: 40.4168,
+          longitude: -3.7038,
+        };
+}
+
+
 
   // 2. Prepare params (60km radius)
   const paramsCards = {
@@ -40,6 +71,7 @@ export default async function HomePage() {
 
   // 3. Fetch data using the optimized RPC + LATERAL JOIN
   const homeCards = await getHomeCards(paramsCards);
+  
 
   const validJams =
     homeCards?.slice(0, 20).filter((jam) => jam.slug && jam.jam_title) || [];
@@ -72,6 +104,7 @@ export default async function HomePage() {
       },
     })),
   };
+
 
   return (
     <>

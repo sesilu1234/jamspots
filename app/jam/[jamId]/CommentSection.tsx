@@ -27,6 +27,7 @@ export default function CommentSection({
   host_name,
 }: CommentSectionProps) {
   const { data: session, status } = useSession();
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -353,7 +354,7 @@ export default function CommentSection({
         {commentsState.map((comment) => (
           <div key={comment.comment_id} className="group/comment ">
             {/* Parent Comment */}
-            <div className="relative flex gap-4 py-4 rounded-xl hover:bg-white/5 transition-all group/commentbox border border-transparent hover:border-white/5">
+            <div className="relative flex gap-4 p-4 rounded-xl hover:bg-white/5 transition-all group/commentbox border border-transparent hover:border-white/5">
               {comment.deleted_at ? (
                 <div className="w-10 h-10 rounded-full border border-white/5 bg-gradient-to-b from-white/[0.02] to-transparent shrink-0" />
               ) : (
@@ -422,7 +423,7 @@ export default function CommentSection({
                   )}
                 </div>
 
-                <div className="absolute top-2 right-2 z-10 lg:opacity-0 group-hover/commentbox:opacity-100 transition-opacity">
+                <div className="absolute top-2 right-2 z-10 lg:opacity-100 group-hover/commentbox:opacity-100 transition-opacity">
                   <CommentOptions
                     comment={comment}
                     onDelete={() => {

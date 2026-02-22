@@ -31,29 +31,6 @@ export default function TimeAndPlace({
 	
 	
 
-
-
-
-  useEffect(() => {
-    const clientDate = new Date();
-    const year = clientDate.getFullYear();
-    const month = String(clientDate.getMonth() + 1).padStart(2, '0');
-    const day = String(clientDate.getDate()).padStart(2, '0');
-    const localDateLocal = `${year}-${month}-${day}`;
-    const paramsJam = new URLSearchParams({
-      userDate: localDateLocal,
-    }).toString();
-    async function fetchJam() {
-      const res = await fetch(`/api/public/get-jam-date/${slug}?${paramsJam}`);
-      const data = await res.json();
-	  
-    
-
-      // <-- log here, after fetch
-    }
-    fetchJam();
-  }, []);
-
 	return (
 		<div className="gap-4 flex flex-col">
 			<div className="gap-5 flex flex-row items-center pb-2">
