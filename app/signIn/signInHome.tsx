@@ -50,9 +50,9 @@ export default function SignIn() {
           </div>
 
           <div
-            className="flex items-center font-bold px-8 py-4 mt-24 bg-white w-84 gap-8 mx-auto justify-center rounded-xl cursor-pointer border border-black hover:bg-black/10"
-            onClick={() => signIn('google', { callbackUrl })}
-          >
+  className="flex items-center font-bold px-8 py-4 mt-24 bg-white w-84 gap-8 mx-auto justify-center rounded-xl cursor-pointer border border-black select-none transition active:scale-95 active:bg-black/20"
+  onClick={() => signIn('google', { callbackUrl })}
+>
             <svg
               width="35"
               height="35"

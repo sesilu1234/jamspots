@@ -33,7 +33,7 @@ function AvatarCustom({ session }: AvatarCustomProps) {
 	);
 }
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { MoreHorizontalIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -58,14 +58,34 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from 'sonner';
+import { Toaster } from '@/components/ui/sonner';
+import { z } from 'zod';
+const MAX_MESSAGE_LENGTH = 500;
+
 
 export default function DropdownMenuNotSignedIn() {
 	const [showNewDialog, setShowNewDialog] = useState(false);
 	const [showShareDialog, setShowShareDialog] = useState(false);
 
 
-	const sendData = (email: string, msg: string) => {
-  fetch('/api/public/users-suggestions', {
+
+
+	 const contactSchema = z.object({
+	   email: z
+		 .email('Invalid email format')
+		 .max(254),
+	   msg: z
+		 .string()
+		 .trim()
+		 .min(1, 'Message is required')
+		 .max(MAX_MESSAGE_LENGTH, `Message must be under ${MAX_MESSAGE_LENGTH} characters`),
+	 });
+	 
+
+
+	const sendData = async (email: string, msg: string) => {
+  await fetch('/api/public/users-suggestions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, msg }),
@@ -75,25 +95,45 @@ export default function DropdownMenuNotSignedIn() {
 const [email, setEmail] = useState('');
 const [message, setMessage] = useState('');
 
-const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevents page reload
-    
+const [isSending, setIsSending] = useState(false);
 
-    sendData(email, message);
-	setShowShareDialog(false);
-    
-    // Optional: setShowShareDialog(false);
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  if (isSending) return;
+
+  const result = contactSchema.safeParse({
+    email,
+    msg: message,
+  });
+
+  if (!result.success) {
+    toast.error(result.error.issues[0].message);
+    return;
+  }
+
+  setIsSending(true);
+
+  try {
+    await sendData(result.data.email, result.data.msg);
+
+    setShowShareDialog(false);
+
+    toast.success('Message sent', {
+      description: 'Thank you for helping the community stay updated.',
+    });
+  } finally {
+    setIsSending(false);
+  }
 };
 
 	return (
-		<>
+		<div>
 			<DropdownMenu modal={false}>
 				<DropdownMenuTrigger asChild>
 					<button>
 						<div
-							className="shadow-md hover:shadow-lg   hover:bg-tone-4
-                         transition-all duration-200 cursor-pointer px-2 py-1 rounded-sm border-2 border-tone-1"
-						>
+  className="shadow-md hover:shadow-lg active:shadow-lg hover:bg-tone-4 active:bg-tone-4 transition-transform transition-colors duration-200 cursor-pointer px-2 py-1 rounded-sm border-2 border-tone-1 select-none active:scale-95"
+>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -185,14 +225,15 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
                         </Button>
                     </DialogClose>
                     {/* This button triggers the form's onSubmit */}
-                    <Button type="submit" className="border-2 border-red">
+                    <Button type="submit" disabled={isSending} className="border-2 border-red">
                         Send
                     </Button>
                 </DialogFooter>
             </form>
         </DialogContent>
     </Dialog>
-		</>
+	 <Toaster />
+		</div>
 	);
 }
 

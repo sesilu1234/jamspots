@@ -305,7 +305,8 @@ export default function Filtro({
 
       {/* Overlay + Filter Panel */}
       {open && (
-        <div className="fixed inset-0 z-[503] flex flex-col  items-center pt-5 ">
+        <div className="fixed inset-0 z-[503] flex flex-col items-center pt-5 
+                  bg-slate-900/40 backdrop-blur-[1px] transition-all duration-300">
           <div className="relative   max-w-[80%] md:w-xl ">
             <div
               ref={panelRef_1}

@@ -2,6 +2,9 @@ import Link from 'next/link';
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 import { User } from 'lucide-react';
 
+import { toast } from 'sonner';
+import { Toaster } from '@/components/ui/sonner';
+
 import type { Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useEffect } from 'react';
@@ -38,8 +41,11 @@ function AvatarCustom({ session }: AvatarCustomProps) {
   );
 }
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { MoreHorizontalIcon } from 'lucide-react';
+import { z } from 'zod';
+const MAX_MESSAGE_LENGTH = 500;
+
 
 import { Button } from '@/components/ui/button';
 import {
@@ -68,8 +74,26 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
   const [showNewDialog, setShowNewDialog] = useState(false);
   const [showShareDialog, setShowShareDialog] = useState(false);
 
-  const sendData = (email: string, msg: string) => {
-  fetch('/api/public/users-suggestions', {
+
+
+
+const contactSchema = z.object({
+  email: z
+    .email('Invalid email format')
+    .max(254),
+  msg: z
+    .string()
+    .trim()
+    .min(1, 'Message is required')
+    .max(MAX_MESSAGE_LENGTH, `Message must be under ${MAX_MESSAGE_LENGTH} characters`),
+});
+
+
+
+
+
+  const sendData = async (email: string, msg: string) => {
+  await fetch('/api/public/users-suggestions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, msg }),
@@ -84,15 +108,37 @@ export default function DropdownMenuAvatar({ session }: AvatarCustomProps) {
 const [email, setEmail] = useState('');
 const [message, setMessage] = useState('');
 
-const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevents page reload
-    
+const [isSending, setIsSending] = useState(false);
 
-    sendData(email, message);
-	setShowShareDialog(false);
-    
-    // Optional: setShowShareDialog(false);
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  if (isSending) return;
+
+  const result = contactSchema.safeParse({
+    email,
+    msg: message,
+  });
+
+  if (!result.success) {
+    toast.error(result.error.issues[0].message);
+    return;
+  }
+
+  setIsSending(true);
+
+  try {
+    await sendData(result.data.email, result.data.msg);
+
+    setShowShareDialog(false);
+
+    toast.success('Message sent', {
+      description: 'Thank you for helping the community stay updated.',
+    });
+  } finally {
+    setIsSending(false);
+  }
 };
+
 
 useEffect(() => {
   if (session?.user?.email) {
@@ -101,12 +147,15 @@ useEffect(() => {
 }, [session]);
 
   return (
-    <>
+    <div>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <button>
-            <AvatarCustom session={session} />
-          </button>
+         <button className="transition-transform transition-colors duration-150 ease-out 
+                   hover:scale-105 hover:brightness-105 
+                   active:scale-95 active:brightness-90 
+                   rounded-full">
+  <AvatarCustom session={session} />
+</button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-40 relative top-0 border-1 border-tone-0/25 z-[500]"
@@ -184,14 +233,15 @@ useEffect(() => {
                         </Button>
                     </DialogClose>
                     {/* This button triggers the form's onSubmit */}
-                    <Button type="submit" className="border-2 border-red">
+                    <Button type="submit" disabled={isSending} className="border-2 border-red">
                         Send
                     </Button>
                 </DialogFooter>
             </form>
         </DialogContent>
     </Dialog>
-    </>
+     <Toaster />
+    </div>
   );
 }
 
