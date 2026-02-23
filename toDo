@@ -15,16 +15,28 @@ limit google api maps
 gemini ai telling : Would you like me to show you how to set up the GIST index
 on location_coords to make the spatial part of this query lightning fast? -->
 
-
----
-
-continue with google sign in no se ve bien en movil de la mama. ademas no deja pulsar facil
-para replies no puedo ver el edit/delete de mis comments. scroll bar no se ve en movil. markercardcluster no se ve bien en movil mama 
+scroll bar no se ve en movil. 
 
 
+ver si lo del map lock, es intuitivo, o cambiar colores, etc...
 
-user suggestion, necesita forma de email(si no no acepte , ni cliente ni server), y enviar toaster automatico si supera cliente
 
+
+---------
+¿Qué te sugiero hacer ahora?
+En lugar de esconder links, haz que el Sitemap trabaje por ti.
+
+Crea un archivo sitemap.xml dinámico en Next.js que incluya todas las ciudades.
+
+Usa Breadcrumbs (migas de pan) en tu web: Home > Spain > Madrid. Esos son enlaces internos que a Google le encantan para entender la jerarquía.
+
+Si te preocupa que el diseño se vea "sucio" con muchos links, agrúpalos en un selector de ciudades o un "Directorio" en el menú inferior.
+
+¿Te gustaría que te ayude a pensar cómo estructurar la base
+
+
+
+-------------
 
 
 
@@ -36,7 +48,7 @@ user suggestion, necesita forma de email(si no no acepte , ni cliente ni server)
 ------
 
 
-quizas poner links ocultos para madrid, londres, dublin , sydney, nashivle, dallas, chicago : para que google los pinche y vaya e indexe seo esos. pero asegurar no vaya a ser malo porque google me pille y se enfade
+
 
 <!-- pensar en paagar supabase, y quizas vercel en futuro, si mejora algo -->
 

@@ -124,7 +124,7 @@ export default function MapMarkersCluster() {
 
   if (selectedMarker)
     return (
-      <div className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2     lg:translate-x-0 lg:-translate-y-0      lg:top-4 lg:right-4 z-[401] w-80 overflow-hidden rounded-2xl shadow-2xl">
+      <div className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2     lg:translate-x-0 lg:-translate-y-0      lg:top-4 lg:right-4 z-[401] max-w-[90%] w-80 overflow-hidden rounded-sm sm:rounded-2xl shadow-2xl">
         {/* Transparent Header Overlay */}
         <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-end p-3">
           {/* Subtle Badge */}
@@ -214,7 +214,7 @@ export function JamCardMarker({
 }) {
   return (
     <Card
-      className={`${geist.className} group overflow-hidden rounded-2xl  bg-neutral-50 transition-all duration-300 hover:-translate-y-1   ${className}`}
+      className={`${geist.className} group overflow-hidden rounded-lg sm:rounded-2xl  bg-neutral-50 transition-all duration-300 hover:-translate-y-1   ${className}`}
     >
       <Link href={`/jam/${jamData.slug}`} prefetch={false} className="block">
         {/* Image Container */}
@@ -321,7 +321,7 @@ const tags = ['blues', 'rap'];
 export function CardSkeleton() {
   return (
     <Card
-      className="flex flex-col w-80 overflow-hidden rounded-2xl bg-neutral-50 shadow-md absolute top-1/2 
+      className="flex flex-col max-w-[90%] w-80 overflow-hidden rounded-lg sm:rounded-2xl  bg-neutral-50 shadow-md absolute top-1/2 
     right-1/2 translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:-translate-y-0 lg:top-4 lg:right-4 z-[401]"
     >
       {/* 1. Image Container - Matches h-52 and relative for tags */}

@@ -1,5 +1,8 @@
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
+
+
 
 export async function POST(req: Request) {
   try {
@@ -9,11 +12,25 @@ export async function POST(req: Request) {
     const sender_ip = req.headers.get('x-forwarded-for')?.split(',')[0] || null;
     const user_agent = req.headers.get('user-agent') || null;
 
+
+    const contactSchema = z.object({
+    email: z.string().email().max(150),
+    msg: z.string().max(150),
+  });
+
+
+  const parsed = contactSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
+  }
+
+
+
     const { data, error } = await supabaseAdmin
       .from('user_suggestions')
       .insert({
-        sender_email: email,
-        message: msg,
+        sender_email: parsed.data.email,
+        message: parsed.data.msg,
         sender_ip,
         user_agent,
       })

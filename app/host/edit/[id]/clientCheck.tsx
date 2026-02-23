@@ -129,7 +129,7 @@ export function validateJam(input: Partial<Jam>): {
     });
   }
 
-  errors.social_links = 'Max 150 characters for links url';
+
 
   // location_coords
   if (!input.location_coords) {

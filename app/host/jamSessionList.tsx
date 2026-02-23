@@ -39,7 +39,7 @@ export default function JamSessionList() {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black/40">
         {showPanelDelete && (
-          <div className=" flex flex-col gap-2 bg-white p-4 rounded-md shadow-xl w-96">
+          <div className=" flex flex-col gap-2 bg-white p-4 rounded-md shadow-xl w-96 max-w-[70%] ">
             <p className="font-seminbold">
               Type <i className="font-medium">delete</i> to confirm
             </p>
@@ -52,21 +52,21 @@ export default function JamSessionList() {
             />
 
             <div className="mt-3 flex gap-2">
-              <button
-                onClick={async () => {
-                  setShowPanelDelete(false);
-                  await deleteJam(idToDelete!);
-                  setIdToDelete(null);
-                }}
-                disabled={text !== 'delete'}
-                className={
-                  text === 'delete'
-                    ? 'bg-red-400 hover:bg-rose-500 px-3 py-1  rounded-md'
-                    : 'opacity-50 px-3 py-1 '
-                }
-              >
-                Accept
-              </button>
+             <button
+  onClick={async () => {
+    setShowPanelDelete(false);
+    await deleteJam(idToDelete!);
+    setIdToDelete(null);
+  }}
+  disabled={text.toLowerCase() !== 'delete'}
+  className={
+    text.toLowerCase() === 'delete'
+      ? 'bg-red-400 hover:bg-rose-500 px-3 py-1 rounded-md'
+      : 'opacity-50 px-3 py-1'
+  }
+>
+  Accept
+</button>
 
               <button
                 onClick={() => setIdToDelete(null)}
@@ -150,12 +150,17 @@ export default function JamSessionList() {
 
           <div className="flex items-center gap-4">
             <div
-              className="
-          relative flex h-10 w-10 items-center justify-center 
-          rounded-xl bg-zinc-900/00 border-2  text-black
-          transition-all duration-500 ease-spring
-          group-hover:bg-yellow-400 group-hover:text-black group-hover:rotate-90
-        "
+             className="
+  relative flex h-10 w-10 items-center justify-center 
+  rounded-xl bg-zinc-900/00 border-2 text-black
+  transition-all duration-500 ease-spring
+  
+  group-hover:bg-yellow-400 
+  group-hover:rotate-90
+  
+  group-active:bg-yellow-400
+  group-active:rotate-90
+"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +175,17 @@ export default function JamSessionList() {
               <span className="text-sm md:text-base font-semibold tracking-tight text-zinc-900">
                 Add new jam
               </span>
-              <span className="text-xs text-zinc-500 opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+              <span className="
+  text-xs text-zinc-500
+  opacity-0 -translate-y-1
+  transition-all duration-300
+  
+  group-hover:opacity-100
+  group-hover:translate-y-0
+  
+  group-active:opacity-100
+  group-active:translate-y-0
+">
                 Start a session
               </span>
             </div>
@@ -213,22 +228,25 @@ function Jam({
   deleteJam,
 }: JamProps) {
   return (
-    <div className={`flex items-center gap-8 py-4 mx-auto container transition-opacity ${!is_validated ? 'opacity-75' : 'opacity-100'}`}>
+    <div className={`flex items-center gap-8 py-4 mx-auto container transition-opacity`}>
       
       {/* IMAGE CONTAINER */}
       <div className="w-3/10 h-32 relative">
-        <Image
-          src={jam_image_src}
-          alt={jam_title}
-          fill
-          sizes="(max-width: 1280px) 30vw, 400px"
-          className="object-cover rounded-lg"
-        />
+      <Image
+  src={jam_image_src}
+  alt={jam_title}
+  fill
+  sizes="(max-width: 1280px) 30vw, 400px"
+  // Use backticks (`) and move the logic inside the curly braces
+  className={`object-cover rounded-lg transition-opacity ${
+    !is_validated ? 'opacity-50' : 'opacity-100'
+  }`}
+/>
         
         {/* VALIDATION BADGE */}
         {!is_validated && (
           <div className="absolute top-2 left-2 bg-amber-500 text-white text-[10px] uppercase font-bold max-w-3/4 px-2 py-1 rounded shadow-md flex items-center gap-1">
-            <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+            <span className="w-2 h-2 bg-white rounded-full animate-pulse flex shrink-0" />
             Pending Review
           </div>
         )}
@@ -327,7 +345,7 @@ export function MobileMenu({ jam_slug, id, deleteJam }: MobileMenuProps) {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-28 py-1 px-1 border-1 border-black/10 bg-slate-50/80 text-black text-sm backdrop-blur-sm rounded-md shadow-lg z-50">
+        <div className="absolute right-0  mt-2 w-28 py-1 px-1 border-1 border-black/10 bg-slate-50/80 text-black text-sm backdrop-blur-sm rounded-md shadow-lg z-10">
           <div className="flex flex-col">
             <Link href={`/jam/${jam_slug}`} prefetch={false}>
               <div className="flex items-center gap-2 px-1 py-2 hover:bg-black/10 rounded-md">

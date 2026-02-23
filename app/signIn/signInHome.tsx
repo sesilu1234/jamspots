@@ -1,8 +1,6 @@
 'use client';
-import { divIcon } from 'leaflet';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-
 import { useSearchParams } from 'next/navigation';
 
 export default function SignIn() {
@@ -10,55 +8,72 @@ export default function SignIn() {
 
   // Get the 'callbackUrl' from the URL, or default to home if it's missing
   const callbackUrl = searchParams.get('callbackUrl') || '/';
+
   return (
-    <div className="min-h-screen bg-white/85 text-black">
-      <div className="w-[1300px] max-w-[90%] mx-auto ">
-        <div className="inline-block ml-6 sm:ml-12 md:ml-24 mt-12">
-          <div className="ml-3 flex flex-col  md:flex-row  md:items-end gap-2">
-            <h3 className="font-bold text-4xl">jamspots</h3>
-            <p className=" text-xs pb-1 text-gray-800 font-semibold">
-              Find the next spot where music happens.
-            </p>
-          </div>
+    /* 1. Changed bg-white/85 to bg-white: Stops the phone's dark background from bleeding through.
+       2. added dark:bg-white: This forces the background to stay white even if the phone is in dark mode.
+    */
+    <div className="min-h-screen bg-white text-black font-sans selection:bg-gray-200">
+      <div className="max-w-screen-xl mx-auto px-6 py-12">
+        
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end gap-2 mb-20">
+          <h1 className="font-bold text-4xl tracking-tight">jamspots</h1>
+          <p className="text-xs pb-1 text-gray-600 font-semibold uppercase tracking-wider">
+            Find the next spot where music happens.
+          </p>
         </div>
 
-        <div className="flex flex-col justify-center">
-          <div className="text-center mt-24">
-            <h3 className="font-bold text-5xl">WELCOME TO JAMSPOTS</h3>
+        {/* Main Content */}
+        <div className="flex flex-col items-center justify-center">
+          <div className="text-center mb-8">
+            <h2 className="font-extrabold text-4xl md:text-6xl tracking-tighter">
+              WELCOME TO JAMSPOTS
+            </h2>
           </div>
 
-          <div className="h-[1.5px] bg-gray-700/50 container md:w-168 mt-4 mx-auto"></div>
-          <div className="flex container md:w-168 justify-between md:mx-auto mt-4 text-black/95">
-            <Link href="/">
-              <div className="flex gap-4 items-center font-bold">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 23 23"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4.40527 12.65H23V10.35H4.40527L13.1395 1.61575L11.5 0L0 11.5L11.5 23L13.1395 21.3842L4.40527 12.65Z"
-                    fill="#1F1F1F"
-                  />
-                </svg>
-                Back to Home Page
-              </div>
+          {/* Divider - using max-w instead of fixed pixels */}
+          <div className="h-[1px] bg-black/10 w-full max-w-md mx-auto"></div>
+
+          {/* Navigation Sub-header */}
+          <div className="flex w-full max-w-md justify-between items-center mt-6 px-1">
+            <Link 
+              href="/" 
+              className="flex gap-2 items-center font-bold text-sm hover:opacity-60 transition-opacity"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 23 23"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.40527 12.65H23V10.35H4.40527L13.1395 1.61575L11.5 0L0 11.5L11.5 23L13.1395 21.3842L4.40527 12.65Z"
+                  fill="currentColor"
+                />
+              </svg>
+              BACK TO HOME
             </Link>
-            <div className="font-bold text-black/95">SIGN IN</div>
+            <span className="font-bold text-sm text-gray-400">SIGN IN</span>
           </div>
 
-          <div
-  className="flex items-center font-bold px-8 py-4 mt-24 bg-white w-84 gap-8 mx-auto justify-center rounded-xl cursor-pointer border border-black select-none transition active:scale-95 active:bg-black/20"
-  onClick={() => signIn('google', { callbackUrl })}
->
+          {/* Google Button - Changed to a <button> for better mobile behavior */}
+          <button
+            onClick={() => signIn('google', { callbackUrl })}
+            className="group mt-16 flex items-center justify-center gap-4 w-full max-w-xs px-6 py-4 
+                       bg-white border-2 border-black rounded-2xl font-bold text-lg
+                       shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
+                       transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none
+                       hover:bg-gray-50 select-none"
+          >
             <svg
-              width="35"
-              height="35"
+              width="24"
+              height="24"
               viewBox="0 0 50 50"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="shrink-0"
             >
               <path
                 fillRule="evenodd"
@@ -86,7 +101,7 @@ export default function SignIn() {
               />
             </svg>
             Continue with Google
-          </div>
+          </button>
         </div>
       </div>
     </div>

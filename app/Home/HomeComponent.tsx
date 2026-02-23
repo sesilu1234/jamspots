@@ -93,7 +93,7 @@ export default function HomeComponent({
             </div>
           </div>
 
-          <div className="relative w-full mx-auto mt-2 h-148 rounded-sm  shadow-md overflow-hidden">
+          <div className="relative w-full mx-auto mt-2 h-[85vh]  sm:h-148 rounded-sm  shadow-md overflow-hidden">
             <MapRender />
             <JamCarousel
               jams={jams}
