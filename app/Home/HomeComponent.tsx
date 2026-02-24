@@ -5,6 +5,7 @@ import { MapProvider } from './MapContext';
 
 import dynamic from 'next/dynamic';
 import GooglePlacesSearch from './GooglePlacesSearch';
+import GooglePlacesSearchServer from './GooglePlacesSearchServer';
 import JamCarousel from './jamsCarousel';
 import { Input } from '@/components/ui/input';
 import { Menu } from 'lucide-react';
@@ -65,7 +66,8 @@ export default function HomeComponent({
             /> */}
 
             <div className="w-52 ">
-              <GooglePlacesSearch />
+              {/* <GooglePlacesSearch /> */}
+              <GooglePlacesSearchServer/>
             </div>
 
             <div className=" ">
