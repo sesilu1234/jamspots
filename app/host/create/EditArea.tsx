@@ -202,7 +202,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
           if (!saveResult?.success) {
             setSaving(false);
             toast(saveResult.message, {
-              description: 'Network error',
+              description: 'Client data error',
               action: {
                 label: 'Understood',
                 onClick: () => console.log('Understood'),
