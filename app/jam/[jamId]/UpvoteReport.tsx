@@ -261,7 +261,7 @@ export default function UpvoteReport({ jamId }: UpvoteReportProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Toaster />
+  
     </div>
   );
 }
