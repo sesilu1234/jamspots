@@ -175,9 +175,10 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
           <ProgressDemo progress={progress} setProgress={setProgress} />
         </div>
       ) : null}
-      <div
+      <button
         className="flex justify-center m-12 ml-auto p-2 bg-black text-white w-32 h-10 rounded-lg cursor-pointer 
       hover:text-black hover:bg-slate-200 hover:border hover:border-black"
+      disabled={saving}
         onClick={async () => {
           setProgress(13);
           setSaving(true);
@@ -201,7 +202,7 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
           if (!saveResult?.success) {
             setSaving(false);
             toast(saveResult.message, {
-              description: '',
+              description: 'Network error',
               action: {
                 label: 'Understood',
                 onClick: () => console.log('Understood'),
@@ -214,16 +215,17 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
           setProgress(100);
           await wait(200);
 
-          setSaving(false);
+         
 
           router.push('/host'); // only navigate if success
         }}
       >
         {saving ? 'Saving…' : 'Save and Exit'}
-        <Toaster />
-      </div>
+       
+      </button>
 
       <Sections childSaveOnUnmount={childSaveOnUnmount} />
+       <Toaster />
     </div>
   );
 }

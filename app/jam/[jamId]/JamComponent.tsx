@@ -1,4 +1,5 @@
 'use client';
+const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_CLIENT_API_KEY!;
 
 import Image from 'next/image';
 
@@ -150,7 +151,7 @@ export default function JamComponent({ jam }: { jam: JamWithComments }) {
               address={jam.location_address}
               fallbackLat={jam.lat}
               fallbackLng={jam.lng}
-              apiKey="AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE"
+              apiKey={API_KEY}
             />
           </div>
 

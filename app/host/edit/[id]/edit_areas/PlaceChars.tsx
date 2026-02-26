@@ -1,80 +1,51 @@
+'use client';
 import { useState, useRef, useEffect } from 'react';
-
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PlaceCharsProps } from './types/types';
-
-import { useAtom } from 'jotai';
-import { formAtom } from '../store/jotai';
-
-import { useFormStore } from '../store/formStore'; // path a tu store
+import { useFormStore } from '../store/formStore';
 
 const all_styles = [
-  // Musical styles
-  'Blues',
-  'Rock',
-  'All styles',
-  'Country',
-  'Jazz',
-  'Pop',
-  'Funk',
-  'Soul',
-  'Reggae',
-  'Metal',
-  'Hip-Hop',
-  'R&B',
-  'Disco',
-  'House',
-  'Trance',
-  'Electronic',
-  'Acoustic',
-  'Singer-Songwriter',
-  'Folk',
-  'Indie',
-  'Alternative',
-  'Roots',
-  'Afro',
-  'Fusion',
-  'Latin',
-
-  // Moods / vibes
-  'Improvisation',
+  'Blues', 'Rock', 'All styles', 'Country', 'Jazz', 'Pop', 'Funk', 'Soul',
+  'Reggae', 'Metal', 'Hip-Hop', 'R&B', 'Disco', 'House', 'Trance',
+  'Electronic', 'Acoustic', 'Singer-Songwriter', 'Folk', 'Indie',
+  'Alternative', 'Roots', 'Afro', 'Fusion', 'Latin', 'Improvisation',
 ];
 
-export default function PlaceChars({
-  data,
-  childSaveOnUnmount,
-}: PlaceCharsProps) {
+export default function PlaceChars({ data, childSaveOnUnmount }: PlaceCharsProps) {
   const setForm = useFormStore((state) => state.setForm);
-
   const [search, setSearch] = useState('');
-
   const [modality, setModality] = useState<string>(data.modality);
-
   const [selectedStyles, setSelectedStyles] = useState<string[]>(data.styles);
   const [song_list, setSongList] = useState<boolean>(data.song_list);
-  const [instruments_lend, setIntrumentsLend] = useState<boolean>(
-    data.intruments_lend,
-  );
+  const [instruments_lend, setIntrumentsLend] = useState<boolean>(data.intruments_lend);
   const [drums, setDrums] = useState<boolean>(data.drums);
 
-  const modalityRef = useRef(modality);
-  modalityRef.current = modality;
+  const refs = useRef({ modality, selectedStyles, song_list, instruments_lend, drums });
+  useEffect(() => {
+    refs.current = { modality, selectedStyles, song_list, instruments_lend, drums };
+  }, [modality, selectedStyles, song_list, instruments_lend, drums]);
 
-  const stylesRef = useRef(selectedStyles);
-  stylesRef.current = selectedStyles;
+  function updateDataRef() {
+    setForm((prev) => ({
+      ...prev,
+      features: {
+        modality: refs.current.modality as 'open_mic' | 'jam',
+        styles: refs.current.selectedStyles,
+        song_list: refs.current.song_list,
+        intruments_lend: refs.current.instruments_lend,
+        drums: refs.current.drums,
+      },
+    }));
+  }
 
-  const songRef = useRef(song_list);
-  songRef.current = song_list;
-
-  const instrumentsRef = useRef(instruments_lend);
-  instrumentsRef.current = instruments_lend;
-
-  const drumsRef = useRef(drums);
-  drumsRef.current = drums;
+  useEffect(() => {
+    childSaveOnUnmount.current = updateDataRef;
+    return () => { childSaveOnUnmount.current = () => {}; };
+  }, []);
 
   const filteredStyles = all_styles.filter((style) =>
-    style.toLowerCase().includes(search.toLowerCase()),
+    style.toLowerCase().includes(search.toLowerCase())
   );
 
   const toggleStyle = (style: string) => {
@@ -85,74 +56,51 @@ export default function PlaceChars({
     }
   };
 
-  function updateDataRef() {
-    setForm((prev) => ({
-      ...prev,
-      features: {
-        modality: modalityRef.current as 'open_mic' | 'jam',
-        styles: stylesRef.current,
-        song_list: songRef.current,
-        intruments_lend: instrumentsRef.current,
-        drums: drumsRef.current,
-      },
-    }));
-  }
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/immutability
-    childSaveOnUnmount.current = updateDataRef;
-
-    return () => {
-      childSaveOnUnmount.current = () => {};
-    };
-  }, []);
-
   return (
-    <div className="p-6 flex flex-col gap-3">
-      <div className="max-w-[70%] ml-[10%]">
-        {/* --- NUEVA SECCIÓN MODALITY --- */}
+    /* Changed to solid bg-white to fix the "black background" issue on her phone */
+    <div className="p-6 flex flex-col gap-3 bg-white text-black min-h-screen">
+      {/* Changed ml-[10%] to mx-auto so it centers on all phones */}
+      <div className="w-[95%] max-w-[600px] mx-auto">
+        
+        {/* --- MODALITY --- */}
         <div className="mb-8">
           <label className="block mb-3 text-sm font-semibold uppercase tracking-wider text-gray-500">
             Event Modality
           </label>
           <div className="inline-flex p-1.5 bg-gray-100 rounded-2xl gap-1">
-            {['jam', 'open_mic'].map((option) => {
-              const isActive = modality === option;
-              return (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => setModality(option)}
-                  className={`
-            relative px-8 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ease-out capitalize
-            ${
-              isActive
-                ? 'bg-white text-emerald-700 shadow-sm ring-1 ring-black/5'
-                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
-            }
-          `}
-                >
-                  {option.replace('_', ' ')}
-                </button>
-              );
-            })}
+            {['jam', 'open_mic'].map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setModality(option)}
+                className={`px-4 sm:px-8 py-2.5 rounded-xl text-sm font-bold transition-all capitalize ${
+                  modality === option
+                    ? 'bg-white text-emerald-700 shadow-sm'
+                    : 'text-gray-500 hover:bg-gray-200/50'
+                }`}
+              >
+                {option.replace('_', ' ')}
+              </button>
+            ))}
           </div>
         </div>
-        {/* ------------------------------ */}
+
+        {/* --- STYLES --- */}
         <div className="flex justify-between">
-          <span className="">Styles</span>
+          <span className="font-bold">Styles</span>
           <span>{selectedStyles.length} / 3</span>
         </div>
 
         <Input
           type="search"
           placeholder="Search for styles"
-          className="w-72 mt-6"
+          /* Changed w-72 to w-full so it doesn't poke out the side of her screen */
+          className="w-full mt-6 bg-white"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <div className="flex flex-wrap gap-2 mt-4 border p-2 rounded max-h-60 w-3/4 overflow-y-auto">
+        <div className="flex flex-wrap gap-2 mt-4 border p-2 rounded max-h-60 w-full overflow-y-auto">
           {filteredStyles.map((style) => {
             const isSelected = selectedStyles.includes(style);
             return (
@@ -173,93 +121,39 @@ export default function PlaceChars({
         </div>
 
         {selectedStyles.length > 0 && (
-          <div className="mt-4">
-            <span className="font-semibold">Selected Styles: </span>
+          <div className="mt-4 text-sm">
+            <span className="font-semibold">Selected: </span>
             {selectedStyles.join(', ')}
           </div>
         )}
 
-        <div className="flex flex-col gap-4 mt-16">
-          <div className="flex  items-center gap-6">
-            {' '}
-            <span className="w-48 font-semibold ">Is there a setlist?</span>
-            <Button
-              variant={null}
-              className={`w-12 ${
-                song_list
-                  ? 'bg-blue-500 text-white '
-                  : 'bg-background hover:bg-primary/30'
-              }`}
-              onClick={() => setSongList(true)}
-            >
-              Yes
-            </Button>
-            <Button
-              variant={null}
-              className={`w-12 ${
-                !song_list
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-background hover:bg-primary/30'
-              }`}
-              onClick={() => setSongList(false)}
-            >
-              No
-            </Button>
-          </div>
-          <div className="flex items-center gap-6">
-            {' '}
-            <span className="w-48 font-semibold ">
-              Are instruments available to borrow?
-            </span>
-            <Button
-              variant={null}
-              className={`w-12 ${
-                instruments_lend
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-background hover:bg-primary/30'
-              }`}
-              onClick={() => setIntrumentsLend(true)}
-            >
-              Yes
-            </Button>
-            <Button
-              variant={null}
-              className={`w-12 ${
-                !instruments_lend
-                  ? 'bg-blue-500 text-white'
-                  : ' bg-background hover:bg-primary/30'
-              }`}
-              onClick={() => setIntrumentsLend(false)}
-            >
-              No
-            </Button>
-          </div>
-          <div className="flex  items-center gap-6">
-            {' '}
-            <span className="w-48 font-semibold ">Is there a drum kit?</span>
-            <Button
-              variant={null}
-              className={`w-12 ${
-                drums
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-background hover:bg-primary/30'
-              }`}
-              onClick={() => setDrums(true)}
-            >
-              Yes
-            </Button>
-            <Button
-              variant={null}
-              className={`w-12 ${
-                !drums
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-background hover:bg-primary/30'
-              }`}
-              onClick={() => setDrums(false)}
-            >
-              No
-            </Button>
-          </div>
+        {/* --- TOGGLES --- */}
+        <div className="flex flex-col gap-6 mt-16">
+          {[
+            { label: 'Is there a setlist?', state: song_list, setter: setSongList },
+            { label: 'Instruments available?', state: instruments_lend, setter: setIntrumentsLend },
+            { label: 'Is there a drum kit?', state: drums, setter: setDrums },
+          ].map((item, idx) => (
+            <div key={idx} className="flex flex-wrap items-center justify-between gap-4">
+              <span className="w-full sm:w-48 font-semibold">{item.label}</span>
+              <div className="flex gap-2">
+                <Button
+                  variant={null}
+                  className={`w-16 ${item.state ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-blue-100'}`}
+                  onClick={() => item.setter(true)}
+                >
+                  Yes
+                </Button>
+                <Button
+                  variant={null}
+                  className={`w-16 ${!item.state ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-blue-100'}`}
+                  onClick={() => item.setter(false)}
+                >
+                  No
+                </Button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

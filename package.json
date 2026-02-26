@@ -29,6 +29,8 @@
     "@supabase/supabase-js": "^2.86.0",
     "@tiptap/react": "^3.11.0",
     "@tiptap/starter-kit": "^3.11.0",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.36.2",
     "@vis.gl/react-google-maps": "latest",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

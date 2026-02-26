@@ -5,35 +5,10 @@ opcion de cambiar mapa ? o cambiar mapa directamentre a otro?
 
 ---
 
---- -->
-
-ojo lo de las quotas, quizas teakear mejor o usar tarjeta temporal ? google
-cloud quotas y api restrictions. y cambiar api sign in a jamspots xyz y lo de
-limit google api maps
-
-<!--
-gemini ai telling : Would you like me to show you how to set up the GIST index
-on location_coords to make the spatial part of this query lightning fast? -->
+--- --> 
 
 
----
-
----
-a la mama en su movil le pone que no admite conexion segura https
-
-continue with google sign in no se ve bien en movil de la mama. ademas no deja pulsar facil
-para replies no puedo ver el edit/delete de mis comments
-
-
-
-mejorar lo de movil e la mama que no se vea raro a ser posible en ningun sitio
-(aunque funcione bien normalmente), y que el hamburguer para dropdown esta mas
-abajo ( o hacer logo mas pequeño), y se vea scroll bar (no?)
-
-
-
-
-
+-------------
 
 
 
@@ -45,7 +20,7 @@ abajo ( o hacer logo mas pequeño), y se vea scroll bar (no?)
 ------
 
 
-quizas poner links ocultos para madrid, londres, dublin , sydney, nashivle, dallas, chicago : para que google los pinche y vaya e indexe seo esos. pero asegurar no vaya a ser malo porque google me pille y se enfade
+
 
 <!-- pensar en paagar supabase, y quizas vercel en futuro, si mejora algo -->
 

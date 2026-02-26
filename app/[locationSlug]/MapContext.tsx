@@ -36,8 +36,10 @@ interface MapProviderProps {
     latitude: number;
     longitude: number;
     city: string;
+   
   };
   resCards: JamCard[];
+   currentUsedPath: string;
 }
 
 type Marker = {
@@ -47,6 +49,7 @@ type Marker = {
 };
 
 import { JamCard } from '@/types/jam';
+import { usePathname } from 'next/navigation'
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
 
@@ -60,6 +63,7 @@ export const MapProvider = ({
   children,
   initialUserLocation,
   resCards,
+  currentUsedPath
 }: MapProviderProps) => {
   
   const [map, setMap] = useState<LeafletMap | null>(null);
@@ -80,61 +84,62 @@ export const MapProvider = ({
       lng: jam.lng,
     })),
   );
+  const pathname = usePathname()?.substring(1) || '' // "home/about"
 
   useEffect(() => {
-    if (!map) return; // wait for map to be ready
+  if (!map) return; // wait for map
 
-    const raw = Cookies.get('user_location');
 
-    try {
+  try {
+    
 
-      
-      if (raw) {
-        const parsed = JSON.parse(decodeURIComponent(raw));
-   
+    console.log(currentUsedPath, 'current');
+    console.log(pathname, 'pathname');
 
-        // Only update if timestamp is fresh and location differs
-        const isFresh = Date.now() - parsed.timestamp < FOUR_HOURS;
-        const hasChanged =
-          !initialUserLocation ||
-          initialUserLocation.latitude !== parsed.latitude ||
-          initialUserLocation.longitude !== parsed.longitude;
+    if (pathname !== currentUsedPath) {
+      // Fetch coordinates from internal API
+      fetch(`/api/public/geocoding?address=${encodeURIComponent(pathname)}`)
+        .then(res => res.json())
+        .then(parsed => {
+          if (!parsed || !parsed[0]) return
 
-        if (isFresh && hasChanged) {
-          const newLocation = {
-            city: parsed.city,
-            latitude: parsed.latitude,
-            longitude: parsed.longitude,
-          };
+          console.log(parsed);
 
-          setGoogleSearchLocation(parsed.city || '');
+          const firstResult = parsed[0]
+          const { formatted_address: city, geometry } = firstResult
 
+          setGoogleSearchLocation(city || '')
           setLocationSearch({
             coordinates: {
-              lat: parsed.latitude,
-              lng: parsed.longitude,
+              lat: geometry.location.lat,
+              lng: geometry.location.lng,
             },
-          });
+          })
 
-          map.flyTo([parsed.latitude, parsed.longitude], 11, { duration: 1.5 });
-          return; // done
-        }
-      }
-    } catch {
-      // ignore malformed cookie
-    }
+          map.flyTo([geometry.location.lat, geometry.location.lng], 11, {
+            duration: 1.5,
+          })
+        })
+        
 
-    // fallback: fly to initial user location if cookie is missing or invalid
-    if (initialUserLocation) {
-      map.flyTo(
-        [initialUserLocation.latitude, initialUserLocation.longitude],
-        11,
-        {
-          duration: 1.5,
-        },
-      );
+      return // done
     }
-  }, [map]);
+  } catch {
+    // ignore malformed state
+  }
+
+  // fallback: initial user location
+  if (initialUserLocation) {
+    map.flyTo(
+      [initialUserLocation.latitude, initialUserLocation.longitude],
+      11,
+      { duration: 1.5 }
+    )
+    const cookieData = { city: initialUserLocation.city || '', latitude: initialUserLocation.latitude, longitude: initialUserLocation.longitude, timestamp: Date.now() };
+    document.cookie = `user_location=${encodeURIComponent(JSON.stringify(cookieData))}; path=/; max-age=14400; SameSite=Lax`;
+  }
+}, [map])
+
 
   return (
     <MapContext.Provider

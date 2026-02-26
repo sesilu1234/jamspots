@@ -99,7 +99,7 @@ export default function Social({ data, childSaveOnUnmount }: SocialProps) {
 						value={data.siteWeb}
 						placeholder="https://mywebsite.com"
 					/>
-					;
+					
 				</div>
 			</div>
 		</div>

@@ -13,7 +13,7 @@ import {
 import { useMapContext } from "./mapContext";
 import type { LocationData } from "./mapContext"; // adjust path as needed
 
-const API_KEY = "AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE";
+const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_CLIENT_API_KEY!;
 
 // type Poi = { key: string; location: google.maps.LatLngLiteral };
 
@@ -39,7 +39,7 @@ export default function MapRender() {
 				<MarkerLocation position={markerPos} />
 
 				<MapControl position={ControlPosition.TOP}>
-					<div className="w-72 m-6">
+				<div className="w-full relative top-5 z-500 ">
 						<PlaceAutocomplete
 							onPlaceSelect={(place) => {
 								if (!place) {
@@ -130,7 +130,7 @@ function PlaceAutocomplete({ onPlaceSelect }: PlaceAutocompleteProps) {
 		<input
 			ref={inputRef}
 			placeholder="Search a place..."
-			className="w-full h-10 px-3 text-lg text-black bg-white border border-gray-800 rounded"
+			className=" h-10 px-3 text-lg text-black bg-white border border-gray-800 rounded"
 		/>
 	);
 }

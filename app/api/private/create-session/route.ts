@@ -199,7 +199,7 @@ export async function POST(req: Request) {
       .map(({ millis, ...cleanRow }: { millis: number; utc_datetime: string; jam_timezone: string }) => cleanRow); // Fixes "millis: any"
 
     // 2. The RPC call stays the same
-    const { error: jamDatesError } = await supabaseAdmin.rpc('sync_jam_dates', {
+    const { error: jamDatesError } = await supabaseAdmin.rpc('sync_jam_dates_manual', {
       target_jam_id: id,
       new_dates: insert_jam_dates 
     });

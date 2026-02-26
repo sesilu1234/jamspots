@@ -1,20 +1,69 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useState, useRef  } from 'react';
 import Link from 'next/link';
+import { toast } from 'sonner';
+import { Toaster } from '@/components/ui/sonner';
+import { useRouter } from 'next/navigation'; 
+import { z } from 'zod';
+const MAX_MESSAGE_LENGTH = 500;
+
+
 
 export default function Contact() {
+
+  const router = useRouter();
+
+
   const [msg, setMsg] = useState('');
   const [email, setEmail] = useState('');
 
-  const sendData = async () => {
-    await fetch('/api/public/users-suggestions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ msg, email }),
-    });
-  };
+    const sentRef = useRef(false);
+
+
+
+
+  
+
+const contactSchema = z.object({
+  email: z
+    .email('Invalid email format')
+    .max(254),
+  msg: z
+    .string()
+    .trim()
+    .min(1, 'Message is required')
+    .max(MAX_MESSAGE_LENGTH, `Message must be under ${MAX_MESSAGE_LENGTH} characters`),
+});
+
+
+ const sendData = async () => {
+  if (sentRef.current) return;
+
+  const result = contactSchema.safeParse({ email, msg });
+
+  if (!result.success) {
+    toast.error(result.error.issues[0].message);
+    return;
+  }
+
+  sentRef.current = true;
+
+  await fetch('/api/public/users-suggestions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(result.data),
+  });
+
+  toast.success('Report sent', {
+    description: 'Thank you for helping the community stay updated.',
+  });
+
+  setTimeout(() => {
+  router.push('/');
+}, 3000); // 2 seconds feels natural
+};
 
   return (
     <div className="w-[1300px] max-w-[90%] mx-auto p-6">
@@ -61,6 +110,7 @@ export default function Contact() {
           />
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }

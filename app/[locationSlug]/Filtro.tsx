@@ -267,7 +267,7 @@ export default function Filtro({
       setSearchType('local');
       fetchJams('local');
     }
- 
+
   }, [locationSearch]);
 
   return (
