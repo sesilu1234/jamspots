@@ -5,6 +5,8 @@ import { ThemeProvider } from './ThemeProvider';
 import { getServerSession } from "next-auth"; // Add this
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // P
 import Script from 'next/script';
+import CookieConsent from './cookieToaster';
+import { Toaster } from '@/components/ui/sonner';
 
 // ADD THIS BLOCK
 export const metadata: Metadata = {
@@ -61,6 +63,8 @@ export default async function RootLayout({
         {/* ------------------------ */}
         <ThemeProvider defaultTheme="dark">
           <SessionWrapper session={session}>{children}</SessionWrapper>
+          <CookieConsent/>
+          <Toaster/>
         </ThemeProvider>
       </body>
     </html>
