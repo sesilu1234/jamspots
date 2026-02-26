@@ -26,7 +26,9 @@ export default function StaticMap({
 
 	const marker = `&markers=color:red%7Clabel:M%7C${markerLocation}`;
 
+
 	const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=16&size=600x400&maptype=roadmap&scale=2${marker}&key=${apiKey}`;
+	
 
 	const googleMapsUrl = hasAddress
 		? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(

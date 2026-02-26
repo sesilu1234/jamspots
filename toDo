@@ -5,35 +5,7 @@ opcion de cambiar mapa ? o cambiar mapa directamentre a otro?
 
 ---
 
---- -->
-
-ojo lo de las quotas, quizas teakear mejor o usar tarjeta temporal ? google
-cloud quotas y api restrictions. y cambiar api sign in a jamspots xyz y lo de
-limit google api maps
-
-<!--
-gemini ai telling : Would you like me to show you how to set up the GIST index
-on location_coords to make the spatial part of this query lightning fast? -->
-
-scroll bar no se ve en movil. 
-
-
-ver si lo del map lock, es intuitivo, o cambiar colores, etc...
-
-
-
----------
-¿Qué te sugiero hacer ahora?
-En lugar de esconder links, haz que el Sitemap trabaje por ti.
-
-Crea un archivo sitemap.xml dinámico en Next.js que incluya todas las ciudades.
-
-Usa Breadcrumbs (migas de pan) en tu web: Home > Spain > Madrid. Esos son enlaces internos que a Google le encantan para entender la jerarquía.
-
-Si te preocupa que el diseño se vea "sucio" con muchos links, agrúpalos en un selector de ciudades o un "Directorio" en el menú inferior.
-
-¿Te gustaría que te ayude a pensar cómo estructurar la basem
-
+--- --> 
 
 
 -------------

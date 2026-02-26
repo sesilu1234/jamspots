@@ -13,11 +13,14 @@ import Link from 'next/link';
 import SignInIcons from './SingInIcons';
 import Filtro from './Filtro';
 
+
+
 import { JamCard, UserLocation } from '@/types/jam';
 
 interface HomeComponentProps {
   cards: JamCard[];
   userLocation: UserLocation;
+  currentUsedPath: string;
 }
 
 const MapRender = dynamic(() => import('./MapRender'), { ssr: false });
@@ -25,6 +28,7 @@ const MapRender = dynamic(() => import('./MapRender'), { ssr: false });
 export default function HomeComponent({
   cards,
   userLocation,
+  currentUsedPath
 }: HomeComponentProps) {
   const [jams, setJams] = useState(cards);
   const [loading, setLoading] = useState(false);
@@ -34,7 +38,7 @@ export default function HomeComponent({
 
   return (
     <div className="flex flex-col min-h-screen ">
-      <MapProvider initialUserLocation={userLocation} resCards={cards}>
+      <MapProvider initialUserLocation={userLocation} resCards={cards} currentUsedPath={currentUsedPath}>
         <div className="relative flex flex-col  w-[1300px] max-w-[90%] mx-auto p-0 ">
          
 

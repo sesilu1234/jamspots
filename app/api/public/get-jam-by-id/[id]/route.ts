@@ -53,7 +53,7 @@ export async function GET(
 			  }
 			: null;
 
-			console.log(result);
+			
 
 		return NextResponse.json(result);
 

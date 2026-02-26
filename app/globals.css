@@ -493,8 +493,8 @@
   overflow-y: auto; /* vertical scroll if needed */
 }
 
-/* Desktop: keep custom scrollbar */
-@media (min-width: 768px) {
+
+  @media (min-width: 768px) {
   .card-container::-webkit-scrollbar {
     width: 12px;
   }
@@ -513,16 +513,27 @@
   }
 }
 
-/* Mobile: hide scrollbar but allow vertical scroll naturally */
-@media (max-width: 767px) {
+
+  @media (max-width: 768px) {
   .card-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    -webkit-appearance: none;
+    width: 5px;
+    display: block !important; /* Force display */
   }
-  .card-container {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+
+
+  
+
+  .card-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* Make it darker/more visible */
+    border-radius: 5px;
   }
+
+
 }
+
+
+
 
 .newspaper {
   background: #b1b1b1;

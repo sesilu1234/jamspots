@@ -12,12 +12,14 @@ const ratelimit = new Ratelimit({
 export async function GET(request: Request) {
 
 
-console.log('eii----');
+
 
   const { searchParams } = new URL(request.url);
   const input = searchParams.get('input')?.trim(); // Don't lowercase yet, keep original for URL
   const token = searchParams.get('token');
-  const ip = request.headers.get("x-real-ip") ?? "anonymous";
+  const forwarded = request.headers.get("x-forwarded-for");
+  const ip = forwarded?.split(",")[0]?.trim() ?? "anonymous";
+
 
   if (!input || input.length < 3) return NextResponse.json([]);
 
@@ -28,7 +30,7 @@ console.log('eii----');
     const { success } = await ratelimit.limit(ip);
     
     if (!success) return NextResponse.json({ error: "Slow down!" }, { status: 429 });
-  } catch (e) { console.error("Ratelimit bypass", e); }
+  } catch (e) { console.error("Ratelimit bypass", e, ip); }
 
   // 2. Redis Cache Check (Fast path)
   try {
@@ -48,12 +50,13 @@ console.log('eii----');
 
   const params: Record<string, string> = {
     input,
+    language: "en",
     key: process.env.GOOGLE_MAPS_API_KEY!,
     sessiontoken: token // Now we know it exists
   };
 
 
-  console.log(params);
+
   
   googleUrl.search = new URLSearchParams(params).toString();
 

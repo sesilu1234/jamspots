@@ -65,7 +65,9 @@ export default function SignIn() {
                        bg-white border-2 border-black rounded-2xl font-bold text-lg
                        shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
                        transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none
-                       hover:bg-gray-50 select-none"
+                       hover:bg-gray-200 select-none
+                       hover:cursor-pointer
+                       "
           >
             <svg
               width="24"

@@ -13,7 +13,7 @@ import {
 import { useMapContext } from "./mapContext";
 import type { LocationData } from "./mapContext"; // adjust path as needed
 
-const API_KEY = "AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE";
+const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_CLIENT_API_KEY!;
 
 // type Poi = { key: string; location: google.maps.LatLngLiteral };
 

@@ -1,9 +1,13 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useMapContext } from './MapContext';
 import { Search, X, MapPin } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function GooglePlacesSearch() {
+
+  const router = useRouter();
+
   const { googleSearchLocation, setGoogleSearchLocation, setLocationSearch, map } = useMapContext();
   const [results, setResults] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -58,6 +62,7 @@ const inputRef = useRef<HTMLInputElement>(null);
       const res = await fetch(`/api/public/places-details?placeId=${place.place_id}&token=${sessionToken}`);
       const coords = await res.json();
 
+
       if (coords.lat && coords.lng) {
         setLocationSearch({ coordinates: { lat: coords.lat, lng: coords.lng } });
         const newPath = `/${coords.address}`;
@@ -83,6 +88,8 @@ const inputRef = useRef<HTMLInputElement>(null);
      inputRef.current?.focus(); // <— focus after clearing
   };
 
+
+  
   return (
     <div className="relative w-full" ref={containerRef}>
       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

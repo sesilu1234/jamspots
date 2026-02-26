@@ -13,7 +13,10 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const placeId = searchParams.get('placeId');
   const token = searchParams.get('token');
-  const ip = request.headers.get("x-real-ip") ?? "anonymous";
+  const forwarded = request.headers.get("x-forwarded-for");
+  const ip = forwarded?.split(",")[0]?.trim() ?? "anonymous";
+
+
 
   if (!placeId) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
 
@@ -30,6 +33,7 @@ export async function GET(request: Request) {
   // 3. Google Details API
   const googleUrl = new URL("https://maps.googleapis.com/maps/api/place/details/json");
   googleUrl.searchParams.set("place_id", placeId);
+  googleUrl.searchParams.set("language", "en");
   googleUrl.searchParams.set("fields", "geometry,name,formatted_address");
   googleUrl.searchParams.set("key", process.env.GOOGLE_MAPS_API_KEY!);
   if (token) googleUrl.searchParams.set("sessiontoken", token);
@@ -52,6 +56,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(result);
   } catch (e) {
+    console.log(e);
     return NextResponse.json({ error: "Fetch failed" }, { status: 500 });
   }
 }

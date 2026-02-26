@@ -1,4 +1,5 @@
 'use client';
+const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_CLIENT_API_KEY!;
 
 type PrimaryProps = {
   jamTitleRef: React.RefObject<string>;
@@ -118,7 +119,7 @@ export default function Primary({
             </div>
             <div className="flex justify-center  p-2 w-full cursor-pointer">
               <Image
-                src={`https://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${zoom}&size=400x200&scale=2${marker}&style=feature:poi|element:labels|visibility:off&key=AIzaSyBL-twzJmy2J0YtspJXo9ON3ExZucOQAmE`}
+                src={`https://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${zoom}&size=400x200&scale=2${marker}&style=feature:poi|element:labels|visibility:off&key=${API_KEY}`}
                 alt="Mapa"
                 width={400}
                 height={200}

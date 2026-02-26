@@ -4,6 +4,7 @@ import SessionWrapper from './SessionWrapper';
 import { ThemeProvider } from './ThemeProvider';
 import { getServerSession } from "next-auth"; // Add this
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // P
+import Script from 'next/script';
 
 // ADD THIS BLOCK
 export const metadata: Metadata = {
@@ -43,6 +44,21 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className="antialiased min-h-screen bg-tone-5 text-tone-0">
+        {/* --- GOOGLE ANALYTICS --- */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-NWT7WMH7SP"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-NWT7WMH7SP');
+          `}
+        </Script>
+        {/* ------------------------ */}
         <ThemeProvider defaultTheme="dark">
           <SessionWrapper session={session}>{children}</SessionWrapper>
         </ThemeProvider>
