@@ -8,12 +8,40 @@ const FOUR_HOURS = 4 * 60 * 60 * 1000;
 
 export async function generateMetadata({ params }: { params: Promise<{ locationSlug: string }> }): Promise<Metadata> {
   const { locationSlug } = await params;
+  const siteUrl = 'https://jamspots.xyz';
+  
+  // Formateo del nombre de la ciudad
   const cityName = decodeURIComponent(locationSlug).replace(/-/g, ' ');
   const capitalizedCity = cityName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
+  const title = `Jam Sessions in ${capitalizedCity} | Jamspots`;
+  const description = `Discover the best open mics and jam sessions in ${capitalizedCity}. Live map, dates, and up-to-date schedules for local musicians.`;
+
   return {
-    title: `Jam Sessions en ${capitalizedCity} | Jamspots`,
-    description: `Descubre los mejores micros abiertos y jam sessions en ${capitalizedCity}. Mapa en vivo, fechas y horarios actualizados.`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${siteUrl}/${locationSlug}`,
+      siteName: 'Jamspots',
+      images: [
+        {
+          url: `${siteUrl}/jamspots_icon.png`, // Puedes cambiar esto por una imagen de la ciudad si la tuvieras
+          width: 1200,
+          height: 630,
+          alt: `Jam Sessions in ${capitalizedCity}`,
+        },
+      ],
+      locale: 'en',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [`${siteUrl}/jamspots_icon.png`],
+    },
   };
 }
 
@@ -90,8 +118,8 @@ export default async function CityPage({ params }: { params: Promise<{ locationS
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: `Jam Sessions en ${userLocation.city}`,
-    description: `iscover the best jam sessions and open mics in ${userLocation.city}.`,
+    name: `Jam Sessions in ${userLocation.city}`,
+    description: `Discover the best jam sessions and open mics in ${userLocation.city}.`,
     itemListElement: validJams.map((jam, index: number) => ({
       '@type': 'ListItem',
       position: index + 1,

@@ -5,9 +5,33 @@ import HomeComponent from './HomeComponent';
 import { JamCard } from '@/types/jam';
 import { Metadata } from 'next';
 
+const siteUrl = 'https://jamspots.xyz';
+
 export const metadata: Metadata = {
-  title: 'Jamspots | Encuentra Jam Sessions y Micros Abiertos',
-  description: 'Descubre dónde tocar hoy. La red más grande de jam sessions y open mics para músicos.',
+  title: 'Jamspots | Find Jam Sessions & Open Mics Near You',
+  description: 'Discover where to play tonight. The world’s map for jam sessions and open mics for musicians and live music lovers.',
+  openGraph: {
+    title: 'Jamspots | Find Jam Sessions & Open Mics',
+    description: 'The world’s map for jam sessions and open mics.',
+    url: siteUrl,
+    siteName: 'Jamspots',
+    images: [
+      {
+        url: `${siteUrl}/jamspots_icon.png`, 
+        width: 1200, // Standard OG size
+        height: 630, 
+        alt: 'Jamspots - Global Jam Session Map',
+      },
+    ],
+    locale: 'en', // Generic English for the global music community
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Jamspots | Global Jam Session Map',
+    description: 'Find where the music happens tonight.',
+    images: [`${siteUrl}/jamspots_icon.png`], 
+  },
 };
 
 const FOUR_HOURS = 4 * 60 * 60 * 1000;

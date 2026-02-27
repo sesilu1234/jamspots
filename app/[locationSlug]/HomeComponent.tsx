@@ -12,6 +12,7 @@ import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import SignInIcons from './SingInIcons';
 import Filtro from './Filtro';
+import CitiesSection from './CitiesSection';
 
 
 
@@ -155,6 +156,12 @@ export default function HomeComponent({
           </div>
         </div>
       </div>
+
+
+
+      <CitiesSection/>
+
+
 
       <footer className="w-full pb-12 mt-0 flex-1">
         <div className="flex flex-col items-center justify-center max-w-[90%] w-[1300px] mx-auto p-6 pt-12 h-full border-t-2 border-primary-1">

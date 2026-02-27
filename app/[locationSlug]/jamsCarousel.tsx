@@ -2,6 +2,7 @@ import JamCardShadcn from './CardJam';
 import { useState, useEffect, useRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { JamCard } from '@/types/jam';
+import Link from 'next/link';
 
 type JamCarouselProps = {
   jams: JamCard[];
@@ -63,9 +64,61 @@ export default function JamCarousel({
             <div className="p-2  text-center font-light w-64">
               Cards not available with global search
             </div>
-          ) : (
-            <div className="p-2  text-center  w-64">No jams found</div>
-          )
+          ) : 
+          
+(
+    <div className="flex flex-col items-center justify-center p-8 text-center w-full max-w-sm mx-auto animate-fadeIn">
+
+      <h3 className="text-lg font-bold uppercase tracking-tight mb-2">
+        No active jam sessions found here right now
+      </h3>
+      <p className="text-sm text-text-2 font-medium mb-6">
+        The stage is currently quiet... Help us find the music!
+      </p>
+      
+   <Link 
+  href="/signIn"
+  className="
+    /* Layout & Text */
+    px-4 py-4 md:px-4 md:py-3 
+    text-white font-black uppercase text-[10px] md:text-xs tracking-[0.2em]
+    text-center whitespace-nowrap
+    
+    /* Colors & Border */
+    bg-[#E63946] border-2 border-black
+    
+    /* Shadow & Animation */
+    shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
+    transition-all duration-100 ease-in-out
+    
+    /* Hover (Desktop) */
+    hover:bg-[#F1515E] 
+    hover:shadow-none 
+    hover:translate-x-[2px] 
+    hover:translate-y-[2px]
+    
+    /* Active (Mobile & Click) */
+    active:bg-[#C12E39]
+    active:shadow-none 
+    active:translate-x-[4px] 
+    active:translate-y-[4px]
+    
+    /* Box Model */
+    inline-block flex items-center justify-center
+  "
+>
+  + Add a Jam Spot
+</Link>
+      <p className="mt-4 text-[10px] text-tone-0/80 uppercase tracking-widest">
+        Be the legend who starts the first one in this city
+      </p>
+    </div>
+  )
+
+
+
+
+
         ) : (
           jams.map((jam: JamCard, index: number) => (
             <JamCardShadcn
