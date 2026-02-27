@@ -17,7 +17,7 @@ export default function CitiesSection({ customCities = [] }) {
   
 
   return (
-    <div className="w-full bg-foreground-1/5 py-10 border-t border-b border-primary-1/10">
+    <div className="w-full bg-foreground-1/5 py-10 ">
       <div className="max-w-[90%] w-[1300px] mx-auto px-6">
         <h3 className="text-sm font-bold tracking-[0.2em] text-tone-1/40 mb-6 uppercase text-center md:text-left">
           Popular Locations
