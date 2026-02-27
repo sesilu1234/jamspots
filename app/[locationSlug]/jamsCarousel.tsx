@@ -77,7 +77,7 @@ export default function JamCarousel({
       </p>
       
    <Link 
-  href="/signIn"
+  href="/host"
   className="
     /* Layout & Text */
     px-4 py-4 md:px-4 md:py-3 
