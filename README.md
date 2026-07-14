@@ -4,6 +4,8 @@ Jamspots is a web app for finding and joining local jam sessions, whether you ar
 
 The idea is simple: music events happen all the time, but they are not always easy to find. Jamspots brings them into one place so people can discover what is happening nearby and decide quickly if they want to join. ✨
 
+Live app: https://jamspots.xyz
+
 ## What it does 🔎
 
 Jamspots helps users:
