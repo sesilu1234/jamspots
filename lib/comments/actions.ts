@@ -17,7 +17,7 @@ export async function createComment(
 
   const userEmail = session.user.email;
 
-  const { error } = await supabaseAdmin.rpc('insert_comment', {
+  const { data, error } = await supabaseAdmin.rpc('insert_comment', {
     p_jam_id: jamId,
     p_content: content,
     p_parent_id: parentId,
@@ -29,7 +29,16 @@ export async function createComment(
     return { error: error.message, status: 500 };
   }
 
-  return { success: true };
+  // The RPC returns a set of rows; grab the single inserted row.
+  const inserted = Array.isArray(data) ? data[0] : data;
+
+  return {
+    success: true,
+    comment: {
+      comment_id: inserted?.comment_id as string,
+      created_at: inserted?.created_at as string,
+    },
+  };
 }
 
 /**
