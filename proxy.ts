@@ -22,13 +22,22 @@ export default function middleware(req: NextRequest) {
 
   // -------- AUTH --------
   const token =
-  req.cookies.get('__Secure-next-auth.session-token')?.value ??
-  req.cookies.get('next-auth.session-token')?.value;
-
-  
+    req.cookies.get('__Secure-next-auth.session-token')?.value ??
+    req.cookies.get('next-auth.session-token')?.value;
 
   if (!token && (path.startsWith('/host') || path.startsWith('/api/private'))) {
-    return NextResponse.redirect(new URL('/signIn', req.url));
+    /**
+     * Where they were going travels with them. The sign-in page already reads
+     * ?callbackUrl and falls back to '/', so without this every visitor who
+     * clicked "Add a jam" while logged out landed on the home page instead of
+     * the thing they asked for, with nothing to explain why.
+     *
+     * Built from nextUrl rather than anything the caller supplied, so it is
+     * same-origin by construction and cannot be turned into an open redirect.
+     */
+    const signInUrl = new URL('/signIn', req.url);
+    signInUrl.searchParams.set('callbackUrl', path + req.nextUrl.search);
+    return NextResponse.redirect(signInUrl);
   }
 
   // -------- RATE LIMIT --------

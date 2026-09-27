@@ -37,22 +37,55 @@ export default function JamSessionList() {
 
     const [showPanelDelete, setShowPanelDelete] = useState(true);
 
+    /**
+     * Named, not just counted. Typing "delete" only guards against a stray
+     * click; it does nothing about deleting the wrong jam, which is the
+     * mistake that actually costs something here.
+     */
+    const jam = jams.find((j) => j.id === idToDelete);
+
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-black/40">
+      <div className="fixed inset-0 z-[500] flex items-center justify-center bg-zinc-950/50 p-4 backdrop-blur-sm">
         {showPanelDelete && (
-          <div className="flex w-96 max-w-[70%] flex-col gap-2 rounded-xl border border-zinc-200 bg-white p-5 shadow-2xl">
-            <p className="font-seminbold">
-              Type <i className="font-medium">delete</i> to confirm
+          <div className="flex w-96 max-w-full flex-col rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl">
+            <p className="text-[15px] font-bold tracking-tight text-zinc-900">
+              Delete this jam?
+            </p>
+
+            {jam ? (
+              <div className="mt-3 rounded-xl border border-zinc-200 bg-zinc-50 px-3.5 py-3">
+                <p className="truncate text-sm font-bold tracking-tight text-zinc-900">
+                  {jam.jam_title}
+                </p>
+                <p className="mt-0.5 truncate text-[12px] text-zinc-500">
+                  {jam.location_address}
+                </p>
+              </div>
+            ) : null}
+
+            <p className="mt-4 text-[13px] text-zinc-600">
+              This cannot be undone. Type{' '}
+              <i className="font-semibold">delete</i> to confirm.
             </p>
 
             <input
               className="mt-2 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none transition-colors focus:border-zinc-500 focus:ring-4 focus:ring-zinc-900/5"
               placeholder="delete"
+              autoFocus
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
 
-            <div className="mt-3 flex justify-end gap-2">
+            {/* Cancel first, so the destructive button is not the one under the
+                cursor when the dialog opens. */}
+            <div className="mt-5 flex justify-end gap-2.5">
+              <button
+                onClick={() => setIdToDelete(null)}
+                className="inline-flex h-9 cursor-pointer items-center justify-center rounded-md border border-[#1B1F2A] bg-white px-4 text-sm font-bold tracking-tight text-[#1B1F2A] shadow-[3px_3px_0_0_#1B1F2A] transition-[transform,box-shadow] duration-150 hover:shadow-[4px_4px_0_0_#1B1F2A] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_0_#1B1F2A]"
+              >
+                Cancel
+              </button>
+
               <button
                 onClick={async () => {
                   setShowPanelDelete(false);
@@ -60,16 +93,9 @@ export default function JamSessionList() {
                   setIdToDelete(null);
                 }}
                 disabled={text.toLowerCase() !== 'delete'}
-                className="inline-flex h-9 cursor-pointer items-center justify-center rounded-md border border-red-700 bg-red-600 px-4 text-sm font-bold tracking-tight text-white shadow-[3px_3px_0_0_rgba(185,28,28,0.45)] transition-[transform,box-shadow,background-color] duration-150 hover:bg-red-700 active:translate-x-px active:translate-y-px active:shadow-[1px_1px_0_0_rgba(185,28,28,0.45)] disabled:cursor-not-allowed disabled:border-zinc-300 disabled:bg-zinc-200 disabled:text-zinc-400 disabled:shadow-none"
+                className="inline-flex h-9 cursor-pointer items-center justify-center rounded-md border border-red-800 bg-red-600 px-4 text-sm font-bold tracking-tight text-white shadow-[3px_3px_0_0_#7f1d1d] transition-[transform,box-shadow,background-color] duration-150 hover:bg-red-700 hover:shadow-[4px_4px_0_0_#7f1d1d] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_0_#7f1d1d] disabled:cursor-not-allowed disabled:border-zinc-300 disabled:bg-zinc-200 disabled:text-zinc-400 disabled:shadow-none"
               >
-                Accept
-              </button>
-
-              <button
-                onClick={() => setIdToDelete(null)}
-                className="inline-flex h-9 cursor-pointer items-center justify-center rounded-md border border-[#1B1F2A] bg-white px-4 text-sm font-bold tracking-tight text-[#1B1F2A] shadow-[3px_3px_0_0_rgba(27,31,42,0.45)] transition-[transform,box-shadow] duration-150 active:translate-x-px active:translate-y-px active:shadow-[1px_1px_0_0_rgba(27,31,42,0.45)]"
-              >
-                Cancel
+                Delete jam
               </button>
             </div>
           </div>

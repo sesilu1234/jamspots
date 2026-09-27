@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TileLayer } from 'react-leaflet';
 
 /**
@@ -25,6 +25,13 @@ import { TileLayer } from 'react-leaflet';
  * If those tiles fail — no key, unregistered domain, quota exhausted, Stadia
  * down — we switch to Esri's Light Gray Canvas, which needs no key at all. A
  * plainer map is far better than an empty grey rectangle.
+ *
+ * That switch is temporary, not a verdict. Leaflet asks for twenty-odd tiles
+ * at once when the map first opens, so a rate limit lands on all of them
+ * together and trips the counter instantly - and the most common reasons for
+ * it are the ones that pass on their own. Latching for the whole session meant
+ * one bad second at load left the visitor on the plain basemap until they
+ * happened to reload.
  */
 
 const STADIA_KEY = process.env.NEXT_PUBLIC_STADIA_API_KEY;
@@ -35,6 +42,12 @@ const STADIA_URL = `https://tiles.stadiamaps.com/tiles/alidade_bright/{z}/{x}/{y
 
 const STADIA_ATTRIBUTION =
   '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+/** How long to sit on the fallback before giving Stadia another go. */
+const RETRY_AFTER_MS = 10_000;
+
+/** One attempt to return, after which the plain basemap is accepted for good. */
+const MAX_RETRIES = 1;
 
 const ESRI = 'https://server.arcgisonline.com/ArcGIS/rest/services';
 const ESRI_ATTRIBUTION =
@@ -54,6 +67,25 @@ export default function MapTileSwitcher({
   // actually broken — which is what an auth or quota problem looks like, since
   // then every single tile fails.
   const consecutiveFailures = useRef(0);
+  const retriesLeft = useRef(MAX_RETRIES);
+
+  /**
+   * Falling back is instant, so the visitor always has a map to look at, but
+   * the layer gets retried in the background. If Stadia has recovered the map
+   * quietly turns back into the good one; if it has not, the retry costs a few
+   * tile requests and we settle on Esri.
+   */
+  useEffect(() => {
+    if (!stadiaFailed || retriesLeft.current <= 0) return;
+
+    const timer = setTimeout(() => {
+      retriesLeft.current -= 1;
+      consecutiveFailures.current = 0;
+      setStadiaFailed(false);
+    }, RETRY_AFTER_MS);
+
+    return () => clearTimeout(timer);
+  }, [stadiaFailed]);
 
   if (!stadiaFailed) {
     return (
