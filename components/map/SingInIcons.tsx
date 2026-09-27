@@ -39,7 +39,14 @@ export default function SessionMenu({ compact = false }: SessionMenuProps) {
                          focus-visible:ring-2 focus-visible:ring-brand/40
                          focus-visible:ring-offset-2 focus-visible:ring-offset-tone-5
                          focus-visible:outline-none md:inline-flex"
-              onClick={() => router.push('/signIn')}
+              /**
+               * Sent to the destination, not to the login. The middleware
+               * bounces it to /signIn with a callbackUrl and the visitor lands
+               * on /host once they are in - pushing straight to /signIn skipped
+               * that and dropped them on the home page instead, which is not
+               * what the button offered.
+               */
+              onClick={() => router.push('/host')}
             >
               <Plus className="size-4 shrink-0" strokeWidth={2.5} />
               Add spot
