@@ -296,20 +296,59 @@ export default function JamCarousel({
             </div>
           )
         ) : (
-          jams.map((jam: JamCard, index: number) => (
-            <JamCardShadcn
-              key={index}
-              classname="cursor-pointer border border-tone-0/10 bg-card-jams shadow-lg shadow-black/40"
-              jamName={jam.jam_title}
-              spotName={jam.location_title}
-              tags={jam.styles}
-              address={jam.location_address}
-              display_date={jam.display_date}
-              modality={jam.modality}
-              src={jam.image}
-              slug={jam.slug}
-            />
-          ))
+          <>
+            {jams.map((jam: JamCard, index: number) => (
+              <JamCardShadcn
+                key={index}
+                classname="cursor-pointer border border-tone-0/10 bg-card-jams shadow-lg shadow-black/40"
+                jamName={jam.jam_title}
+                spotName={jam.location_title}
+                tags={jam.styles}
+                address={jam.location_address}
+                display_date={jam.display_date}
+                modality={jam.modality}
+                src={jam.image}
+                slug={jam.slug}
+              />
+            ))}
+
+            {/* Last in the strip, at every count rather than below some
+                threshold. Inviting a contribution is never wrong, and a cutoff
+                would make the card vanish the moment a city reached it.
+
+                Not pinned to the bottom of the scroller: tried that, and a bar
+                floating over the cards cut the one behind it in half. An
+                invitation is worth less than the content it would cover.
+
+                Worded as an invitation on purpose. The empty state can afford
+                to say the stage is quiet; the visitor is already looking at
+                nothing. Saying it to someone who just found three jams tells
+                them the city is dead when they had not thought so. */}
+            <Link
+              href="/host"
+              className="group/add flex w-64 shrink-0 flex-col items-center justify-center gap-2.5 rounded-xl border-2 border-dashed border-tone-0/25 bg-card-jams/40 px-4 py-6 text-center transition-colors duration-200 hover:border-tone-0/45 hover:bg-card-jams/70 max-md:group-data-[snap=peek]/sheet:w-[78vw] max-md:group-data-[snap=peek]/sheet:max-w-[320px] max-md:group-data-[snap=peek]/sheet:flex-row max-md:group-data-[snap=peek]/sheet:gap-3 max-md:group-data-[snap=peek]/sheet:py-4 max-md:group-data-[snap=peek]/sheet:text-left"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-tone-0/25 text-tone-0 transition-transform duration-300 group-hover/add:rotate-90">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 -960 960 960"
+                  aria-hidden="true"
+                  className="h-5 w-5 fill-current"
+                >
+                  <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                </svg>
+              </span>
+
+              <span className="min-w-0">
+                <span className="block text-sm font-bold tracking-tight text-tone-0">
+                  Add a jam
+                </span>
+                <span className="block text-xs text-tone-0/60">
+                  Know one we&apos;re missing?
+                </span>
+              </span>
+            </Link>
+          </>
         )}
       </div>
     </div>
