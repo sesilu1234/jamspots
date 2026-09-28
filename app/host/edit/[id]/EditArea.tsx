@@ -20,6 +20,11 @@ import { formAtom } from './store/jotai';
 
 import { useFormStore } from './store/formStore'; // path a tu store
 
+import {
+  assertFitsUpload,
+  prepareImagesForUpload,
+} from '@/lib/compress-image-client';
+
 type EditAreaProps = {
   childSaveOnUnmount: React.RefObject<() => void>;
 };
@@ -61,6 +66,15 @@ async function describeFailure(res: Response) {
     if (parsed?.error) return `${res.status}: ${parsed.error}`;
   } catch {
     // Not JSON - fall through and show the raw start of the body.
+  }
+
+  /**
+   * 413 never comes from the route — the platform rejects the body before it
+   * runs — so there is no JSON to read and the raw text is the string
+   * FUNCTION_PAYLOAD_TOO_LARGE. Say what it means instead of showing that.
+   */
+  if (res.status === 413) {
+    return 'Those photos are too large to upload together. Try smaller ones, or fewer of them.';
   }
 
   const snippet = body.replace(/\s+/g, ' ').trim().slice(0, 300);
@@ -148,8 +162,8 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
    * information is the label, and the slowest stage says why it is slow.
    */
   const SAVE_STAGES = {
-    preparing: { label: 'Preparing your photos', progress: 20 },
-    uploading: { label: 'Compressing and uploading', progress: 65 },
+    preparing: { label: 'Compressing your photos', progress: 20 },
+    uploading: { label: 'Uploading', progress: 65 },
     done: { label: 'Saved', progress: 100 },
   } as const;
 
@@ -161,15 +175,15 @@ export default function EditArea({ childSaveOnUnmount }: EditAreaProps) {
 
     const form = useFormStore.getState().form;
 
-    const images_files: File[] = [];
-    for (const url of form.photos.images) {
-      const res = await fetch(url);
-      const blob = await res.blob();
-      // optional: give a filename
-      images_files.push(
-        new File([blob], `image-${Date.now()}.png`, { type: blob.type }),
-      );
-    }
+    /**
+     * Compressed here, in the browser, before anything is posted. The route
+     * compresses again with sharp — see lib/compress-image-client.ts for why
+     * both passes have to exist.
+     */
+    const images_files = await prepareImagesForUpload(form.photos.images);
+
+    const tooBig = assertFitsUpload(images_files);
+    if (tooBig) return { success: false, message: tooBig };
 
     let raw_desc = '';
     try {
