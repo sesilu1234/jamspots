@@ -16,10 +16,20 @@ import { toast } from 'sonner';
 import { Card, CardTitle } from './ui';
 
 /**
- * Mirrors MAX_INPUT_BYTES in lib/upload-photos.ts. Keep the two in step: this
- * one is the courtesy, that one is the rule.
+ * The ceiling on what a host may PICK, not on what gets sent.
+ *
+ * It used to be 8 MB, mirroring MAX_INPUT_BYTES in lib/upload-photos.ts. That
+ * made sense while the file went up untouched; it does not now that
+ * lib/compress-image-client.ts re-encodes every photo before the request is
+ * built, because a 15 MB shot off a recent phone leaves here at a few hundred
+ * KB. Turning that photo away would have been refusing a picture we can
+ * comfortably handle. The 8 MB server rule still stands — it just applies to
+ * the compressed file, which is nowhere near it.
+ *
+ * What this number guards is the browser: decoding something enormous on a
+ * phone is what runs it out of memory.
  */
-const MAX_FILE_MB = 8;
+const MAX_FILE_MB = 25;
 const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024;
 
 const asMb = (bytes: number) => (bytes / 1024 / 1024).toFixed(1);
@@ -100,8 +110,8 @@ export default function PhotoUploader({
     const picked = Array.from(e.target.files);
 
     /**
-     * The server refuses these too. Stopping them here just saves the host
-     * uploading megabytes before being turned away.
+     * Only the truly enormous. Everything else is shrunk on the way out, so
+     * there is nothing to save the host from here.
      */
     const tooBig = picked.filter((file) => file.size > MAX_FILE_BYTES);
     const accepted = picked.filter((file) => file.size <= MAX_FILE_BYTES);
