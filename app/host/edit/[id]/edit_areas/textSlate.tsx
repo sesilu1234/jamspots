@@ -37,10 +37,6 @@ const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
 			: EditorState.createEmpty(),
 	);
 
-	const [boldSelected, setBoldSelected] = useState(false);
-
-	const [italicSelected, setItalicSelected] = useState(false);
-
 	const editorRef = useRef<Editor>(null);
 
 	const editorStateRef = useRef(editorState);
@@ -154,8 +150,35 @@ const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
 		return "not-handled";
 	};
 
+	/**
+	 * Which styles are live at the cursor, read off the editor rather than kept
+	 * beside it.
+	 *
+	 * The toolbar used to hold its own two booleans and flip them on click, which
+	 * is only the same thing as the truth until the first time it is not:
+	 *
+	 * - Draft refuses a toggle it cannot apply. The character-limit branch in
+	 *   handleChange is one such case, and it rejected the new state while the
+	 *   button had already lit up.
+	 * - Moving the caret in or out of italic text changes the real style and told
+	 *   the buttons nothing.
+	 * - Once out of step they stayed out of step, so "I" lit meant italic off and
+	 *   pressing it to turn italic *off* turned it on — which is the text that
+	 *   stayed in cursive after you thought you had cleared it.
+	 *
+	 * Derived per render, there is no second copy left to drift.
+	 */
+	const active = editorState.getCurrentInlineStyle();
+	const boldSelected = active.has("BOLD");
+	const italicSelected = active.has("ITALIC");
+
 	const toggleInlineStyle = (style: "BOLD" | "ITALIC") => {
 		handleChange(RichUtils.toggleInlineStyle(editorState, style));
+		// The button's onMouseDown is prevented so the caret is not lost, but if
+		// the editor was never focused Draft has no selection to hang the style on
+		// and the toggle is dropped. Focusing restores the stored selection, and
+		// the style override then lands on whatever you type next.
+		editorRef.current?.focus();
 	};
 
 	const insertEmoji = (emoji: string) => {
@@ -181,9 +204,9 @@ const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
 					type="button"
 					onMouseDown={(e) => {
 						e.preventDefault();
-						setBoldSelected((prev) => !prev);
 						toggleInlineStyle("BOLD");
 					}}
+					aria-pressed={boldSelected}
 					className={`h-8 w-9 rounded-lg text-[14px] font-bold transition-colors cursor-pointer ${
 						boldSelected
 							? "bg-zinc-900 text-white"
@@ -196,9 +219,9 @@ const DraftEditor = ({ data, childSaveOnUnmount }: DraftEditorProps) => {
 					type="button"
 					onMouseDown={(e) => {
 						e.preventDefault();
-						setItalicSelected((prev) => !prev);
 						toggleInlineStyle("ITALIC");
 					}}
+					aria-pressed={italicSelected}
 					className={`h-8 w-9 rounded-lg font-serif text-[15px] italic transition-colors cursor-pointer ${
 						italicSelected
 							? "bg-zinc-900 text-white"

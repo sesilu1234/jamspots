@@ -420,12 +420,29 @@ export default function JamCarousel({
         </span>
       </button>
 
-      {/* Card container */}
+      {/* Card container.
+
+          At peek the strip takes a finger as one surface, not card by card. It
+          used to hand `pointer-events` back to the cards alone, so the 12px of
+          gap between them was still map: a swipe that began in a gap — or that
+          crossed one — panned the map out from under the carousel you were
+          trying to scroll. Nobody aims at a card edge on purpose and the gap
+          is invisible, so the surface has to be continuous.
+
+          The row is still the only part of the strip that takes it. The sheet
+          around it stays `pointer-events-none` at peek, so the map is pannable
+          everywhere except the ~110px the cards actually occupy — the trade
+          every maps app makes.
+
+          `touch-action: pan-x` is what keeps that trade honest. Without it the
+          row would swallow vertical swipes as well and do nothing with them;
+          with it the browser claims the horizontal axis only, and a vertical
+          drag falls through to the map the way it did before. */}
       <div
         ref={listRef}
         className={`card-container flex min-h-0 flex-1 flex-col items-center gap-4 overflow-y-auto px-4 pb-4
           max-md:group-data-[snap=peek]/sheet:flex-row max-md:group-data-[snap=peek]/sheet:gap-3 max-md:group-data-[snap=peek]/sheet:overflow-x-auto max-md:group-data-[snap=peek]/sheet:overflow-y-hidden max-md:group-data-[snap=peek]/sheet:px-3 max-md:group-data-[snap=peek]/sheet:pt-2 max-md:group-data-[snap=peek]/sheet:pb-6
-          max-md:group-data-[snap=peek]/sheet:[&>*]:pointer-events-auto
+          max-md:group-data-[snap=peek]/sheet:pointer-events-auto max-md:group-data-[snap=peek]/sheet:touch-pan-x
           md:flex-none md:gap-6 md:rounded-b-xl md:border md:border-black/20 md:bg-tone-3/45 md:transition-all md:duration-700 md:ease-in-out ${
             collapsed
               ? 'md:max-h-0 md:px-0 md:pt-0 md:pb-0 md:opacity-0'

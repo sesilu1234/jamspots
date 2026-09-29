@@ -38,7 +38,15 @@ const HtmlReadOnly = ({ rawContent }: HtmlReadOnlyProps) => {
 
   return (
     <div
-      className="max-w-prose space-y-4 text-base leading-relaxed tracking-normal text-pretty"
+      // `wrap-anywhere` is the guard on the one block of this page a stranger
+      // wrote. Normal wrapping only breaks at spaces, so a single token longer
+      // than the column — a pasted URL, a keysmash — cannot be broken, widens
+      // this box past its column and puts the WHOLE page into horizontal
+      // scroll, header and footer included. `break-words` would not be enough
+      // on its own: it refuses to break a word that is the only thing on its
+      // line, and it does not count toward the min-content width a grid column
+      // is sized from. `anywhere` does both.
+      className="max-w-prose space-y-4 text-base leading-relaxed tracking-normal wrap-anywhere text-pretty"
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
@@ -145,7 +153,10 @@ export default function JamComponent({
                 {isOpenMic ? 'Open Mic' : 'Jam Session'}
               </span>
 
-              <h1 className="mt-3 max-w-4xl text-4xl leading-[1.05] font-extrabold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              {/* Same guard as the description, and it matters more here: at
+                  60px a word only needs about twenty characters to be wider
+                  than a phone. */}
+              <h1 className="mt-3 max-w-4xl text-4xl leading-[1.05] font-extrabold tracking-tight wrap-anywhere text-balance sm:text-5xl lg:text-6xl">
                 {jam.jam_title}
               </h1>
 
