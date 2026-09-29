@@ -274,8 +274,8 @@
   --card-jams: oklch(24% 0.007 218);
   --collapse-butt: #1e293b;
 
-  --text-tone-modality-jam: #5dcaa5;
-  --text-tone-modality-open-mic: #c596ff;
+  --text-tone-modality-jam: #5DCAA5;
+  --text-tone-modality-open-mic: #C596FF;
 
   --primary-1: oklch(58% 0.1 235); /* soft steel blue */
   --secondary-1: oklch(70% 0.06 210);
@@ -365,8 +365,8 @@
   --card-jams: oklch(24% 0.012 55);
   --collapse-butt: #3b3529;
 
-  --text-tone-modality-jam: #5dcaa5;
-  --text-tone-modality-open-mic: #c596ff;
+  --text-tone-modality-jam: #5DCAA5;
+  --text-tone-modality-open-mic: #C596FF;
 
   --primary-1: oklch(62% 0.09 60); /* soft peach */
   --secondary-1: oklch(72% 0.06 85); /* warm off-white */
@@ -456,8 +456,8 @@
   --card-jams: oklch(20% 0.03 245);
   --collapse-butt: #41556d;
 
-  --text-tone-modality-jam: #5dcaa5;
-  --text-tone-modality-open-mic: #c596ff;
+  --text-tone-modality-jam: #5DCAA5;
+  --text-tone-modality-open-mic: #C596FF;
 
   --primary-1: oklch(65% 0.18 235);
   --secondary-1: oklch(75% 0.12 200);
@@ -547,17 +547,17 @@
   --card-jams: oklch(24% 0.007 218);
   --collapse-butt: #1e293b;
 
-  --text-tone-modality-jam: #5dcaa5;
+  --text-tone-modality-jam: #5DCAA5;
   --neon-glow-jam:
-    0 0 8px color-mix(in srgb, #5dcaa5 70%, transparent),
-    0 0 16px color-mix(in srgb, #5dcaa5 20%, transparent);
+    0 0 8px color-mix(in srgb, #5DCAA5 70%, transparent),
+    0 0 16px color-mix(in srgb, #5DCAA5 20%, transparent);
 
   /* Electric Electric Violet - The Open Mic Vibe */
   /* This feels like a spotlight/stage light */
-  --text-tone-modality-open-mic: #c596ff;
+  --text-tone-modality-open-mic: #C596FF;
   --neon-glow-mic:
-    0 0 8px color-mix(in srgb, #c596ff 70%, transparent),
-    0 0 16px color-mix(in srgb, #c596ff 20%, transparent);
+    0 0 8px color-mix(in srgb, #C596FF 70%, transparent),
+    0 0 16px color-mix(in srgb, #C596FF 20%, transparent);
 
   --primary-1: oklch(0.76 0.2 279);
   --secondary-1: oklch(80.7% 0.333 95);
@@ -647,8 +647,8 @@
   --card-jams: oklch(20% 0.02 145);
   --collapse-butt: #472f2d;
 
-  --text-tone-modality-jam: #5dcaa5;
-  --text-tone-modality-open-mic: #c596ff;
+  --text-tone-modality-jam: #5DCAA5;
+  --text-tone-modality-open-mic: #C596FF;
 
   --primary-1: oklch(65% 0.16 135);
   --secondary-1: oklch(72% 0.12 105);
@@ -826,43 +826,4 @@
     transparent 1px
   );
   background-size: 100% 5px;
-}
-
-/*
- * Google's Places suggestion list. It is appended to <body>, not to whatever
- * opened it, so inside a modal it needs help on two counts: it has to sit
- * above the dialog, and it has to stay clickable while Radix makes the rest
- * of the body inert. Without the second rule the list appears and simply
- * ignores taps.
- */
-.pac-container {
-  z-index: 100000 !important;
-  pointer-events: auto;
-  border-radius: 0.75rem;
-  border: 1px solid #e4e4e7;
-  box-shadow: 0 18px 40px -12px rgba(24, 24, 27, 0.35);
-  font-family: inherit;
-  margin-top: 4px;
-}
-
-.pac-container::after {
-  display: none; /* the "powered by Google" strip; the logo is on the map */
-}
-
-.pac-item {
-  padding: 0.5rem 0.75rem;
-  font-size: 13px;
-  color: #52525b;
-  border-top: none;
-  cursor: pointer;
-}
-
-.pac-item:hover,
-.pac-item-selected {
-  background-color: #fafafa;
-}
-
-.pac-item-query {
-  font-size: 14px;
-  color: #18181b;
 }

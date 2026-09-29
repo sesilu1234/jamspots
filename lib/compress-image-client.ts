@@ -31,22 +31,22 @@ const QUALITY = 0.82;
 export const MAX_TOTAL_UPLOAD_BYTES = 3.6 * 1024 * 1024;
 
 /**
- * Decode with the EXIF orientation applied, so portrait photos off a phone do
- * not come out on their side once the re-encode drops the metadata.
+ * Decode with the EXIF orientation applied.
  *
- * `createImageBitmap` honours `imageOrientation` where it is supported and
- * ignores the option where it is not; the <img> fallback is for the browsers
- * without it at all, and those apply the orientation during decode anyway.
+ * This has to be an <img>, and not `createImageBitmap`, which is the obvious
+ * choice and the wrong one. `createImageBitmap` only applies the orientation
+ * when you pass `{ imageOrientation: 'from-image' }`, and Safari below 16.4
+ * accepts that option and ignores it — no error, just a photo left on its
+ * side. An <img> has defaulted to `image-orientation: from-image` since
+ * Safari 13.1 / Chrome 81 / Firefox 77, and `naturalWidth`/`naturalHeight`
+ * and `drawImage` all follow it.
+ *
+ * It matters more than it used to. sharp's `.rotate()` on the server reads
+ * the EXIF tag off the uploaded file — but the file it now receives is this
+ * re-encode, and re-encoding drops the metadata. If the rotation is not
+ * applied here, nothing downstream can apply it at all.
  */
-async function decode(blob: Blob): Promise<ImageBitmap | HTMLImageElement> {
-  if (typeof createImageBitmap === 'function') {
-    try {
-      return await createImageBitmap(blob, { imageOrientation: 'from-image' });
-    } catch {
-      // Fall through — some browsers reject the options object outright.
-    }
-  }
-
+async function decode(blob: Blob): Promise<HTMLImageElement> {
   const url = URL.createObjectURL(blob);
   try {
     return await new Promise<HTMLImageElement>((resolve, reject) => {
@@ -56,7 +56,7 @@ async function decode(blob: Blob): Promise<ImageBitmap | HTMLImageElement> {
       img.src = url;
     });
   } finally {
-    // Revoked after onload: the bitmap is already in memory by then.
+    // Revoked once the promise settles — the pixels are already decoded.
     URL.revokeObjectURL(url);
   }
 }
@@ -77,8 +77,10 @@ function canvasToBlob(
  */
 async function shrink(blob: Blob): Promise<Blob> {
   const source = await decode(blob);
-  const width = 'width' in source ? source.width : 0;
-  const height = 'height' in source ? source.height : 0;
+  // naturalWidth/Height rather than width/height: the intrinsic size, already
+  // swapped for a portrait photo whose EXIF says to rotate it a quarter turn.
+  const width = source.naturalWidth;
+  const height = source.naturalHeight;
   if (!width || !height) throw new Error('The image has no size.');
 
   const canvas = document.createElement('canvas');
@@ -116,13 +118,7 @@ async function shrink(blob: Blob): Promise<Blob> {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    ctx.drawImage(
-      source as CanvasImageSource,
-      0,
-      0,
-      canvas.width,
-      canvas.height,
-    );
+    ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
 
     const out = await canvasToBlob(canvas, type);
     if (!out) continue;
@@ -130,8 +126,6 @@ async function shrink(blob: Blob): Promise<Blob> {
     best = out;
     if (out.size <= TARGET_BYTES) break;
   }
-
-  if ('close' in source) source.close();
 
   if (!best) throw new Error('The image could not be re-encoded.');
   return best;

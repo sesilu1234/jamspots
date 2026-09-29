@@ -139,7 +139,7 @@ export default function MapMarkersCluster() {
 
   if (selectedMarker)
     return (
-      <div className="absolute top-16 right-1/2 z-[401] w-72 max-w-[88%] translate-x-1/2 overflow-hidden rounded-xl shadow-2xl sm:rounded-2xl lg:top-4 lg:right-4 lg:w-80 lg:translate-x-0">
+      <div className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2     lg:translate-x-0 lg:-translate-y-0      lg:top-4 lg:right-4 z-[401] max-w-[90%] w-80 overflow-hidden rounded-sm sm:rounded-2xl shadow-2xl">
         {/* Transparent Header Overlay */}
         <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-end p-3">
           {/* Subtle Badge */}
@@ -233,7 +233,7 @@ export function JamCardMarker({
     >
       <Link href={`/jam/${jamData.slug}`} prefetch={false} className="block">
         {/* Image Container */}
-        <div className="relative h-36 overflow-hidden lg:h-52">
+        <div className="relative h-52 overflow-hidden">
           {jamData.images ? (
             <Image
               src={jamData.images}
@@ -269,9 +269,9 @@ export function JamCardMarker({
           )}
         </div>
 
-        <CardContent className="p-4 lg:p-5">
+        <CardContent className="p-5">
           {/* Title */}
-          <h3 className="line-clamp-1 text-base font-semibold tracking-tight text-slate-900 transition-colors lg:text-lg">
+          <h3 className="line-clamp-1 text-lg font-semibold tracking-tight text-slate-900 transition-colors">
             {jamData.jam_title}
           </h3>
 
@@ -350,10 +350,10 @@ const tags = ['blues', 'rap'];
 export function CardSkeleton() {
   return (
     <Card
-      className="absolute top-16 right-1/2 z-[401] flex w-72 max-w-[88%] translate-x-1/2 flex-col overflow-hidden rounded-xl border-none bg-neutral-50 shadow-2xl sm:rounded-2xl lg:top-4 lg:right-4 lg:w-80 lg:translate-x-0"
+      className="absolute top-1/2 right-1/2 z-[401] flex w-80 max-w-[90%] translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-lg border-none bg-neutral-50 shadow-2xl sm:rounded-2xl lg:top-4 lg:right-4 lg:translate-x-0 lg:translate-y-0"
     >
-      {/* Image, same height as the real card at both sizes */}
-      <div className="relative h-36 w-full lg:h-52">
+      {/* Image, h-52 to match */}
+      <div className="relative h-52 w-full">
         <div className="h-full w-full animate-pulse bg-neutral-200" />
 
         {/* The two style tags that float over the image */}

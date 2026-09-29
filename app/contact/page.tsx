@@ -2,6 +2,7 @@
 
 import { useId, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { MAX_MESSAGE_LENGTH, contactSchema } from '@/lib/contact';
@@ -15,6 +16,7 @@ import BrandLogo from '@/components/BrandLogo';
 import SiteFooter from '@/components/SiteFooter';
 import SignInIcons from '@/components/map/SingInIcons';
 import { BRAND } from '@/lib/brand';
+
 
 /**
  * Field styling is written out here rather than left to the shadcn defaults.
@@ -37,6 +39,7 @@ const FIELD_CLASS =
 type FieldErrors = { email?: string; msg?: string };
 
 export default function Contact() {
+  const router = useRouter();
   const emailId = useId();
   const msgId = useId();
 
@@ -79,12 +82,9 @@ export default function Contact() {
         return;
       }
 
-      // Deliberately no redirect. Being thrown back to the map two seconds
-      // after sending reads as the page giving up on you — and it lands before
-      // the confirmation has been read. Leaving is the sender's call, and the
-      // panel below offers both ways out.
       setSent(true);
       toast.success('Message sent');
+      setTimeout(() => router.push('/'), 2000);
     } catch {
       toast.error("Couldn't reach the server", {
         description: 'Check your connection and try again.',
@@ -129,15 +129,13 @@ export default function Contact() {
               <div>
                 <p className="font-medium">Message sent</p>
                 <p className="mt-1 text-sm text-tone-0/55">
-                  Thanks — we read every one of these. If it needs a reply,
-                  it&apos;ll come to the address you gave.
+                  Thanks. Taking you back to the map.
                 </p>
                 <Link
                   href="/"
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-tone-0/70 underline underline-offset-4 hover:text-tone-0"
+                  className="mt-3 inline-block text-sm text-tone-0/60 underline underline-offset-4 hover:text-tone-0"
                 >
-                  Back to the map
-                  <ArrowRight className="size-3.5" />
+                  Go now
                 </Link>
               </div>
             </div>
