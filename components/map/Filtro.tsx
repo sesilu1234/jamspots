@@ -7,8 +7,10 @@ import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import {
   Calendar as CalendarIcon,
+  ChevronDown,
   SlidersHorizontal,
 } from 'lucide-react';
+import type { DropdownProps } from 'react-day-picker';
 import { useMapContext } from '@/components/map/MapContext';
 import { toast } from 'sonner';
 
@@ -836,6 +838,157 @@ export function DateOptionsGlobal({
   );
 }
 
+/**
+ * The filter calendar, dressed to match the panel it drops out of.
+ *
+ * Three things were wrong with the stock skin here. It painted itself
+ * `bg-background`, which globals.css defines as near-white in every theme — on
+ * a panel that is already white the popover had no edge at all and read as a
+ * sticker pasted over the chips. `bg-primary` for the chosen day is near-white
+ * too, so the selected day was white on white: invisible. And the day numbers
+ * inherited `text-foreground`, another near-white token, so the grid itself
+ * was barely there.
+ *
+ * So every colour below is literal rather than a token: this popover is the
+ * same ink-on-paper as the panel, whatever theme the map is wearing.
+ */
+const CALENDAR_SKIN = {
+  // The month and year pickers are CalendarDropdown below, which brings its
+  // own styling — so `caption_label`, `dropdown_root` and `dropdown` are not
+  // listed here. Only the arrows either side of them are. Their layout rules
+  // are left at the stock ones, because the nav is positioned against the
+  // caption and re-doing that is how it ends up overlapping the first week.
+  button_previous:
+    'rounded-lg text-[#111827] hover:bg-[#111827]/10 aria-disabled:opacity-30 cursor-pointer',
+  button_next:
+    'rounded-lg text-[#111827] hover:bg-[#111827]/10 aria-disabled:opacity-30 cursor-pointer',
+
+  // The grid. A hairline under the weekday row so it does not read as one
+  // block of small text with the dates.
+  weekdays: 'flex border-b border-[#111827]/12 pb-1.5',
+  weekday:
+    'flex-1 select-none text-[10px] font-bold uppercase tracking-[0.12em] text-[#6b7280]',
+
+  // Days. Both states are outlines, at two weights: a hairline at a third
+  // opacity for today, a solid 2px for the chosen day. The chosen day was a
+  // filled black square, which on a light grey panel is a hole punched
+  // through it — far heavier than a date deserves, and it dragged the eye
+  // away from the grid it belongs to.
+  today: 'rounded-lg ring-1 ring-inset ring-[#111827]/30',
+  outside: 'text-[#111827]/25',
+  disabled: 'text-[#111827]/20',
+  day_button:
+    'cursor-pointer rounded-lg text-[13px] font-medium text-[#111827] ' +
+    'hover:bg-[#111827]/10 hover:text-[#111827] ' +
+    'data-[selected-single=true]:bg-white data-[selected-single=true]:font-bold ' +
+    'data-[selected-single=true]:text-[#111827] data-[selected-single=true]:ring-2 ' +
+    'data-[selected-single=true]:ring-inset data-[selected-single=true]:ring-[#111827] ' +
+    'data-[selected-single=true]:shadow-sm data-[selected-single=true]:hover:bg-white',
+} as const;
+
+/**
+ * The month and year pickers.
+ *
+ * react-day-picker ships a real <select> with the label drawn over it, so
+ * opening one handed you the browser's own list — and pointed at a range of
+ * 1990 to 2104, that list was a hundred-odd rows of bare system font. The
+ * range is now twelve months (see CalendarDemo), and this renders it as a
+ * short panel in the same ink-on-paper as the calendar around it.
+ *
+ * `onChange` is the one seam. DayPicker hands down a select's change handler
+ * and reads `event.target.value` off it, so that is what is passed back —
+ * the shape it reads, and nothing it does not.
+ */
+function CalendarDropdown(props: DropdownProps) {
+  const { options, value, onChange, disabled } = props;
+
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const listRef = useRef<HTMLDivElement | null>(null);
+
+  const current = options?.find((option) => option.value === value);
+
+  useEffect(() => {
+    if (!open) return;
+    function away(e: MouseEvent) {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', away);
+    return () => document.removeEventListener('mousedown', away);
+  }, [open]);
+
+  // Opening on January when the calendar is on December is disorienting.
+  // Scrolled by hand rather than with scrollIntoView, which would also scroll
+  // the page behind the panel.
+  useEffect(() => {
+    if (!open) return;
+    const list = listRef.current;
+    const active = list?.querySelector<HTMLElement>('[data-current="true"]');
+    if (list && active) {
+      list.scrollTop = active.offsetTop - list.clientHeight / 2 + active.offsetHeight / 2;
+    }
+  }, [open]);
+
+  function pick(next: string | number) {
+    setOpen(false);
+    onChange?.({
+      target: { value: String(next) },
+    } as React.ChangeEvent<HTMLSelectElement>);
+  }
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
+        disabled={disabled}
+        aria-label={props['aria-label']}
+        aria-expanded={open}
+        onClick={() => setOpen((prev) => !prev)}
+        className="flex h-8 cursor-pointer items-center gap-1 rounded-lg border border-[#111827]/25 bg-white pr-1.5 pl-2.5 text-sm font-bold text-[#111827] shadow-sm transition-colors select-none hover:border-[#111827]/55 disabled:opacity-40"
+      >
+        {current?.label ?? ''}
+        <ChevronDown
+          className={`size-3.5 text-[#111827]/50 transition-transform duration-150 ${
+            open ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+
+      {open ? (
+        <div
+          ref={listRef}
+          role="listbox"
+          className="absolute top-[calc(100%+6px)] left-1/2 z-20 max-h-56 w-[6.5rem] -translate-x-1/2 overflow-y-auto overscroll-contain rounded-xl border-2 border-[#111827] bg-white p-1 shadow-[0_18px_40px_-12px_rgba(17,24,39,0.45)]"
+        >
+          {options?.map((option) => {
+            const isCurrent = option.value === value;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                role="option"
+                aria-selected={isCurrent}
+                data-current={isCurrent}
+                disabled={option.disabled}
+                onClick={() => pick(option.value)}
+                className={`flex w-full cursor-pointer items-center rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-colors disabled:cursor-not-allowed disabled:opacity-30 ${
+                  isCurrent
+                    ? 'bg-[#111827]/10 font-bold text-[#111827]'
+                    : 'text-[#111827]/75 hover:bg-[#111827]/8 hover:text-[#111827]'
+                }`}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 type CalendarDemoProps = {
   setDateOption: Dispatch<SetStateAction<string>>; // or your union type
   dateRef: Date | undefined;
@@ -860,21 +1013,40 @@ export function CalendarDemo({
     }
   }, [dateRef]);
 
+  /**
+   * A year either side used to be 1990 to 2104. Nobody filters a jam map by
+   * a night in 1994, and the only thing that range bought was a year picker
+   * with a hundred and fifteen rows in it. Twelve months forward covers
+   * everything the map can actually hold.
+   *
+   * Days before today are disabled for the same reason: a date in the past
+   * can only ever come back empty, and a calendar that lets you ask for one
+   * is lying about what it can answer.
+   */
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const firstMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastMonth = new Date(today.getFullYear(), today.getMonth() + 12, 1);
+
   return (
     <Calendar
       mode="single"
       selected={dateRef}
       onSelect={setDate}
-      startMonth={new Date(1990, 0)}
-      endMonth={new Date(2104, 11)}
+      startMonth={firstMonth}
+      endMonth={lastMonth}
+      disabled={{ before: today }}
       className="
-        rounded-md border border-stone-400 shadow-xl bg-stone-200 z-[600]
-        /* Mobile: Fixed in center of screen */
-        fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-        /* Desktop: Absolute below the button */
+        z-[600] rounded-xl border-2 border-[#111827] bg-[#f3f4f6] p-3 text-[#111827]
+        shadow-[0_18px_40px_-12px_rgba(17,24,39,0.45)]
+        /* Mobile: fixed in the centre of the screen */
+        fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+        /* Desktop: anchored under the chip that opened it */
         md:absolute md:top-12 md:right-0 md:left-auto md:translate-x-0 md:translate-y-0
       "
       captionLayout="dropdown"
+      classNames={CALENDAR_SKIN}
+      components={{ Dropdown: CalendarDropdown }}
     />
   );
 }

@@ -1,5 +1,5 @@
 import JamCardShadcn from '@/components/map/CardJam';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { JamCard } from '@/types/jam';
 import Link from 'next/link';
@@ -22,6 +22,40 @@ type Snap = 'peek' | 'half' | 'full';
  * Handle 52 + card 104 + the list's own 8 top and 16 bottom = 180.
  */
 const PEEK_H = 188;
+
+/**
+ * The frosted pane behind the expanded list: the map, still the map, just
+ * blurred and pushed back so the cards are what your eye lands on.
+ *
+ * Two knobs, and they pull against each other. The blur is what makes it read
+ * as glass, but the more of it, the less map: past about 10px a city map at
+ * phone scale stops looking like a map at all — the streets melt and you are
+ * back to a flat wash, which is the thing this is meant not to be. The tint is
+ * what darkens it; too much and the blur underneath stops mattering.
+ *
+ * At 4px and 22% the map is still readable through the glass — labels turn to
+ * smudges, but the streets and the water keep their shape. Raise the blur to
+ * push the map further back, and raise the tint with it if the header text
+ * starts to fight whatever is underneath.
+ *
+ * Kept in `style` rather than as Tailwind classes because `backdrop-filter` is
+ * the one property here that has to survive a vendor prefix: iOS Safari still
+ * only takes `-webkit-backdrop-filter`, and without it the whole effect on a
+ * phone degrades to exactly the flat tint we are trying to get away from.
+ */
+const SHEET_TINT = 'bg-surface-inset/22';
+const SHEET_BLUR = 'blur(4px) saturate(1.2)';
+
+/** Matches the FLIP duration in the slide effect. */
+const SLIDE_MS = 300;
+
+/**
+ * useLayoutEffect, minus the server warning. The slide below has to set its
+ * starting transform before the browser paints, so useEffect is not an
+ * option — it would paint one frame at the destination first.
+ */
+const useIsoLayoutEffect =
+  typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 /** Fractions of the map's height for the two expanded stops. */
 const HALF_F = 0.52;
@@ -72,6 +106,9 @@ export default function JamCarousel({
   /** Set for a moment after the sheet moves itself; read in onClickCapture. */
   const swallowClick = useRef(false);
 
+  /** The height the sheet was at last paint, for the slide effect below. */
+  const prevH = useRef<number | null>(null);
+
   const stops: Record<Snap, number> = {
     peek: PEEK_H,
     half: mapH ? Math.max(PEEK_H, Math.round(mapH * HALF_F)) : PEEK_H,
@@ -101,14 +138,14 @@ export default function JamCarousel({
     }
   }, [searchType]);
 
-  // Nothing to peek at means peek is the wrong state: the sheet is
-  // transparent there, so the empty state was white text straight onto the
-  // map and unreadable. Open it so those words get the sheet behind them.
-  // A nudge, not a lock — dragging it back down still works.
-  useEffect(() => {
-    if (loading) return;
-    if (searchType === 'local' && jams.length === 0) setSnap('half');
-  }, [jams, loading, searchType]);
+  // No effect here opens the sheet on a new result set, on purpose. An empty
+  // result used to expand it to `half`, so that the empty-state copy got a
+  // background instead of sitting as white text on the map — but on a phone
+  // that copy is `hidden` at peek anyway, and every search that comes back
+  // empty for a moment before the jams land counts as one. Arriving at a city
+  // threw the list open over the map you had just asked to see. The "No jams
+  // here" pill says the same thing from the strip, and the stop the sheet is
+  // at stays the reader's choice.
 
   // The strip keeps the scroll offset of the previous results, so without
   // this a new search opens part-way along the list.
@@ -130,19 +167,23 @@ export default function JamCarousel({
     }, 400);
   }
 
+  /** The stops in order, so stepping is an index move rather than a lookup. */
+  const ORDER: Snap[] = ['peek', 'half', 'full'];
+
+  function step(by: 1 | -1) {
+    armClickGuard();
+    const next = ORDER[ORDER.indexOf(snap) + by];
+    if (next) setSnap(next);
+  }
+
   function expand() {
     armClickGuard();
     setSnap('half');
   }
 
-  /**
-   * The nub's tap. Up a stop, and back down to the strip from the top one, so
-   * the sheet is a cycle rather than something you can get stuck at the top
-   * of. The chevron says which way the next tap goes.
-   */
-  function toggleFromNub() {
-    armClickGuard();
-    setSnap(snap === 'full' ? 'peek' : 'full');
+  /** The nub's own tap: up, or back down once there is nowhere left to go. */
+  function stepFromNub() {
+    step(snap === 'full' ? -1 : 1);
   }
 
   function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
@@ -169,13 +210,52 @@ export default function JamCarousel({
       setSnap(nearestSnap(dragH ?? d.h));
       armClickGuard();
     } else {
-      toggleFromNub();
+      stepFromNub();
     }
 
     setDragH(null);
   }
 
   const dragging = dragH !== null;
+  const targetH = dragH ?? stops[snap];
+
+  /**
+   * Whether the frosted pane below is showing: at every stop but peek, where
+   * the sheet is a transparent strip over live map.
+   */
+  const glass = snap !== 'peek';
+
+  /**
+   * The slide, done as a FLIP rather than as a height transition.
+   *
+   * Transition the sheet's HEIGHT and every frame of the slide is a fresh
+   * layout of the card list, on the main thread — which is the stutter.
+   *
+   * So the height is not animated at all. It jumps straight to the new stop,
+   * the element is put back where it was with a transform, and only that
+   * transform is animated: one layout, then a slide the compositor can run on
+   * its own, with the glass pane along for the ride.
+   *
+   * Skipped while a finger is down — there the height already follows the
+   * drag frame by frame, and animating on top of that would fight it.
+   */
+  useIsoLayoutEffect(() => {
+    const el = sheetRef.current;
+    const from = prevH.current;
+    prevH.current = targetH;
+
+    if (!el || from === null || from === targetH || dragging) return;
+
+    el.style.transition = 'none';
+    el.style.transform = `translateY(${targetH - from}px)`;
+
+    const id = requestAnimationFrame(() => {
+      el.style.transition = `transform ${SLIDE_MS}ms cubic-bezier(0.32, 0.72, 0, 1)`;
+      el.style.transform = 'translateY(0px)';
+    });
+
+    return () => cancelAnimationFrame(id);
+  }, [targetH, dragging]);
   const countLabel = loading
     ? 'Searching…'
     : jams.length === 0
@@ -186,9 +266,7 @@ export default function JamCarousel({
     <div
       ref={sheetRef}
       data-snap={snap}
-      style={
-        { '--sheet-h': `${dragH ?? stops[snap]}px` } as React.CSSProperties
-      }
+      style={{ '--sheet-h': `${targetH}px` } as React.CSSProperties}
       onClickCapture={(e) => {
         // A tap that moves the sheet leaves the finger sitting wherever a
         // card has just arrived, and the browser then sends the click there —
@@ -199,13 +277,44 @@ export default function JamCarousel({
         e.preventDefault();
         e.stopPropagation();
       }}
-      className={`group/sheet absolute inset-x-0 bottom-0 z-50 flex h-[var(--sheet-h)] flex-col overflow-hidden rounded-t-2xl border-x-0 border-b-0 border-t border-tone-0/10 bg-surface-inset/62 shadow-[0_-8px_24px_rgba(0,0,0,0.28)] backdrop-blur-[18px] backdrop-saturate-[1.3]
+      className={`group/sheet absolute inset-x-0 bottom-0 z-50 flex h-[var(--sheet-h)] flex-col overflow-hidden rounded-t-2xl border-x-0 border-b-0 border-t border-tone-0/10 shadow-[0_-8px_24px_rgba(0,0,0,0.28)]
         ${searchType === 'global' ? 'max-md:hidden' : ''}
         max-md:data-[snap=peek]:pointer-events-none
-        data-[snap=peek]:overflow-visible data-[snap=peek]:border-t-transparent data-[snap=peek]:bg-transparent data-[snap=peek]:shadow-none data-[snap=peek]:backdrop-filter-none
-        ${dragging ? '' : 'transition-[height] duration-300 ease-out'}
-        md:inset-auto md:top-8 md:left-18 md:h-auto md:max-w-[95%] md:gap-1 md:overflow-visible md:rounded-none md:border-0 md:bg-transparent md:shadow-none md:backdrop-filter-none`}
+        data-[snap=peek]:overflow-visible data-[snap=peek]:border-t-transparent data-[snap=peek]:shadow-none
+        md:inset-auto md:top-8 md:left-18 md:h-auto md:max-w-[95%] md:gap-1 md:overflow-visible md:rounded-none md:border-0 md:shadow-none`}
     >
+      {/* The glass, as a layer of its own rather than a background on the
+          sheet — and this is the part that keeps it from costing anything.
+
+          A `backdrop-filter` element is re-sampled whenever its own box
+          changes, and the sheet's box changes constantly: every frame of a
+          drag, every snap. Put the filter on the sheet and each of those
+          frames is a fresh blur of a differently sized slice of map, on the
+          main thread, while the card list re-lays out on top of it.
+
+          So this pane is sized once, to the tallest the sheet ever gets, and
+          pinned to the bottom. Dragging the sheet no longer resizes it — it
+          only moves the parent's clip, which the compositor already does for
+          free. The blur is re-sampled when the map itself moves, and not
+          otherwise.
+
+          Behind the content via `-z-10`, out of the way of every finger, and
+          absent at `peek`, where the sheet is a transparent strip and blurring
+          the band the map is supposed to show through would defeat the point.
+          Off by opacity rather than by unmounting: an unmount drops the
+          composited layer and the next expand has to build it again, which is
+          a hitch you can see. */}
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-x-0 bottom-0 -z-10 md:hidden ${SHEET_TINT} ${
+          glass ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{
+          height: Math.max(stops.full, PEEK_H),
+          backdropFilter: glass ? SHEET_BLUR : undefined,
+          WebkitBackdropFilter: glass ? SHEET_BLUR : undefined,
+        }}
+      />
       {/* Phone, peek. A row in the markup, but not on screen: the row is
           inert and only the pill inside it takes a finger, so everything
           around the pill is still map. This is the whole of the sheet's
@@ -239,7 +348,7 @@ export default function JamCarousel({
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
-              toggleFromNub();
+              stepFromNub();
             }
           }}
           style={{ touchAction: 'none' }}
@@ -247,18 +356,41 @@ export default function JamCarousel({
         >
           <span className="h-1.5 w-11 rounded-full bg-tone-0/30" />
 
-          <span className="flex w-full items-center justify-between">
-            <span className="text-sm font-semibold text-tone-0">
-              {countLabel}
-            </span>
-            <ChevronUp
-              className={`size-4 text-tone-0/40 transition-transform duration-200 ${
-                snap === 'full' ? 'rotate-180' : ''
-              }`}
-            />
+          <span className="w-full text-sm font-semibold text-tone-0">
+            {countLabel}
           </span>
         </div>
       )}
+
+      {/* The two steps, as buttons rather than only as a gesture.
+          Bottom right, not up in the header: at the `full` stop the header is
+          near the top of the screen, which is the one place a thumb cannot
+          reach on a tall phone — and the taller the sheet, the more likely
+          you want to shrink it again. Down here both stay under the thumb at
+          every stop.
+
+          Stacked rather than side by side because the cards are w-64 and
+          centred: a 36px column clears the card edge on a normal phone,
+          where an 80px row would not. Both stay mounted, the disabled one
+          included, so neither moves under a finger that is about to tap. */}
+      {snap !== 'peek' ? (
+        <div className="absolute right-3 bottom-4 z-10 flex flex-col gap-2 md:hidden">
+          <StepButton
+            label="Make the jam list taller"
+            onClick={() => step(1)}
+            disabled={snap === 'full'}
+          >
+            <ChevronUp className="size-4" />
+          </StepButton>
+
+          <StepButton
+            label="Make the jam list smaller"
+            onClick={() => step(-1)}
+          >
+            <ChevronDown className="size-4" />
+          </StepButton>
+        </div>
+      ) : null}
 
       {/* Desktop header. Was a full-width bar reading "Collapse cards" with no
           indication of how many there were; the count is the useful part. */}
@@ -415,6 +547,38 @@ export default function JamCarousel({
         )}
       </div>
     </div>
+  );
+}
+
+/**
+ * One of the two stop buttons floating over the phone sheet.
+ *
+ * `onPointerDown` stops here rather than reaching the nub's drag handlers on
+ * the way up: without that a tap on the button counts as a tap on the nub as
+ * well, and the sheet steps twice for one press.
+ */
+function StepButton({
+  label,
+  onClick,
+  disabled,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onPointerDown={(e) => e.stopPropagation()}
+      onClick={onClick}
+      className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-tone-0/12 bg-surface-raised text-tone-0/70 shadow-lg transition-colors active:bg-surface-inset disabled:pointer-events-none disabled:opacity-35"
+    >
+      {children}
+    </button>
   );
 }
 

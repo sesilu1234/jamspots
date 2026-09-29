@@ -15,3 +15,5 @@ grupos faceboook, grupos reddit(de ciudades), boca a boca
 sessions de Madrid" funciona. "Mirad mi app" te ganas un baneo."
 
 ![alt text](image.png)
+
+- probar que en iphone funciona app bien
