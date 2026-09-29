@@ -836,54 +836,6 @@ export function DateOptionsGlobal({
   );
 }
 
-/**
- * The filter calendar, dressed to match the panel it drops out of.
- *
- * Three things were wrong with the stock skin here. It painted itself
- * `bg-background`, which globals.css defines as near-white in every theme — on
- * a panel that is already white the popover had no edge at all and read as a
- * sticker pasted over the chips. `bg-primary` for the chosen day is near-white
- * too, so the selected day was white on white: invisible. And the day numbers
- * inherited `text-foreground`, another near-white token, so the grid itself
- * was barely there.
- *
- * So every colour below is literal rather than a token: this popover is the
- * same ink-on-paper as the panel, whatever theme the map is wearing.
- */
-const CALENDAR_SKIN = {
-  // Month / year dropdowns and the arrows either side of them. Only the
-  // colours are set here — the stock layout rules stay, because the nav is
-  // positioned against the caption and re-doing that is how it ends up
-  // overlapping the first week.
-  caption_label:
-    'flex h-8 items-center gap-1 rounded-md pl-2 pr-1 text-sm font-bold text-[#111827] ' +
-    'select-none [&>svg]:size-3.5 [&>svg]:text-[#111827]/50',
-  dropdown_root:
-    'relative rounded-lg border border-[#111827]/25 bg-white shadow-sm ' +
-    'has-focus:border-[#111827] has-focus:ring-2 has-focus:ring-[#111827]/15',
-  button_previous:
-    'rounded-lg text-[#111827] hover:bg-[#111827]/10 aria-disabled:opacity-30 cursor-pointer',
-  button_next:
-    'rounded-lg text-[#111827] hover:bg-[#111827]/10 aria-disabled:opacity-30 cursor-pointer',
-
-  // The grid. A hairline under the weekday row so it does not read as one
-  // block of small text with the dates.
-  weekdays: 'flex border-b border-[#111827]/12 pb-1.5',
-  weekday:
-    'flex-1 select-none text-[10px] font-bold uppercase tracking-[0.12em] text-[#6b7280]',
-
-  // Days. `today` is an outline and `selected` is a fill, which is the one
-  // pairing that still tells them apart when today IS the selected day.
-  today: 'rounded-lg ring-1 ring-inset ring-[#111827]/35 font-bold',
-  outside: 'text-[#111827]/25',
-  disabled: 'text-[#111827]/20',
-  day_button:
-    'cursor-pointer rounded-lg text-[13px] font-medium text-[#111827] ' +
-    'hover:bg-[#111827]/10 hover:text-[#111827] ' +
-    'data-[selected-single=true]:bg-[#111827] data-[selected-single=true]:font-bold ' +
-    'data-[selected-single=true]:text-white data-[selected-single=true]:hover:bg-[#111827]',
-} as const;
-
 type CalendarDemoProps = {
   setDateOption: Dispatch<SetStateAction<string>>; // or your union type
   dateRef: Date | undefined;
@@ -916,15 +868,13 @@ export function CalendarDemo({
       startMonth={new Date(1990, 0)}
       endMonth={new Date(2104, 11)}
       className="
-        z-[600] rounded-xl border-2 border-[#111827] bg-[#f3f4f6] p-3 text-[#111827]
-        shadow-[0_18px_40px_-12px_rgba(17,24,39,0.45)]
-        /* Mobile: fixed in the centre of the screen */
-        fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-        /* Desktop: anchored under the chip that opened it */
+        rounded-md border border-stone-400 shadow-xl bg-stone-200 z-[600]
+        /* Mobile: Fixed in center of screen */
+        fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+        /* Desktop: Absolute below the button */
         md:absolute md:top-12 md:right-0 md:left-auto md:translate-x-0 md:translate-y-0
       "
       captionLayout="dropdown"
-      classNames={CALENDAR_SKIN}
     />
   );
 }

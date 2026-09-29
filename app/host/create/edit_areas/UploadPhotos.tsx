@@ -26,10 +26,14 @@ import { Card, CardTitle } from './ui';
  * comfortably handle. The 8 MB server rule still stands — it just applies to
  * the compressed file, which is nowhere near it.
  *
- * What this number guards is the browser: decoding something enormous on a
- * phone is what runs it out of memory.
+ * What this number guards is the browser, not the server. Compressing means
+ * decoding the whole photo into a canvas first, at four bytes a pixel — a
+ * 15 MB JPEG is around 30 megapixels, so roughly 120 MB of memory for the
+ * one image. Well past that and a cheap phone kills the tab rather than
+ * raising an error we could show. 15 covers every phone camera in use;
+ * higher only buys DSLR exports.
  */
-const MAX_FILE_MB = 25;
+const MAX_FILE_MB = 15;
 const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024;
 
 const asMb = (bytes: number) => (bytes / 1024 / 1024).toFixed(1);

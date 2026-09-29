@@ -2,8 +2,8 @@
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_CLIENT_API_KEY!;
 
 /**
- * The jam's name, venue name and location. The map opens as a dialog over
- * this form — see LocationPickerDialog for why it is no longer a popup window.
+ * Visual variant of `@/app/createJam/primary`, scoped to /host/create.
+ * Same props, same behaviour — only the markup/styling differs.
  */
 
 type PrimaryProps = {
@@ -13,12 +13,9 @@ type PrimaryProps = {
   coordinatesRef: React.RefObject<{ lat: string | null; lng: string | null }>;
 };
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { FieldLabel, inputSkin } from './ui';
-import LocationPickerDialog, {
-  type PickedLocation,
-} from '@/components/map/LocationPickerDialog';
 
 export default function PrimaryFields({
   jamTitleRef,
@@ -38,8 +35,6 @@ export default function PrimaryFields({
   locationAddressRef.current = dataLocation.address;
   coordinatesRef.current = dataLocation.coordinates;
 
-  const [pickerOpen, setPickerOpen] = useState(false);
-
   const hasCoords =
     dataLocation?.coordinates?.lat && dataLocation?.coordinates?.lng;
   const center = hasCoords
@@ -48,30 +43,27 @@ export default function PrimaryFields({
   const zoom = hasCoords ? 15 : 2;
   const marker = hasCoords ? `&markers=color:red%7C${center}` : '';
 
-  /**
-   * Coordinates travel as numbers: both validators — clientCheck here and the
-   * zod schema on the route — reject anything else. The ref they land in is
-   * declared as strings, which it has never actually held; the cast keeps
-   * that inherited lie in one place instead of spreading it.
-   */
-  const handlePick = (location: PickedLocation) => {
-    setdataLocation((prev) => ({
-      jam_name: prev.jam_name,
-      location_name: prev.location_name || location.name,
-      address: location.address,
-      coordinates: location.coordinates as unknown as {
-        lat: string | null;
-        lng: string | null;
-      },
-    }));
-  };
+  useEffect(() => {
+    const channel = new BroadcastChannel('location_broadcast');
+    channel.onmessage = (event) => {
+      // The map popup can post null if nothing was picked — ignore it
+      // instead of crashing on `.name`.
+      if (!event.data) return;
 
-  const pickerCoords = hasCoords
-    ? {
-        lat: Number(dataLocation.coordinates.lat),
-        lng: Number(dataLocation.coordinates.lng),
-      }
-    : null;
+      setdataLocation((prev) => ({
+        jam_name: prev.jam_name,
+        location_name: prev.location_name || `${event.data.name}`,
+        address: event.data.address,
+        coordinates: event.data.coordinates,
+      }));
+    };
+
+    return () => channel.close();
+  }, []);
+
+  const openPopup = () => {
+    window.open('/createJam/selectOnMap', 'createJam', 'width=600,height=500');
+  };
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
@@ -137,7 +129,7 @@ export default function PrimaryFields({
 
         <button
           type="button"
-          onClick={() => setPickerOpen(true)}
+          onClick={openPopup}
           className={`group relative block w-full overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 cursor-pointer ${
             hasCoords ? '' : 'animate-glow-ring-strong'
           }`}
@@ -165,17 +157,10 @@ export default function PrimaryFields({
         </button>
 
         <p className="text-[12px] text-zinc-500">
-          Opens a map right here — pick the spot and it fills the address for
+          Opens a small map window — pick the spot and it fills the address for
           you.
         </p>
       </div>
-
-      <LocationPickerDialog
-        open={pickerOpen}
-        onOpenChange={setPickerOpen}
-        initialCoords={pickerCoords}
-        onPick={handlePick}
-      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { BRAND } from '@/lib/brand';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import EditSections_desktop from './EditSections_desktop';
 import EditSections_phone from './EditSections_phone';
 import EditArea from './EditArea';
@@ -22,19 +22,6 @@ import { Button } from '@/components/ui/button';
 export default function Home() {
   const childSaveOnUnmount = useRef<() => void>(() => {});
   const router = useRouter();
-
-  /**
-   * On a phone this page used to open scrolled to the bottom. /host is a tall
-   * page — its jam list plus a deep padded tail — and the browser restores
-   * that offset onto the new route while this one is still short, so the
-   * scroll-to-top the router does lands before the layout exists and is then
-   * undone. Re-doing it after the first paint is the one that sticks.
-   */
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    const id = requestAnimationFrame(() => window.scrollTo(0, 0));
-    return () => cancelAnimationFrame(id);
-  }, []);
 
   return (
     <div className="relative flex min-h-screen flex-col bg-stone-50 text-zinc-900 lg:flex-row">
