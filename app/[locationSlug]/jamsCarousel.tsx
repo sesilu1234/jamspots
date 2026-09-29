@@ -28,15 +28,20 @@ const HALF_F = 0.52;
 const FULL_F = 0.9;
 
 /**
- * The jam list over the map: a draggable bottom sheet on the phone, the
- * original floating panel from md up.
+ * The jam list over the map: a bottom sheet on the phone, the original
+ * floating panel from md up.
  *
  * Phone. Three stops, in the Google Maps / Airbnb shape. `peek` is a strip
  * above the tab bar holding a horizontal carousel of row cards; `half` and
- * `full` are the vertical list of poster cards. Drag the handle to move
- * between them, or tap it to toggle peek and half. There is no collapse bar
- * at this size — a handle and the count say the same thing, and are the
- * control as well as the label.
+ * `full` are the vertical list of poster cards.
+ *
+ * In peek the sheet is transparent, and it now behaves that way too: the
+ * sheet takes `pointer-events-none` and hands it back only to the cards and
+ * to the pill. It used to be a full-width, 188px-tall invisible div with a
+ * full-width drag bar across the top of it, so the bottom quarter of the map
+ * could not be panned, pinched or tapped — the strip was catching everything
+ * aimed at the map behind it. The only things that answer a finger there now
+ * are the cards themselves and the "N jams" pill.
  *
  * Desktop. Untouched: the panel at the top left of the map, with the
  * "Hide cards" button and its max-height collapse.
@@ -63,6 +68,9 @@ export default function JamCarousel({
   const sheetRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const drag = useRef<{ y: number; h: number; moved: boolean } | null>(null);
+
+  /** Set for a moment after the sheet moves itself; read in onClickCapture. */
+  const swallowClick = useRef(false);
 
   const stops: Record<Snap, number> = {
     peek: PEEK_H,
@@ -114,6 +122,29 @@ export default function JamCarousel({
     );
   }
 
+  /** Arms the click swallower on the sheet. See that handler for why. */
+  function armClickGuard() {
+    swallowClick.current = true;
+    setTimeout(() => {
+      swallowClick.current = false;
+    }, 400);
+  }
+
+  function expand() {
+    armClickGuard();
+    setSnap('half');
+  }
+
+  /**
+   * The nub's tap. Up a stop, and back down to the strip from the top one, so
+   * the sheet is a cycle rather than something you can get stuck at the top
+   * of. The chevron says which way the next tap goes.
+   */
+  function toggleFromNub() {
+    armClickGuard();
+    setSnap(snap === 'full' ? 'peek' : 'full');
+  }
+
   function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
     drag.current = { y: e.clientY, h: dragH ?? stops[snap], moved: false };
     e.currentTarget.setPointerCapture(e.pointerId);
@@ -134,8 +165,12 @@ export default function JamCarousel({
     drag.current = null;
     e.currentTarget.releasePointerCapture?.(e.pointerId);
 
-    if (d.moved) setSnap(nearestSnap(dragH ?? d.h));
-    else setSnap(snap === 'peek' ? 'half' : 'peek');
+    if (d.moved) {
+      setSnap(nearestSnap(dragH ?? d.h));
+      armClickGuard();
+    } else {
+      toggleFromNub();
+    }
 
     setDragH(null);
   }
@@ -154,49 +189,76 @@ export default function JamCarousel({
       style={
         { '--sheet-h': `${dragH ?? stops[snap]}px` } as React.CSSProperties
       }
+      onClickCapture={(e) => {
+        // A tap that moves the sheet leaves the finger sitting wherever a
+        // card has just arrived, and the browser then sends the click there —
+        // which is how opening the list dropped you into a jam you never
+        // picked. Swallow the one click that follows a move of our own.
+        if (!swallowClick.current) return;
+        swallowClick.current = false;
+        e.preventDefault();
+        e.stopPropagation();
+      }}
       className={`group/sheet absolute inset-x-0 bottom-0 z-50 flex h-[var(--sheet-h)] flex-col overflow-hidden rounded-t-2xl border-x-0 border-b-0 border-t border-tone-0/10 bg-surface-inset/62 shadow-[0_-8px_24px_rgba(0,0,0,0.28)] backdrop-blur-[18px] backdrop-saturate-[1.3]
         ${searchType === 'global' ? 'max-md:hidden' : ''}
+        max-md:data-[snap=peek]:pointer-events-none
         data-[snap=peek]:overflow-visible data-[snap=peek]:border-t-transparent data-[snap=peek]:bg-transparent data-[snap=peek]:shadow-none data-[snap=peek]:backdrop-filter-none
         ${dragging ? '' : 'transition-[height] duration-300 ease-out'}
         md:inset-auto md:top-8 md:left-18 md:h-auto md:max-w-[95%] md:gap-1 md:overflow-visible md:rounded-none md:border-0 md:bg-transparent md:shadow-none md:backdrop-filter-none`}
     >
-      {/* Phone handle. The drag target and the count in one, which is why
-          there is no separate bar: on a sheet the grip is the header.
-          touch-action none, or the browser pans the map under the finger. */}
-      <div
-        role="button"
-        tabIndex={0}
-        aria-label={snap === 'peek' ? 'Expand jam list' : 'Collapse jam list'}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            setSnap(snap === 'peek' ? 'half' : 'peek');
-          }
-        }}
-        style={{ touchAction: 'none' }}
-        className="flex shrink-0 cursor-grab flex-col items-center gap-1.5 px-4 pt-2 pb-2 select-none active:cursor-grabbing group-data-[snap=peek]/sheet:items-start md:hidden"
-      >
-        {/* Over a transparent sheet the grip sits on the map, so in peek it
-            needs its own contrast rather than the sheet's. */}
-        <span className="h-1 w-10 rounded-full bg-tone-0/25 group-data-[snap=peek]/sheet:self-center group-data-[snap=peek]/sheet:bg-white/70 group-data-[snap=peek]/sheet:shadow" />
-
-        {/* Same reason: in peek this collapses from a full-width row into a
-            pill, so the count stays readable against whatever is under it. */}
-        <span className="flex w-full items-center justify-between group-data-[snap=peek]/sheet:w-auto group-data-[snap=peek]/sheet:gap-1.5 group-data-[snap=peek]/sheet:rounded-full group-data-[snap=peek]/sheet:bg-[#0c0e12d9] group-data-[snap=peek]/sheet:px-3 group-data-[snap=peek]/sheet:py-1 group-data-[snap=peek]/sheet:shadow-lg">
-          <span className="text-sm font-semibold text-tone-0 group-data-[snap=peek]/sheet:text-xs group-data-[snap=peek]/sheet:text-white">
+      {/* Phone, peek. A row in the markup, but not on screen: the row is
+          inert and only the pill inside it takes a finger, so everything
+          around the pill is still map. This is the whole of the sheet's
+          furniture at this stop — the strip below it has no header. */}
+      {snap === 'peek' ? (
+        <div className="pointer-events-none flex shrink-0 px-3 pt-2 pb-1 md:hidden">
+          <button
+            type="button"
+            onClick={expand}
+            aria-label="Expand jam list"
+            className="pointer-events-auto inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-[#0c0e12d9] px-3 py-1.5 text-xs font-semibold text-white shadow-lg transition-colors active:bg-[#0c0e12]"
+          >
             {countLabel}
+            <ChevronUp className="size-3.5 text-white/70" />
+          </button>
+        </div>
+      ) : (
+        /* Phone, expanded. The nub is the grip: tap it to go up a stop, or
+           back down to the strip once there is nowhere left to go, and drag
+           it to size the sheet by hand. It is the only thing in the sheet
+           that answers a drag, which is what stops a drag ending inside a
+           card. touch-action none, or the browser pans the map under it. */
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label={snap === 'full' ? 'Collapse jam list' : 'Expand jam list'}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggleFromNub();
+            }
+          }}
+          style={{ touchAction: 'none' }}
+          className="flex shrink-0 cursor-grab flex-col items-center gap-1.5 px-4 pt-2.5 pb-2 select-none active:cursor-grabbing md:hidden"
+        >
+          <span className="h-1.5 w-11 rounded-full bg-tone-0/30" />
+
+          <span className="flex w-full items-center justify-between">
+            <span className="text-sm font-semibold text-tone-0">
+              {countLabel}
+            </span>
+            <ChevronUp
+              className={`size-4 text-tone-0/40 transition-transform duration-200 ${
+                snap === 'full' ? 'rotate-180' : ''
+              }`}
+            />
           </span>
-          <ChevronUp
-            className={`size-4 text-tone-0/40 transition-transform duration-200 group-data-[snap=peek]/sheet:text-white/70 ${
-              snap === 'peek' ? '' : 'rotate-180'
-            }`}
-          />
-        </span>
-      </div>
+        </div>
+      )}
 
       {/* Desktop header. Was a full-width bar reading "Collapse cards" with no
           indication of how many there were; the count is the useful part. */}
@@ -231,6 +293,7 @@ export default function JamCarousel({
         ref={listRef}
         className={`card-container flex min-h-0 flex-1 flex-col items-center gap-4 overflow-y-auto px-4 pb-4
           max-md:group-data-[snap=peek]/sheet:flex-row max-md:group-data-[snap=peek]/sheet:gap-3 max-md:group-data-[snap=peek]/sheet:overflow-x-auto max-md:group-data-[snap=peek]/sheet:overflow-y-hidden max-md:group-data-[snap=peek]/sheet:px-3 max-md:group-data-[snap=peek]/sheet:pt-2 max-md:group-data-[snap=peek]/sheet:pb-6
+          max-md:group-data-[snap=peek]/sheet:[&>*]:pointer-events-auto
           md:flex-none md:gap-6 md:rounded-b-xl md:border md:border-black/20 md:bg-tone-3/45 md:transition-all md:duration-700 md:ease-in-out ${
             collapsed
               ? 'md:max-h-0 md:px-0 md:pt-0 md:pb-0 md:opacity-0'
